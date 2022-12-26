@@ -225,7 +225,7 @@ export default {
 					})
 					.flat()
 
-				await axios.post(`/save/${this.aupCode}`, table)
+				await axios.post(`http://127.0.0.1:5000/save/${this.aupCode}`, table)
 			} catch (e) {
 				console.log(e)
 			}
