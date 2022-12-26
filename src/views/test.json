@@ -1,0 +1,675 @@
+[
+    [
+        {
+            "disc_color": "#ec815f",
+            "discipline": "Физическая культура и спорт",
+            "id": 76,
+            "id_group": null,
+            "num_col": 0,
+            "num_row": 0,
+            "zet": 2
+        },
+        {
+            "disc_color": "#ec815f",
+            "discipline": "Философия",
+            "id": 75,
+            "id_group": null,
+            "num_col": 0,
+            "num_row": 1,
+            "zet": 2
+        },
+        {
+            "disc_color": "#ec815f",
+            "discipline": "Иностранный язык",
+            "id": 77,
+            "id_group": null,
+            "num_col": 0,
+            "num_row": 2,
+            "zet": 2
+        },
+        {
+            "disc_color": "#ec815f",
+            "discipline": "Введение в проектную деятельность",
+            "id": 78,
+            "id_group": null,
+            "num_col": 0,
+            "num_row": 3,
+            "zet": 2
+        },
+        {
+            "disc_color": "#5f60ec",
+            "discipline": "Физика",
+            "id": 79,
+            "id_group": null,
+            "num_col": 0,
+            "num_row": 4,
+            "zet": 4
+        },
+        {
+            "disc_color": "#5f60ec",
+            "discipline": "Инженерная графика",
+            "id": 80,
+            "id_group": null,
+            "num_col": 0,
+            "num_row": 5,
+            "zet": 4
+        },
+        {
+            "disc_color": "#5f99ec",
+            "discipline": "Трехмерное моделирование в системах автоматизированного проектирования",
+            "id": 81,
+            "id_group": null,
+            "num_col": 0,
+            "num_row": 6,
+            "zet": 2
+        },
+        {
+            "disc_color": "#ec5f6b",
+            "discipline": "Линейная алгебра и аналитическая геометрия",
+            "id": 82,
+            "id_group": null,
+            "num_col": 0,
+            "num_row": 7,
+            "zet": 4
+        },
+        {
+            "disc_color": "#5fecd2",
+            "discipline": "Основы программирования",
+            "id": 83,
+            "id_group": null,
+            "num_col": 0,
+            "num_row": 8,
+            "zet": 4
+        },
+        {
+            "disc_color": "#5fecd2",
+            "discipline": "Основы информационно-коммуникационных технологий",
+            "id": 84,
+            "id_group": null,
+            "num_col": 0,
+            "num_row": 9,
+            "zet": 4
+        }
+    ],
+    [
+        {
+            "disc_color": "#ec815f",
+            "discipline": "Коммуникации в области информационных технологий",
+            "id": 85,
+            "id_group": null,
+            "num_col": 1,
+            "num_row": 0,
+            "zet": 2
+        },
+        {
+            "disc_color": "#ec815f",
+            "discipline": "История (история России, всеобщая история)",
+            "id": 86,
+            "id_group": null,
+            "num_col": 1,
+            "num_row": 1,
+            "zet": 2
+        },
+        {
+            "disc_color": "#ec815f",
+            "discipline": "Иностранный язык",
+            "id": 87,
+            "id_group": null,
+            "num_col": 1,
+            "num_row": 2,
+            "zet": 2
+        },
+        {
+            "disc_color": "#8f5fec",
+            "discipline": "Управление проектами",
+            "id": 88,
+            "id_group": null,
+            "num_col": 1,
+            "num_row": 3,
+            "zet": 2
+        },
+        {
+            "disc_color": "#8f5fec",
+            "discipline": "Проектная деятельность",
+            "id": 89,
+            "id_group": null,
+            "num_col": 1,
+            "num_row": 4,
+            "zet": 2
+        },
+        {
+            "disc_color": "#5f60ec",
+            "discipline": "Основы проектирования механизмов",
+            "id": 90,
+            "id_group": null,
+            "num_col": 1,
+            "num_row": 5,
+            "zet": 4
+        },
+        {
+            "disc_color": "#5f60ec",
+            "discipline": "Основы измерения деталей",
+            "id": 91,
+            "id_group": null,
+            "num_col": 1,
+            "num_row": 6,
+            "zet": 2
+        },
+        {
+            "disc_color": "#5f60ec",
+            "discipline": "Машиностроительное черчение",
+            "id": 92,
+            "id_group": null,
+            "num_col": 1,
+            "num_row": 7,
+            "zet": 3
+        },
+        {
+            "disc_color": "#5f99ec",
+            "discipline": "Трехмерное моделирование в системах автоматизированного проектирования",
+            "id": 93,
+            "id_group": null,
+            "num_col": 1,
+            "num_row": 8,
+            "zet": 4
+        },
+        {
+            "disc_color": "#ec5f6b",
+            "discipline": "Математический анализ",
+            "id": 94,
+            "id_group": null,
+            "num_col": 1,
+            "num_row": 9,
+            "zet": 4
+        },
+        {
+            "disc_color": "#ef9f90",
+            "discipline": "Программирование в системах автоматизированного проектирования",
+            "id": 95,
+            "id_group": null,
+            "num_col": 1,
+            "num_row": 10,
+            "zet": 3
+        }
+    ],
+    [
+        {
+            "disc_color": "#ec815f",
+            "discipline": "Экономика",
+            "id": 96,
+            "id_group": null,
+            "num_col": 2,
+            "num_row": 0,
+            "zet": 2
+        },
+        {
+            "disc_color": "#ec815f",
+            "discipline": "Навыки эффективной презентации",
+            "id": 97,
+            "id_group": null,
+            "num_col": 2,
+            "num_row": 1,
+            "zet": 2
+        },
+        {
+            "disc_color": "#ec815f",
+            "discipline": "Иностранный язык",
+            "id": 98,
+            "id_group": null,
+            "num_col": 2,
+            "num_row": 2,
+            "zet": 2
+        },
+        {
+            "disc_color": "#8f5fec",
+            "discipline": "Проектная деятельность",
+            "id": 99,
+            "id_group": null,
+            "num_col": 2,
+            "num_row": 3,
+            "zet": 2
+        },
+        {
+            "disc_color": "#5f60ec",
+            "discipline": "Электротехника и электроника",
+            "id": 100,
+            "id_group": null,
+            "num_col": 2,
+            "num_row": 4,
+            "zet": 3
+        },
+        {
+            "disc_color": "#5f99ec",
+            "discipline": "Компьютерное проектирование деталей машин",
+            "id": 101,
+            "id_group": null,
+            "num_col": 2,
+            "num_row": 5,
+            "zet": 2
+        },
+        {
+            "disc_color": "#eca75f",
+            "discipline": "Веб-разработка",
+            "id": 102,
+            "id_group": null,
+            "num_col": 2,
+            "num_row": 6,
+            "zet": 3
+        },
+        {
+            "disc_color": "#ec5f6b",
+            "discipline": "Комплексная математика и дифференциальные уравнения",
+            "id": 103,
+            "id_group": null,
+            "num_col": 2,
+            "num_row": 7,
+            "zet": 4
+        },
+        {
+            "disc_color": "#ef9f90",
+            "discipline": "Системы автоматизированного проектирования электротехники и электроники",
+            "id": 104,
+            "id_group": null,
+            "num_col": 2,
+            "num_row": 8,
+            "zet": 2
+        },
+        {
+            "disc_color": "#ef9f90",
+            "discipline": "Программирование в системах автоматизированного проектирования",
+            "id": 105,
+            "id_group": null,
+            "num_col": 2,
+            "num_row": 9,
+            "zet": 5
+        },
+        {
+            "disc_color": "#5fecd2",
+            "discipline": "Базы данных",
+            "id": 106,
+            "id_group": null,
+            "num_col": 2,
+            "num_row": 10,
+            "zet": 3
+        }
+    ],
+    [
+        {
+            "disc_color": "#ec815f",
+            "discipline": "Иностранный язык",
+            "id": 107,
+            "id_group": null,
+            "num_col": 3,
+            "num_row": 0,
+            "zet": 2
+        },
+        {
+            "disc_color": "#8f5fec",
+            "discipline": "Проектная деятельность",
+            "id": 108,
+            "id_group": null,
+            "num_col": 3,
+            "num_row": 1,
+            "zet": 3
+        },
+        {
+            "disc_color": "#8f5fec",
+            "discipline": "Основы технологического предпринимательства",
+            "id": 109,
+            "id_group": null,
+            "num_col": 3,
+            "num_row": 2,
+            "zet": 2
+        },
+        {
+            "disc_color": "#5f60ec",
+            "discipline": "Основы материаловедения и сопротивления материалов",
+            "id": 110,
+            "id_group": null,
+            "num_col": 3,
+            "num_row": 3,
+            "zet": 4
+        },
+        {
+            "disc_color": "#5f99ec",
+            "discipline": "Компьютерное проектирование деталей машин",
+            "id": 111,
+            "id_group": null,
+            "num_col": 3,
+            "num_row": 4,
+            "zet": 4
+        },
+        {
+            "disc_color": "#eca75f",
+            "discipline": "Разработка веб-приложений и баз данных",
+            "id": 112,
+            "id_group": null,
+            "num_col": 3,
+            "num_row": 5,
+            "zet": 4
+        },
+        {
+            "disc_color": "#eca75f",
+            "discipline": "Вычислительная геометрия",
+            "id": 113,
+            "id_group": null,
+            "num_col": 3,
+            "num_row": 6,
+            "zet": 3
+        },
+        {
+            "disc_color": "#5fecd2",
+            "discipline": "Сети и телекоммуникации",
+            "id": 114,
+            "id_group": null,
+            "num_col": 3,
+            "num_row": 7,
+            "zet": 4
+        },
+        {
+            "disc_color": "#5fecd2",
+            "discipline": "Математическая логика и теория алгоритмов в практике программирования",
+            "id": 115,
+            "id_group": null,
+            "num_col": 3,
+            "num_row": 8,
+            "zet": 4
+        }
+    ],
+    [
+        {
+            "disc_color": "#ec815f",
+            "discipline": "Нормативное регулирование внедрения и эксплуатации информационных систем",
+            "id": 116,
+            "id_group": null,
+            "num_col": 4,
+            "num_row": 0,
+            "zet": 3
+        },
+        {
+            "disc_color": "#ec815f",
+            "discipline": "Иностранный язык",
+            "id": 117,
+            "id_group": null,
+            "num_col": 4,
+            "num_row": 1,
+            "zet": 2
+        },
+        {
+            "disc_color": "#8f5fec",
+            "discipline": "Проектная деятельность",
+            "id": 118,
+            "id_group": null,
+            "num_col": 4,
+            "num_row": 2,
+            "zet": 2
+        },
+        {
+            "disc_color": "#5f60ec",
+            "discipline": "Основы термо-, гидро- и газодинамики",
+            "id": 119,
+            "id_group": null,
+            "num_col": 4,
+            "num_row": 3,
+            "zet": 3
+        },
+        {
+            "disc_color": "#5f99ec",
+            "discipline": "Системы автоматизированного проектирования в технологии машиностроения",
+            "id": 120,
+            "id_group": null,
+            "num_col": 4,
+            "num_row": 4,
+            "zet": 3
+        },
+        {
+            "disc_color": "#eca75f",
+            "discipline": "Разработка мобильных приложений",
+            "id": 121,
+            "id_group": null,
+            "num_col": 4,
+            "num_row": 5,
+            "zet": 5
+        },
+        {
+            "disc_color": "#ec5f6b",
+            "discipline": "Дискретная математика",
+            "id": 122,
+            "id_group": null,
+            "num_col": 4,
+            "num_row": 6,
+            "zet": 5
+        },
+        {
+            "disc_color": "#ef9f90",
+            "discipline": "Системы инженерного анализа",
+            "id": 123,
+            "id_group": null,
+            "num_col": 4,
+            "num_row": 7,
+            "zet": 3
+        },
+        {
+            "disc_color": "#5fec8e",
+            "discipline": "Управление жизненным циклом изделия",
+            "id": 124,
+            "id_group": null,
+            "num_col": 4,
+            "num_row": 8,
+            "zet": 4
+        }
+    ],
+    [
+        {
+            "disc_color": "#ec815f",
+            "discipline": "Тайм-менеджмент",
+            "id": 125,
+            "id_group": null,
+            "num_col": 5,
+            "num_row": 0,
+            "zet": 2
+        },
+        {
+            "disc_color": "#ec815f",
+            "discipline": "Основы маркетинговых исследований и анализа",
+            "id": 126,
+            "id_group": null,
+            "num_col": 5,
+            "num_row": 1,
+            "zet": 2
+        },
+        {
+            "disc_color": "#ec815f",
+            "discipline": "Иностранный язык",
+            "id": 127,
+            "id_group": null,
+            "num_col": 5,
+            "num_row": 2,
+            "zet": 2
+        },
+        {
+            "disc_color": "#ec815f",
+            "discipline": "Безопасность жизнедеятельности",
+            "id": 128,
+            "id_group": null,
+            "num_col": 5,
+            "num_row": 3,
+            "zet": 2
+        },
+        {
+            "disc_color": "#8f5fec",
+            "discipline": "Проектная деятельность",
+            "id": 129,
+            "id_group": null,
+            "num_col": 5,
+            "num_row": 4,
+            "zet": 3
+        },
+        {
+            "disc_color": "#eca75f",
+            "discipline": "Тестирование программного обеспечения",
+            "id": 130,
+            "id_group": null,
+            "num_col": 5,
+            "num_row": 5,
+            "zet": 3
+        },
+        {
+            "disc_color": "#eca75f",
+            "discipline": "Защита информации",
+            "id": 131,
+            "id_group": null,
+            "num_col": 5,
+            "num_row": 6,
+            "zet": 4
+        },
+        {
+            "disc_color": "#ec5f6b",
+            "discipline": "Теория вероятностей и математическая статистика",
+            "id": 132,
+            "id_group": null,
+            "num_col": 5,
+            "num_row": 7,
+            "zet": 4
+        },
+        {
+            "disc_color": "#ef9f90",
+            "discipline": "Системы инженерного анализа",
+            "id": 133,
+            "id_group": null,
+            "num_col": 5,
+            "num_row": 8,
+            "zet": 5
+        },
+        {
+            "disc_color": "#5fec8e",
+            "discipline": "Моделирование и реинжиниринг бизнес-процессов внедрения и эксплуатации систем автоматизированного проектирования",
+            "id": 134,
+            "id_group": null,
+            "num_col": 5,
+            "num_row": 9,
+            "zet": 3
+        }
+    ],
+    [
+        {
+            "disc_color": "#ec815f",
+            "discipline": "Облачные технологии / Большие данные",
+            "id": 135,
+            "id_group": null,
+            "num_col": 6,
+            "num_row": 0,
+            "zet": 4
+        },
+        {
+            "disc_color": "#ec815f",
+            "discipline": "Бизнес-планирование / Организация производства",
+            "id": 136,
+            "id_group": null,
+            "num_col": 6,
+            "num_row": 1,
+            "zet": 3
+        },
+        {
+            "disc_color": "#ec815f",
+            "discipline": "Правоведение и защита интеллектуальной собственности",
+            "id": 137,
+            "id_group": null,
+            "num_col": 6,
+            "num_row": 2,
+            "zet": 2
+        },
+        {
+            "disc_color": "#ec815f",
+            "discipline": "Документирование этапов жизненного цикла информационных систем",
+            "id": 138,
+            "id_group": null,
+            "num_col": 6,
+            "num_row": 3,
+            "zet": 4
+        },
+        {
+            "disc_color": "#8f5fec",
+            "discipline": "Проектная деятельность",
+            "id": 139,
+            "id_group": null,
+            "num_col": 6,
+            "num_row": 4,
+            "zet": 2
+        },
+        {
+            "disc_color": "#eca75f",
+            "discipline": "Инженерное проектирование ",
+            "id": 140,
+            "id_group": null,
+            "num_col": 6,
+            "num_row": 5,
+            "zet": 4
+        },
+        {
+            "disc_color": "#5fec8e",
+            "discipline": "Управление нормативно-справочной информацией",
+            "id": 141,
+            "id_group": null,
+            "num_col": 6,
+            "num_row": 6,
+            "zet": 4
+        },
+        {
+            "disc_color": "#5fec8e",
+            "discipline": "Разработка технико-экономического обоснования проекта",
+            "id": 142,
+            "id_group": null,
+            "num_col": 6,
+            "num_row": 7,
+            "zet": 4
+        },
+        {
+            "disc_color": "#5fec8e",
+            "discipline": "Корпоративные информационные системы",
+            "id": 143,
+            "id_group": null,
+            "num_col": 6,
+            "num_row": 8,
+            "zet": 3
+        }
+    ],
+    [
+        {
+            "disc_color": "#ec815f",
+            "discipline": "Производственная практика (проектно-технологическая)",
+            "id": 144,
+            "id_group": null,
+            "num_col": 7,
+            "num_row": 0,
+            "zet": 9
+        },
+        {
+            "disc_color": "#ec815f",
+            "discipline": "Производственная практика (преддипломная)",
+            "id": 145,
+            "id_group": null,
+            "num_col": 7,
+            "num_row": 1,
+            "zet": 6
+        },
+        {
+            "disc_color": "#ec815f",
+            "discipline": "Учебная практика (проектно-технологическая)",
+            "id": 146,
+            "id_group": null,
+            "num_col": 7,
+            "num_row": 2,
+            "zet": 6
+        },
+        {
+            "disc_color": "#ec815f",
+            "discipline": "Выполнение и защита выпускной квалификационной работы",
+            "id": 147,
+            "id_group": null,
+            "num_col": 7,
+            "num_row": 3,
+            "zet": 9
+        }
+    ]
+]
