@@ -113,6 +113,7 @@
 <script>
 import draggable from 'vuedraggable'
 import _ from 'lodash'
+import axios from 'axios'
 
 export default {
 	name: 'Home',
@@ -125,7 +126,6 @@ export default {
 		aupCode: null,
 		isAvailableSave: false,
 
-		faculties: [],
 		value: null,
 		maxZet: 30,
 		table: [],
@@ -212,17 +212,23 @@ export default {
 		},
 
 		async onSaveMap() {
-			const table = this.table.map((column, colId) => {
-				return column.map((block, rowId) => {
-					return {
-						...block,
-						num_col: colId,
-						num_row: rowId,
-					}
-				})
-			})
+			try {
+				const table = this.table
+					.map((column, colId) => {
+						return column.map((block, rowId) => {
+							return {
+								...block,
+								num_col: colId,
+								num_row: rowId,
+							}
+						})
+					})
+					.flat()
 
-			console.log(JSON.stringify(table))
+				await axios.post(`/save/${this.aupCode}`, table)
+			} catch (e) {
+				console.log(e)
+			}
 		},
 
 		setData(dataTransfer) {
@@ -231,44 +237,6 @@ export default {
 	},
 
 	async created() {
-		this.faculties = [
-			{
-				value: 1,
-				label: 'Факультет информационных технологий',
-			},
-			{
-				value: 2,
-				label: 'Транспортный факультет',
-			},
-			{
-				value: 3,
-				label: 'Факультет машиностроения',
-			},
-			{
-				value: 4,
-				label: 'Факультет химической технологии и биотехнологии',
-			},
-		]
-
-		this.directions = [
-			{
-				value: 1,
-				label: 'Мобильные технологии',
-			},
-			{
-				value: 2,
-				label: 'Цифровая трансформация',
-			},
-			{
-				value: 3,
-				label: 'Интеграция и программирование в САПР',
-			},
-			{
-				value: 4,
-				label: 'Безопасность компьютерных систем',
-			},
-		]
-
 		this.fetchAllMapsList()
 	},
 }
