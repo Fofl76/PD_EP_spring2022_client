@@ -181,7 +181,13 @@ export default {
 
 		buildTable(data) {
 			const columns = _.groupBy(data, 'num_col')
-			const sortedColumns = _.sortBy(columns, ['num_row'])
+			const sortedColumns = []
+
+			for (const key in columns) {
+				sortedColumns.push(_.sortBy(columns[key], ['num_row']))
+			}
+
+			console.log(sortedColumns)
 
 			this.table = sortedColumns
 		},
@@ -225,7 +231,7 @@ export default {
 					})
 					.flat()
 
-				await axios.post(`/save/${this.aupCode}`, table)
+				await axios.post(`http://127.0.0.1:5000/save/${this.aupCode}`, table)
 			} catch (e) {
 				console.log(e)
 			}
