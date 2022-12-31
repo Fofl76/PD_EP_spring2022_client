@@ -1,125 +1,124 @@
 <template>
-	<div class="Home">
-		<header class="Home__header">
-			<div class="Home__header-inner">
-				<v-select
-					class="Home__input Home__input-faculty"
-					:menu-props="{ offsetY: false }"
-					:items="mapsList"
-					item-text="faculty_name"
-					@input="onSelectFaculty"
-					return-object
-					label="Выберите факультет"
-					hide-details="auto"
-					dark
-					filled
-					dense
-				></v-select>
-
-				<v-autocomplete
-					label="Введите направление"
-					class="Home__input Home__input-direction"
-					v-model="value"
-					:items="availableDirections"
-					@input="onSelectDirection"
-					no-data-text="Направления не найдены"
-					item-text="map_name"
-					return-object
-					hide-details="auto"
-					dark
-					filled
-					dense
-				></v-autocomplete>
-			</div>
-
-			<v-spacer></v-spacer>
-
-			<v-btn
-				v-if="isReady"
-				:href="`http://127.0.0.1:5000/save/${aupCode}`"
-				target="_blank"
-				text
-				dark
-			>
-				Скачать
-				<v-icon right dark> mdi-download </v-icon>
-			</v-btn>
-		</header>
-
-		<main class="Home__main">
-			<div v-if="isReady" class="aup-table" :style="styleVars">
-				<div class="aup-table__left-column">
-					<div class="aup-table__column-header aup-table__left-column-header">
-						ZET
-					</div>
-
-					<div
-						class="aup-table__zet-block"
-						v-for="i in maxZet"
-						:key="i"
-						:style="{ height: '90px' }"
-					>
-						<span>{{ i }}</span>
-					</div>
-				</div>
-
-				<div
-					class="aup-table__column"
-					v-for="(column, key) in table"
-					:key="key"
-				>
-					<div class="aup-table__column-header">{{ orderWords[key] }}</div>
-
-					<draggable
-						class="list-group"
-						v-bind="dragOptions"
-						v-model="table[key]"
-						@change="onChangeTable"
-						:setData="setData"
-					>
-						<div v-for="element in column" :key="element.id">
-							<div
-								class="aup-table__block-wrapper"
-								:style="{ height: element.zet * 90 + 'px' }"
-							>
-								<div
-									class="aup-table__block"
-									:style="{ backgroundColor: element.disc_color }"
-								>
-									{{ element.discipline }}
-								</div>
-							</div>
-						</div>
-					</draggable>
-				</div>
-			</div>
-
-			<div v-else class="Home__nodata-block">Нет данных</div>
-		</main>
-
-		<v-btn
-			v-if="isAvailableSave"
-			class="Home__save-table-btn"
-			color="success"
-			dark
-			@click="onSaveMap"
+	<v-app>
+		<div
+			class="Home"
+			:class="{ withRightMenu: drawerModel }"
+			:style="styleVars"
 		>
-			<span>Сохранить</span>
-			<v-icon right dark> mdi-content-save </v-icon>
-		</v-btn>
-	</div>
+			<v-app-bar
+				app
+				class="Home__header full-width"
+				height="80"
+				dark
+				clipped-right
+			>
+				<div class="Home__header-inner">
+					<v-select
+						class="Home__input Home__input-faculty"
+						:menu-props="{ offsetY: false }"
+						:items="mapsList"
+						item-text="faculty_name"
+						@input="onSelectFaculty"
+						return-object
+						label="Выберите факультет"
+						hide-details="auto"
+						dark
+						filled
+						dense
+					></v-select>
+
+					<v-autocomplete
+						label="Введите направление"
+						class="Home__input Home__input-direction"
+						v-model="value"
+						:items="availableDirections"
+						@input="onSelectDirection"
+						no-data-text="Направления не найдены"
+						item-text="map_name"
+						return-object
+						hide-details="auto"
+						dark
+						filled
+						dense
+					></v-autocomplete>
+				</div>
+
+				<v-spacer></v-spacer>
+
+				<v-btn
+					v-if="isReady"
+					:href="`http://127.0.0.1:5000/save/${aupCode}`"
+					target="_blank"
+					text
+					dark
+				>
+					<span>Скачать</span>
+					<v-icon right dark> mdi-download </v-icon>
+				</v-btn>
+			</v-app-bar>
+
+			<v-main dark app class="Home__main">
+				<v-container class="Home__main-inner" fluid>
+					<Table
+						v-if="isReady"
+						:table="table"
+						@change="onChangeTable"
+						@clickEdit="onClickEditTable"
+					/>
+					<div v-else class="Home__nodata-block">Нет данных</div>
+
+					<v-btn
+						v-if="isAvailableSave"
+						class="Home__save-table-btn"
+						:loading="loadingSaveMap"
+						color="success"
+						dark
+						@click="onSaveMap"
+					>
+						<span>Сохранить карту</span>
+						<v-icon right dark> mdi-content-save </v-icon>
+					</v-btn>
+				</v-container>
+			</v-main>
+
+			<RightMenuEditBlock
+				v-model="drawerModel"
+				:item="drawerItem"
+				:loading="loadingSaveMap"
+				:width="drawerWidth"
+				@edit="onEditItem"
+				@save="onSaveEdit"
+			/>
+
+			<MSnackbar
+				v-model="snackbarModel"
+				:type="snackbarType"
+				:settings="snackbarSettings"
+			/>
+		</div>
+	</v-app>
 </template>
 
 <script>
-import draggable from 'vuedraggable'
 import _ from 'lodash'
-import axios from 'axios'
+import axios from '@api/axios'
+import Table from '@components/Table.vue'
+import MSnackbar from '@components/ui/MSnackbar.vue'
+import RightMenuEditBlock from '@components/RightMenuEditBlock.vue'
 
 export default {
 	name: 'Home',
-	components: { draggable },
+
+	components: { Table, RightMenuEditBlock, MSnackbar },
 
 	data: () => ({
+		snackbarModel: false,
+		snackbarType: 'error',
+		snackbarSettings: {
+			error: { text: 'Не удалось сохранить карту' },
+			success: { text: 'Карта успешно сохранена' },
+		},
+
 		mapsList: [],
 		availableDirections: [],
 
@@ -127,50 +126,28 @@ export default {
 		isAvailableSave: false,
 
 		value: null,
-		maxZet: 30,
 		table: [],
 		drag: false,
 
-		orderWords: {
-			0: 'Первый',
-			1: 'Второй',
-			2: 'Третий',
-			3: 'Четвертый',
-			4: 'Пятый',
-			5: 'Шестой',
-			6: 'Седьмой',
-			7: 'Восьмой',
-		},
+		drawerModel: false,
+		drawerItem: null,
+		loadingSaveMap: false,
+		drawerWidth: 400,
 	}),
 
 	computed: {
-		countOfColumns() {
-			return Object.keys(this.table).length
+		isReady() {
+			return this.table.length
 		},
 
 		styleVars() {
 			return {
-				'--count-column': this.countOfColumns,
+				'--drawer-width': this.drawerWidth + 'px',
 			}
-		},
-
-		dragOptions() {
-			return {
-				animation: 250,
-				group: 'map',
-			}
-		},
-
-		isReady() {
-			return this.table.length
 		},
 	},
 
 	methods: {
-		onChangeTable() {
-			this.isAvailableSave = true
-		},
-
 		onSelectFaculty(faculty) {
 			this.availableDirections = faculty.data
 		},
@@ -179,15 +156,17 @@ export default {
 			await this.fetchMap(direction.map_id)
 		},
 
+		sortColumn(column) {
+			return _.sortBy(column, ['num_row'])
+		},
+
 		buildTable(data) {
 			const columns = _.groupBy(data, 'num_col')
 			const sortedColumns = []
 
 			for (const key in columns) {
-				sortedColumns.push(_.sortBy(columns[key], ['num_row']))
+				sortedColumns.push(this.sortColumn(columns[key]))
 			}
-
-			console.log(sortedColumns)
 
 			this.table = sortedColumns
 		},
@@ -198,17 +177,26 @@ export default {
 			this.isAvailableSave = false
 		},
 
+		onChangeTable() {
+			this.isAvailableSave = true
+		},
+
+		onClickEditTable(element) {
+			this.drawerModel = true
+			this.drawerItem = element
+		},
+
 		async fetchAllMapsList() {
-			const res = await fetch('http://127.0.0.1:5000/getAllMaps')
-			const data = await res.json()
+			const res = await axios.get('getAllMaps')
+			const data = res.data
 
 			this.mapsList = data
 		},
 
 		async fetchMap(aupCode) {
 			try {
-				const res = await fetch(`http://127.0.0.1:5000/map/${aupCode}`)
-				const data = await res.json()
+				const res = await axios.get(`map/${aupCode}`)
+				const data = res.data
 				this.aupCode = aupCode
 
 				this.buildTable(data.data)
@@ -218,6 +206,8 @@ export default {
 		},
 
 		async onSaveMap() {
+			let res = null
+
 			try {
 				const table = this.table
 					.map((column, colId) => {
@@ -231,14 +221,61 @@ export default {
 					})
 					.flat()
 
-				await axios.post(`http://127.0.0.1:5000/save/${this.aupCode}`, table)
+				this.loadingSaveMap = true
+
+				res = await axios.post(`save/${this.aupCode}`, table)
+				return res
 			} catch (e) {
 				console.log(e)
+			} finally {
+				this.snackbarModel = true
+				if (res?.status === 200) {
+					this.snackbarType = 'success'
+				} else {
+					this.snackbarType = 'error'
+				}
+
+				this.loadingSaveMap = false
+				this.isAvailableSave = false
 			}
 		},
 
-		setData(dataTransfer) {
-			dataTransfer.setDragImage(document.createElement('div'), 0, 0)
+		onEditItem({ oldCol, oldRow, newItem }) {
+			if (oldCol !== null && oldRow !== null && newItem) {
+				let neededColIndex = null
+				this.table.forEach((col, colIndex) => {
+					let isWanted = false
+					col.forEach(el => {
+						if (el.id === newItem.id) {
+							neededColIndex = colIndex
+							return
+						}
+					})
+
+					if (isWanted) return
+				})
+
+				if (neededColIndex === null) return
+
+				const copyCol = this.table[neededColIndex].map(item => {
+					if (item.id === newItem.id) {
+						return newItem
+					} else {
+						return item
+					}
+				})
+
+				// костыль
+				this.$set(this.table, neededColIndex, copyCol)
+			}
+		},
+
+		async onSaveEdit() {
+			const res = await this.onSaveMap()
+
+			if (res?.status === 200) {
+				this.drawerModel = false
+			}
 		},
 	},
 
@@ -250,16 +287,16 @@ export default {
 
 <style lang="sass">
 .Home
-    display: grid
-    grid-template-rows: 80px 1fr
     height: 100%
 
     &__header
-        padding: 0 16px
         background-color: #333
         display: flex
         justify-content: space-between
         align-items: center
+
+        .v-toolbar__content
+            width: 100%
 
     &__header-inner
         display: flex
@@ -273,8 +310,11 @@ export default {
         width: 500px
 
     &__main
-        padding: 16px
+        height: 100%
+
+    &__main-inner
         background-color: #444
+        padding: 16px
         height: 100%
 
     &__nodata-block
@@ -284,44 +324,10 @@ export default {
         position: fixed
         bottom: 30px
         right: 30px
+        transition: right .2s cubic-bezier(0.4, 0, 0.2, 1)
 
-.aup-table
-    display: grid
-    grid-template-columns: 30px repeat(var(--count-column), minmax(100px, 1fr))
-    gap: 8px
-    color: #fff
-
-.aup-table__block-wrapper
-    padding: 5px 0
-
-.aup-table__block
-    display: flex
-    justify-content: center
-    align-items: center
-    width: 100%
-    height: 100%
-    padding: 5px
-    text-align: center
-    border-radius: 8px
-    font-size: 1.2em
-    font-family: sans-serif
-    cursor: grab
-
-.aup-table__column-header
-    text-align: center
-    margin-bottom: 5px
-
-.aup-table__zet-block
-    padding: 0
-    text-align: center
-    border-bottom: 1px solid #fff
-    display: flex
-    justify-content: center
-    align-items: center
-
-.flip-list-move
-    transition: transform 0.5s
-
-.no-move
-  transition: transform 0s
+.Home.withRightMenu
+    .Home
+        &__save-table-btn
+            right: calc(var(--drawer-width) + 30px)
 </style>

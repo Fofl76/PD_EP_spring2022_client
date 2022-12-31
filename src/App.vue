@@ -1,9 +1,7 @@
 <template>
-	<v-app>
-		<v-main>
-			<router-view />
-		</v-main>
-	</v-app>
+	<div>
+		<router-view />
+	</div>
 </template>
 
 <script>
@@ -18,5 +16,13 @@ export default {
 
 <style lang="sass">
 html
-    overflow-y: auto
+    overflow-y: auto !important
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button
+  -webkit-appearance: none
+  margin: 0
+
+input[type=number]
+  -moz-appearance: textfield
 </style>
