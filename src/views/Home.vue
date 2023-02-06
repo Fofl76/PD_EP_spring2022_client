@@ -45,6 +45,11 @@
 
 				<v-spacer></v-spacer>
 
+				<v-btn @click="popupUploadModel = true" text dark>
+					<span>Загрузить план</span>
+					<v-icon right dark>mdi-upload</v-icon>
+				</v-btn>
+
 				<v-btn
 					v-if="isReady"
 					:href="`http://127.0.0.1:5000/save/${aupCode}`"
@@ -53,8 +58,14 @@
 					dark
 				>
 					<span>Скачать</span>
-					<v-icon right dark> mdi-download </v-icon>
+					<v-icon right dark>mdi-download</v-icon>
 				</v-btn>
+
+				<PopupUploadDocument
+					v-model="popupUploadModel"
+					@success="onSuccessUploadFile"
+					@error="onErrorUploadFile"
+				/>
 			</v-app-bar>
 
 			<v-main dark app class="Home__main">
@@ -91,6 +102,13 @@
 			/>
 
 			<MSnackbar
+				v-model="snackbarUploadFileModel"
+				:type="snackbarUploadType"
+				:settings="snackbarUploadSettings"
+				:timeout="2500"
+			/>
+
+			<MSnackbar
 				v-model="snackbarModel"
 				:type="snackbarType"
 				:settings="snackbarSettings"
@@ -105,17 +123,21 @@ import axios from '@api/axios'
 import Table from '@components/Table.vue'
 import MSnackbar from '@components/ui/MSnackbar.vue'
 import RightMenuEditBlock from '@components/RightMenuEditBlock.vue'
+import PopupUploadDocument from '@components/PopupUploadDocument.vue'
 
 export default {
 	name: 'Home',
 
-	components: { Table, RightMenuEditBlock, MSnackbar },
+	components: { Table, RightMenuEditBlock, PopupUploadDocument, MSnackbar },
 
 	data: () => ({
 		snackbarModel: false,
 		snackbarType: 'error',
 		snackbarSettings: {
-			error: { text: 'Не удалось сохранить карту' },
+			error: {
+				title: 'Ошибка при сохранении карты',
+				text: 'Не удалось сохранить карту',
+			},
 			success: { text: 'Карта успешно сохранена' },
 		},
 
@@ -133,6 +155,18 @@ export default {
 		drawerItem: null,
 		loadingSaveMap: false,
 		drawerWidth: 400,
+
+		popupUploadModel: false,
+
+		snackbarUploadFileModel: false,
+		snackbarUploadType: 'error',
+		snackbarUploadSettings: {
+			error: {
+				title: 'Ошибка при загрузке файла',
+				text: 'Не удалось сохранить карту.',
+			},
+			success: { text: 'Карта успешно сохранена.' },
+		},
 	}),
 
 	computed: {
@@ -276,6 +310,17 @@ export default {
 			if (res?.status === 200) {
 				this.drawerModel = false
 			}
+		},
+
+		onSuccessUploadFile() {
+			this.snackbarUploadType = 'success'
+			this.snackbarUploadFileModel = true
+		},
+
+		onErrorUploadFile(res) {
+			this.snackbarUploadType = 'error'
+			this.snackbarUploadSettings.error.text = res.data
+			this.snackbarUploadFileModel = true
 		},
 	},
 

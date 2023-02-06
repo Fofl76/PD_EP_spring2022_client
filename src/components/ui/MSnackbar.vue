@@ -1,8 +1,8 @@
 <template>
 	<v-snackbar
+		class="MSnackbar"
 		:value="value"
 		@input="onInput"
-		auto-height
 		:color="snackbar.color"
 		:multi-line="snackbar.mode === 'multi-line'"
 		:timeout="timeout"
@@ -24,6 +24,18 @@
 </template>
 
 <script>
+const defaultSettings = {
+	error: {
+		title: 'Ошибка',
+		text: 'Произошла неизвестная ошибка',
+	},
+
+	success: {
+		title: 'Успешно',
+		text: 'Действие выполнено успешно',
+	},
+}
+
 export default {
 	name: 'MSnackbar',
 
@@ -44,15 +56,7 @@ export default {
 			type: Object,
 			required: false,
 			default: () => {
-				return {
-					error: {
-						text: 'Ошибка',
-					},
-
-					success: {
-						text: 'Успешно',
-					},
-				}
+				return defaultSettings
 			},
 		},
 
@@ -78,7 +82,7 @@ export default {
 						icon: 'mdi-alert-circle-outline',
 						mode: 'multi-line',
 						position: 'bottom',
-						title: 'Ошибка',
+						title: this.settings.error.title || defaultSettings.error.title,
 						text: this.settings.error.text,
 						visible: true,
 					}
@@ -88,7 +92,7 @@ export default {
 						icon: 'mdi-check',
 						mode: 'multi-line',
 						position: 'bottom',
-						title: 'Успешно',
+						title: this.settings.success.title || defaultSettings.success.title,
 						text: this.settings.success.text,
 						visible: true,
 					}
@@ -100,4 +104,7 @@ export default {
 }
 </script>
 
-<style></style>
+<style lang="sass">
+.MSnackbar
+    z-index: 10000 !important
+</style>
