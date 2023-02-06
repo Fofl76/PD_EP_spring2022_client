@@ -70,13 +70,31 @@
 
 			<v-main dark app class="Home__main">
 				<v-container class="Home__main-inner" fluid>
-					<Table
-						v-if="isReady"
-						:table="table"
-						@change="onChangeTable"
-						@clickEdit="onClickEditTable"
-					/>
-					<div v-else class="Home__nodata-block">Нет данных</div>
+					<template v-if="isReady || isLoading">
+						<Table
+							:loading="isLoading"
+							:table="table"
+							@change="onChangeTable"
+							@clickEdit="onClickEditTable"
+						/>
+					</template>
+					<template v-else>
+						<div class="Home__main-empty">
+							<div class="Home__main-empty-inner">
+								<v-icon
+									class="Home__main-empty-icon"
+									color="rgba(255, 255, 255, 0.7)"
+									:size="120"
+								>
+									mdi-information-outline
+								</v-icon>
+								<p class="Home__main-empty-title text-h5">Нет данных</p>
+								<span class="Home__main-empty-subtitle subtitle-1"
+									>Выберите факультет и направление</span
+								>
+							</div>
+						</div>
+					</template>
 
 					<v-btn
 						v-if="isAvailableSave"
@@ -131,6 +149,8 @@ export default {
 	components: { Table, RightMenuEditBlock, PopupUploadDocument, MSnackbar },
 
 	data: () => ({
+		isLoading: false,
+
 		snackbarModel: false,
 		snackbarType: 'error',
 		snackbarSettings: {
@@ -171,7 +191,7 @@ export default {
 
 	computed: {
 		isReady() {
-			return this.table.length
+			return !!this.table.length
 		},
 
 		styleVars() {
@@ -229,6 +249,7 @@ export default {
 
 		async fetchMap(aupCode) {
 			try {
+				this.isLoading = true
 				const res = await axios.get(`map/${aupCode}`)
 				const data = res.data
 				this.aupCode = aupCode
@@ -236,6 +257,8 @@ export default {
 				this.buildTable(data.data)
 			} catch (e) {
 				this.clearTable()
+			} finally {
+				this.isLoading = false
 			}
 		},
 
@@ -356,11 +379,32 @@ export default {
 
     &__main
         height: 100%
+        background-color: #444
 
     &__main-inner
-        background-color: #444
+        box-shadow: 0px 0px 100px 5px rgba(0, 0, 0, 0.3) inset
         padding: 16px
         height: 100%
+
+    &__main-empty
+        width: 100%
+        height: 100%
+        display: flex
+        align-items: center
+        justify-content: center
+        font-size: 1.5em
+
+    &__main-empty-inner
+        color: #fff
+        display: flex
+        flex-direction: column
+        align-items: center
+
+    &__main-empty-icon
+        margin-bottom: 12px
+
+    &__main-empty-title
+        margin-bottom: 4px !important
 
     &__nodata-block
         color: #fff

@@ -16,23 +16,44 @@
 				</div>
 			</div>
 
-			<div class="aup-table__column" v-for="(column, key) in table" :key="key">
-				<div class="aup-table__column-header">
-					{{ orderWords[key] }}
-				</div>
-
-				<draggable
-					class="aup-table__draggable"
-					v-bind="dragOptions"
-					v-model="table[key]"
-					@change="onChangeTable"
-					:setData="setData"
+			<template v-if="!loading">
+				<div
+					class="aup-table__column"
+					v-for="(column, key) in table"
+					:key="key"
 				>
-					<div v-for="element in column" :key="element.id">
-						<TableBlock :item="element" @edit="onClickEdit" />
+					<div class="aup-table__column-header">
+						{{ orderWords[key] }}
 					</div>
-				</draggable>
-			</div>
+
+					<draggable
+						class="aup-table__draggable"
+						v-bind="dragOptions"
+						v-model="table[key]"
+						@change="onChangeTable"
+						:setData="setData"
+					>
+						<div v-for="element in column" :key="element.id">
+							<TableBlock :item="element" @edit="onClickEdit" />
+						</div>
+					</draggable>
+				</div>
+			</template>
+			<template v-else>
+				<div
+					class="aup-table__column"
+					v-for="(column, key) in fakeElementsCount"
+					:key="key"
+				>
+					<div class="aup-table__column-header">
+						{{ orderWords[key] }}
+					</div>
+
+					<div v-for="item in 10" :key="item.id">
+						<TableSkeletonBlock />
+					</div>
+				</div>
+			</template>
 		</div>
 	</div>
 </template>
@@ -40,22 +61,30 @@
 <script>
 import draggable from 'vuedraggable'
 import TableBlock from '@components/TableBlock'
+import TableSkeletonBlock from '@components/TableSkeletonBlock'
 
 import orderWords from '@utils/orderWords'
 
 export default {
 	name: 'Table',
-	components: { draggable, TableBlock },
+	components: { draggable, TableBlock, TableSkeletonBlock },
 
 	props: {
 		table: {
 			type: Array,
 			required: true,
 		},
+
+		loading: {
+			type: Boolean,
+			default: false,
+		},
 	},
 
 	data: () => ({
 		orderWords,
+		fakeElementsCount: 8,
+		fakeMaxZet: 30,
 	}),
 
 	computed: {
@@ -67,6 +96,8 @@ export default {
 		},
 
 		maxZet() {
+			if (this.loading) return this.fakeMaxZet
+
 			let maxZet = 0
 
 			this.table.forEach(column => {
@@ -79,6 +110,8 @@ export default {
 		},
 
 		countOfColumns() {
+			if (this.loading) return this.fakeElementsCount
+
 			return Object.keys(this.table).length
 		},
 
