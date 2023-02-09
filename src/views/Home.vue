@@ -5,68 +5,12 @@
 			:class="{ withRightMenu: drawerModel }"
 			:style="styleVars"
 		>
-			<v-app-bar
-				app
-				class="Home__header full-width"
-				height="80"
-				dark
-				clipped-right
-			>
-				<div class="Home__header-inner">
-					<v-select
-						class="Home__input Home__input-faculty"
-						:menu-props="{ offsetY: false }"
-						:items="mapsList"
-						item-text="faculty_name"
-						@input="onSelectFaculty"
-						return-object
-						label="Выберите факультет"
-						hide-details="auto"
-						dark
-						filled
-						dense
-					></v-select>
-
-					<v-autocomplete
-						label="Введите направление"
-						class="Home__input Home__input-direction"
-						v-model="value"
-						:items="availableDirections"
-						@input="onSelectDirection"
-						no-data-text="Направления не найдены"
-						item-text="map_name"
-						return-object
-						hide-details="auto"
-						dark
-						filled
-						dense
-					></v-autocomplete>
-				</div>
-
-				<v-spacer></v-spacer>
-
-				<v-btn @click="popupUploadModel = true" text dark>
-					<span>Загрузить план</span>
-					<v-icon right dark>mdi-upload</v-icon>
-				</v-btn>
-
-				<v-btn
-					v-if="isReady"
-					:href="`http://127.0.0.1:5000/save/${aupCode}`"
-					target="_blank"
-					text
-					dark
-				>
-					<span>Скачать</span>
-					<v-icon right dark>mdi-download</v-icon>
-				</v-btn>
-
-				<PopupUploadDocument
-					v-model="popupUploadModel"
-					@success="onSuccessUploadFile"
-					@error="onErrorUploadFile"
-				/>
-			</v-app-bar>
+			<HomeHeader
+				:tableReady="isReady"
+				:aupCode="aupCode"
+				@successUpload="onSuccessUploadFile"
+				@errorUpload="onErrorUploadFile"
+			/>
 
 			<v-main dark app class="Home__main">
 				<v-container class="Home__main-inner" fluid>
@@ -120,16 +64,16 @@
 			/>
 
 			<MSnackbar
+				v-model="snackbarModel"
+				:type="snackbarType"
+				:settings="snackbarSettings"
+			/>
+
+			<MSnackbar
 				v-model="snackbarUploadFileModel"
 				:type="snackbarUploadType"
 				:settings="snackbarUploadSettings"
 				:timeout="2500"
-			/>
-
-			<MSnackbar
-				v-model="snackbarModel"
-				:type="snackbarType"
-				:settings="snackbarSettings"
 			/>
 		</div>
 	</v-app>
@@ -142,11 +86,20 @@ import Table from '@components/Table.vue'
 import MSnackbar from '@components/ui/MSnackbar.vue'
 import RightMenuEditBlock from '@components/RightMenuEditBlock.vue'
 import PopupUploadDocument from '@components/PopupUploadDocument.vue'
+import HomeHeader from '@components/Home/HomeHeader.vue'
+
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
 	name: 'Home',
 
-	components: { Table, RightMenuEditBlock, PopupUploadDocument, MSnackbar },
+	components: {
+		HomeHeader,
+		Table,
+		RightMenuEditBlock,
+		PopupUploadDocument,
+		MSnackbar,
+	},
 
 	data: () => ({
 		isLoading: false,
@@ -161,13 +114,14 @@ export default {
 			success: { text: 'Карта успешно сохранена' },
 		},
 
-		mapsList: [],
 		availableDirections: [],
+
+		facultyModel: '',
+		directionModel: '',
 
 		aupCode: null,
 		isAvailableSave: false,
 
-		value: null,
 		table: [],
 		drag: false,
 
@@ -190,6 +144,8 @@ export default {
 	}),
 
 	computed: {
+		...mapGetters('Maps', ['mapsList']),
+
 		isReady() {
 			return !!this.table.length
 		},
@@ -201,21 +157,24 @@ export default {
 		},
 	},
 
+	watch: {
+		'$route.query.aup': {
+			async handler(aupCode) {
+				await this.fetchMap(aupCode)
+			},
+			deep: true,
+			immediate: true,
+		},
+	},
+
 	methods: {
-		onSelectFaculty(faculty) {
-			this.availableDirections = faculty.data
-		},
-
-		async onSelectDirection(direction) {
-			await this.fetchMap(direction.map_id)
-		},
-
 		sortColumn(column) {
 			return _.sortBy(column, ['num_row'])
 		},
 
 		buildTable(data) {
 			const columns = _.groupBy(data, 'num_col')
+
 			const sortedColumns = []
 
 			for (const key in columns) {
@@ -240,19 +199,15 @@ export default {
 			this.drawerItem = element
 		},
 
-		async fetchAllMapsList() {
-			const res = await axios.get('getAllMaps')
-			const data = res.data
-
-			this.mapsList = data
-		},
-
 		async fetchMap(aupCode) {
 			try {
 				this.isLoading = true
 				const res = await axios.get(`map/${aupCode}`)
 				const data = res.data
 				this.aupCode = aupCode
+
+				this.facultyModel = ''
+				this.directionModel = ''
 
 				this.buildTable(data.data)
 			} catch (e) {
@@ -346,36 +301,12 @@ export default {
 			this.snackbarUploadFileModel = true
 		},
 	},
-
-	async created() {
-		this.fetchAllMapsList()
-	},
 }
 </script>
 
 <style lang="sass">
 .Home
     height: 100%
-
-    &__header
-        background-color: #333
-        display: flex
-        justify-content: space-between
-        align-items: center
-
-        .v-toolbar__content
-            width: 100%
-
-    &__header-inner
-        display: flex
-        align-items: center
-        gap: 8px
-
-    &__input-faculty
-        width: 300px
-
-    &__input-direction
-        width: 500px
 
     &__main
         height: 100%

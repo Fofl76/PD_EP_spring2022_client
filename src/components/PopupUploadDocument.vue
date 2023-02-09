@@ -88,10 +88,10 @@ export default {
 		async onUploadBtnClick() {
 			try {
 				this.isLoadingUploadFile = true
-				await requestUploadFile(this.uploadedFiles[0])
+				const data = await requestUploadFile(this.uploadedFiles[0])
 
 				this.value_ = false
-				this.$emit('success')
+				this.$emit('success', data)
 			} catch (res) {
 				this.$emit('error', res.response)
 			} finally {
