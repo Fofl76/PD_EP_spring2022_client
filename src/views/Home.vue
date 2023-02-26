@@ -290,7 +290,9 @@ export default {
 			}
 		},
 
-		onSuccessUploadFile() {
+		onSuccessUploadFile(aup) {
+			this.$router.push({ path: '/', query: { aup } })
+
 			this.snackbarUploadType = 'success'
 			this.snackbarUploadFileModel = true
 		},

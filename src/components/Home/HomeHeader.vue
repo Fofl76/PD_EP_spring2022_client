@@ -62,6 +62,8 @@
 import MSnackbar from '@components/ui/MSnackbar.vue'
 import PopupUploadDocument from '@components/PopupUploadDocument.vue'
 
+import getFacultyByAup from '@utils/getFacultyByAup'
+
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 
 export default {
@@ -122,8 +124,13 @@ export default {
 			this.updateFormFields()
 		},
 
-		onSuccessUploadFile(data) {
-			this.$emit('successUpload')
+		onSuccessUploadFile(aup) {
+			const { faculty, direction } = getFacultyByAup(aup, this.mapsList)
+
+			this.facultyModel = faculty
+			this.directionModel = direction
+
+			this.$emit('successUpload', aup)
 			// this.setUrlAup()
 		},
 
