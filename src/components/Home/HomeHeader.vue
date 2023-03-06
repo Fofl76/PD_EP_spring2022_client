@@ -7,6 +7,7 @@
 				:items="facultyItems"
 				v-model="facultyModel"
 				item-text="faculty_name"
+				no-data-text="Факультеты не найдены"
 				@input="onSelectFaculty"
 				return-object
 				label="Выберите факультет"
