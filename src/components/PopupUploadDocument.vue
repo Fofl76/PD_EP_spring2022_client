@@ -72,8 +72,8 @@ export default {
 
 	data: () => ({
 		fileModel: null,
-		checkboxIntegralityModel: false,
-		checkboxSumModel: false,
+		checkboxIntegralityModel: true,
+		checkboxSumModel: true,
 
 		dragover: false,
 		uploadedFiles: [],
@@ -114,8 +114,8 @@ export default {
 				formData.append(
 					'options',
 					JSON.stringify({
-						checkIntegrality: this.checkboxIntegralityModel,
-						checkSumMap: this.checkboxSumModel,
+						disableCheckIntegrality: this.checkboxIntegralityModel,
+						disableCheckSumMap: this.checkboxSumModel,
 					})
 				)
 
@@ -136,8 +136,8 @@ export default {
 
 		clearForm() {
 			this.fileModel = null
-			this.checkboxIntegralityModel = false
-			this.checkboxSumModel = false
+			this.checkboxIntegralityModel = true
+			this.checkboxSumModel = true
 		},
 	},
 }
