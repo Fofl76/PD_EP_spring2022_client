@@ -29,7 +29,29 @@
 				dark
 				filled
 				dense
-			></v-autocomplete>
+			>
+				<template v-slot:append>
+					<div class="HomeHeader__year-chip--selected">
+						<v-chip
+							v-if="directionModel"
+							class="HomeHeader__year-chip"
+							pill
+							label
+						>
+							{{ directionModel.year }}
+						</v-chip>
+					</div>
+				</template>
+
+				<template v-slot:item="{ item }">
+					<v-list-item-title>{{ item.name }}</v-list-item-title>
+					<div>
+						<v-chip class="HomeHeader__year-chip" pill label>{{
+							item.year
+						}}</v-chip>
+					</div>
+				</template>
+			</v-autocomplete>
 		</div>
 
 		<v-spacer></v-spacer>
@@ -189,4 +211,13 @@ export default {
 
     &__input-direction
         width: 500px
+
+    &__year-chip
+        justify-content: center
+
+        &--selected
+            margin-right: 4px
+
+        .v-chip__content
+            padding: 0 4px !important
 </style>
