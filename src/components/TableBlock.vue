@@ -1,9 +1,9 @@
 <template>
 	<div
 		class="aup-table__block-wrapper"
-		:style="{ height: item.zet * 90 + 'px' }"
+		:style="{ height: totalZet * 90 + 'px' }"
 	>
-		<div class="aup-table__block" :style="{ backgroundColor: item.disc_color }">
+		<div class="aup-table__block" :style="{ backgroundColor: color }">
 			<v-tooltip bottom :open-delay="300">
 				<template v-slot:activator="{ on, attrs }">
 					<span class="aup-table__name" v-bind="attrs" v-on="on">
@@ -42,6 +42,18 @@ export default {
 	methods: {
 		onEdit(item) {
 			this.$emit('edit', item)
+		},
+	},
+
+	computed: {
+		totalZet() {
+			return this.item?.type.reduce((sum, zetBlock) => {
+				return sum + zetBlock?.zet
+			}, 0)
+		},
+
+		color() {
+			return this.item.group?.color
 		},
 	},
 }

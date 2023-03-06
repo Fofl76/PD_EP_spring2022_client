@@ -34,7 +34,10 @@
 						:setData="setData"
 					>
 						<div v-for="element in column" :key="element.id">
-							<TableBlock :item="element" @edit="onClickEdit" />
+							<TableBlock
+								:item="{ ...element, group: getGroupById(element.id_group) }"
+								@edit="onClickEdit"
+							/>
 						</div>
 					</draggable>
 				</div>
@@ -64,6 +67,7 @@ import TableBlock from '@components/TableBlock'
 import TableSkeletonBlock from '@components/TableSkeletonBlock'
 
 import orderWords from '@utils/orderWords'
+import { mapGetters } from 'vuex'
 
 export default {
 	name: 'Table',
@@ -88,6 +92,8 @@ export default {
 	}),
 
 	computed: {
+		...mapGetters('Maps', ['allGroupsMapId']),
+
 		dragOptions() {
 			return {
 				animation: 250,
@@ -102,9 +108,14 @@ export default {
 
 			this.table.forEach(column => {
 				let sum = 0
-				column.forEach(element => (sum += +element.zet))
+				column.forEach(element => {
+					sum += element?.type.reduce((sum, zetBlock) => sum + zetBlock?.zet, 0)
+				})
+
 				if (sum > maxZet) maxZet = sum
 			})
+
+			maxZet = Math.ceil(maxZet)
 
 			return maxZet
 		},
@@ -133,6 +144,10 @@ export default {
 
 		setData(dataTransfer) {
 			dataTransfer.setDragImage(document.createElement('div'), 0, 0)
+		},
+
+		getGroupById(idGroup) {
+			return this.allGroupsMapId[idGroup]
 		},
 	},
 }

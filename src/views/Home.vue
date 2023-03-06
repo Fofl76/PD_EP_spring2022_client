@@ -14,9 +14,9 @@
 
 			<v-main dark app class="Home__main">
 				<v-container class="Home__main-inner" fluid>
-					<template v-if="isReady || isLoading">
+					<template v-if="isReady || isLoadingTable">
 						<Table
-							:loading="isLoading"
+							:loading="isLoadingTable"
 							:table="table"
 							@change="onChangeTable"
 							@clickEdit="onClickEditTable"
@@ -102,8 +102,6 @@ export default {
 	},
 
 	data: () => ({
-		isLoading: false,
-
 		snackbarModel: false,
 		snackbarType: 'error',
 		snackbarSettings: {
@@ -144,7 +142,7 @@ export default {
 	}),
 
 	computed: {
-		...mapGetters('Maps', ['mapsList']),
+		...mapGetters('Maps', ['mapsList', 'isLoadingTable']),
 
 		isReady() {
 			return !!this.table.length
@@ -160,7 +158,9 @@ export default {
 	watch: {
 		'$route.query.aup': {
 			async handler(aupCode) {
-				await this.fetchMap(aupCode)
+				if (!aupCode) return
+
+				await this.setTable(aupCode)
 			},
 			deep: true,
 			immediate: true,
@@ -168,6 +168,8 @@ export default {
 	},
 
 	methods: {
+		...mapActions('Maps', ['fetchMap']),
+
 		sortColumn(column) {
 			return _.sortBy(column, ['num_row'])
 		},
@@ -199,21 +201,18 @@ export default {
 			this.drawerItem = element
 		},
 
-		async fetchMap(aupCode) {
+		async setTable(aupCode) {
 			try {
-				this.isLoading = true
-				const res = await axios.get(`map/${aupCode}`)
-				const data = res.data
+				const table = await this.fetchMap(aupCode)
+
 				this.aupCode = aupCode
 
 				this.facultyModel = ''
 				this.directionModel = ''
 
-				this.buildTable(data.data)
+				this.buildTable(table.data)
 			} catch (e) {
 				this.clearTable()
-			} finally {
-				this.isLoading = false
 			}
 		},
 

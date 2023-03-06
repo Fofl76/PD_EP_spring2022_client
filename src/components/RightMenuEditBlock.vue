@@ -12,32 +12,44 @@
 		clipped
 	>
 		<div class="RightMenuEditBlock__inner">
-			<v-text-field
-				v-model="copyItem.name"
-				@input="onInput"
-				label="Введите название"
-				hide-details="auto"
-				:rules="disciplineRules"
-				ref="discipline"
-				dense
-				filled
-				dark
-			/>
+			<div class="RightMenuEditBlock__section">
+				<div class="RightMenuEditBlock__section-title">Основные настройки</div>
 
-			<v-text-field
-				v-model="copyItem.zet"
-				@input="onInput"
-				:min="1"
-				:max="10"
-				label="Укажите объем"
-				hide-details="auto"
-				type="number"
-				:rules="zetRules"
-				ref="zet"
-				dense
-				filled
-				dark
-			/>
+				<v-text-field
+					v-model="copyItem.discipline"
+					@input="onInput"
+					label="Введите название"
+					hide-details="auto"
+					:rules="disciplineRules"
+					ref="discipline"
+					dense
+					filled
+					dark
+				/>
+			</div>
+
+			<div class="RightMenuEditBlock__section RightMenuEditBlock__zet-section">
+				<div class="RightMenuEditBlock__section-title">
+					Редактирование объема
+				</div>
+
+				<div class="RightMenuEditBlock__zet-inputs">
+					<!-- <v-text-field
+						v-model="copyItem.zet"
+						@input="onInput"
+						:min="1"
+						:max="10"
+						label="Укажите объем"
+						hide-details="auto"
+						type="number"
+						:rules="zetRules"
+						ref="zet"
+						dense
+						filled
+						dark
+					/> -->
+				</div>
+			</div>
 
 			<div class="RightMenuEditBlock__actions">
 				<v-btn
@@ -92,8 +104,7 @@ export default {
 
 	data: () => ({
 		copyItem: {
-			name: '',
-			zet: null,
+			discipline: '',
 		},
 
 		zetRules: [
@@ -137,20 +148,17 @@ export default {
 
 		clear() {
 			this.copyItem = {
-				name: '',
-				zet: null,
+				discipline: '',
 			}
 		},
 
 		async onInput() {
 			const newItem = this.copyItem
 
-			if (!newItem.name) return
+			if (!newItem.discipline) return
 
-			let zet = +newItem.zet
-			let discipline = newItem.name
+			let discipline = newItem.discipline
 
-			if (!this.isValidZet) zet = this.item.zet
 			if (!this.isValidName) discipline = this.item.discipline
 
 			await this.$nextTick()
@@ -161,7 +169,6 @@ export default {
 				newItem: {
 					...this.item,
 					discipline,
-					zet,
 				},
 			}
 
@@ -174,11 +181,10 @@ export default {
 			if (val) {
 				if (!this.item) return
 
-				const { discipline, zet } = this.item
+				const { discipline } = this.item
 
 				this.copyItem = {
-					name: discipline,
-					zet,
+					discipline,
 				}
 			} else {
 				this.clear()
@@ -186,11 +192,10 @@ export default {
 		},
 
 		item(item) {
-			const { discipline, zet } = item
+			const { discipline } = item
 
 			this.copyItem = {
-				name: discipline,
-				zet,
+				discipline,
 			}
 		},
 	},
@@ -203,6 +208,14 @@ export default {
         padding: 16px
         display: grid
         gap: 8px
+
+    &__section
+        margin-bottom: 12px
+
+    &__section-title
+        font-size: 1em
+        color: #fff
+        margin-bottom: 8px
 
     &__actions
         display: flex

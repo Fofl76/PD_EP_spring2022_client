@@ -23,7 +23,7 @@
 				:items="availableDirections"
 				@input="onSelectDirection"
 				no-data-text="Направления не найдены"
-				item-text="map_name"
+				item-text="name"
 				return-object
 				hide-details="auto"
 				dark
@@ -33,6 +33,11 @@
 		</div>
 
 		<v-spacer></v-spacer>
+
+		<v-btn @click="popupGroupSettingsModel = true" text dark>
+			<span>Группировки</span>
+			<!-- <v-icon right dark>mdi-upload</v-icon> -->
+		</v-btn>
 
 		<v-btn @click="popupUploadModel = true" text dark>
 			<span>Загрузить план</span>
@@ -55,12 +60,15 @@
 			@success="onSuccessUploadFile"
 			@error="onErrorUploadFile"
 		/>
+
+		<PopupGroupsSettings v-model="popupGroupSettingsModel" />
 	</v-app-bar>
 </template>
 
 <script>
 import MSnackbar from '@components/ui/MSnackbar.vue'
 import PopupUploadDocument from '@components/PopupUploadDocument.vue'
+import PopupGroupsSettings from '@components/PopupGroupsSettings.vue'
 
 import getFacultyByAup from '@utils/getFacultyByAup'
 
@@ -68,7 +76,7 @@ import { mapGetters, mapMutations, mapActions } from 'vuex'
 
 export default {
 	name: 'HomeHeader',
-	components: { PopupUploadDocument, MSnackbar },
+	components: { PopupUploadDocument, PopupGroupsSettings, MSnackbar },
 
 	props: {
 		tableReady: {
@@ -88,6 +96,7 @@ export default {
 		availableDirections: [],
 
 		popupUploadModel: false,
+		popupGroupSettingsModel: false,
 	}),
 
 	computed: {
@@ -103,20 +112,22 @@ export default {
 
 		getFacultyAndDirectionByAup(aup) {
 			return this.mapsList.find(mapList => {
-				return mapList.data.some(direction => direction.map_id === aup)
+				return mapList.directions.some(direction => direction.code === aup)
 			})
 		},
 
 		findDirectionInFaculty(aup) {
-			return this.facultyModel.data.find(direction => direction.map_id === aup)
+			return this.facultyModel.directions.find(
+				direction => direction.code === aup
+			)
 		},
 
 		onSelectFaculty() {
-			this.availableDirections = this.facultyModel.data
+			this.availableDirections = this.facultyModel.directions
 		},
 
 		onSelectDirection() {
-			this.setUrlAup(this.directionModel.map_id)
+			this.setUrlAup(this.directionModel.code)
 		},
 
 		setUrlAup(aupCode) {
@@ -144,7 +155,7 @@ export default {
 			if (!aupCode) return
 
 			this.facultyModel = this.getFacultyAndDirectionByAup(aupCode) || ''
-			this.availableDirections = this.facultyModel.data
+			this.availableDirections = this.facultyModel.directions
 
 			if (this.facultyModel) {
 				this.directionModel = this.findDirectionInFaculty(aupCode) || ''
