@@ -28,22 +28,27 @@
 				/>
 			</div>
 
-			<div class="RightMenuEditBlock__section RightMenuEditBlock__zet-section">
-				<div class="RightMenuEditBlock__zet-inputs">
-					<!-- <v-text-field
-						v-model="copyItem.zet"
+			<div class="RightMenuEditBlock__section">
+				<div class="RightMenuEditBlock__section-title">Настройки объема</div>
+
+				<div
+					class="RightMenuEditBlock__zet-input-wrapper"
+					v-for="(type, i) in copyItem.type"
+					:key="i"
+				>
+					<v-text-field
+						v-model="copyItem.type[i].zet"
+						:label="copyItem.type[i].control"
 						@input="onInput"
 						:min="1"
 						:max="10"
-						label="Укажите объем"
-						hide-details="auto"
 						type="number"
-						:rules="zetRules"
 						ref="zet"
+						:rules="zetRules"
 						dense
 						filled
 						dark
-					/> -->
+					/>
 				</div>
 			</div>
 
@@ -101,6 +106,7 @@ export default {
 	data: () => ({
 		copyItem: {
 			discipline: '',
+			type: [],
 		},
 
 		zetRules: [
@@ -132,7 +138,7 @@ export default {
 			this.$emit('edit', {
 				oldRow: this.item.num_row,
 				oldCol: this.item.num_col,
-				newItem: this.item,
+				newItem: Object.assign({}, this.item),
 			})
 
 			this.$emit('input', false)
@@ -145,15 +151,25 @@ export default {
 		clear() {
 			this.copyItem = {
 				discipline: '',
+				type: [],
 			}
 		},
 
 		async onInput() {
-			const newItem = this.copyItem
+			const newItem = JSON.parse(JSON.stringify(this.copyItem))
 
 			if (!newItem.discipline) return
+			if (!newItem.type) return
 
 			let discipline = newItem.discipline
+			let type = newItem.type
+
+			type.forEach((_, i) => {
+				const isValid = this.$refs.zet[i].validate()
+
+				if (!isValid) type[i] = this.item.type[i]
+				type[i].zet = +type[i].zet
+			})
 
 			if (!this.isValidName) discipline = this.item.discipline
 
@@ -165,6 +181,7 @@ export default {
 				newItem: {
 					...this.item,
 					discipline,
+					type,
 				},
 			}
 
@@ -177,10 +194,11 @@ export default {
 			if (val) {
 				if (!this.item) return
 
-				const { discipline } = this.item
+				const { discipline, type } = Object.assign({}, this.item)
 
 				this.copyItem = {
 					discipline,
+					type: JSON.parse(JSON.stringify(type)),
 				}
 			} else {
 				this.clear()
@@ -188,10 +206,11 @@ export default {
 		},
 
 		item(item) {
-			const { discipline } = item
+			const { discipline, type } = Object.assign({}, item)
 
 			this.copyItem = {
 				discipline,
+				type: JSON.parse(JSON.stringify(type)),
 			}
 		},
 	},
