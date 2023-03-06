@@ -29,10 +29,6 @@
 			</div>
 
 			<div class="RightMenuEditBlock__section RightMenuEditBlock__zet-section">
-				<div class="RightMenuEditBlock__section-title">
-					Редактирование объема
-				</div>
-
 				<div class="RightMenuEditBlock__zet-inputs">
 					<!-- <v-text-field
 						v-model="copyItem.zet"
