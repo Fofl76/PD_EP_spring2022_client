@@ -72,8 +72,8 @@ export default {
 
 	data: () => ({
 		fileModel: null,
-		checkboxIntegralityModel: true,
-		checkboxSumModel: true,
+		checkboxIntegralityModel: false,
+		checkboxSumModel: false,
 
 		dragover: false,
 		uploadedFiles: [],
