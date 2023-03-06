@@ -1,5 +1,5 @@
 <template>
-	<v-dialog v-model="value_" max-width="400" class="PopupUploadDocument">
+	<v-dialog v-model="value_" max-width="500" class="PopupUploadDocument">
 		<v-card
 			class="PopupUploadDocument__card"
 			:class="{ 'grey lighten-2': dragover }"
@@ -11,14 +11,14 @@
 					v-model="checkboxIntegralityModel"
 					:disabled="isLoadingUploadFile"
 					class="PopupUploadDocument__checkbox"
-					label="Проверка на целочисленность ЗЕТ"
+					label="Отключить проверку на целочисленность ЗЕТ"
 					hide-details="auto"
 				/>
 				<v-checkbox
 					v-model="checkboxSumModel"
 					:disabled="isLoadingUploadFile"
 					class="PopupUploadDocument__checkbox"
-					label="Проверка по сумме ЗЕТ в карте"
+					label="Отключить проверку по сумме ЗЕТ"
 					hide-details="auto"
 				/>
 
@@ -150,5 +150,5 @@ export default {
 
     &__checkbox
         margin-top: 0px !important
-        margin-bottom: 8px
+        margin-bottom: 12px
 </style>
