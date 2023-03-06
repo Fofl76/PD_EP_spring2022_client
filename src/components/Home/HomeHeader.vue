@@ -34,10 +34,9 @@
 
 		<v-spacer></v-spacer>
 
-		<v-btn @click="popupGroupSettingsModel = true" text dark>
+		<!-- <v-btn @click="popupGroupSettingsModel = true" text dark>
 			<span>Группировки</span>
-			<!-- <v-icon right dark>mdi-upload</v-icon> -->
-		</v-btn>
+		</v-btn> -->
 
 		<v-btn @click="popupUploadModel = true" text dark>
 			<span>Загрузить план</span>

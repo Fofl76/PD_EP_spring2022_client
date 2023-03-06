@@ -3,7 +3,7 @@
 		<div class="aup-table" :style="styleVars">
 			<div class="aup-table__left-column">
 				<div class="aup-table__column-header aup-table__left-column-header">
-					ZET
+					ЗЕТ
 				</div>
 
 				<div
