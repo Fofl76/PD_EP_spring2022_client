@@ -111,10 +111,13 @@ export default {
 				const formData = new FormData()
 
 				formData.append('file', this.uploadedFiles[0])
-				formData.append('options', {
-					checkIntegrality: this.checkboxIntegralityModel,
-					checkSumMap: this.checkboxSumModel,
-				})
+				formData.append(
+					'options',
+					JSON.stringify({
+						checkIntegrality: this.checkboxIntegralityModel,
+						checkSumMap: this.checkboxSumModel,
+					})
+				)
 
 				const res = await axios.post('upload', formData, {
 					headers: { 'Content-Type': 'multipart/form-data' },
