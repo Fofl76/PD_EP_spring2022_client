@@ -43,3 +43,18 @@ export const fetchAllGroups = async ({ commit }) => {
 		commit('setIsLoadingGroups', false)
 	}
 }
+
+export const saveMap = async ({ getters, commit }, table = null) => {
+	try {
+		commit('setIsLoadingSaveTable', true)
+
+		const activeTableMap = table || getters.activeMapTable
+
+		const res = await axios.post(`save/${getters.activeAupCode}`, activeTableMap)
+		return res
+	} catch (e) {
+		console.log(e)
+	} finally {
+		commit('setIsLoadingSaveTable', false)
+	}
+}

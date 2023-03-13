@@ -4,6 +4,8 @@ const state = {
 	isLoadingTable: false,
 	allGroups: [],
 	isLoadingGroups: false,
+	activeAupCode: '',
+	isLoadingSaveTable: false,
 }
 
 export default state

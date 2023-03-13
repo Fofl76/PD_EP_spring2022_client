@@ -75,6 +75,8 @@
 </template>
 
 <script>
+import _ from 'lodash'
+import { mapMutations } from 'vuex'
 export default {
 	name: 'RightMenuEditBlock',
 	props: {
@@ -134,6 +136,8 @@ export default {
 	},
 
 	methods: {
+		...mapMutations('Maps', ['setItemByIdActiveMapTable']),
+
 		onCancel() {
 			this.$emit('edit', {
 				oldRow: this.item.num_row,
@@ -145,7 +149,10 @@ export default {
 		},
 
 		onSave() {
-			this.$emit('save')
+			this.$emit('save', {
+				...this.item,
+				...this.copyItem
+			})
 		},
 
 		clear() {
@@ -156,7 +163,7 @@ export default {
 		},
 
 		async onInput() {
-			const newItem = JSON.parse(JSON.stringify(this.copyItem))
+			const newItem = _.cloneDeep(this.copyItem)
 
 			if (!newItem.discipline) return
 			if (!newItem.type) return
@@ -172,6 +179,8 @@ export default {
 			})
 
 			if (!this.isValidName) discipline = this.item.discipline
+
+			this.copyItem.type = type
 
 			await this.$nextTick()
 

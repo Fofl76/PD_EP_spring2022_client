@@ -35,7 +35,7 @@
 					>
 						<div v-for="element in column" :key="element.id">
 							<TableBlock
-								:item="{ ...element, group: getGroupById(element.id_group) }"
+								:data="{ element, group: getGroupById(element.id_group) }"
 								@edit="onClickEdit"
 							/>
 						</div>
@@ -74,11 +74,6 @@ export default {
 	components: { draggable, TableBlock, TableSkeletonBlock },
 
 	props: {
-		table: {
-			type: Array,
-			required: true,
-		},
-
 		loading: {
 			type: Boolean,
 			default: false,
@@ -92,7 +87,11 @@ export default {
 	}),
 
 	computed: {
-		...mapGetters('Maps', ['allGroupsMapId']),
+		...mapGetters('Maps', ['allGroupsMapId', 'buildTable']),
+		
+		table() {
+			return this.buildTable
+		},
 
 		dragOptions() {
 			return {

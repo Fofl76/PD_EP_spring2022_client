@@ -1,5 +1,5 @@
 <template>
-	<v-dialog v-model="value_" max-width="1000" class="PopupGroupsSettings">
+	<v-dialog :value="value" @input="onInputPopup" max-width="1000" class="PopupGroupsSettings">
 		<v-card class="PopupGroupsSettings__card">
 			<v-card-title class="text-h5"> Работа с группировками </v-card-title>
 
@@ -18,15 +18,21 @@
 						<v-divider class="PopupGroupsSettings__hor-divider"></v-divider>
 
 						<v-list style="height: 370px; overflow-y: scroll" dense>
-							<v-list-item-group v-model="selectedItemId" color="primary">
+							<v-list-item-group
+								v-model="selectedItemIndex"
+								color="primary"
+							>
 								<v-tooltip
 									max-width="200"
 									open-delay="700"
 									left
-									v-for="(item, i) in filteredItems"
-									:key="i"
+									v-for="(item) in filteredItems"
+									:key="item.id"
 								>
-									<template v-slot:activator="{ on, attrs }">
+									<template
+										v-if="item.id !== 1"
+										v-slot:activator="{ on, attrs }"
+									>
 										<v-list-item v-bind="attrs" v-on="on">
 											<v-list-item-icon>
 												<v-icon :color="item.color">mdi-circle</v-icon>
@@ -46,7 +52,7 @@
 					<v-divider class="PopupGroupsSettings__ver-divider" vertical />
 
 					<div
-						v-if="selectedItemId || selectedItemId === 0"
+						v-if="selectedItemIndex || selectedItemIndex === 0"
 						class="PopupGroupsSettings__group-settings"
 					>
 						<div class="PopupGroupsSettings__group-settings-form">
@@ -92,15 +98,18 @@
 								<!-- Все дисциплины -->
 								<draggable
 									v-bind="dragOptions"
-									v-model="allDisciplines"
+									:value="availableDisciplines"
 									:setData="setData"
 									style="height: 340px; overflow-y: scroll"
 								>
 									<v-list-item
-										v-for="element in allDisciplines"
+										v-for="element in availableDisciplines"
 										:key="element.id"
 										class="PopupGroupsSettings__discipline-item"
 									>
+										<v-list-item-icon class="mr-1">
+											<v-icon size="medium" :color="allGroupsMapId[element.id_group].color">mdi-circle</v-icon>
+										</v-list-item-icon>
 										<v-list-item-content>
 											{{ element.discipline }}
 										</v-list-item-content>
@@ -118,8 +127,9 @@
 								<!-- Назначенные дисциплины -->
 								<draggable
 									v-bind="dragOptions"
-									v-model="appointedDisciplines"
+									:value="appointedDisciplines"
 									:setData="setData"
+									@change="onChangeAppointedGroup"
 									style="height: 340px; overflow-y: scroll"
 								>
 									<v-list-item
@@ -127,6 +137,9 @@
 										:key="element.id"
 										class="PopupGroupsSettings__discipline-item"
 									>
+										<v-list-item-icon class="mr-1">
+											<v-icon size="medium" :color="allGroupsMapId[element.id_group].color">mdi-circle</v-icon>
+										</v-list-item-icon>
 										<v-list-item-content>
 											{{ element.discipline }}
 										</v-list-item-content>
@@ -156,6 +169,7 @@
 
 			<v-card-actions>
 				<v-spacer />
+				<v-btn color="success" :loading="isLoadingSaveTable" @click="onSaveMap">Сохранить</v-btn>
 				<v-btn color="error" @click="value_ = false">Отмена</v-btn>
 			</v-card-actions>
 		</v-card>
@@ -166,7 +180,7 @@
 import _ from 'lodash'
 import draggable from 'vuedraggable'
 
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
 
 export default {
 	name: 'PopupGroupsSettings',
@@ -180,10 +194,9 @@ export default {
 	},
 
 	data: () => ({
+		newAllDisciplines: [],
 		selectedItem: null,
-		selectedItemId: null,
-		allDisciplines: null,
-		appointedDisciplines: null,
+		selectedItemIndex: null,
 
 		searchModel: '',
 
@@ -192,7 +205,7 @@ export default {
 	}),
 
 	computed: {
-		...mapGetters('Maps', ['allGroups', 'allGroupsMapId', 'activeMapTable']),
+		...mapGetters('Maps', ['allGroups', 'allGroupsMapId', 'activeMapTable', 'isLoadingSaveTable']),
 
 		value_: {
 			get() {
@@ -205,7 +218,15 @@ export default {
 		},
 
 		items() {
-			return this.allGroups
+			return this.allGroups.filter(el => el.id !== 1)
+		},
+
+		availableDisciplines() {
+			return this.newAllDisciplines.filter(el => el.id_group !== this.selectedItem.id)
+		},
+
+		appointedDisciplines() {
+			return this.newAllDisciplines.filter(el => el.id_group === this.selectedItem.id)
 		},
 
 		filteredItems() {
@@ -232,38 +253,70 @@ export default {
 			this.clearSelectedItem()
 		},
 
-		selectedItemId(id) {
+		selectedItemIndex(id) {
 			if (!id && id !== 0) return
 
-			this.selectedItem = this.filteredItems[this.selectedItemId]
-			this.allDisciplines = _.uniqBy(
-				this.activeMapTable,
-				el => el.discipline
-			).filter(el => el.id_group !== this.selectedItem.id)
-
-			this.setAppointedDisciplines()
+			this.selectedItem = this.filteredItems[this.selectedItemIndex]
 
 			this.nameModel = this.selectedItem.name
 			this.colorModel = this.selectedItem.color
 		},
+
+		value(value) {
+			if (value) {
+				this.initAllDisciplines()
+			}
+		}
 	},
 
 	methods: {
-		...mapActions('Maps', ['fetchAllGroups']),
+		...mapActions('Maps', ['fetchAllGroups', 'saveMap']),
+		...mapMutations('Maps', ['setActiveMapTable']),
+
+		onInputPopup(event) {
+			this.$emit('input', event)
+		},
+
+		initAllDisciplines(value) {
+			this.newAllDisciplines = _.cloneDeep(_.uniqBy(
+				this.activeMapTable,
+				el => el.discipline
+			))
+		},
 
 		clearSelectedItem() {
-			this.selectedItemId = null
+			this.selectedItemIndex = null
+		},
+
+		async onSaveMap() {
+			const groupByDisciplines = _.groupBy(this.newAllDisciplines, 'discipline')
+
+			const newTable = this.activeMapTable.map((el) => ({
+				...el,
+				id_group: groupByDisciplines[el.discipline][0].id_group,
+			}))
+
+			this.saveMap(newTable)
+				.then(() => {
+					this.setActiveMapTable(newTable)
+				})
+				.finally(() => {
+					this.value_ = false
+				})				
+		},
+
+		onChangeAppointedGroup(e) {
+			if (e.added) {
+				e.added.element.id_group = this.selectedItem.id
+			}
+
+			if (e.removed) {
+				e.removed.element.id_group = 1
+			}
 		},
 
 		setData(dataTransfer) {
 			dataTransfer.setDragImage(document.createElement('div'), 0, 0)
-		},
-
-		setAppointedDisciplines() {
-			this.appointedDisciplines = _.uniqBy(
-				this.activeMapTable,
-				el => el.discipline
-			).filter(discipline => discipline.id_group == this.selectedItem.id)
 		},
 	},
 }

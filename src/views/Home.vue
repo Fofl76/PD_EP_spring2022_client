@@ -43,7 +43,7 @@
 					<v-btn
 						v-if="isAvailableSave"
 						class="Home__save-table-btn"
-						:loading="loadingSaveMap"
+						:loading="isLoadingSaveTable"
 						color="success"
 						dark
 						@click="onSaveMap"
@@ -57,7 +57,7 @@
 			<RightMenuEditBlock
 				v-model="drawerModel"
 				:item="drawerItem"
-				:loading="loadingSaveMap"
+				:loading="isLoadingSaveTable"
 				:width="drawerWidth"
 				@edit="onEditItem"
 				@save="onSaveEdit"
@@ -88,7 +88,7 @@ import RightMenuEditBlock from '@components/RightMenuEditBlock.vue'
 import PopupUploadDocument from '@components/PopupUploadDocument.vue'
 import HomeHeader from '@components/Home/HomeHeader.vue'
 
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions, mapMutations } from 'vuex'
 
 export default {
 	name: 'Home',
@@ -117,7 +117,6 @@ export default {
 		facultyModel: '',
 		directionModel: '',
 
-		aupCode: null,
 		isAvailableSave: false,
 
 		table: [],
@@ -125,7 +124,6 @@ export default {
 
 		drawerModel: false,
 		drawerItem: null,
-		loadingSaveMap: false,
 		drawerWidth: 400,
 
 		popupUploadModel: false,
@@ -142,7 +140,16 @@ export default {
 	}),
 
 	computed: {
-		...mapGetters('Maps', ['mapsList', 'isLoadingTable', 'isLoadingGroups']),
+		...mapGetters('Maps', ['mapsList', 'isLoadingTable', 'isLoadingGroups', 'activeAupCode', 'isLoadingSaveTable', 'activeMapTable']),
+
+		aupCode: {
+			get() {
+				return this.activeAupCode
+			},
+			set(v) {
+				this.setActiveAupCode(v)
+			},
+		},
 
 		isReady() {
 			return !!this.table.length
@@ -160,6 +167,7 @@ export default {
 			async handler(aupCode) {
 				if (!aupCode) return
 
+				this.setActiveAupCode(aupCode)
 				await this.setTable(aupCode)
 			},
 			deep: true,
@@ -168,7 +176,8 @@ export default {
 	},
 
 	methods: {
-		...mapActions('Maps', ['fetchMap', 'fetchAllGroups']),
+		...mapActions('Maps', ['fetchMap', 'fetchAllGroups', 'saveMap']),
+		...mapMutations('Maps', ['moveItem', 'setActiveAupCode', 'setActiveMapTable']),
 
 		sortColumn(column) {
 			return _.sortBy(column, ['num_row'])
@@ -198,53 +207,24 @@ export default {
 			const moved = data?.moved
 
 			if (added) {
-				const newElement = {
-					...added.element,
-					num_col: columnIndex + 1,
+				const params = {
+					currentEl: added.element,
+					newNumRow: added.newIndex,
+					newNumCol: columnIndex + 1,
 				}
-
-				this.addElementInColumn(columnIndex, newElement, added.newIndex)
-			}
-
-			if (removed) {
-				this.removeElementInColumn(columnIndex, removed.oldIndex)
+				this.moveItem(params)
 			}
 
 			if (moved) {
-				this.moveElementInColumn(columnIndex, moved.oldIndex, moved.newIndex)
+				const params = {
+					currentEl: moved.element,
+					newNumRow: moved.newIndex,
+					newNumCol: columnIndex + 1,
+				}
+
+				this.moveItem(params)
 			}
-
 			this.isAvailableSave = true
-		},
-
-		// Добавляет новый элемент в колонку, перезаписывая всю колонку
-		addElementInColumn(columnIndex, addedElement, numRow) {
-			let copyColumn = _.cloneDeep(this.table[columnIndex])
-
-			copyColumn.splice(numRow, 0, addedElement)
-			copyColumn = this.buildColumnSequence(copyColumn)
-
-			this.$set(this.table, columnIndex, copyColumn)
-		},
-
-		// Удаляет элемент из колонки, перезаписывая всю колонку
-		removeElementInColumn(columnIndex, numRow) {
-			let copyColumn = _.cloneDeep(this.table[columnIndex])
-
-			copyColumn.splice(numRow, 1)
-			copyColumn = this.buildColumnSequence(copyColumn)
-
-			this.$set(this.table, columnIndex, copyColumn)
-		},
-
-		// Перемещает элемент внутри колонки, перезаписывая всю колонку
-		moveElementInColumn(columnIndex, oldNumRow, newNumRow) {
-			let copyColumn = _.cloneDeep(this.table[columnIndex])
-
-			copyColumn.splice(newNumRow, 0, copyColumn.splice(oldNumRow, 1)[0])
-			copyColumn = this.buildColumnSequence(copyColumn)
-
-			this.$set(this.table, columnIndex, copyColumn)
 		},
 
 		onClickEditTable(element) {
@@ -272,14 +252,9 @@ export default {
 			let res = null
 
 			try {
-				const table = this.table.flat()
-
-				console.log(table)
-
-				this.loadingSaveMap = true
-
-				res = await axios.post(`save/${this.aupCode}`, table)
-				return res
+				res = await this.saveMap()
+	
+				return res 
 			} catch (e) {
 				console.log(e)
 			} finally {
@@ -290,7 +265,6 @@ export default {
 					this.snackbarType = 'error'
 				}
 
-				this.loadingSaveMap = false
 				this.isAvailableSave = false
 			}
 		},
@@ -336,12 +310,23 @@ export default {
 			})
 		},
 
-		async onSaveEdit() {
-			const res = await this.onSaveMap()
+		async onSaveEdit(e) {
+			const newTable = this.activeMapTable.map((el) => {
+				if (e.id === el.id) {
+					return e
+				}
 
-			if (res?.status === 200) {
-				this.drawerModel = false
-			}
+				return el
+			})
+
+			this.saveMap(newTable)
+				.then(() => {
+					this.setActiveMapTable(newTable)
+					this.drawerModel = false
+				})
+				.finally(() => {
+					this.value_ = false
+				})				
 		},
 
 		onSuccessUploadFile(aup) {

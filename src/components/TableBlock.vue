@@ -7,11 +7,11 @@
 			<v-tooltip bottom :open-delay="300">
 				<template v-slot:activator="{ on, attrs }">
 					<span class="aup-table__name" v-bind="attrs" v-on="on">
-						{{ item.discipline }}
+						{{ data.element.discipline }}
 					</span>
 				</template>
 
-				<span>{{ item.discipline }}</span>
+				<span>{{ data.element.discipline }}</span>
 			</v-tooltip>
 
 			<v-btn
@@ -20,7 +20,7 @@
 				x-small
 				fab
 				icon
-				@click="onEdit(item)"
+				@click="onEdit"
 			>
 				<v-icon dark> mdi-pen </v-icon>
 			</v-btn>
@@ -33,27 +33,27 @@ export default {
 	name: 'TableBlock',
 
 	props: {
-		item: {
+		data: {
 			type: Object,
 			required: true,
 		},
 	},
 
 	methods: {
-		onEdit(item) {
-			this.$emit('edit', item)
+		onEdit() {
+			this.$emit('edit', this.data.element)
 		},
 	},
 
 	computed: {
 		totalZet() {
-			return this.item?.type.reduce((sum, zetBlock) => {
+			return this.data.element?.type.reduce((sum, zetBlock) => {
 				return sum + zetBlock?.zet
 			}, 0)
 		},
 
 		color() {
-			return this.item.group?.color
+			return this.data.group?.color
 		},
 	},
 }
