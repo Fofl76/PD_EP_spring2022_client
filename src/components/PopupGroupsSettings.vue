@@ -266,10 +266,6 @@ export default {
 			).filter(discipline => discipline.id_group == this.selectedItem.id)
 		},
 	},
-
-	mounted() {
-		this.fetchAllGroups()
-	},
 }
 </script>
 

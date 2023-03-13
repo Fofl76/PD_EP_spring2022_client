@@ -142,7 +142,7 @@ export default {
 	}),
 
 	computed: {
-		...mapGetters('Maps', ['mapsList', 'isLoadingTable']),
+		...mapGetters('Maps', ['mapsList', 'isLoadingTable', 'isLoadingGroups']),
 
 		isReady() {
 			return !!this.table.length
@@ -168,7 +168,7 @@ export default {
 	},
 
 	methods: {
-		...mapActions('Maps', ['fetchMap']),
+		...mapActions('Maps', ['fetchMap', 'fetchAllGroups']),
 
 		sortColumn(column) {
 			return _.sortBy(column, ['num_row'])
@@ -254,6 +254,7 @@ export default {
 
 		async setTable(aupCode) {
 			try {
+				await this.fetchAllGroups()
 				const table = await this.fetchMap(aupCode)
 
 				this.aupCode = aupCode
