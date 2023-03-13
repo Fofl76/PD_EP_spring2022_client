@@ -29,8 +29,8 @@
 					<draggable
 						class="aup-table__draggable"
 						v-bind="dragOptions"
-						v-model="table[key]"
-						@change="onChangeTable"
+						:value="table[key]"
+						@change="onDragElementTable($event, key)"
 						:setData="setData"
 					>
 						<div v-for="element in column" :key="element.id">
@@ -109,7 +109,10 @@ export default {
 			this.table.forEach(column => {
 				let sum = 0
 				column.forEach(element => {
-					sum += element?.type.reduce((sum, zetBlock) => sum + zetBlock?.zet, 0)
+					sum += element?.type?.reduce(
+						(sum, zetBlock) => sum + zetBlock?.zet,
+						0
+					)
 				})
 
 				if (sum > maxZet) maxZet = sum
@@ -134,8 +137,8 @@ export default {
 	},
 
 	methods: {
-		onChangeTable() {
-			this.$emit('change')
+		onDragElementTable(data, columnIndex) {
+			this.$emit('drag', { data, columnIndex })
 		},
 
 		onClickEdit(element) {

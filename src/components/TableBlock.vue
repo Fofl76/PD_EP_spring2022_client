@@ -53,8 +53,13 @@ export default {
 		},
 
 		color() {
-			return this.item.group?.color
+			return this.item.group?.color || '#ccc'
 		},
 	},
 }
 </script>
+
+<style lang="sass" scoped>
+.aup-table__block
+    transition: background-color .25s linear
+</style>

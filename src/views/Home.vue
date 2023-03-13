@@ -18,7 +18,7 @@
 						<Table
 							:loading="isLoadingTable"
 							:table="table"
-							@change="onChangeTable"
+							@drag="onDragElementTable"
 							@clickEdit="onClickEditTable"
 						/>
 					</template>
@@ -192,8 +192,59 @@ export default {
 			this.isAvailableSave = false
 		},
 
-		onChangeTable() {
+		onDragElementTable({ data, columnIndex }) {
+			const added = data?.added
+			const removed = data?.removed
+			const moved = data?.moved
+
+			if (added) {
+				const newElement = {
+					...added.element,
+					num_col: columnIndex + 1,
+				}
+
+				this.addElementInColumn(columnIndex, newElement, added.newIndex)
+			}
+
+			if (removed) {
+				this.removeElementInColumn(columnIndex, removed.oldIndex)
+			}
+
+			if (moved) {
+				this.moveElementInColumn(columnIndex, moved.oldIndex, moved.newIndex)
+			}
+
 			this.isAvailableSave = true
+		},
+
+		// Добавляет новый элемент в колонку, перезаписывая всю колонку
+		addElementInColumn(columnIndex, addedElement, numRow) {
+			let copyColumn = _.cloneDeep(this.table[columnIndex])
+
+			copyColumn.splice(numRow, 0, addedElement)
+			copyColumn = this.buildColumnSequence(copyColumn)
+
+			this.$set(this.table, columnIndex, copyColumn)
+		},
+
+		// Удаляет элемент из колонки, перезаписывая всю колонку
+		removeElementInColumn(columnIndex, numRow) {
+			let copyColumn = _.cloneDeep(this.table[columnIndex])
+
+			copyColumn.splice(numRow, 1)
+			copyColumn = this.buildColumnSequence(copyColumn)
+
+			this.$set(this.table, columnIndex, copyColumn)
+		},
+
+		// Перемещает элемент внутри колонки, перезаписывая всю колонку
+		moveElementInColumn(columnIndex, oldNumRow, newNumRow) {
+			let copyColumn = _.cloneDeep(this.table[columnIndex])
+
+			copyColumn.splice(newNumRow, 0, copyColumn.splice(oldNumRow, 1)[0])
+			copyColumn = this.buildColumnSequence(copyColumn)
+
+			this.$set(this.table, columnIndex, copyColumn)
 		},
 
 		onClickEditTable(element) {
@@ -220,17 +271,9 @@ export default {
 			let res = null
 
 			try {
-				const table = this.table
-					.map((column, colId) => {
-						return column.map((block, rowId) => {
-							return {
-								...block,
-								num_col: colId,
-								num_row: rowId,
-							}
-						})
-					})
-					.flat()
+				const table = this.table.flat()
+
+				console.log(table)
 
 				this.loadingSaveMap = true
 
@@ -279,6 +322,17 @@ export default {
 				// костыль
 				this.$set(this.table, neededColIndex, copyCol)
 			}
+		},
+
+		// Восстанавливает порядок num_row после каких-либо
+		// изменений
+		buildColumnSequence(column) {
+			return column.map((element, index) => {
+				return {
+					...element,
+					num_row: index,
+				}
+			})
 		},
 
 		async onSaveEdit() {
