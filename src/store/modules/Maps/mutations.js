@@ -49,9 +49,6 @@ export const moveItem = (state, { currentEl, newNumRow, newNumCol }) => {
 	newCol.forEach((el, i) => {
 		el.num_row = i
 	})
-
-	console.log('oldCol', oldCol)
-	console.log('newCol', newCol)
 }
 
 export const setActiveAupCode = (state, aupCode) => {

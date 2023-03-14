@@ -75,10 +75,6 @@ export default {
 		onEdit() {
 			this.$emit('edit', this.data.element)
 		},
-
-		determinateTextColor() {
-			return determinateTextColor(this.backgroundColor)
-		},
 	},
 }
 </script>
