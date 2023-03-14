@@ -1,5 +1,10 @@
 <template>
-	<v-dialog :value="value" @input="onInputPopup" max-width="1000" class="PopupGroupsSettings">
+	<v-dialog
+		:value="value"
+		@input="onInputPopup"
+		max-width="1000"
+		class="PopupGroupsSettings"
+	>
 		<v-card class="PopupGroupsSettings__card">
 			<v-card-title class="text-h5"> Работа с группировками </v-card-title>
 			<v-card-subtitle> *Нажмите на дисциплину и перетащите её</v-card-subtitle>
@@ -19,15 +24,12 @@
 						<v-divider class="PopupGroupsSettings__hor-divider"></v-divider>
 
 						<v-list style="height: 305px; overflow-y: scroll" dense>
-							<v-list-item-group
-								v-model="selectedItemIndex"
-								color="primary"
-							>
+							<v-list-item-group v-model="selectedItemIndex" color="primary">
 								<v-tooltip
 									max-width="200"
 									open-delay="700"
 									left
-									v-for="(item) in filteredItems"
+									v-for="item in filteredItems"
 									:key="item.id"
 								>
 									<template
@@ -51,20 +53,17 @@
 
 						<v-divider class="PopupGroupsSettings__hor-divider"></v-divider>
 						<v-list style="padding: 0px" dense>
-						<v-list-item-group
-							v-model="createItem"
-							color="primary"
-						>
-							<v-list-item :value="true">
-								<v-list-item-icon>
-									<v-icon color="grey">mdi-plus</v-icon>
-								</v-list-item-icon>
+							<v-list-item-group v-model="createItem" color="primary">
+								<v-list-item :value="true">
+									<v-list-item-icon>
+										<v-icon color="grey">mdi-plus</v-icon>
+									</v-list-item-icon>
 
-								<v-list-item-content>
-									<v-list-item-title>Добавить группу</v-list-item-title>
-								</v-list-item-content>
-							</v-list-item>
-						</v-list-item-group>
+									<v-list-item-content>
+										<v-list-item-title>Добавить группу</v-list-item-title>
+									</v-list-item-content>
+								</v-list-item>
+							</v-list-item-group>
 						</v-list>
 					</div>
 
@@ -127,7 +126,11 @@
 										class="PopupGroupsSettings__discipline-item"
 									>
 										<v-list-item-icon class="mr-1">
-											<v-icon size="medium" :color="allGroupsMapId[element.id_group].color">mdi-circle</v-icon>
+											<v-icon
+												size="medium"
+												:color="allGroupsMapId[element.id_group].color"
+												>mdi-circle</v-icon
+											>
 										</v-list-item-icon>
 										<v-list-item-content>
 											{{ element.discipline }}
@@ -157,7 +160,11 @@
 										class="PopupGroupsSettings__discipline-item"
 									>
 										<v-list-item-icon class="mr-1">
-											<v-icon size="medium" :color="allGroupsMapId[element.id_group].color">mdi-circle</v-icon>
+											<v-icon
+												size="medium"
+												:color="allGroupsMapId[element.id_group].color"
+												>mdi-circle</v-icon
+											>
 										</v-list-item-icon>
 										<v-list-item-content>
 											{{ element.discipline }}
@@ -175,49 +182,51 @@
 									Добавление группы
 								</div>
 								<div class="PopupGroupsSettings__create-row">
-								<v-text-field
-									v-model="newItemForm.nameModel"
-									class="PopupGroupsSettings__name-group"
-									label="Наименование группировки"
-									outlined
-									dense
-									hide-details="auto"
-									:rules="nameRules"
-								></v-text-field>
+									<v-text-field
+										v-model="newItemForm.nameModel"
+										class="PopupGroupsSettings__name-group"
+										label="Наименование группировки"
+										outlined
+										dense
+										hide-details="auto"
+										:rules="nameRules"
+										ref="createNameGroupInput"
+									></v-text-field>
 
-								<v-menu offset-y :close-on-content-click="false">
-								<template v-slot:activator="{ on, attrs }">
+									<v-menu offset-y :close-on-content-click="false">
+										<template v-slot:activator="{ on, attrs }">
+											<v-btn
+												:color="newItemForm.color"
+												v-bind="attrs"
+												v-on="on"
+												class="ml-2"
+												min-height="40px"
+											>
+												Цвет
+											</v-btn>
+										</template>
+
+										<v-color-picker
+											v-model="newItemForm.color"
+											dot-size="25"
+											hide-inputs
+											hide-mode-switch
+											swatches-max-height="200"
+										/>
+									</v-menu>
+								</div>
+								<div class="PopupGroupsSettings__create-footer">
 									<v-btn
-										:color="newItemForm.color"
-										v-bind="attrs"
-										v-on="on"
-										class="ml-2"
+										color="success"
 										min-height="40px"
+										block
+										@click="addModel"
+										:disabled="isDisableAddGroups"
+										:loading="isLoadingAddGroups"
 									>
-										Цвет
+										Добавить
 									</v-btn>
-								</template>
-
-								<v-color-picker
-									v-model="newItemForm.color"
-									dot-size="25"
-									hide-inputs
-									hide-mode-switch
-									swatches-max-height="200"
-								/>
-							</v-menu>
-							</div>
-							<div class="PopupGroupsSettings__create-footer">
-								<v-btn
-									color="success"
-									min-height="40px"
-									block
-									@click="addModel"
-									:loading="isLoadingAddGroups"
-								>
-									Добавить
-								</v-btn>
-							</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -242,7 +251,9 @@
 
 			<v-card-actions>
 				<v-spacer />
-				<v-btn color="success" :loading="isLoadingSaveTable" @click="onSaveMap">Сохранить</v-btn>
+				<v-btn color="success" :loading="isLoadingSaveTable" @click="onSaveMap"
+					>Сохранить</v-btn
+				>
 				<v-btn color="error" @click="value_ = false">Отмена</v-btn>
 			</v-card-actions>
 		</v-card>
@@ -294,7 +305,12 @@ export default {
 	}),
 
 	computed: {
-		...mapGetters('Maps', ['allGroups', 'allGroupsMapId', 'activeMapTable', 'isLoadingSaveTable']),
+		...mapGetters('Maps', [
+			'allGroups',
+			'allGroupsMapId',
+			'activeMapTable',
+			'isLoadingSaveTable',
+		]),
 
 		value_: {
 			get() {
@@ -311,11 +327,15 @@ export default {
 		},
 
 		availableDisciplines() {
-			return this.newAllDisciplines.filter(el => el.id_group !== this.selectedItem.id)
+			return this.newAllDisciplines.filter(
+				el => el.id_group !== this.selectedItem.id
+			)
 		},
 
 		appointedDisciplines() {
-			return this.newAllDisciplines.filter(el => el.id_group === this.selectedItem.id)
+			return this.newAllDisciplines.filter(
+				el => el.id_group === this.selectedItem.id
+			)
 		},
 
 		filteredItems() {
@@ -334,6 +354,10 @@ export default {
 				animation: 250,
 				group: 'disciplines',
 			}
+		},
+
+		isDisableAddGroups() {
+			return !this.newItemForm.nameModel.length
 		},
 	},
 
@@ -366,7 +390,7 @@ export default {
 			if (value) {
 				this.initAllDisciplines()
 			}
-		}
+		},
 	},
 
 	methods: {
@@ -378,13 +402,14 @@ export default {
 		},
 
 		initAllDisciplines(value) {
-			this.newAllDisciplines = _.cloneDeep(_.uniqBy(
-				this.activeMapTable,
-				el => el.discipline
-			))
+			this.newAllDisciplines = _.cloneDeep(
+				_.uniqBy(this.activeMapTable, el => el.discipline)
+			)
 		},
 
 		async addModel() {
+			if (this.isDisableAddGroups) return
+
 			this.isLoadingAddGroups = true
 			const newGroup = {
 				name: this.newItemForm.nameModel,
@@ -395,16 +420,15 @@ export default {
 				this.addGroup(newGroup)
 
 				this.newItemForm = {
-						nameModel: '',
-						color: '#FFFFFF',
-					}
+					nameModel: '',
+					color: '#FFFFFF',
+				}
 
 				this.selectedItemIndex = this.items.length - 1
 			} catch (e) {
 				console.log(e)
 			} finally {
 				this.isLoadingAddGroups = false
-				
 			}
 		},
 
@@ -415,7 +439,7 @@ export default {
 		async onSaveMap() {
 			const groupByDisciplines = _.groupBy(this.newAllDisciplines, 'discipline')
 
-			const newTable = this.activeMapTable.map((el) => ({
+			const newTable = this.activeMapTable.map(el => ({
 				...el,
 				id_group: groupByDisciplines[el.discipline][0].id_group,
 			}))
@@ -426,7 +450,7 @@ export default {
 				})
 				.finally(() => {
 					this.value_ = false
-				})				
+				})
 		},
 
 		onChangeAppointedGroup(e) {
@@ -510,7 +534,7 @@ export default {
         align-items: center
         justify-content: center
         font-size: 1.5em
-		
+
     &__create-form
         margin: -6px !important
         width: 400px
