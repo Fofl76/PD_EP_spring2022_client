@@ -58,3 +58,19 @@ export const saveMap = async ({ getters, commit }, table = null) => {
 		commit('setIsLoadingSaveTable', false)
 	}
 }
+
+
+export const addGroup = async ({commit}, group) => {
+	try {
+		const res = await axios.post(`add-group`, group)
+
+		if (res.status === 200) {
+			commit('addGroups', {
+				...group,
+				id: res.data.id
+			})
+		}
+	} catch (e) {
+		console.log(e);
+	}
+}

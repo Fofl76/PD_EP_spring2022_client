@@ -5,6 +5,7 @@ export const setActiveMapTable = (state, activeMapTable) =>
 export const setIsLoadingTable = (state, flag) => (state.isLoadingTable = flag)
 
 export const setAllGroups = (state, groups) => (state.allGroups = groups)
+export const addGroups = (state, group) => (state.allGroups.push(group))
 export const setIsLoadingGroups = (state, flag) =>
 	(state.isLoadingGroups = flag)
 

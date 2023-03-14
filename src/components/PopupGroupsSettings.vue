@@ -17,7 +17,7 @@
 
 						<v-divider class="PopupGroupsSettings__hor-divider"></v-divider>
 
-						<v-list style="height: 370px; overflow-y: scroll" dense>
+						<v-list style="height: 305px; overflow-y: scroll" dense>
 							<v-list-item-group
 								v-model="selectedItemIndex"
 								color="primary"
@@ -46,6 +46,24 @@
 									<span>{{ item.name }}</span>
 								</v-tooltip>
 							</v-list-item-group>
+						</v-list>
+
+						<v-divider class="PopupGroupsSettings__hor-divider"></v-divider>
+						<v-list style="padding: 0px" dense>
+						<v-list-item-group
+							v-model="createItem"
+							color="primary"
+						>
+							<v-list-item :value="true">
+								<v-list-item-icon>
+									<v-icon color="grey">mdi-plus</v-icon>
+								</v-list-item-icon>
+
+								<v-list-item-content>
+									<v-list-item-title>Добавить группу</v-list-item-title>
+								</v-list-item-content>
+							</v-list-item>
+						</v-list-item-group>
 						</v-list>
 					</div>
 
@@ -149,6 +167,60 @@
 						</div>
 					</div>
 
+					<div v-else-if="createItem">
+						<div class="PopupGroupsSettings__create">
+							<div class="PopupGroupsSettings__create-form">
+								<div class="PopupGroupsSettings__create-header text-h5">
+									Добавление группы
+								</div>
+								<div class="PopupGroupsSettings__create-row">
+								<v-text-field
+									v-model="newItemForm.nameModel"
+									class="PopupGroupsSettings__name-group"
+									label="Наименование группировки"
+									outlined
+									dense
+									hide-details="auto"
+									:rules="nameRules"
+								></v-text-field>
+
+								<v-menu offset-y :close-on-content-click="false">
+								<template v-slot:activator="{ on, attrs }">
+									<v-btn
+										:color="newItemForm.color"
+										v-bind="attrs"
+										v-on="on"
+										class="ml-2"
+										min-height="40px"
+									>
+										Цвет
+									</v-btn>
+								</template>
+
+								<v-color-picker
+									v-model="newItemForm.color"
+									dot-size="25"
+									hide-inputs
+									hide-mode-switch
+									swatches-max-height="200"
+								/>
+							</v-menu>
+							</div>
+							<div class="PopupGroupsSettings__create-footer">
+								<v-btn
+									color="success"
+									min-height="40px"
+									block
+									@click="addModel"
+									:loading="isLoadingAddGroups"
+								>
+									Добавить
+								</v-btn>
+							</div>
+							</div>
+						</div>
+					</div>
+
 					<div v-else>
 						<div class="PopupGroupsSettings__empty">
 							<div class="PopupGroupsSettings__empty-inner">
@@ -197,6 +269,22 @@ export default {
 		newAllDisciplines: [],
 		selectedItem: null,
 		selectedItemIndex: null,
+
+		createItem: false,
+
+		newItemForm: {
+			nameModel: '',
+			color: '#FFFFFF',
+		},
+
+		nameRules: [
+			v => !!v || 'Это поле является обязательным',
+			v =>
+				(v && v.length < 70) ||
+				'Название дисциплины не может превышать 70 символов',
+		],
+
+		isLoadingAddGroups: false,
 
 		searchModel: '',
 
@@ -253,8 +341,19 @@ export default {
 			this.clearSelectedItem()
 		},
 
+		createItem(value) {
+			if (value) {
+				this.selectedItemIndex = null
+				this.selectedItem = null
+			}
+		},
+
 		selectedItemIndex(id) {
 			if (!id && id !== 0) return
+
+			if (this.createItem) {
+				this.createItem = null
+			}
 
 			this.selectedItem = this.filteredItems[this.selectedItemIndex]
 
@@ -270,8 +369,8 @@ export default {
 	},
 
 	methods: {
-		...mapActions('Maps', ['fetchAllGroups', 'saveMap']),
-		...mapMutations('Maps', ['setActiveMapTable']),
+		...mapActions('Maps', ['fetchAllGroups', 'saveMap', 'addGroup']),
+		...mapMutations('Maps', ['setActiveMapTable', 'addGroups']),
 
 		onInputPopup(event) {
 			this.$emit('input', event)
@@ -282,6 +381,30 @@ export default {
 				this.activeMapTable,
 				el => el.discipline
 			))
+		},
+
+		async addModel() {
+			this.isLoadingAddGroups = true
+			const newGroup = {
+				name: this.newItemForm.nameModel,
+				color: this.newItemForm.color,
+			}
+
+			try {
+				this.addGroup(newGroup)
+
+				this.newItemForm = {
+						nameModel: '',
+						color: '#FFFFFF',
+					}
+
+				this.selectedItemIndex = this.items.length - 1
+			} catch (e) {
+				console.log(e)
+			} finally {
+				this.isLoadingAddGroups = false
+				
+			}
 		},
 
 		clearSelectedItem() {
@@ -378,6 +501,29 @@ export default {
 
     &__ver-divider
         margin: 0 8px
+
+    &__create
+        width: 100%
+        height: 100%
+        display: flex
+        align-items: center
+        justify-content: center
+        font-size: 1.5em
+		
+    &__create-form
+        margin: -6px !important
+        width: 400px
+        display: flex
+        flex-direction: column
+        > *
+            margin: 6px !important
+    &__create-row
+        display: flex
+        > *:first-chield
+            margin-right: 6px !important
+
+    &__create-header
+        font-weight: bold !important
 
     &__empty
         width: 100%
