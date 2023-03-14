@@ -88,7 +88,7 @@ export default {
 
 	computed: {
 		...mapGetters('Maps', ['allGroupsMapId', 'buildTable']),
-		
+
 		table() {
 			return this.buildTable
 		},
@@ -195,6 +195,7 @@ export default {
         display: -webkit-box
         overflow: hidden !important
         text-overflow: ellipsis
+        font-weight: bold
         -webkit-line-clamp: 4
 
     &__name-tooltip

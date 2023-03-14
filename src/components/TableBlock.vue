@@ -3,10 +3,15 @@
 		class="aup-table__block-wrapper"
 		:style="{ height: totalZet * 90 + 'px' }"
 	>
-		<div class="aup-table__block" :style="{ backgroundColor: color }">
+		<div class="aup-table__block" :style="{ backgroundColor }">
 			<v-tooltip bottom :open-delay="300">
 				<template v-slot:activator="{ on, attrs }">
-					<span class="aup-table__name" v-bind="attrs" v-on="on">
+					<span
+						:style="styleName"
+						class="aup-table__name"
+						v-bind="attrs"
+						v-on="on"
+					>
 						{{ data.element.discipline }}
 					</span>
 				</template>
@@ -29,6 +34,8 @@
 </template>
 
 <script>
+import determinateTextColor from '@utils/determinateTextColor'
+
 export default {
 	name: 'TableBlock',
 
@@ -39,12 +46,6 @@ export default {
 		},
 	},
 
-	methods: {
-		onEdit() {
-			this.$emit('edit', this.data.element)
-		},
-	},
-
 	computed: {
 		totalZet() {
 			return this.data.element?.type.reduce((sum, zetBlock) => {
@@ -52,8 +53,31 @@ export default {
 			}, 0)
 		},
 
-		color() {
+		needIsDarkText() {
+			return determinateTextColor(this.backgroundColor)
+		},
+
+		styleName() {
+			const styles = {}
+
+			if (this.needIsDarkText) styles.color = '#333'
+			else styles.color = '#fff'
+
+			return styles
+		},
+
+		backgroundColor() {
 			return this.data.group?.color
+		},
+	},
+
+	methods: {
+		onEdit() {
+			this.$emit('edit', this.data.element)
+		},
+
+		determinateTextColor() {
+			return determinateTextColor(this.backgroundColor)
 		},
 	},
 }
