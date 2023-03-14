@@ -68,7 +68,7 @@
 
 		<v-btn
 			v-if="tableReady"
-			:href="`http://127.0.0.1:5000/save/${aupCode}`"
+			:href="`${process.env.VUE_APP_API}/save_excel/${aupCode}`"
 			target="_blank"
 			text
 			dark

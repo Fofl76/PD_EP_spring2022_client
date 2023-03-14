@@ -11,14 +11,14 @@
 					v-model="checkboxIntegralityModel"
 					:disabled="isLoadingUploadFile"
 					class="PopupUploadDocument__checkbox"
-					label="Отключить проверку на целочисленность ЗЕТ"
+					label="Проверять целочисленность ЗЕТ"
 					hide-details="auto"
 				/>
 				<v-checkbox
 					v-model="checkboxSumModel"
 					:disabled="isLoadingUploadFile"
 					class="PopupUploadDocument__checkbox"
-					label="Отключить проверку по сумме ЗЕТ"
+					label="Проверять объем программы в ЗЕТ"
 					hide-details="auto"
 				/>
 
@@ -72,8 +72,8 @@ export default {
 
 	data: () => ({
 		fileModel: null,
-		checkboxIntegralityModel: false,
-		checkboxSumModel: false,
+		checkboxIntegralityModel: true,
+		checkboxSumModel: true,
 
 		dragover: false,
 		uploadedFiles: [],
@@ -114,8 +114,8 @@ export default {
 				formData.append(
 					'options',
 					JSON.stringify({
-						disableCheckIntegrality: this.checkboxIntegralityModel,
-						disableCheckSumMap: this.checkboxSumModel,
+						enableCheckIntegrality: this.checkboxIntegralityModel,
+						enableCheckSumMap: this.checkboxSumModel,
 					})
 				)
 

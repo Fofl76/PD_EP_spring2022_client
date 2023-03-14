@@ -2,6 +2,7 @@
 	<v-dialog :value="value" @input="onInputPopup" max-width="1000" class="PopupGroupsSettings">
 		<v-card class="PopupGroupsSettings__card">
 			<v-card-title class="text-h5"> Работа с группировками </v-card-title>
+			<v-card-subtitle> *Нажмите на дисциплину и перетащите её</v-card-subtitle>
 
 			<v-card-text class="PopupGroupsSettings__text">
 				<div class="PopupGroupsSettings__main">
