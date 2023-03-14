@@ -65,10 +65,10 @@
 			<span>Загрузить план</span>
 			<v-icon right dark>mdi-upload</v-icon>
 		</v-btn>
-
+		
 		<v-btn
 			v-if="tableReady"
-			:href="`${process.env.VUE_APP_API}/save_excel/${aupCode}`"
+			:href="`${url}/save_excel/${aupCode}`"
 			target="_blank"
 			text
 			dark
@@ -123,6 +123,10 @@ export default {
 
 	computed: {
 		...mapGetters('Maps', ['mapsList']),
+
+		url() {
+			return process.env.VUE_APP_API
+		},		
 
 		facultyItems() {
 			return this.mapsList

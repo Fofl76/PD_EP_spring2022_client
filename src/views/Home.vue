@@ -210,7 +210,7 @@ export default {
 				const params = {
 					currentEl: added.element,
 					newNumRow: added.newIndex,
-					newNumCol: columnIndex + 1,
+					newNumCol: columnIndex,
 				}
 				this.moveItem(params)
 			}
@@ -219,7 +219,7 @@ export default {
 				const params = {
 					currentEl: moved.element,
 					newNumRow: moved.newIndex,
-					newNumCol: columnIndex + 1,
+					newNumCol: columnIndex,
 				}
 
 				this.moveItem(params)
