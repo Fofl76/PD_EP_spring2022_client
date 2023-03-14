@@ -140,7 +140,14 @@ export default {
 	}),
 
 	computed: {
-		...mapGetters('Maps', ['mapsList', 'isLoadingTable', 'isLoadingGroups', 'activeAupCode', 'isLoadingSaveTable', 'activeMapTable']),
+		...mapGetters('Maps', [
+			'mapsList',
+			'isLoadingTable',
+			'isLoadingGroups',
+			'activeAupCode',
+			'isLoadingSaveTable',
+			'activeMapTable',
+		]),
 
 		aupCode: {
 			get() {
@@ -177,7 +184,11 @@ export default {
 
 	methods: {
 		...mapActions('Maps', ['fetchMap', 'fetchAllGroups', 'saveMap']),
-		...mapMutations('Maps', ['moveItem', 'setActiveAupCode', 'setActiveMapTable']),
+		...mapMutations('Maps', [
+			'moveItem',
+			'setActiveAupCode',
+			'setActiveMapTable',
+		]),
 
 		sortColumn(column) {
 			return _.sortBy(column, ['num_row'])
@@ -210,7 +221,7 @@ export default {
 				const params = {
 					currentEl: added.element,
 					newNumRow: added.newIndex,
-					newNumCol: columnIndex,
+					newNumCol: columnIndex + 1,
 				}
 				this.moveItem(params)
 			}
@@ -219,7 +230,7 @@ export default {
 				const params = {
 					currentEl: moved.element,
 					newNumRow: moved.newIndex,
-					newNumCol: columnIndex,
+					newNumCol: columnIndex + 1,
 				}
 
 				this.moveItem(params)
@@ -253,8 +264,8 @@ export default {
 
 			try {
 				res = await this.saveMap()
-	
-				return res 
+
+				return res
 			} catch (e) {
 				console.log(e)
 			} finally {
@@ -311,7 +322,7 @@ export default {
 		},
 
 		async onSaveEdit(e) {
-			const newTable = this.activeMapTable.map((el) => {
+			const newTable = this.activeMapTable.map(el => {
 				if (e.id === el.id) {
 					return e
 				}
@@ -326,7 +337,7 @@ export default {
 				})
 				.finally(() => {
 					this.value_ = false
-				})				
+				})
 		},
 
 		onSuccessUploadFile(aup) {

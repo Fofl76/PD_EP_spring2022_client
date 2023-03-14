@@ -13,7 +13,7 @@ export const moveItem = (state, { currentEl, newNumRow, newNumCol }) => {
 	const oldNumCol = currentEl.num_col
 
 	const el = state.activeMapTable.find(el => el.id === currentEl.id)
-	el.num_col = newNumCol + 1
+	el.num_col = newNumCol
 	el.num_row = newNumRow
 
 	const oldCol = []
@@ -49,6 +49,9 @@ export const moveItem = (state, { currentEl, newNumRow, newNumCol }) => {
 	newCol.forEach((el, i) => {
 		el.num_row = i
 	})
+
+	console.log('oldCol', oldCol)
+	console.log('newCol', newCol)
 }
 
 export const setActiveAupCode = (state, aupCode) => {
