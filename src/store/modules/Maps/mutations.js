@@ -77,3 +77,5 @@ export const updateGroup = (state, group) => {
 		}
 	})
 }
+
+export const setModeTable = (state, mode) => (state.modeTable = mode)

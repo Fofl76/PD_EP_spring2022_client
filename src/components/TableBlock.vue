@@ -1,7 +1,7 @@
 <template>
 	<div
 		class="aup-table__block-wrapper"
-		:style="{ height: totalZet * 90 + 'px' }"
+		:style="{ height: height }"
 	>
 		<div class="aup-table__block" :style="{ backgroundColor }">
 			<v-tooltip bottom :open-delay="300">
@@ -9,6 +9,7 @@
 					<span
 						:style="styleName"
 						class="aup-table__name"
+						:class="classTableItem"
 						v-bind="attrs"
 						v-on="on"
 					>
@@ -35,7 +36,7 @@
 
 <script>
 import determinateTextColor from '@utils/determinateTextColor'
-
+import { mapGetters } from 'vuex'
 export default {
 	name: 'TableBlock',
 
@@ -47,6 +48,16 @@ export default {
 	},
 
 	computed: {
+		...mapGetters('Maps', ['heightZet', 'modeTable']),
+
+		height() {
+			return this.heightZet(this.totalZet)
+		},
+
+		classTableItem() {
+			return 'aup-table__name__' + this.modeTable
+		},
+
 		totalZet() {
 			return this.data.element?.type.reduce((sum, zetBlock) => {
 				return sum + zetBlock?.zet

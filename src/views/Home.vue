@@ -51,6 +51,14 @@
 						<span>Сохранить карту</span>
 						<v-icon right dark> mdi-content-save </v-icon>
 					</v-btn>
+					<v-btn
+						class="Home__save-table-mode"
+						color="success"
+						dark
+						@click="updateMode"
+					>
+						<span>Изменить вид таблицы</span>
+					</v-btn>
 				</v-container>
 			</v-main>
 
@@ -147,6 +155,7 @@ export default {
 			'activeAupCode',
 			'isLoadingSaveTable',
 			'activeMapTable',
+			'modeTable',
 		]),
 
 		aupCode: {
@@ -188,7 +197,12 @@ export default {
 			'moveItem',
 			'setActiveAupCode',
 			'setActiveMapTable',
+			'setModeTable'
 		]),
+
+		updateMode() {
+			this.setModeTable(this.modeTable === 'default' ? 'full' : 'default')
+		},
 
 		sortColumn(column) {
 			return _.sortBy(column, ['num_row'])
@@ -394,6 +408,11 @@ export default {
 
     &__save-table-btn
         position: fixed
+        bottom: 90px
+        right: 30px
+        transition: right .2s cubic-bezier(0.4, 0, 0.2, 1)
+    &__save-table-mode
+        position: fixed
         bottom: 30px
         right: 30px
         transition: right .2s cubic-bezier(0.4, 0, 0.2, 1)
@@ -401,5 +420,7 @@ export default {
 .Home.withRightMenu
     .Home
         &__save-table-btn
+            right: calc(var(--drawer-width) + 30px)
+        &__save-table-mode
             right: calc(var(--drawer-width) + 30px)
 </style>

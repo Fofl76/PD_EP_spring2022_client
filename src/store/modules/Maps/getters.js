@@ -21,3 +21,38 @@ export const buildTable = (state) => {
 }
 export const allGroupsMapId = state =>
 	_.keyBy(state.allGroups, group => group.id)
+
+
+export const modeTable = state => state.modeTable
+
+export const heightZet = (state, getters) => {
+	return (countZet = 1) => {
+		switch (state.modeTable) {
+			case 'full':
+				return `calc(((100vh - 80px - 32px - 30px) / ${getters.maxZet}) * ${countZet})`
+				
+			default:
+				return `calc(90px * ${countZet})`
+		}
+	}
+}
+
+export const maxZet = (state, getters) => {
+	let maxZet = 0
+
+	getters.buildTable.forEach(column => {
+		let sum = 0
+		column.forEach(element => {
+			sum += element?.type?.reduce(
+				(sum, zetBlock) => sum + zetBlock?.zet,
+				0
+			)
+		})
+
+		if (sum > maxZet) maxZet = sum
+	})
+
+	maxZet = Math.ceil(maxZet)
+
+	return maxZet
+}

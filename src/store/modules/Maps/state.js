@@ -6,6 +6,7 @@ const state = {
 	isLoadingGroups: false,
 	activeAupCode: '',
 	isLoadingSaveTable: false,
+	modeTable: 'full',
 }
 
 export default state

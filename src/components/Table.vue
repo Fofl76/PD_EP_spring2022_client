@@ -10,7 +10,7 @@
 					class="aup-table__zet-block"
 					v-for="i in maxZet"
 					:key="i"
-					:style="{ height: '90px' }"
+					:style="{ height: heightZet() }"
 				>
 					<span>{{ i }}</span>
 				</div>
@@ -87,7 +87,7 @@ export default {
 	}),
 
 	computed: {
-		...mapGetters('Maps', ['allGroupsMapId', 'buildTable']),
+		...mapGetters('Maps', ['allGroupsMapId', 'buildTable', 'heightZet', 'maxZet', 'modeTable']),
 
 		table() {
 			return this.buildTable
@@ -100,27 +100,6 @@ export default {
 			}
 		},
 
-		maxZet() {
-			if (this.loading) return this.fakeMaxZet
-
-			let maxZet = 0
-
-			this.table.forEach(column => {
-				let sum = 0
-				column.forEach(element => {
-					sum += element?.type?.reduce(
-						(sum, zetBlock) => sum + zetBlock?.zet,
-						0
-					)
-				})
-
-				if (sum > maxZet) maxZet = sum
-			})
-
-			maxZet = Math.ceil(maxZet)
-
-			return maxZet
-		},
 
 		countOfColumns() {
 			if (this.loading) return this.fakeElementsCount
@@ -163,9 +142,14 @@ export default {
     color: #fff
 
     &__draggable
-        height: 100%
-
+        flex: 1 1 100%
+    
+    &__column
+        display: flex
+        flex-direction: column
+		
     &__block-wrapper
+        transition: all 0.3s ease
         padding: 5px 0
 
     &__block
@@ -197,6 +181,8 @@ export default {
         text-overflow: ellipsis
         font-weight: bold
         -webkit-line-clamp: 4
+        &__full
+          -webkit-line-clamp: 1
 
     &__name-tooltip
         border: 111px solid red
@@ -217,6 +203,7 @@ export default {
         padding: 0
         text-align: center
         border-bottom: 1px solid #fff
+        transition: all 0.3s ease
         display: flex
         justify-content: center
         align-items: center
