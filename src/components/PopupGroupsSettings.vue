@@ -36,6 +36,9 @@
 										v-if="item.id !== 1"
 										v-slot:activator="{ on, attrs }"
 									>
+									<v-hover
+										v-slot="{ hover }"
+									>
 										<v-list-item v-bind="attrs" v-on="on">
 											<v-list-item-icon>
 												<v-icon :color="item.color">mdi-circle</v-icon>
@@ -44,7 +47,19 @@
 											<v-list-item-content>
 												<v-list-item-title>{{ item.name }}</v-list-item-title>
 											</v-list-item-content>
+
+											<v-list-item-icon
+												v-if="hover"
+												@click.stop="deleteGroupHandler(item)"
+											>
+												<v-hover
+													v-slot="{ hover: _hover }"
+												>
+													<v-icon :color="_hover ? 'black' : 'grey'">mdi-delete</v-icon>
+												</v-hover>
+											</v-list-item-icon>
 										</v-list-item>
+										</v-hover>
 									</template>
 									<span>{{ item.name }}</span>
 								</v-tooltip>
@@ -80,31 +95,37 @@
 								label="Наименование группировки"
 								outlined
 								dense
-								readonly
 								hide-details="auto"
 							></v-text-field>
 
 							<v-menu offset-y :close-on-content-click="false">
 								<template v-slot:activator="{ on, attrs }">
 									<v-btn
-										:color="selectedItem.color"
+										:color="colorModel"
 										class="PopupGroupsSettings__color-picker"
 										v-bind="attrs"
 										v-on="on"
-										disabled
-									>
+										>
 										Цвет
 									</v-btn>
 								</template>
 
 								<v-color-picker
-									v-model="selectedItem.color"
+									v-model="colorModel"
 									dot-size="25"
 									hide-inputs
 									hide-mode-switch
 									swatches-max-height="200"
 								/>
 							</v-menu>
+							<v-btn
+							  color="success"
+								:disabled="isDirtyGroup"
+								:loading="isLoadingUpdateGroup"
+								@click="updateGroupHandler"
+							>
+								Применить
+							</v-btn>
 						</div>
 
 						<div class="PopupGroupsSettings__group-settings-dnd">
@@ -302,6 +323,7 @@ export default {
 
 		nameModel: '',
 		colorModel: '',
+		isLoadingUpdateGroup: false,
 	}),
 
 	computed: {
@@ -320,6 +342,10 @@ export default {
 			set(value) {
 				this.$emit('input', value)
 			},
+		},
+
+		isDirtyGroup() {
+			return this.selectedItem.name === this.nameModel && this.selectedItem.color === this.colorModel
 		},
 
 		items() {
@@ -394,14 +420,14 @@ export default {
 	},
 
 	methods: {
-		...mapActions('Maps', ['fetchAllGroups', 'saveMap', 'addGroup']),
+		...mapActions('Maps', ['fetchAllGroups', 'saveMap', 'addGroup', 'deleteGroup', 'updateGroup']),
 		...mapMutations('Maps', ['setActiveMapTable', 'addGroups']),
 
 		onInputPopup(event) {
 			this.$emit('input', event)
 		},
 
-		initAllDisciplines(value) {
+		initAllDisciplines() {
 			this.newAllDisciplines = _.cloneDeep(
 				_.uniqBy(this.activeMapTable, el => el.discipline)
 			)
@@ -451,6 +477,29 @@ export default {
 				.finally(() => {
 					this.value_ = false
 				})
+		},
+
+		async deleteGroupHandler(group) {
+			await this.deleteGroup(group.id)
+			this.initAllDisciplines()
+			this.selectedItem = null
+			this.selectedItemIndex = null
+		},
+
+		async updateGroupHandler() {
+			const updatedGroup = {
+				id: this.selectedItem.id,
+				name: this.nameModel,
+				color: this.colorModel,
+			}
+
+			this.isLoadingUpdateGroup = true
+		
+			await this.updateGroup(updatedGroup)
+			
+			this.isLoadingUpdateGroup = false
+
+			this.initAllDisciplines()
 		},
 
 		onChangeAppointedGroup(e) {
@@ -520,6 +569,7 @@ export default {
 
     &__color-picker
         margin-left: 8px
+        margin-right: 8px
 
     &__hor-divider
         margin: 8px 0px
@@ -569,4 +619,7 @@ export default {
 
     &__empty-title
         margin-bottom: 4px !important
+
+.v-btn::before
+    opacity: 0 !important
 </style>

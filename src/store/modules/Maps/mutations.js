@@ -57,3 +57,23 @@ export const setActiveAupCode = (state, aupCode) => {
 
 export const setIsLoadingSaveTable = (state, flag) =>
 	(state.isLoadingSaveTable = flag)
+
+
+export const deleteGroup = (state, idGroup) => {
+	state.allGroups = state.allGroups.filter(el => el.id !== idGroup)
+
+	state.activeMapTable.forEach((el) => {
+		if (el.id_group === idGroup) {
+			el.id_group = 1
+		}
+	})
+}
+
+export const updateGroup = (state, group) => {
+	state.allGroups.forEach((el) => {
+		if (el.id === group.id) {
+			el.name = group.name
+			el.color = group.color
+		}
+	})
+}

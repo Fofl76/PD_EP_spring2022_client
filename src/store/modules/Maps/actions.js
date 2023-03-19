@@ -74,3 +74,27 @@ export const addGroup = async ({commit}, group) => {
 		console.log(e);
 	}
 }
+
+export const deleteGroup = async ({commit}, id) => {
+	try {
+		const res = await axios.post(`delete-group`, {
+			id,
+		})
+
+		commit('deleteGroup', id)
+		
+	} catch (e) {
+		console.log(e)
+	}
+}
+
+export const updateGroup = async ({commit}, group) => {
+	try {
+		const res = await axios.post(`update-group`, group)
+
+		commit('updateGroup', group)
+		
+	} catch (e) {
+		console.log(e)
+	}
+}
