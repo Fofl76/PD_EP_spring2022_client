@@ -23,7 +23,7 @@
 			"@models/*": ["src/models/*"]
 		},
 		"lib": ["esnext", "dom", "dom.iterable", "scripthost"],
-		"incremental": true,
+		"incremental": false,
 		"noImplicitAny": false
 	},
 	"include": ["./src/**/*"],
