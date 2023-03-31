@@ -12,6 +12,7 @@ module.exports = defineConfig({
 				'@utils': path.resolve(__dirname, 'src/services/utils'),
 				'@api': path.resolve(__dirname, 'src/services/api'),
 				'@models': path.resolve(__dirname, 'src/models'),
+				'@mixins': path.resolve(__dirname, 'src/mixins'),
 			},
 		},
 	},
