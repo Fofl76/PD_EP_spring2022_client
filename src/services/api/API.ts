@@ -21,7 +21,7 @@ abstract class Api {
 
 	/**
 	 * @desc Запрос на получение карты (таблицы)
-	 * @param {Key} Код карты
+	 * @param {Key} aupCode - Код карты
 	 * @return {Promise<IFetchMapResponse | null>}
 	 */
 	static fetchMap(aupCode: Key) {
@@ -48,7 +48,7 @@ abstract class Api {
 
 	/**
 	 * @desc Добавление группы
-	 * @param {any} Группа
+	 * @param {any} group - Группа
 	 * @return {Promise<any | null>}
 	 */
 	static addGroup(group: any) {
@@ -66,7 +66,7 @@ abstract class Api {
 
 	/**
 	 * @desc Обновление группы
-	 * @param {any} Группа
+	 * @param {any} group - Группа
 	 * @return {Promise<any | null>}
 	 */
 	static updateGroup(group: any) {
