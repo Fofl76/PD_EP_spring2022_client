@@ -38,14 +38,17 @@ abstract class Api {
 
 	/**
 	 * @desc Сохранение карты
+	 * @param {Key} aupCode - Номер карты
+	 * @param {any[]} table - Объект данных с картой
 	 * @return {Promise<any | null>}
 	 */
-	static saveMap(aupCode: string, table: any[]) {
+	static saveMap(aupCode: Key, table: any[]) {
 		return this.callFetch<any>(`save/${aupCode}`, AxiosMethodsEnum.POST, table)
 	}
 
 	/**
 	 * @desc Добавление группы
+	 * @param {any} Группа
 	 * @return {Promise<any | null>}
 	 */
 	static addGroup(group: any) {
@@ -54,15 +57,16 @@ abstract class Api {
 
 	/**
 	 * @desc Удаление группы
+	 * @param {Key} id - ID удаляемой группы
 	 * @return {Promise<any | null>}
 	 */
-	static deleteGroup(id: number | string) {
+	static deleteGroup(id: Key) {
 		return this.callFetch<any>(`delete-group`, AxiosMethodsEnum.POST, id)
 	}
 
 	/**
 	 * @desc Обновление группы
-	 * @param {Key} Группа
+	 * @param {any} Группа
 	 * @return {Promise<any | null>}
 	 */
 	static updateGroup(group: any) {
