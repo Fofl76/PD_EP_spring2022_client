@@ -1,89 +1,100 @@
-import { ResponceFetchAllMapsList } from "@/interface/api/FetchAllMapsList.interface";
-import { ResponceFetchMap } from "@/interface/api/FetchMap.interface";
-import { AxiosResponse } from "axios";
-import axios from "./axios";
+import { IFetchAllMapsListResponse, IFetchMapResponse } from '@models/Maps'
 
-class API {
-  async fetchAllMapsList() {
-    try {
-      const res: AxiosResponse<ResponceFetchAllMapsList[]> = await axios.get("getAllMaps");
-      const data = res.data;
+import { AxiosResponse } from 'axios'
+import axios from './axios'
 
-      return data
-    } catch (e) {
-      console.log(e)
-    }
-  }
+import Key from '@models/Key'
 
-  async fetchMap(aupCode: string) {
-    try {
-      const res: AxiosResponse<ResponceFetchMap> = await axios.get(`map/${aupCode}`)
-      const data = res.data
-  
-      return data
-    } catch (e) {
-      console.log(e)
-    }
-  }
-
-  async fetchAllGroups() {
-    try {
-      const res = await axios.get(`getGroups`)
-      const data = res.data
-  
-      return data
-    } catch (e) {
-      console.log(e)
-    }
-  }
-
-  async saveMap(table: any[], aupCode: string) {
-    try {
-      const activeTableMap = table
-  
-      const res = await axios.post(`save/${aupCode}`, activeTableMap)
-      return res
-    } catch (e) {
-      console.log(e)
-    }
-  }
-
-  async addGroup(group: any) {
-    try {
-      const res = await axios.post(`add-group`, group)
-      const data = res.data
-      
-      return data
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-  async deleteGroup(id: number|string) {
-    try {
-      const res = await axios.post(`delete-group`, {
-        id,
-      })
-      const data = res.data
-      
-      return data
-    } catch (e) {
-      console.log(e)
-    }
-  }
-
-  async updateGroup(group: any) {
-    try {
-      const res = await axios.post(`update-group`, group)
-      const data = res.data
-
-      return data
-    } catch (e) {
-      console.log(e)
-    }
-  }
+enum AxiosMethodsEnum {
+	GET = 'GET',
+	POST = 'POST',
 }
 
-const instance = new API()
+abstract class Api {
+	/**
+	 * @desc Запрос на получение всех дисциплин и факультетов
+	 * @return {Promise<IFetchAllMapsListResponse[] | null>}
+	 */
+	static fetchAllMapsList() {
+		return this.callFetch<IFetchAllMapsListResponse[]>('getAllMaps')
+	}
 
-export default instance
+	/**
+	 * @desc Запрос на получение карты (таблицы)
+	 * @param {Key} Код карты
+	 * @return {Promise<IFetchMapResponse | null>}
+	 */
+	static fetchMap(aupCode: Key) {
+		return this.callFetch<IFetchMapResponse>(`map/${aupCode}`)
+	}
+
+	/**
+	 * @desc Получение всех групп
+	 * @return {Promise<ResponseFetchMap | null>}
+	 */
+	static fetchAllGroups() {
+		return this.callFetch<any>(`getGroups`)
+	}
+
+	/**
+	 * @desc Сохранение карты
+	 * @return {Promise<any | null>}
+	 */
+	static saveMap(aupCode: string, table: any[]) {
+		return this.callFetch<any>(`save/${aupCode}`, AxiosMethodsEnum.POST, table)
+	}
+
+	/**
+	 * @desc Добавление группы
+	 * @return {Promise<any | null>}
+	 */
+	static addGroup(group: any) {
+		return this.callFetch<any>(`add-group`, AxiosMethodsEnum.POST, group)
+	}
+
+	/**
+	 * @desc Удаление группы
+	 * @return {Promise<any | null>}
+	 */
+	static deleteGroup(id: number | string) {
+		return this.callFetch<any>(`delete-group`, AxiosMethodsEnum.POST, id)
+	}
+
+	/**
+	 * @desc Обновление группы
+	 * @param {Key} Группа
+	 * @return {Promise<any | null>}
+	 */
+	static updateGroup(group: any) {
+		return this.callFetch<any>(`update-group`, AxiosMethodsEnum.POST, group)
+	}
+
+	/**
+	 * @desc Приватный общий метод для вызова запросов axios
+	 * @param {string} endpoint - Название энпдоинта на который отправляется запрос
+	 * @param {AxiosMethodsEnum = AxiosMethodsEnum.GET} method - Метод для вызова в axios
+	 * @param {any} args - Тело запроса
+	 * @return {Promise<T | undefined>} Промис
+	 */
+	private static async callFetch<T = any>(
+		endpoint: string,
+		method: AxiosMethodsEnum = AxiosMethodsEnum.GET,
+		args?: any
+	): Promise<T | null> {
+		try {
+			const res: AxiosResponse<T> = await axios(endpoint, {
+				method,
+				data: args,
+			})
+
+			const data = res.data
+
+			return data
+		} catch (e) {
+			console.log(e)
+			return null
+		}
+	}
+}
+
+export default Api

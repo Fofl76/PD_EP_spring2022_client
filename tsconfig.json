@@ -1,41 +1,31 @@
 {
-  "compilerOptions": {
-    "target": "es5",
-    "module": "esnext",
-    "strict": true,
-    "jsx": "preserve",
-    "importHelpers": true,
-    "moduleResolution": "node",
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
-    "useDefineForClassFields": true,
-    "sourceMap": true,
-    "baseUrl": ".",
-    "types": [
-      "webpack-env"
-    ],
-    "paths": {
-      "@/*": [
-        "src/*"
-      ]
-    },
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost"
-    ]
-  },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "tests/**/*.ts",
-    "tests/**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+	"compilerOptions": {
+		"target": "es5",
+		"module": "esnext",
+		"strict": true,
+		"jsx": "preserve",
+		"allowJs": true,
+		"importHelpers": true,
+		"moduleResolution": "node",
+		"skipLibCheck": true,
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"forceConsistentCasingInFileNames": true,
+		"useDefineForClassFields": true,
+		"sourceMap": true,
+		"baseUrl": ".",
+		"types": ["node", "webpack-env"],
+		"paths": {
+			"@components/*": ["src/components/*"],
+			"@services/*": ["src/services/*"],
+			"@utils/*": ["src/services/utils/*"],
+			"@api/*": ["src/services/api/*"],
+			"@models/*": ["src/models/*"]
+		},
+		"lib": ["esnext", "dom", "dom.iterable", "scripthost"],
+		"incremental": true,
+		"noImplicitAny": false
+	},
+	"include": ["./src/**/*"],
+	"exclude": ["node_modules"]
 }
