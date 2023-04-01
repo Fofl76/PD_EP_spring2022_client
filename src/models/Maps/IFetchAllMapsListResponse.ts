@@ -1,5 +1,5 @@
-import IMaps from './IMaps'
+import IFacultyRaw from './IFacultyRaw'
 
-interface IFetchAllMapsListResponse extends IMaps {}
+interface IFetchAllMapsListResponse extends IFacultyRaw {}
 
 export default IFetchAllMapsListResponse

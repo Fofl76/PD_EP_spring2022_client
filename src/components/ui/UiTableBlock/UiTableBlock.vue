@@ -1,0 +1,136 @@
+<template>
+  <div
+		class="aup-table__block-wrapper"
+		:style="{ height: height }"
+	>
+		<div
+      class="aup-table__block"
+      :style="{ backgroundColor }"
+    >
+			<v-tooltip bottom :open-delay="300">
+				<template v-slot:activator="{ on, attrs }">
+					<span
+						:style="styleName"
+						:class="classTableItem"
+						class="aup-table__name"
+						v-bind="attrs"
+						v-on="on"
+					>
+						{{ data.element.discipline }}
+					</span>
+				</template>
+
+				<span>{{ data.element.discipline }}</span>
+			</v-tooltip>
+
+			<v-btn
+				class="aup-table__edit-btn"
+				color="white"
+				x-small
+				fab
+				icon
+				@click="onEdit"
+			>
+				<v-icon dark> mdi-pen </v-icon>
+			</v-btn>
+		</div>
+	</div>
+</template>
+
+<script>
+import Vue from 'vue'
+import determinateTextColor from '@utils/determinateTextColor'
+
+export default {
+  props: {
+		data: {
+			type: Object,
+			required: true,
+		},
+    height: {
+      type: String,
+      default: "90px",
+    }
+	},
+  data() {
+    return {
+      modeTable: 'default',
+    }
+  },
+  computed: {
+    backgroundColor() {
+			return this.data.group?.color
+		},
+
+    classTableItem() {
+			return 'aup-table__name__' + this.modeTable
+		},
+
+
+    needIsDarkText() {
+			return determinateTextColor(this.backgroundColor)
+		},
+
+    styleName() {
+			const styles = {}
+
+			if (this.needIsDarkText) styles.color = '#333'
+			else styles.color = '#fff'
+
+			return styles
+		},
+  },
+  methods: {
+    onEdit() {
+			this.$emit('edit', this.data.element)
+		},
+  },
+}
+</script>
+
+
+<style lang="sass" scoped>
+.aup-table
+    &__block
+        position: relative
+        display: flex
+        justify-content: center
+        align-items: center
+        width: 100%
+        height: 100%
+        padding: 5px
+        text-align: center
+        border-radius: 8px
+        font-size: 1.2em
+        font-family: sans-serif
+        cursor: grab
+
+        &:hover
+            .aup-table__edit-btn
+                opacity: 1
+
+    &__name
+        overflow: hidden
+        line-height: 2rem
+        max-height: 8rem
+        -webkit-box-orient: vertical
+        display: block
+        display: -webkit-box
+        overflow: hidden !important
+        text-overflow: ellipsis
+        font-weight: bold
+        -webkit-line-clamp: 4
+        &__full
+          -webkit-line-clamp: 1
+
+    &__name-tooltip
+        border: 111px solid red
+    
+    &__edit-btn
+        background-color: rgba(255, 255, 255, 0.1)
+        position: absolute
+        right: 8px
+        top: 8px
+        opacity: 0
+        transition: opacity .25s ease
+</style>

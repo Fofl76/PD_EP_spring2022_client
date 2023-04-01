@@ -1,9 +1,10 @@
 import { IFetchAllMapsListResponse, IFetchMapResponse } from '@models/Maps'
+import { IFetchAllGroupsResponse } from '@models/Grops'
+import Key from '@models/Key'
 
 import { AxiosResponse } from 'axios'
 import axios from './axios'
 
-import Key from '@models/Key'
 
 enum AxiosMethodsEnum {
 	GET = 'GET',
@@ -33,7 +34,7 @@ abstract class Api {
 	 * @return {Promise<ResponseFetchMap | null>}
 	 */
 	static fetchAllGroups() {
-		return this.callFetch<any>(`getGroups`)
+		return this.callFetch<IFetchAllGroupsResponse[]>(`getGroups`)
 	}
 
 	/**

@@ -1,7 +1,7 @@
-import IFetchAllMapsListResponse from './IFetchAllMapsListResponse'
+import IMapItemRaw from './IMapItemRaw'
 
 interface IFetchMapResponse {
-	data: IFetchAllMapsListResponse[]
+	data: IMapItemRaw[]
 	header: string[]
 	year: number
 }

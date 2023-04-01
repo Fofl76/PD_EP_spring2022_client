@@ -1,6 +1,7 @@
 import IFetchAllMapsListResponse from './IFetchAllMapsListResponse'
 import IFetchMapResponse from './IFetchMapResponse'
-import IMaps from './IMaps'
-import IDirection from './IDirection'
+import IFacultyRaw from './IFacultyRaw'
+import IDirectionRaw from './IDirectionRaw'
+import IMapItemRaw from './IMapItemRaw'
 
-export { IFetchAllMapsListResponse, IFetchMapResponse, IMaps, IDirection }
+export { IFetchAllMapsListResponse, IFetchMapResponse, IFacultyRaw, IDirectionRaw, IMapItemRaw }
