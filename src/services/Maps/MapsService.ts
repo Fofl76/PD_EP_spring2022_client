@@ -16,25 +16,27 @@ interface IFacultiesList {
 }
 
 interface IMapList {
-  value: IMapItemRaw[][]
+	value: IMapItemRaw[][]
 }
 
 class MapsService extends Events {
+	// 1 зет = 32 часа
+	readonly ZETQUEALSHOURS = 32
+
 	private _facultiesList: IFacultiesList = {
 		value: [],
 	}
 	private _isLoadingFacultiesList = false
 
-
 	/**
-	 * @desc Геттер для получения всеех дисциплин и факультетов 
+	 * @desc Геттер для получения всеех дисциплин и факультетов
 	 * @return {IFaculty[]}
 	 */
 	get facultiesList() {
 		return new Proxy(this._facultiesList, {
 			set() {
 				throw new Error('is readonly')
-			}
+			},
 		})
 	}
 
@@ -43,7 +45,7 @@ class MapsService extends Events {
 	}
 
 	/**
-	 * @desc Метод для записи дисциплин и факультетов 
+	 * @desc Метод для записи дисциплин и факультетов
 	 * @param {IFaculty[]} newList - Новый список дисциплин и факультетов
 	 * @return {void}
 	 */
@@ -53,11 +55,10 @@ class MapsService extends Events {
 	}
 
 	/**
-	 * @desc Метод для получения всех дисциплин и факультетов 
+	 * @desc Метод для получения всех дисциплин и факультетов
 	 * @return {Promise<void>}
 	 */
 	async fetchFacultiesList() {
-
 		const facultiesList = await Api.fetchAllMapsList()
 
 		if (facultiesList) {
@@ -72,16 +73,15 @@ class MapsService extends Events {
 	private _isLoadingMapList = false
 	private _isLoadingSaveMapList = false
 
-
-  /**
+	/**
 	 * @desc Геттер для получения массива элементов
 	 * @return {IMapItemRaw[]}
 	 */
-  get mapList() {
+	get mapList() {
 		return new Proxy(this._mapList, {
 			set() {
 				throw new Error('is readonly')
-			}
+			},
 		})
 	}
 
@@ -94,40 +94,37 @@ class MapsService extends Events {
 	}
 
 	/**
-	 * @desc Геттер для получения статуса сохраненти
+	 * @desc Геттер для получения статуса сохранения
 	 * @return {boolean}
 	 */
 	get isLoadingSaveMapList() {
 		return this._isLoadingSaveMapList
 	}
 
-  /**
-	 * @desc Геттер для получения кол-ва ЗЕТ
+	/**
+	 * @desc Геттер для получения максимального кол-ва ЗЕТ среди всех колонок
 	 * @return {number}
 	 */
-  get maxZet() {
-    let maxZet = 0
+	get maxZet() {
+		let maxZet = 0
 
-    this.mapList.value.forEach(column => {
-      let sum = 0
-      column.forEach(element => {
-        sum += element?.type?.reduce(
-          (sum, zetBlock) => sum + zetBlock?.zet,
-          0
-        )
-      })
+		this.mapList.value.forEach(column => {
+			let sum = 0
+			column.forEach(element => {
+				sum += element?.type?.reduce((sum, zetBlock) => sum + zetBlock?.zet, 0)
+			})
 
-      if (sum > maxZet) maxZet = sum
-    })
+			if (sum > maxZet) maxZet = sum
+		})
 
-    maxZet = Math.ceil(maxZet)
+		maxZet = Math.ceil(maxZet)
 
-    return maxZet
-  }
+		return maxZet
+	}
 
 	/**
 	 * @desc Метод для сохранения всей таблицы
-   * @param {Key} aupCode - Ауп код направления
+	 * @param {Key} aupCode - Ауп код направления
 	 * @return {Promise<void>}
 	 */
 	async saveAllMap(aupCode: Key, mapList: IMapList[] | null = null) {
@@ -144,25 +141,24 @@ class MapsService extends Events {
 
 	/**
 	 * @desc Метод для локального удаления элемтна с колонке
-   * @param {IMapItemRaw} item - Элемент, который необходимо удалить
+	 * @param {IMapItemRaw} item - Элемент, который необходимо удалить
 	 * @return {void}
 	 */
 	deleteMapItemLocal(item: IMapItemRaw) {
 		const copyColumn = _.cloneDeep(this._mapList.value[item.num_col - 1])
 
-		copyColumn.splice(item.num_row, 1)		
+		copyColumn.splice(item.num_row, 1)
 
 		const recalculateColumn = getRecalculatedColumn(copyColumn)
 
 		Vue.set(this._mapList.value, item.num_col - 1, recalculateColumn)
 	}
 
-
 	/**
 	 * @desc Метод для локального добавления элемтна в колонку
-   * @param {IMapItemRaw} item - Элемент, который необходимо добавить
-   * @param {number} indexColumn - Номер колонки, в которую необходимо добавить
-   * @param {number} indexRow - Номер строки, в которую необходимо добавить
+	 * @param {IMapItemRaw} item - Элемент, который необходимо добавить
+	 * @param {number} indexColumn - Номер колонки, в которую необходимо добавить
+	 * @param {number} indexRow - Номер строки, в которую необходимо добавить
 	 * @return {void}
 	 */
 	addMapItemLocal(item: IMapItemRaw) {
@@ -176,27 +172,31 @@ class MapsService extends Events {
 	}
 
 	/**
-	 * @desc Метод для локального перемещения элемтна в колонке
-   * @param {IMapItemRaw} item - Элемент, который необходимо переместить
-   * @param {number} oldIndex - Номер старой строки
-   * @param {number} newIndex - Номер новой строки
+	 * @desc Метод для локального перемещения элеметна в колонке
+	 * @param {IMapItemRaw} item - Элемент, который необходимо переместить
+	 * @param {number} oldIndex - Номер старой строки
+	 * @param {number} newIndex - Номер новой строки
 	 * @return {void}
 	 */
-	movedMapItemInColLocal(item: IMapItemRaw, oldIndex: number, newIndex: number) {
+	moveMapItemInColLocal(item: IMapItemRaw, oldIndex: number, newIndex: number) {
 		const copyColumn = _.cloneDeep(this._mapList.value[item.num_col - 1])
-		
+
 		copyColumn.splice(oldIndex, 1)
 
 		copyColumn.splice(newIndex, 0, item)
-		
+
 		const recalculateColumn = getRecalculatedColumn(copyColumn)
 
 		Vue.set(this._mapList.value, item.num_col - 1, recalculateColumn)
 	}
 
-  /**
+	editMapItem(item, newItem) {
+		console.log(item, newItem)
+	}
+
+	/**
 	 * @desc Метод для записи списка групп
-   * @param {IMapItemRaw[]} newList - Новый список
+	 * @param {IMapItemRaw[]} newList - Новый список
 	 * @return {void}
 	 */
 	setMapList(newList: IMapItemRaw[]) {
@@ -204,7 +204,7 @@ class MapsService extends Events {
 		this.emit('onUpdatedMapList', newList)
 	}
 
-  /**
+	/**
 	 * @desc Метод для получения данных таблицы
 	 * @return {Promise<void>}
 	 */
@@ -212,10 +212,10 @@ class MapsService extends Events {
 		this._isLoadingMapList = true
 		const mapList = await Api.fetchMap(aupCode)
 
-    if (mapList) {
+		if (mapList) {
 			this.setMapList(mapList.data)
-      this.emit('fetchMapList', mapList.data)
-    }
+			this.emit('fetchMapList', mapList.data)
+		}
 
 		this._isLoadingMapList = false
 	}
