@@ -16,10 +16,7 @@
 				</v-container>
 			</v-main>
 
-			<ui-snackbar
-				v-bind="snackbarOptions"
-				@input="clearSnackbarOptions"
-			/>
+			<ui-snackbar v-bind="snackbarOptions" @input="clearSnackbarOptions" />
 		</div>
 	</v-app>
 </template>
@@ -45,7 +42,7 @@ export default {
 			mapsService: MapsService,
 			groupsService: GroupsService,
 
-			snackbarOptions: null
+			snackbarOptions: null,
 		}
 	},
 	computed: {
@@ -54,7 +51,7 @@ export default {
 		},
 		isLoadingMaps() {
 			return this.mapsService.isLoadingMapList
-		}
+		},
 	},
 	watch: {
 		'$route.query.aup': {
@@ -80,7 +77,7 @@ export default {
 			this.snackbarOptions = {
 				value: true,
 				type: 'success',
-				timeout: 2500
+				timeout: 2500,
 			}
 		},
 
@@ -92,9 +89,9 @@ export default {
 					error: {
 						title: 'Ошибка при загрузке файла',
 						text: res?.data || 'Не удалось сохранить карту.',
-					}
+					},
 				},
-				timeout: 2500
+				timeout: 2500,
 			}
 		},
 	},
@@ -144,7 +141,7 @@ export default {
 
     &__save-table-btn
         position: fixed
-        bottom: 90px
+        bottom: 30px
         right: 30px
         transition: right .2s cubic-bezier(0.4, 0, 0.2, 1)
     &__save-table-mode
@@ -160,4 +157,3 @@ export default {
         &__save-table-mode
             right: calc(var(--drawer-width) + 30px)
 </style>
-
