@@ -111,23 +111,25 @@
 
 					<div class="RightMenuEditMapItem__type-row">
 						<v-text-field
-							value="1"
+							:value="sumZet"
 							label="Сумма ЗЕТ"
 							type="number"
 							hide-details
 							dense
 							filled
 							dark
+							@input="onInputSumZet"
 						/>
 
 						<v-text-field
-							value="2"
+							:value="sumHours"
 							label="Сумма часов"
 							type="number"
 							hide-details
 							dense
 							filled
 							dark
+							@input="onInputSumHours"
 						/>
 					</div>
 				</div>
@@ -239,6 +241,22 @@ export default {
 				this.$emit('input', value)
 			},
 		},
+
+		// value для поля "Сумма ЗЕТ"
+		sumZet() {
+			return this.copyItem.type.reduce(
+				(accumulator, currentValue) => accumulator + currentValue.zet,
+				0
+			)
+		},
+
+		// value для поля "Сумма часов"
+		sumHours() {
+			return this.copyItem.type.reduce(
+				(accumulator, currentValue) => accumulator + currentValue.hours,
+				0
+			)
+		},
 	},
 
 	watch: {
@@ -295,6 +313,9 @@ export default {
 			this.copyItem.type[indexType].hours = value
 			this.copyItem.type[indexType].zet = value / this.zetEqualsHorus
 		},
+
+		onInputSumZet(value) {},
+		onInputSumHours(value) {},
 	},
 }
 </script>
