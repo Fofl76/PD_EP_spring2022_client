@@ -1,5 +1,5 @@
 import { IFetchAllMapsListResponse, IFetchMapResponse } from '@models/Maps'
-import { IFetchAllGroupsResponse } from '@models/Grops'
+import { IFetchAllGroupsResponse, IGroup } from '@models/Grops'
 import Key from '@models/Key'
 
 import { AxiosResponse } from 'axios'
@@ -58,10 +58,10 @@ abstract class Api {
 	/**
 	 * @desc Добавление группы
 	 * @param {any} group - Группа
-	 * @return {Promise<any | null>}
+	 * @return {Promise<IGroup | null>}
 	 */
-	static addGroup(group: any) {
-		return this.callFetch<any>(`add-group`, AxiosMethodsEnum.POST, group)
+	static addGroup(group: IGroup) {
+		return this.callFetch<IGroup>(`add-group`, AxiosMethodsEnum.POST, group)
 	}
 
 	/**
@@ -69,17 +69,19 @@ abstract class Api {
 	 * @param {Key} id - ID удаляемой группы
 	 * @return {Promise<any | null>}
 	 */
-	static deleteGroup(id: Key) {
-		return this.callFetch<any>(`delete-group`, AxiosMethodsEnum.POST, id)
+	static deleteGroup(id: number) {
+		return this.callFetch<any>(`delete-group`, AxiosMethodsEnum.POST, {
+			id
+		})
 	}
 
 	/**
 	 * @desc Обновление группы
 	 * @param {any} group - Группа
-	 * @return {Promise<any | null>}
+	 * @return {Promise<void | null>}
 	 */
-	static updateGroup(group: any) {
-		return this.callFetch<any>(`update-group`, AxiosMethodsEnum.POST, group)
+	static updateGroup(group: IGroup) {
+		return this.callFetch<void>(`update-group`, AxiosMethodsEnum.POST, group)
 	}
 
 	/**

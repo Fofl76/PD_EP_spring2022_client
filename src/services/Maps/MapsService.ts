@@ -130,10 +130,10 @@ class MapsService extends Events {
    * @param {Key} aupCode - Ауп код направления
 	 * @return {Promise<void>}
 	 */
-	async saveAllMap(aupCode: Key) {
+	async saveAllMap(aupCode: Key, mapList: IMapList[] | null = null) {
 		this._isLoadingSaveMapList = true
 
-		const res = await Api.saveMap(aupCode, unbuildMapList(this._mapList.value))
+		const res = await Api.saveMap(aupCode, mapList || unbuildMapList(this._mapList.value))
 
 		if (res) {
 			await this.fetchMapList(aupCode)
