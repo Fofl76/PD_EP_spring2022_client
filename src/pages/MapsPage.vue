@@ -1,7 +1,7 @@
 <template>
 	<v-app>
 		<div class="Home">
-			<home-header
+			<HomeHeader
 				:aupCode="'aupCode'"
 				@successUploadFile="onSuccessUploadFile"
 				@errorUploadFile="onErrorUploadFile"
@@ -9,14 +9,20 @@
 
 			<v-main dark app class="Home__main">
 				<v-container class="Home__main-inner" fluid>
-					<table-maps
+					<TableMaps
 						:loading="isLoadingMaps"
 						:table="mapsService.mapList?.value"
+						@edit-click="onEditClick"
 					/>
 				</v-container>
 			</v-main>
 
 			<ui-snackbar v-bind="snackbarOptions" @input="clearSnackbarOptions" />
+
+			<RightMenuEditMapItem
+				v-model="rightMenuEditModel"
+				:item="rightMenuEditItem"
+			/>
 		</div>
 	</v-app>
 </template>
@@ -28,6 +34,7 @@ import GroupsService from '@services/Groups/GroupsService'
 import HomeHeader from '@components/HomePage/HomeHeader/HomeHeader.vue'
 import TableMaps from '@components/HomePage/Table/TableMaps.vue'
 import UiSnackbar from '@components/ui/UiSnackbar/UiSnackbar.vue'
+import RightMenuEditMapItem from '@components/HomePage/RightMenuEditMapItem.vue'
 
 export default {
 	name: 'HomeView',
@@ -35,6 +42,7 @@ export default {
 		HomeHeader,
 		TableMaps,
 		UiSnackbar,
+		RightMenuEditMapItem,
 	},
 	data() {
 		return {
@@ -43,6 +51,9 @@ export default {
 			groupsService: GroupsService,
 
 			snackbarOptions: null,
+
+			rightMenuEditModel: false,
+			rightMenuEditItem: null,
 		}
 	},
 	computed: {
@@ -93,6 +104,11 @@ export default {
 				},
 				timeout: 2500,
 			}
+		},
+
+		onEditClick(item) {
+			this.rightMenuEditModel = true
+			this.rightMenuEditItem = item
 		},
 	},
 	async created() {
