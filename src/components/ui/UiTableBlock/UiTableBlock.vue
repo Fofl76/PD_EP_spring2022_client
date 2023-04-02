@@ -103,7 +103,7 @@ export default {
         padding: 5px
         text-align: center
         border-radius: 8px
-        font-size: 1.2em
+        font-size: 100%
         font-family: sans-serif
         cursor: grab
         transition: box-shadow .25s ease
@@ -123,6 +123,7 @@ export default {
         max-height: 8rem
         -webkit-box-orient: vertical
         display: block
+        max-height: 100%
         display: -webkit-box
         overflow: hidden !important
         text-overflow: ellipsis

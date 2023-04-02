@@ -5,9 +5,11 @@
 			:loading="loading && !isLoadingSaveMapList"
 			:activeEditingItemId="activeEditingItemId"
 			:max-zet="maxZet"
+      :is-full-screen="isFullScreen"
 			@edit="onEdit"
 			@drag="onDrag"
 		/>
+
 		<v-btn
 			v-if="isAvailableSave"
 			class="Home__save-table-btn"
@@ -18,6 +20,15 @@
 		>
 			<span>Сохранить карту</span>
 			<v-icon right dark> mdi-content-save </v-icon>
+		</v-btn>
+
+		<v-btn
+			class="Home__save-table-mode"
+			color="success"
+			dark
+			@click="isFullScreen = !isFullScreen"
+		>
+			<span>Изменить вид таблицы</span>
 		</v-btn>
 	</div>
 </template>
@@ -43,6 +54,7 @@ export default {
 	},
 	data() {
 		return {
+      isFullScreen: true,
 			isAvailableSave: false,
 		}
 	},

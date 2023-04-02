@@ -10,7 +10,7 @@
 					class="aup-table__zet-block"
 					v-for="i in !loading ? maxZet : fakeMaxZet"
 					:key="i"
-					:style="{ height: '90px' }"
+					:style="{ height: heightZet() }"
 				>
 					<span>{{ i }}</span>
 				</div>
@@ -37,7 +37,10 @@
 							<UiTableBlock
 								:data="dataValue(element)"
 								:isEditing="activeEditingItemId === element.id"
-								:height="`${heightTableBlock(element)}px`"
+								:height="heightTableBlock(element)"
+                :class="{
+                  'aup-table__block-wrapper-small': isFullScreen,
+                }"
 								@edit="$emit('edit', $event)"
 								@click.native="onClickBlock(element)"
 							/>
@@ -81,15 +84,15 @@ export default {
 			default: () => [],
 		},
 		maxZet: {
-			type: Number,
+      type: Number,
 			default: 30,
 		},
-		loading: Boolean,
-
 		activeEditingItemId: {
-			type: [String, Number],
+      type: [String, Number],
 			default: null,
 		},
+    loading: Boolean,
+    isFullScreen:Boolean,
 	},
 	data() {
 		return {
@@ -99,6 +102,16 @@ export default {
 		}
 	},
 	computed: {
+    heightZet() {
+      return (countZet = 1) => {
+        if (this.isFullScreen) {
+          return `calc(((100vh - 80px - 32px - 30px) / ${this.maxZet}) * ${countZet})`
+        }
+    
+          return `calc(90px * ${countZet})`
+        }
+    },
+
 		dataValue() {
 			return element => ({
 				element,
@@ -117,7 +130,7 @@ export default {
 		},
 
 		heightTableBlock() {
-			return data => 90 * this.totalZet(data)
+			return data => this.heightZet(this.totalZet(data))
 		},
 
 		styleVars() {
@@ -168,6 +181,10 @@ export default {
     grid-template-columns: 30px repeat(var(--count-column), minmax(100px, 1fr))
     gap: 8px
     color: #fff
+
+    &__block-wrapper-small
+        .aup-table__name
+            transform: scale(.75)
 
     &__draggable
         flex: 1 1 100%
