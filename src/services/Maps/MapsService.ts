@@ -8,6 +8,8 @@ import Vue from 'vue'
 
 import getRecalculatedColumn from './getRecalculatedColumn'
 import buildMapList from './buildMapsList'
+import unbuildMapList from './unbuildMapsList'
+import Key from '@models/Key'
 
 interface IFacultiesList {
 	value: IFacultyRaw[]
@@ -68,6 +70,7 @@ class MapsService extends Events {
 		value: [],
 	} as IMapList
 	private _isLoadingMapList = false
+	private _isLoadingSaveMapList = false
 
 
   /**
@@ -88,6 +91,14 @@ class MapsService extends Events {
 	 */
 	get isLoadingMapList() {
 		return this._isLoadingMapList
+	}
+
+	/**
+	 * @desc Геттер для получения статуса сохраненти
+	 * @return {boolean}
+	 */
+	get isLoadingSaveMapList() {
+		return this._isLoadingSaveMapList
 	}
 
   /**
@@ -113,6 +124,23 @@ class MapsService extends Events {
 
     return maxZet
   }
+
+	/**
+	 * @desc Метод для сохранения всей таблицы
+   * @param {Key} aupCode - Ауп код направления
+	 * @return {Promise<void>}
+	 */
+	async saveAllMap(aupCode: Key) {
+		this._isLoadingSaveMapList = true
+
+		const res = await Api.saveMap(aupCode, unbuildMapList(this._mapList.value))
+
+		if (res) {
+			await this.fetchMapList(aupCode)
+		}
+
+		this._isLoadingSaveMapList = false
+	}
 
 	/**
 	 * @desc Метод для локального удаления элемтна с колонке
@@ -180,13 +208,16 @@ class MapsService extends Events {
 	 * @desc Метод для получения данных таблицы
 	 * @return {Promise<void>}
 	 */
-	async fetchMapList(aupCode: string) {
-    const mapList = await Api.fetchMap(aupCode)
+	async fetchMapList(aupCode: Key) {
+		this._isLoadingMapList = true
+		const mapList = await Api.fetchMap(aupCode)
 
     if (mapList) {
-      this.setMapList(mapList.data)
+			this.setMapList(mapList.data)
       this.emit('fetchMapList', mapList.data)
     }
+
+		this._isLoadingMapList = false
 	}
 }
 

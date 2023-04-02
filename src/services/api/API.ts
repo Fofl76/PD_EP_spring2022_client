@@ -4,11 +4,19 @@ import Key from '@models/Key'
 
 import { AxiosResponse } from 'axios'
 import axios from './axios'
-
+import objectToFormData from '@utils/objectToFormData'
 
 enum AxiosMethodsEnum {
 	GET = 'GET',
 	POST = 'POST',
+}
+
+interface IFormUpload {
+	file: File
+	options: {
+		enableCheckIntegrality: boolean
+		enableCheckSumMap: boolean
+	}
 }
 
 abstract class Api {
@@ -75,21 +83,33 @@ abstract class Api {
 	}
 
 	/**
+	 * @desc Загрузка файла с дисциплинами
+	 * @param {IFormUpload} group - Группа
+	 * @return {Promise<Key | null>}
+	 */
+	static uploadFile(form: IFormUpload) {
+		return this.callFetch<Key>(`upload`, AxiosMethodsEnum.POST, objectToFormData(form), { 'Content-Type': 'multipart/form-data' })
+	}
+
+	/**
 	 * @desc Приватный общий метод для вызова запросов axios
 	 * @param {string} endpoint - Название энпдоинта на который отправляется запрос
 	 * @param {AxiosMethodsEnum = AxiosMethodsEnum.GET} method - Метод для вызова в axios
 	 * @param {any} args - Тело запроса
+	 * @param {Record<string, string>} headers - Заголовки запроса
 	 * @return {Promise<T | undefined>} Промис
 	 */
 	private static async callFetch<T = any>(
 		endpoint: string,
 		method: AxiosMethodsEnum = AxiosMethodsEnum.GET,
-		args?: any
+		args?: any,
+		headers?: Record<string, string>, 
 	): Promise<T | null> {
 		try {
 			const res: AxiosResponse<T> = await axios(endpoint, {
 				method,
 				data: args,
+				headers
 			})
 
 			const data = res.data

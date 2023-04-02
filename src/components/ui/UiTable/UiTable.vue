@@ -35,7 +35,7 @@
 					>
 						<div v-for="element in column" :key="element.id">
 							<ui-table-block
-								:data="{ element, group: getGroupById(element.id_group) }"
+								:data="dataValue(element)"
                 :height="`${heightTableBlock(element)}px`"
 								@edit="$emit('edit', $event)"
 							/>
@@ -91,6 +91,12 @@ export default {
     }
   },
   computed: {
+    dataValue() {
+      return element => ({
+        element,
+        group: this.getGroupById(element.id_group),
+      })
+    },
     dragOptions() {
 			return {
 				animation: 250,

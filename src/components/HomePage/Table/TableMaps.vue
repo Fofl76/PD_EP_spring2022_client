@@ -2,11 +2,22 @@
   <div>
     <ui-table
       :table="table"
-      :loading="loading"
+      :loading="loading && !isLoadingSaveMapList"
       :max-zet="maxZet"
       @edit="onEdit"
       @drag="onDrag"
     />
+    <v-btn
+      v-if="isAvailableSave"
+      class="Home__save-table-btn"
+      :loading="isLoadingSaveMapList"
+      color="success"
+      dark
+      @click="onSaveMap"
+    >
+      <span>Сохранить карту</span>
+      <v-icon right dark> mdi-content-save </v-icon>
+    </v-btn>
   </div>
 </template>
 
@@ -23,14 +34,31 @@ export default {
     },
     loading: Boolean,
   },
+  data() {
+    return {
+      isAvailableSave: false,
+    }
+  },
   computed: {
     maxZet() {
       return MapsService.maxZet
     },
+    isLoadingSaveMapList() {
+      return MapsService.isLoadingSaveMapList
+    }
   },
   methods: {
     onEdit(event) {
       console.log(event)
+    },
+    async onSaveMap() {
+      const aup = this.$route.query.aup
+
+      if (!aup) return
+
+      await MapsService.saveAllMap(aup)
+
+      this.isAvailableSave = false
     },
     onDrag({ data, columnIndex }) {
       const added = data?.added
@@ -54,6 +82,8 @@ export default {
       if (moved) {
         MapsService.movedMapItemInColLocal(moved.element, moved.oldIndex, moved.newIndex)
       }
+
+      this.isAvailableSave = true
     }
   }
 }

@@ -50,7 +50,7 @@ export default {
 		},
 
 		setUrlAup(aupCode) {
-			this.$router.replace({ query: { aup: aupCode } })
+			this.$router.push({ query: { aup: aupCode } }).catch(() => {})
 		},
 
 		findFacultyModelByAup(aup) {

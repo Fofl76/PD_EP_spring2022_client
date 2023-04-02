@@ -1,16 +1,26 @@
 <template>
 	<v-app>
 		<div class="Home">
-			<home-header :aupCode="'aupCode'" />
+			<home-header
+				:aupCode="'aupCode'"
+				@successUploadFile="onSuccessUploadFile"
+				@errorUploadFile="onErrorUploadFile"
+			/>
+
+			<v-main dark app class="Home__main">
+				<v-container class="Home__main-inner" fluid>
+					<table-maps
+						:loading="isLoadingMaps"
+						:table="mapsService.mapList?.value"
+					/>
+				</v-container>
+			</v-main>
+
+			<ui-snackbar
+				v-bind="snackbarOptions"
+				@input="clearSnackbarOptions"
+			/>
 		</div>
-		<v-main dark app class="Home__main">
-			<v-container class="Home__main-inner" fluid>
-				<table-maps
-					:loading="isLoading"
-					:table="mapsService.mapList?.value"
-				/>
-			</v-container>
-		</v-main>
 	</v-app>
 </template>
 
@@ -20,24 +30,31 @@ import MapsService from '@services/Maps/MapsService'
 import GroupsService from '@services/Groups/GroupsService'
 import HomeHeader from '@components/HomePage/HomeHeader/HomeHeader.vue'
 import TableMaps from '@components/HomePage/Table/TableMaps.vue'
+import UiSnackbar from '@components/ui/UiSnackbar/UiSnackbar.vue'
 
 export default {
 	name: 'HomeView',
 	components: {
 		HomeHeader,
 		TableMaps,
+		UiSnackbar,
 	},
 	data() {
 		return {
 			isLoading: true,
 			mapsService: MapsService,
 			groupsService: GroupsService,
+
+			snackbarOptions: null
 		}
 	},
 	computed: {
 		allGroupsMapId() {
 			return this.groupsService.allGroupsMapId
 		},
+		isLoadingMaps() {
+			return this.mapsService.isLoadingMapList
+		}
 	},
 	watch: {
 		'$route.query.aup': {
@@ -50,14 +67,41 @@ export default {
 			immediate: true,
 		},
 	},
+	methods: {
+		clearSnackbarOptions() {
+			this.snackbarOptions = null
+		},
+
+		onSuccessUploadFile(aup) {
+			if (aup) {
+				this.$router.push({ query: { aup } }).catch(() => {})
+			}
+
+			this.snackbarOptions = {
+				value: true,
+				type: 'success',
+				timeout: 2500
+			}
+		},
+
+		onErrorUploadFile(res) {
+			this.snackbarOptions = {
+				value: true,
+				type: 'error',
+				settings: {
+					error: {
+						title: 'Ошибка при загрузке файла',
+						text: res?.data || 'Не удалось сохранить карту.',
+					}
+				},
+				timeout: 2500
+			}
+		},
+	},
 	async created() {
-		this.isLoading = true
-	
-		await this.mapsService.fetchFacultiesList(),
+		await this.groupsService.fetchAllGroups()
 
-		await this.groupsService.fetchAllGroups(),
-
-		this.isLoading = false
+		await this.mapsService.fetchFacultiesList()
 	},
 }
 </script>
