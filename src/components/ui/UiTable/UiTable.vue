@@ -1,5 +1,5 @@
 <template>
-  <div>
+	<div>
 		<div class="aup-table" :style="styleVars">
 			<div class="aup-table__left-column">
 				<div class="aup-table__column-header aup-table__left-column-header">
@@ -34,10 +34,12 @@
 						@change="onDragElementTable($event, key)"
 					>
 						<div v-for="element in column" :key="element.id">
-							<ui-table-block
+							<UiTableBlock
 								:data="dataValue(element)"
-                :height="`${heightTableBlock(element)}px`"
+								:isEditing="activeEditingItemId === element.id"
+								:height="`${heightTableBlock(element)}px`"
 								@edit="$emit('edit', $event)"
+								@click.native="onClickBlock(element)"
 							/>
 						</div>
 					</draggable>
@@ -69,46 +71,52 @@ import UiTableBlock from '../UiTableBlock/UiTableBlock.vue'
 import GroupsService from '@services/Groups/GroupsService'
 import orderWords from '@utils/orderWords'
 import UiTableSkeletonBlock from '../UiTableSkeletonBlock/UiTableSkeletonBlock.vue'
+import _ from 'lodash'
 
 export default {
-  components: { UiTableBlock, draggable, UiTableSkeletonBlock },
-  props: {
-    table: {
-      type: Array,
-      default: () => [],
-    },
-    maxZet: {
-      type: Number,
-      default: 30,
-    },
-    loading: Boolean,
-  },
-  data() {
-    return {
-      orderWords,
-      fakeElementsCount: 8,
-		  fakeMaxZet: 30,
-    }
-  },
-  computed: {
-    dataValue() {
-      return element => ({
-        element,
-        group: this.getGroupById(element.id_group),
-      })
-    },
-    dragOptions() {
+	components: { UiTableBlock, draggable, UiTableSkeletonBlock },
+	props: {
+		table: {
+			type: Array,
+			default: () => [],
+		},
+		maxZet: {
+			type: Number,
+			default: 30,
+		},
+		loading: Boolean,
+
+		activeEditingItemId: {
+			type: [String, Number],
+			default: null,
+		},
+	},
+	data() {
+		return {
+			orderWords,
+			fakeElementsCount: 8,
+			fakeMaxZet: 30,
+		}
+	},
+	computed: {
+		dataValue() {
+			return element => ({
+				element,
+				group: this.getGroupById(element.id_group),
+			})
+		},
+		dragOptions() {
 			return {
 				animation: 250,
 				group: 'map',
 			}
 		},
 
-    allGroupsMapId() {
-      return GroupsService.allGroupsMapId
-    },
+		allGroupsMapId() {
+			return GroupsService.allGroupsMapId
+		},
 
-    heightTableBlock() {
+		heightTableBlock() {
 			return data => 90 * this.totalZet(data)
 		},
 
@@ -118,31 +126,39 @@ export default {
 			}
 		},
 
-    countOfColumns() {
+		countOfColumns() {
 			if (this.loading) return this.fakeElementsCount
 
 			return Object.keys(this.table).length
 		},
-  },
-  methods: {
-    onDragElementTable(data, columnIndex) {
+	},
+	methods: {
+		onDragElementTable(data, columnIndex) {
 			this.$emit('drag', { data, columnIndex })
 		},
 
-    getGroupById(idGroup) {
+		getGroupById(idGroup) {
 			return this.allGroupsMapId[idGroup]
 		},
 
-    totalZet(data) {
+		totalZet(data) {
 			return data.type.reduce((sum, zetBlock) => {
 				return sum + zetBlock?.zet
 			}, 0)
 		},
 
-    setData(dataTransfer) {
+		setData(dataTransfer) {
 			dataTransfer.setDragImage(document.createElement('div'), 0, 0)
 		},
-  }
+
+		onClickBlock(item) {
+			console.log(_.cloneDeep(item))
+		},
+
+		isEditingItem(item) {
+			console.log(item)
+		},
+	},
 }
 </script>
 
@@ -155,11 +171,11 @@ export default {
 
     &__draggable
         flex: 1 1 100%
-    
+
     &__column
         display: flex
         flex-direction: column
-		
+
     &__block-wrapper
         transition: all 0.3s ease
         padding: 5px 0

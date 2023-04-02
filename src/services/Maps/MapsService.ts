@@ -20,6 +20,9 @@ interface IMapList {
 }
 
 class MapsService extends Events {
+	// 1 зет = 32 часа
+	readonly ZETQUEALSHOURS = 32
+
 	private _facultiesList: IFacultiesList = {
 		value: [],
 	}
@@ -185,6 +188,10 @@ class MapsService extends Events {
 		const recalculateColumn = getRecalculatedColumn(copyColumn)
 
 		Vue.set(this._mapList.value, item.num_col - 1, recalculateColumn)
+	}
+
+	editMapItem(item, newItem) {
+		console.log(item, newItem)
 	}
 
 	/**
