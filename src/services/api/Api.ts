@@ -1,4 +1,8 @@
-import { IFetchAllMapsListResponse, IFetchMapResponse } from '@models/Maps'
+import {
+	IFetchAllMapsListResponse,
+	IFetchMapResponse,
+	IFetchAllControlTypesResponse,
+} from '@models/Maps'
 import { IFetchAllGroupsResponse, IGroup } from '@models/Grops'
 import Key from '@models/Key'
 
@@ -46,6 +50,14 @@ abstract class Api {
 	}
 
 	/**
+	 * @desc Получение всех типов для айтема
+	 * @return {Promise<ResponseFetchMap | null>}
+	 */
+	static fetchAllControlTypes() {
+		return this.callFetch<IFetchAllControlTypesResponse[]>(`getControlTypes`)
+	}
+
+	/**
 	 * @desc Сохранение карты
 	 * @param {Key} aupCode - Номер карты
 	 * @param {any[]} table - Объект данных с картой
@@ -71,7 +83,7 @@ abstract class Api {
 	 */
 	static deleteGroup(id: number) {
 		return this.callFetch<any>(`delete-group`, AxiosMethodsEnum.POST, {
-			id
+			id,
 		})
 	}
 
@@ -90,7 +102,12 @@ abstract class Api {
 	 * @return {Promise<Key | null>}
 	 */
 	static uploadFile(form: IFormUpload) {
-		return this.callFetch<Key>(`upload`, AxiosMethodsEnum.POST, objectToFormData(form), { 'Content-Type': 'multipart/form-data' })
+		return this.callFetch<Key>(
+			`upload`,
+			AxiosMethodsEnum.POST,
+			objectToFormData(form),
+			{ 'Content-Type': 'multipart/form-data' }
+		)
 	}
 
 	/**
@@ -105,13 +122,13 @@ abstract class Api {
 		endpoint: string,
 		method: AxiosMethodsEnum = AxiosMethodsEnum.GET,
 		args?: any,
-		headers?: Record<string, string>, 
+		headers?: Record<string, string>
 	): Promise<T | null> {
 		try {
 			const res: AxiosResponse<T> = await axios(endpoint, {
 				method,
 				data: args,
-				headers
+				headers,
 			})
 
 			const data = res.data

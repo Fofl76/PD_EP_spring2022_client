@@ -1,4 +1,4 @@
-import { IFacultyRaw, IMapItemRaw } from '@models/Maps'
+import { IFacultyRaw, IMapItemRaw, IControlTypeRaw } from '@models/Maps'
 
 import Api from '@api/Api'
 
@@ -10,6 +10,10 @@ import getRecalculatedColumn from './getRecalculatedColumn'
 import buildMapList from './buildMapsList'
 import unbuildMapList from './unbuildMapsList'
 import Key from '@models/Key'
+
+interface IControlTypesList {
+	value: IControlTypeRaw[]
+}
 
 interface IFacultiesList {
 	value: IFacultyRaw[]
@@ -24,6 +28,9 @@ class MapsService extends Events {
 	readonly ZETQUEALSHOURS = 32
 
 	private _facultiesList: IFacultiesList = {
+		value: [],
+	}
+	private _controlTypes: IControlTypesList = {
 		value: [],
 	}
 	private _isLoadingFacultiesList = false
@@ -85,6 +92,14 @@ class MapsService extends Events {
 		})
 	}
 
+	get controlTypes() {
+		return new Proxy(this._controlTypes, {
+			set() {
+				throw new Error('is readonly')
+			},
+		})
+	}
+
 	/**
 	 * @desc Геттер для получения статуса загрузки
 	 * @return {boolean}
@@ -130,7 +145,10 @@ class MapsService extends Events {
 	async saveAllMap(aupCode: Key, mapList: IMapList[] | null = null) {
 		this._isLoadingSaveMapList = true
 
-		const res = await Api.saveMap(aupCode, mapList || unbuildMapList(this._mapList.value))
+		const res = await Api.saveMap(
+			aupCode,
+			mapList || unbuildMapList(this._mapList.value)
+		)
 
 		if (res) {
 			await this.fetchMapList(aupCode)
@@ -190,8 +208,20 @@ class MapsService extends Events {
 		Vue.set(this._mapList.value, item.num_col - 1, recalculateColumn)
 	}
 
-	editMapItem(item, newItem) {
-		console.log(item, newItem)
+	async editMapItem(aup, item: IMapItemRaw, newItem: IMapItemRaw) {
+		const copyMap = _.cloneDeep(this._mapList.value)
+
+		copyMap[item.num_col + 1][item.num_row] = newItem
+
+		// @ts-ignore
+		const res = await this.saveAllMap(aup, unbuildMapList(copyMap))
+
+		console.log(res)
+
+		const copyColumn = _.cloneDeep(this._mapList.value[item.num_col - 1])
+		copyColumn[item.num_row] = newItem
+		const recalculateColumn = getRecalculatedColumn(copyColumn)
+		Vue.set(this._mapList.value, item.num_col - 1, recalculateColumn)
 	}
 
 	/**
@@ -212,12 +242,29 @@ class MapsService extends Events {
 		this._isLoadingMapList = true
 		const mapList = await Api.fetchMap(aupCode)
 
+		// Вместе с картой загружаем доступный список нагрузок (СРС, Семинарские и т.д.)
+		await this.fetchAllControlTypes()
+
 		if (mapList) {
 			this.setMapList(mapList.data)
 			this.emit('fetchMapList', mapList.data)
 		}
 
 		this._isLoadingMapList = false
+	}
+
+	setAllControlTypes(controlTypes: IControlTypeRaw[]) {
+		this._controlTypes.value = controlTypes
+		this.emit('setAllControlTypes', controlTypes)
+	}
+
+	async fetchAllControlTypes() {
+		const controlTypes = await Api.fetchAllControlTypes()
+
+		if (controlTypes) {
+			this.setAllControlTypes(controlTypes)
+			this.emit('fetchAllControlTypes', controlTypes)
+		}
 	}
 }
 

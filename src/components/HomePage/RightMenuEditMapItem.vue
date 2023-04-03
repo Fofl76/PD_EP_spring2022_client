@@ -86,23 +86,25 @@
 					</div>
 
 					<v-select
-						v-model="selectedLoadItems"
-						:items="loadItems"
+						:value="selectedControlTypes"
+						:items="allControlTypes"
 						label="Нагрузки"
+						item-text="control"
+						item-disabled="disabled"
+						return-object
 						filled
 						dense
 						hide-details
 						multiple
+						no-data-text="Доступные нагрузки отсутствуют"
+						@input="onSelectControlTypes"
 					>
 						<template v-slot:selection="{ item, index }">
-							<v-chip v-if="index === 0">
-								<span>{{ item }}</span>
-							</v-chip>
-							<v-chip v-if="index === 1">
-								<span>{{ item }}</span>
+							<v-chip small v-if="index === 0">
+								<span>{{ item.control }}</span>
 							</v-chip>
 							<span v-if="index === 1" class="grey--text text-caption">
-								(+{{ selectedLoadItems.length - 1 }} нагрузки)
+								(+{{ selectedControlTypes.length - 1 }} нагрузки)
 							</span>
 						</template>
 					</v-select>
@@ -162,6 +164,8 @@ import _ from 'lodash'
 import MapsService from '@services/Maps/MapsService'
 import MHint from '@components/ui/MHint.vue'
 
+import withEventEmmiter from '@mixins/withEventEmmiter'
+
 export default {
 	components: { MHint },
 	name: 'RightMenuEditMapItem',
@@ -188,6 +192,8 @@ export default {
 		},
 	},
 
+	mixins: [withEventEmmiter('MapsService', 'mapsServiceHandlers')],
+
 	data: () => ({
 		MapsService,
 
@@ -196,8 +202,11 @@ export default {
 			type: [],
 		},
 
-		selectedLoadItems: [],
-		loadItems: ['Foo', 'Bar', 'Fizz', 'Buzz'],
+		sumZet: 0,
+		sumHours: 0,
+
+		allControlTypes: [],
+		selectedControlTypes: [],
 
 		zetRules: [
 			v => (!!v && v !== 0) || 'Это поле является обязательным',
@@ -227,7 +236,7 @@ export default {
 			return this.$refs.discipline.validate()
 		},
 
-		zetEqualsHorus() {
+		zetEqualsHours() {
 			return this.MapsService.ZETQUEALSHOURS
 		},
 
@@ -238,36 +247,10 @@ export default {
 			},
 
 			set(value) {
+				if (value) this.setNewEditingItem(this.item)
+
 				this.$emit('input', value)
 			},
-		},
-
-		// value для поля "Сумма ЗЕТ"
-		sumZet() {
-			return this.copyItem.type.reduce(
-				(accumulator, currentValue) => accumulator + currentValue.zet,
-				0
-			)
-		},
-
-		// value для поля "Сумма часов"
-		sumHours() {
-			return this.copyItem.type.reduce(
-				(accumulator, currentValue) => accumulator + currentValue.hours,
-				0
-			)
-		},
-	},
-
-	watch: {
-		item: {
-			handler(item) {
-				if (!item) return
-
-				this.setNewEditingItem(item)
-			},
-			immediate: true,
-			deep: true,
 		},
 	},
 
@@ -275,19 +258,57 @@ export default {
 		setNewEditingItem(item) {
 			const copyItem = _.cloneDeep(item)
 
-			copyItem.type = copyItem.type.map(type => {
+			copyItem.type = this.buildControlTypes(copyItem.type)
+			copyItem.type = this.sortControlTypes(copyItem.type)
+
+			this.initSelectedControlTypes(item)
+
+			this.copyItem = copyItem
+
+			this.allControlTypes = this.MapsService.controlTypes.value.map(
+				controlType => ({
+					control: controlType.name,
+					controlTypeId: controlType.id,
+					zet: 0,
+					disabled: item.type.find(e => e.controlTypeId == controlType.id),
+				})
+			)
+
+			this.allControlTypes.sort(a => (a.disabled ? -1 : 1))
+
+			this.sumZet = this.getSum('zet')
+			this.sumHours = this.getSum('hours')
+		},
+
+		buildControlTypes(controlTypes) {
+			return controlTypes.map(type => {
 				return {
 					...type,
-					hours: type.zet * this.zetEqualsHorus,
+					hours: type.zet * this.zetEqualsHours,
 				}
 			})
+		},
 
-			// Временный костыль, чтобы СРС был всегда вверху
-			copyItem.type = copyItem.type.sort((a, b) => {
+		// Временный костыль, чтобы СРС был всегда вверху
+		sortControlTypes(controlTypes) {
+			const sortedControlTypes = _.cloneDeep(controlTypes)
+
+			sortedControlTypes.sort((a, b) => {
 				if (a.control === 'СРС') return -1
 			})
 
-			this.copyItem = copyItem
+			return sortedControlTypes
+		},
+
+		initSelectedControlTypes(item) {
+			this.selectedControlTypes = [...item.type]
+		},
+
+		onSelectControlTypes(e) {
+			let controlTypes = this.buildControlTypes(e)
+			controlTypes = this.sortControlTypes(controlTypes)
+
+			this.copyItem.type = controlTypes
 		},
 
 		onCancel() {
@@ -295,27 +316,85 @@ export default {
 			this.clear()
 			this.$emit('close')
 		},
-		onSave() {},
+		onSave() {
+			this.MapsService.editMapItem(
+				this.$route.query.aup,
+				this.item,
+				this.copyItem
+			)
+		},
 
 		clear() {
 			this.copyItem = {
 				discipline: '',
 				type: [],
 			}
+
+			this.sumZet = 0
+			this.sumHours = 0
+			this.selectedControlTypes = []
+		},
+
+		// field: 'zet' | 'hours'
+		getSum(field, withoutFirstItem) {
+			return this.copyItem.type.reduce(
+				(accumulator, currentValue) =>
+					currentValue.control === 'СРС' && withoutFirstItem
+						? accumulator
+						: accumulator + currentValue[field],
+				0
+			)
 		},
 
 		onInputZet(indexType, value) {
+			value = +value
+
 			this.copyItem.type[indexType].zet = value
-			this.copyItem.type[indexType].hours = value * this.zetEqualsHorus
+			this.copyItem.type[indexType].hours = value * this.zetEqualsHours
+
+			this.recalculateSum()
 		},
 
 		onInputHours(indexType, value) {
+			value = +value
+
 			this.copyItem.type[indexType].hours = value
-			this.copyItem.type[indexType].zet = value / this.zetEqualsHorus
+			this.copyItem.type[indexType].zet = value / this.zetEqualsHours
+
+			this.recalculateSum()
 		},
 
-		onInputSumZet(value) {},
-		onInputSumHours(value) {},
+		recalculateSum() {
+			this.sumZet = this.getSum('zet')
+			this.sumHours = this.getSum('hours')
+		},
+
+		onInputSumZet(value) {
+			value = +value
+
+			const sumZet = this.getSum('zet', true)
+
+			const newFirstItemZet = value - sumZet
+
+			this.copyItem.type[0].zet = newFirstItemZet
+			this.copyItem.type[0].hours = newFirstItemZet * this.zetEqualsHours
+
+			this.sumZet = value
+			this.sumHours = value * this.zetEqualsHours
+		},
+		onInputSumHours(value) {
+			value = +value
+
+			const sumHours = this.getSum('hours', true)
+
+			const newFirstItemHours = value - sumHours
+
+			this.copyItem.type[0].hours = newFirstItemHours
+			this.copyItem.type[0].zet = newFirstItemHours / this.zetEqualsHours
+
+			this.sumHours = value
+			this.sumZet = value / this.zetEqualsHours
+		},
 	},
 }
 </script>
