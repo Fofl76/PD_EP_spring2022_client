@@ -88,7 +88,12 @@ abstract class Api {
 	 * @return {Promise<Key | null>}
 	 */
 	static uploadFile(form: IFormUpload) {
-		return this.callFetch<Key>(`upload`, AxiosMethodsEnum.POST, objectToFormData(form), { 'Content-Type': 'multipart/form-data' })
+		return this.callFetch<Key>(
+			`upload`,
+			AxiosMethodsEnum.POST,
+			objectToFormData(form),
+			{ 'Content-Type': 'multipart/form-data' }
+		)
 	}
 
 	/**
@@ -103,13 +108,13 @@ abstract class Api {
 		endpoint: string,
 		method: AxiosMethodsEnum = AxiosMethodsEnum.GET,
 		args?: any,
-		headers?: Record<string, string>, 
+		headers?: Record<string, string>
 	): Promise<T | null> {
 		try {
 			const res: AxiosResponse<T> = await axios(endpoint, {
 				method,
 				data: args,
-				headers
+				headers,
 			})
 
 			const data = res.data
