@@ -4,6 +4,8 @@
  * @returns {Array} Возвращает подобранный цвет текста для переданного фона
  */
 const hexToRgb = (hex: string) => {
+	if (!hex) return [0, 0, 0]
+
 	const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i
 	hex = hex.replace(shorthandRegex, (m, r, g, b) => r + r + g + g + b + b)
 

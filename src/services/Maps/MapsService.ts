@@ -1,4 +1,4 @@
-import { IFacultyRaw, IMapItemRaw } from '@models/Maps'
+import { IFacultyRaw, IMapItemRaw, IControlTypeRaw } from '@models/Maps'
 
 import Api from '@services/api/Api'
 
@@ -11,6 +11,10 @@ import buildMapList from './buildMapsList'
 import unbuildMapList from './unbuildMapsList'
 import Key from '@models/Key'
 
+interface IControlTypesList {
+	value: IControlTypeRaw[]
+}
+
 interface IFacultiesList {
 	value: IFacultyRaw[]
 }
@@ -20,7 +24,14 @@ interface IMapList {
 }
 
 class MapsService extends Events {
+	// 1 зет = 32 часа
+	readonly ZETQUEALSHOURS = 32
+
 	private _facultiesList: IFacultiesList = {
+		value: [],
+	}
+
+	private _controlTypes: IControlTypesList = {
 		value: [],
 	}
 
@@ -83,6 +94,14 @@ class MapsService extends Events {
 		})
 	}
 
+	get controlTypes() {
+		return new Proxy(this._controlTypes, {
+			set() {
+				throw new Error('is readonly')
+			},
+		})
+	}
+
 	/**
 	 * @desc Геттер для получения статуса загрузки
 	 * @return {boolean}
@@ -92,7 +111,7 @@ class MapsService extends Events {
 	}
 
 	/**
-	 * @desc Геттер для получения статуса сохраненти
+	 * @desc Геттер для получения статуса сохранения
 	 * @return {boolean}
 	 */
 	get isLoadingSaveMapList() {
@@ -100,7 +119,7 @@ class MapsService extends Events {
 	}
 
 	/**
-	 * @desc Геттер для получения кол-ва ЗЕТ
+	 * @desc Геттер для получения максимального кол-ва ЗЕТ среди всех колонок
 	 * @return {number}
 	 */
 	get maxZet() {
@@ -125,10 +144,13 @@ class MapsService extends Events {
 	 * @param {Key} aupCode - Ауп код направления
 	 * @return {Promise<void>}
 	 */
-	async saveAllMap(aupCode: Key) {
+	async saveAllMap(aupCode: Key, mapList: IMapList[] | null = null) {
 		this._isLoadingSaveMapList = true
 
-		const res = await Api.saveMap(aupCode, unbuildMapList(this._mapList.value))
+		const res = await Api.saveMap(
+			aupCode,
+			mapList || unbuildMapList(this._mapList.value)
+		)
 
 		if (res) {
 			await this.fetchMapList(aupCode)
@@ -171,11 +193,13 @@ class MapsService extends Events {
 
 	/**
 	 * @desc Метод для локального перемещения элемента в колонке
+	 * @desc Метод для локального перемещения элеметна в колонке
 	 * @param {IMapItemRaw} item - Элемент, который необходимо переместить
 	 * @param {number} oldIndex - Номер старой строки
 	 * @param {number} newIndex - Номер новой строки
 	 * @return {void}
 	 */
+
 	movedMapItemInColLocal(
 		item: IMapItemRaw,
 		oldIndex: number,
@@ -189,6 +213,22 @@ class MapsService extends Events {
 
 		const recalculateColumn = getRecalculatedColumn(copyColumn)
 
+		Vue.set(this._mapList.value, item.num_col - 1, recalculateColumn)
+	}
+
+	async editMapItem(aup, item: IMapItemRaw, newItem: IMapItemRaw) {
+		const copyMap = _.cloneDeep(this._mapList.value)
+
+		copyMap[item.num_col + 1][item.num_row] = newItem
+
+		// @ts-ignore
+		const res = await this.saveAllMap(aup, unbuildMapList(copyMap))
+
+		console.log(res)
+
+		const copyColumn = _.cloneDeep(this._mapList.value[item.num_col - 1])
+		copyColumn[item.num_row] = newItem
+		const recalculateColumn = getRecalculatedColumn(copyColumn)
 		Vue.set(this._mapList.value, item.num_col - 1, recalculateColumn)
 	}
 
@@ -210,12 +250,29 @@ class MapsService extends Events {
 		this._isLoadingMapList = true
 		const mapList = await Api.fetchMap(aupCode)
 
+		// Вместе с картой загружаем доступный список нагрузок (СРС, Семинарские и т.д.)
+		await this.fetchAllControlTypes()
+
 		if (mapList) {
 			this.setMapList(mapList.data)
 			this.emit('fetchMapList', mapList.data)
 		}
 
 		this._isLoadingMapList = false
+	}
+
+	setAllControlTypes(controlTypes: IControlTypeRaw[]) {
+		this._controlTypes.value = controlTypes
+		this.emit('setAllControlTypes', controlTypes)
+	}
+
+	async fetchAllControlTypes() {
+		const controlTypes = await Api.fetchAllControlTypes()
+
+		if (controlTypes) {
+			this.setAllControlTypes(controlTypes)
+			this.emit('fetchAllControlTypes', controlTypes)
+		}
 	}
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <div>
+	<div>
 		<div class="aup-table" :style="styleVars">
 			<div class="aup-table__left-column">
 				<div class="aup-table__column-header aup-table__left-column-header">
@@ -10,7 +10,7 @@
 					class="aup-table__zet-block"
 					v-for="i in !loading ? maxZet : fakeMaxZet"
 					:key="i"
-					:style="{ height: '90px' }"
+					:style="{ height: heightZet() }"
 				>
 					<span>{{ i }}</span>
 				</div>
@@ -34,10 +34,15 @@
 						@change="onDragElementTable($event, key)"
 					>
 						<div v-for="element in column" :key="element.id">
-							<ui-table-block
+							<UiTableBlock
 								:data="dataValue(element)"
-                :height="`${heightTableBlock(element)}px`"
+								:isEditing="activeEditingItemId === element.id"
+								:height="heightTableBlock(element)"
+                :class="{
+                  'aup-table__block-wrapper-small': isFullScreen,
+                }"
 								@edit="$emit('edit', $event)"
+								@click.native="onClickBlock(element)"
 							/>
 						</div>
 					</draggable>
@@ -69,47 +74,63 @@ import UiTableBlock from '../UiTableBlock/UiTableBlock.vue'
 import GroupsService from '@services/Groups/GroupsService'
 import orderWords from '@utils/orderWords'
 import UiTableSkeletonBlock from '../UiTableSkeletonBlock/UiTableSkeletonBlock.vue'
+import _ from 'lodash'
 
 export default {
-  components: { UiTableBlock, draggable, UiTableSkeletonBlock },
-  props: {
-    table: {
-      type: Array,
-      default: () => [],
-    },
-    maxZet: {
+	components: { UiTableBlock, draggable, UiTableSkeletonBlock },
+	props: {
+		table: {
+			type: Array,
+			default: () => [],
+		},
+		maxZet: {
       type: Number,
-      default: 30,
-    },
+			default: 30,
+		},
+		activeEditingItemId: {
+      type: [String, Number],
+			default: null,
+		},
     loading: Boolean,
-  },
-  data() {
-    return {
-      orderWords,
-      fakeElementsCount: 8,
-		  fakeMaxZet: 30,
-    }
-  },
-  computed: {
-    dataValue() {
-      return element => ({
-        element,
-        group: this.getGroupById(element.id_group),
-      })
+    isFullScreen:Boolean,
+	},
+	data() {
+		return {
+			orderWords,
+			fakeElementsCount: 8,
+			fakeMaxZet: 30,
+		}
+	},
+	computed: {
+    heightZet() {
+      return (countZet = 1) => {
+        if (this.isFullScreen) {
+          return `calc(((100vh - 80px - 32px - 30px) / ${this.maxZet}) * ${countZet})`
+        }
+    
+          return `calc(90px * ${countZet})`
+        }
     },
-    dragOptions() {
+
+		dataValue() {
+			return element => ({
+				element,
+				group: this.getGroupById(element.id_group),
+			})
+		},
+		dragOptions() {
 			return {
 				animation: 250,
 				group: 'map',
 			}
 		},
 
-    allGroupsMapId() {
-      return GroupsService.allGroupsMapId
-    },
+		allGroupsMapId() {
+			return GroupsService.allGroupsMapId
+		},
 
-    heightTableBlock() {
-			return data => 90 * this.totalZet(data)
+		heightTableBlock() {
+			return data => this.heightZet(this.totalZet(data))
 		},
 
 		styleVars() {
@@ -118,31 +139,39 @@ export default {
 			}
 		},
 
-    countOfColumns() {
+		countOfColumns() {
 			if (this.loading) return this.fakeElementsCount
 
 			return Object.keys(this.table).length
 		},
-  },
-  methods: {
-    onDragElementTable(data, columnIndex) {
+	},
+	methods: {
+		onDragElementTable(data, columnIndex) {
 			this.$emit('drag', { data, columnIndex })
 		},
 
-    getGroupById(idGroup) {
+		getGroupById(idGroup) {
 			return this.allGroupsMapId[idGroup]
 		},
 
-    totalZet(data) {
+		totalZet(data) {
 			return data.type.reduce((sum, zetBlock) => {
 				return sum + zetBlock?.zet
 			}, 0)
 		},
 
-    setData(dataTransfer) {
+		setData(dataTransfer) {
 			dataTransfer.setDragImage(document.createElement('div'), 0, 0)
 		},
-  }
+
+		onClickBlock(item) {
+			console.log(_.cloneDeep(item))
+		},
+
+		isEditingItem(item) {
+			console.log(item)
+		},
+	},
 }
 </script>
 
@@ -153,13 +182,17 @@ export default {
     gap: 8px
     color: #fff
 
+    &__block-wrapper-small
+        .aup-table__name
+            transform: scale(.75)
+
     &__draggable
         flex: 1 1 100%
-    
+
     &__column
         display: flex
         flex-direction: column
-		
+
     &__block-wrapper
         transition: all 0.3s ease
         padding: 5px 0

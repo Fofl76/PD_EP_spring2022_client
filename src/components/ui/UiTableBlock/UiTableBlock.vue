@@ -1,12 +1,10 @@
 <template>
-  <div
+	<div
 		class="aup-table__block-wrapper"
+		:class="{ isEditing }"
 		:style="{ height: height }"
 	>
-		<div
-      class="aup-table__block"
-      :style="{ backgroundColor }"
-    >
+		<div class="aup-table__block" :style="{ backgroundColor }">
 			<v-tooltip bottom :open-delay="300">
 				<template v-slot:activator="{ on, attrs }">
 					<span
@@ -42,36 +40,41 @@ import Vue from 'vue'
 import determinateTextColor from '@utils/determinateTextColor'
 
 export default {
-  props: {
+	props: {
 		data: {
 			type: Object,
 			required: true,
 		},
-    height: {
-      type: String,
-      default: "90px",
-    }
+
+		isEditing: {
+			type: Boolean,
+			default: false,
+		},
+
+		height: {
+			type: String,
+			default: '90px',
+		},
 	},
-  data() {
-    return {
-      modeTable: 'default',
-    }
-  },
-  computed: {
-    backgroundColor() {
+	data() {
+		return {
+			modeTable: 'default',
+		}
+	},
+	computed: {
+		backgroundColor() {
 			return this.data.group?.color
 		},
 
-    classTableItem() {
+		classTableItem() {
 			return 'aup-table__name__' + this.modeTable
 		},
 
-
-    needIsDarkText() {
+		needIsDarkText() {
 			return determinateTextColor(this.backgroundColor)
 		},
 
-    styleName() {
+		styleName() {
 			const styles = {}
 
 			if (this.needIsDarkText) styles.color = '#333'
@@ -79,15 +82,14 @@ export default {
 
 			return styles
 		},
-  },
-  methods: {
-    onEdit() {
+	},
+	methods: {
+		onEdit() {
 			this.$emit('edit', this.data.element)
 		},
-  },
+	},
 }
 </script>
-
 
 <style lang="sass" scoped>
 .aup-table
@@ -101,13 +103,19 @@ export default {
         padding: 5px
         text-align: center
         border-radius: 8px
-        font-size: 1.2em
+        font-size: 100%
         font-family: sans-serif
         cursor: grab
+        transition: box-shadow .25s ease
 
         &:hover
             .aup-table__edit-btn
                 opacity: 1
+
+    &__block-wrapper
+        &.isEditing
+            .aup-table__block
+                box-shadow: 0px 0px 3px 7px rgba(10, 110, 189, 0.7)
 
     &__name
         overflow: hidden
@@ -115,6 +123,7 @@ export default {
         max-height: 8rem
         -webkit-box-orient: vertical
         display: block
+        max-height: 100%
         display: -webkit-box
         overflow: hidden !important
         text-overflow: ellipsis
@@ -125,7 +134,7 @@ export default {
 
     &__name-tooltip
         border: 111px solid red
-    
+
     &__edit-btn
         background-color: rgba(255, 255, 255, 0.1)
         position: absolute

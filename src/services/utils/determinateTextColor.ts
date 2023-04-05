@@ -6,13 +6,14 @@ import hexToRGB from './hexToRGB'
  * @returns {boolean} Возвращает true если нужен темный цвет, или false если светлый
  */
 const determinateTextColor = (hex: string) => {
+	if (!hex) return false
+
 	const rgb = hexToRGB(hex)
 
 	if (!rgb) return hex
 
 	const brightness = Math.round(
-		(rgb[0] * 299 + rgb[1] * 587 + rgb[2] * 114) /
-			1000
+		(rgb[0] * 299 + rgb[1] * 587 + rgb[2] * 114) / 1000
 	)
 
 	return brightness > 185

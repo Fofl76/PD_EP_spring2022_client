@@ -6,9 +6,9 @@
 
 		<v-spacer></v-spacer>
 
-		<!-- <v-btn text dark>
+		<v-btn @click="popupGroupSettingsModel = true" text dark>
 			<span>Группировки</span>
-		</v-btn> -->
+		</v-btn>
 
 		<v-btn
 			text
@@ -35,6 +35,9 @@
 			@success="$emit('successUploadFile', $event)"
 			@error="$emit('errorUploadFile', $event)"
 		/>
+
+		<popup-groups-settings v-model="popupGroupSettingsModel" />
+
 	</v-app-bar>
 </template>
 
@@ -43,12 +46,14 @@ import Vue from "vue"
 import MapsService from '@services/Maps/MapsService'
 import HeaderFormDirection from '../HeaderFormDirection/HeaderFormDirection.vue'
 import PopupUploadFile from '../PopupUploadFile/PopupUploadFile.vue'
+import PopupGroupsSettings from '@components/PopupGroupsSetings/PopupGroupsSettings.vue'
 
 export default {
-  components: { HeaderFormDirection, PopupUploadFile },
+  components: { HeaderFormDirection, PopupUploadFile, PopupGroupsSettings },
 	data() {
 		return {
-			popupUploadModel: false
+			popupUploadModel: false,
+			popupGroupSettingsModel: false,
 		}
 	},
   computed: {

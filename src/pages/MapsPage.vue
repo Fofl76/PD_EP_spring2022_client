@@ -1,7 +1,7 @@
 <template>
 	<v-app>
 		<div class="Home">
-			<home-header
+			<HomeHeader
 				:aupCode="'aupCode'"
 				@successUploadFile="onSuccessUploadFile"
 				@errorUploadFile="onErrorUploadFile"
@@ -9,16 +9,21 @@
 
 			<v-main dark app class="Home__main">
 				<v-container class="Home__main-inner" fluid>
-					<table-maps
+					<TableMaps
 						:loading="isLoadingMaps"
 						:table="mapsService.mapList?.value"
+						:activeEditingItemId="editingMapItemId"
+						@edit-click="onEditClick"
 					/>
 				</v-container>
 			</v-main>
 
-			<ui-snackbar
-				v-bind="snackbarOptions"
-				@input="clearSnackbarOptions"
+			<ui-snackbar v-bind="snackbarOptions" @input="clearSnackbarOptions" />
+
+			<RightMenuEditMapItem
+				v-model="rightMenuEditModel"
+				:item="rightMenuEditItem"
+				@close="onCloseEditingItemPanel"
 			/>
 		</div>
 	</v-app>
@@ -31,6 +36,7 @@ import GroupsService from '@services/Groups/GroupsService'
 import HomeHeader from '@components/HomePage/HomeHeader/HomeHeader.vue'
 import TableMaps from '@components/HomePage/Table/TableMaps.vue'
 import UiSnackbar from '@components/ui/UiSnackbar/UiSnackbar.vue'
+import RightMenuEditMapItem from '@components/HomePage/RightMenuEditMapItem.vue'
 
 export default {
 	name: 'HomeView',
@@ -38,6 +44,7 @@ export default {
 		HomeHeader,
 		TableMaps,
 		UiSnackbar,
+		RightMenuEditMapItem,
 	},
 	data() {
 		return {
@@ -45,7 +52,12 @@ export default {
 			mapsService: MapsService,
 			groupsService: GroupsService,
 
-			snackbarOptions: null
+			snackbarOptions: null,
+
+			editingMapItemId: null,
+
+			rightMenuEditModel: false,
+			rightMenuEditItem: null,
 		}
 	},
 	computed: {
@@ -54,7 +66,7 @@ export default {
 		},
 		isLoadingMaps() {
 			return this.mapsService.isLoadingMapList
-		}
+		},
 	},
 	watch: {
 		'$route.query.aup': {
@@ -80,7 +92,7 @@ export default {
 			this.snackbarOptions = {
 				value: true,
 				type: 'success',
-				timeout: 2500
+				timeout: 2500,
 			}
 		},
 
@@ -92,10 +104,20 @@ export default {
 					error: {
 						title: 'Ошибка при загрузке файла',
 						text: res?.data || 'Не удалось сохранить карту.',
-					}
+					},
 				},
-				timeout: 2500
+				timeout: 2500,
 			}
+		},
+
+		onEditClick(item) {
+			this.rightMenuEditModel = true
+			this.rightMenuEditItem = item
+			this.editingMapItemId = item.id
+		},
+
+		onCloseEditingItemPanel() {
+			this.editingMapItemId = null
 		},
 	},
 	async created() {
@@ -144,7 +166,7 @@ export default {
 
     &__save-table-btn
         position: fixed
-        bottom: 90px
+        bottom: 30px
         right: 30px
         transition: right .2s cubic-bezier(0.4, 0, 0.2, 1)
     &__save-table-mode
@@ -160,4 +182,3 @@ export default {
         &__save-table-mode
             right: calc(var(--drawer-width) + 30px)
 </style>
-
