@@ -34,7 +34,7 @@ import MapsService from '@services/Maps/MapsService'
 import GroupsService from '@services/Groups/GroupsService'
 import MapPageHeader from '@components/MapPage/MapPageHeader.vue'
 import TableMaps from '@components/MapPage/Table/TableMaps.vue'
-import UiSnackbar from '@components/ui/UiSnackbar/UiSnackbar.vue'
+import UiSnackbar from '@components/common/MSnackbar.vue'
 import RightMenuEditMapItem from '@components/MapPage/RightMenuEditMapItem.vue'
 
 export default {

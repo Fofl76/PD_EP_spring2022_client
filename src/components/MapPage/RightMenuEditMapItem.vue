@@ -173,7 +173,7 @@
 <script>
 import _ from 'lodash'
 import MapsService from '@services/Maps/MapsService'
-import MHint from '@components/ui/MHint.vue'
+import MHint from '@components/common/MHint.vue'
 
 import withEventEmitter from '@mixins/withEventEmitter'
 

@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import UiAutocomplete from '@components/ui/UiAutocomplete/UiAutocomplete.vue'
+import UiAutocomplete from '@components/common/MAutocomplete.vue'
 export default {
 	name: 'DirectionAutocomplete',
 

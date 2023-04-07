@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import UiUploadFileDragArea from '@components/ui/UiUploadFileDragArea/UiUploadFileDragArea.vue'
+import UiUploadFileDragArea from '@components/common/MUploadFileDragArea.vue'
 import Api from '@services/api/Api'
 export default {
   components: { UiUploadFileDragArea },

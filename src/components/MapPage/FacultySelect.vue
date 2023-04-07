@@ -13,7 +13,7 @@
 
 <script>
 import Vue from 'vue'
-import UiSelect from '@components/ui/UiSelect/UiSelect.vue'
+import UiSelect from '@components/common/MSelect.vue'
 export default {
 	components: { UiSelect },
 	props: {

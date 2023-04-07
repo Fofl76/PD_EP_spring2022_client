@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import UiTable from '@components/ui/UiTable/UiTable.vue'
+import UiTable from '@components/common/MTable.vue'
 import MapsService from '@services/Maps/MapsService'
 
 import DataPreloader from '@components/MapPage/DataPreloader.vue'

@@ -70,10 +70,10 @@
 <script>
 import Vue from 'vue'
 import draggable from 'vuedraggable'
-import UiTableBlock from '../UiTableBlock/UiTableBlock.vue'
+import UiTableBlock from './MTableBlock.vue'
 import GroupsService from '@services/Groups/GroupsService'
 import orderWords from '@utils/orderWords'
-import UiTableSkeletonBlock from '../UiTableSkeletonBlock/UiTableSkeletonBlock.vue'
+import UiTableSkeletonBlock from './MTableSkeletonBlock.vue'
 import _ from 'lodash'
 
 export default {
