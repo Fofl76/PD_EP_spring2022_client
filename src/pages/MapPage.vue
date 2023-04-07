@@ -1,7 +1,7 @@
 <template>
 	<v-app>
 		<div class="Home">
-			<HomeHeader
+			<MapPageHeader
 				:aupCode="'aupCode'"
 				@successUploadFile="onSuccessUploadFile"
 				@errorUploadFile="onErrorUploadFile"
@@ -32,7 +32,7 @@
 <script>
 import MapsService from '@services/Maps/MapsService'
 import GroupsService from '@services/Groups/GroupsService'
-import HomeHeader from '@components/MapPage/HomeHeader/HomeHeader.vue'
+import MapPageHeader from '@components/MapPage/MapPageHeader.vue'
 import TableMaps from '@components/MapPage/Table/TableMaps.vue'
 import UiSnackbar from '@components/ui/UiSnackbar/UiSnackbar.vue'
 import RightMenuEditMapItem from '@components/MapPage/RightMenuEditMapItem.vue'
@@ -40,7 +40,7 @@ import RightMenuEditMapItem from '@components/MapPage/RightMenuEditMapItem.vue'
 export default {
 	name: 'HomeView',
 	components: {
-		HomeHeader,
+		MapPageHeader,
 		TableMaps,
 		UiSnackbar,
 		RightMenuEditMapItem,

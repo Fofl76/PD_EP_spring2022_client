@@ -10,15 +10,11 @@
 			<span>Группировки</span>
 		</v-btn>
 
-		<v-btn
-			text
-			dark
-			@click="popupUploadModel = true"
-		>
+		<v-btn text dark @click="popupUploadModel = true">
 			<span>Загрузить план</span>
 			<v-icon right dark>mdi-upload</v-icon>
 		</v-btn>
-		
+
 		<v-btn
 			v-if="isReady"
 			:href="`${url}/save_excel/${aupCode}`"
@@ -37,40 +33,41 @@
 		/>
 
 		<popup-groups-settings v-model="popupGroupSettingsModel" />
-
 	</v-app-bar>
 </template>
 
 <script>
-import Vue from "vue"
 import MapsService from '@services/Maps/MapsService'
-import HeaderFormDirection from '../HeaderFormDirection/HeaderFormDirection.vue'
-import PopupUploadFile from '../PopupUploadFile/PopupUploadFile.vue'
+import HeaderFormDirection from './HeaderFormDirection/HeaderFormDirection.vue'
+import PopupUploadFile from './PopupUploadFile/PopupUploadFile.vue'
 import PopupGroupsSettings from '@components/PopupGroupsSetings/PopupGroupsSettings.vue'
 
 export default {
-  components: { HeaderFormDirection, PopupUploadFile, PopupGroupsSettings },
+	name: 'MapPageHeader',
+
+	components: { HeaderFormDirection, PopupUploadFile, PopupGroupsSettings },
 	data() {
 		return {
 			popupUploadModel: false,
 			popupGroupSettingsModel: false,
 		}
 	},
-  computed: {
-    isReady() {
+	computed: {
+		isReady() {
 			return !!MapsService.mapList.value.length
 		},
 
-    url() {
+		url() {
 			return process.env.VUE_APP_API
 		},
 
-    aupCode() {
-      return this.$route.query.aup
-    }
-  },
+		aupCode() {
+			return this.$route.query.aup
+		},
+	},
 }
 </script>
 
-<style>
+<style lang="sass">
+.MapPageHeader
 </style>
