@@ -24,8 +24,8 @@ interface IMapList {
 }
 
 class MapsService extends Events {
-	// 1 зет = 32 часа
-	readonly ZETQUEALSHOURS = 32
+	// 1 зет = 36 часа
+	readonly ZETQUEALSHOURS = 36
 
 	private _facultiesList: IFacultiesList = {
 		value: [],
