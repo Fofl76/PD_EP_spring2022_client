@@ -1,31 +1,29 @@
 <template>
-  <div class="HeaderFormDirection__wrap">
-    <faculty-select
-      v-model="facultyModel"
-      :items="facultyItems"
-    />
-		<direction-autocomlete
+	<div class="MapPageHeaderSelectMap__wrap">
+		<FacultySelect v-model="facultyModel" :items="facultyItems" />
+
+		<DirectionAutocomplete
 			v-model="directionModel"
 			:items="directionItems"
 			@input="onSelectDirection"
 		/>
-  </div>
+	</div>
 </template>
 
 <script>
-import Vue from "vue"
-import withEventEmmiter from "@mixins/withEventEmmiter"
-import MapsService from '@services/Maps/MapsService'
 import { IDirection, IMaps } from '@models/Maps'
-import FacultySelect from "../FacultySelect/FacultySelect.vue"
-import DirectionAutocomlete from "../DirectionAutocomlete/DirectionAutocomlete.vue"
+
+import withEventEmitter from '@mixins/withEventEmitter'
+
+import MapsService from '@services/Maps/MapsService'
+
+import FacultySelect from '@components/MapPage/FacultySelect.vue'
+import DirectionAutocomplete from '@components/MapPage/DirectionAutocomplete.vue'
 
 export default {
-  components: {FacultySelect, DirectionAutocomlete},
-	name: 'HeaderFormDirection',
-	mixins: [
-		withEventEmmiter('mapsService', 'mapsServiceHandlers')
-	],
+	components: { FacultySelect, DirectionAutocomplete },
+	name: 'MapPageHeaderSelectMap',
+	mixins: [withEventEmitter('mapsService', 'mapsServiceHandlers')],
 	data() {
 		return {
 			mapsService: MapsService,
@@ -81,7 +79,7 @@ export default {
 </script>
 
 <style lang="sass">
-.HeaderFormDirection
+.MapPageHeaderSelectMap
     &__wrap
         display: flex
         align-items: center

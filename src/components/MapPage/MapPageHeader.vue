@@ -1,8 +1,6 @@
 <template>
 	<v-app-bar app class="HomeHeader full-width" height="80" dark clipped-right>
-		<div class="HomeHeader__inner">
-			<header-form-direction />
-		</div>
+		<MapPageHeaderSelectMap />
 
 		<v-spacer></v-spacer>
 
@@ -38,14 +36,14 @@
 
 <script>
 import MapsService from '@services/Maps/MapsService'
-import HeaderFormDirection from './HeaderFormDirection/HeaderFormDirection.vue'
+import MapPageHeaderSelectMap from '@components/MapPage/MapPageHeaderSelectMap.vue'
 import PopupUploadFile from './PopupUploadFile/PopupUploadFile.vue'
 import PopupGroupsSettings from '@components/PopupGroupsSetings/PopupGroupsSettings.vue'
 
 export default {
 	name: 'MapPageHeader',
 
-	components: { HeaderFormDirection, PopupUploadFile, PopupGroupsSettings },
+	components: { MapPageHeaderSelectMap, PopupUploadFile, PopupGroupsSettings },
 	data() {
 		return {
 			popupUploadModel: false,

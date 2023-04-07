@@ -164,7 +164,7 @@ import _ from 'lodash'
 import MapsService from '@services/Maps/MapsService'
 import MHint from '@components/ui/MHint.vue'
 
-import withEventEmmiter from '@mixins/withEventEmmiter'
+import withEventEmitter from '@mixins/withEventEmitter'
 
 export default {
 	components: { MHint },
@@ -192,7 +192,7 @@ export default {
 		},
 	},
 
-	mixins: [withEventEmmiter('MapsService', 'mapsServiceHandlers')],
+	mixins: [withEventEmitter('MapsService', 'mapsServiceHandlers')],
 
 	data: () => ({
 		MapsService,

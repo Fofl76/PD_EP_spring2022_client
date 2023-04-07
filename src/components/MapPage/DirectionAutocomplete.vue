@@ -34,9 +34,10 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import UiAutocomplete from '@components/ui/UiAutocomplete/UiAutocomplete.vue'
 export default {
+	name: 'DirectionAutocomplete',
+
 	components: { UiAutocomplete },
 	props: {
 		value: {
