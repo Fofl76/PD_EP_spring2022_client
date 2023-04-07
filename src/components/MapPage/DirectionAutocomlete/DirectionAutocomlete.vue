@@ -4,14 +4,19 @@
 		class="DirectionAutocomplete__input DirectionAutocomplete__input-direction"
 		v-model="_value"
 		:items="items"
-		no-data-text="Направления не найдены"
+		no-data-text="Сначала выберите факультет"
 		item-text="name"
 		v-bind="$attrs"
-    v-on="$listeners"
+		v-on="$listeners"
 	>
 		<template #append>
 			<div class="DirectionAutocomplete__year-chip--selected">
-				<v-chip v-if="_value" class="DirectionAutocomplete__year-chip" pill label>
+				<v-chip
+					v-if="_value"
+					class="DirectionAutocomplete__year-chip"
+					pill
+					label
+				>
 					{{ _value.year }}
 				</v-chip>
 			</div>
@@ -29,33 +34,32 @@
 </template>
 
 <script>
-import Vue from "vue"
-import UiAutocomplete from '@components/ui/UiAutocomplete/UiAutocomplete.vue';
+import Vue from 'vue'
+import UiAutocomplete from '@components/ui/UiAutocomplete/UiAutocomplete.vue'
 export default {
-  components: { UiAutocomplete },
-  props: {
-    value: {
-      type: [Object, String],
-      default: () => ({}), 
-    },
-    items: {
-      type: Array,
-      default: () => [],
-    },
-  },
-  computed: {
-    _value: {
-      get() {
-        return this.value;
-      },
-      set(v) {
-        this.$emit('input', v)
-      }
-    }
-  },
+	components: { UiAutocomplete },
+	props: {
+		value: {
+			type: [Object, String],
+			default: () => ({}),
+		},
+		items: {
+			type: Array,
+			default: () => [],
+		},
+	},
+	computed: {
+		_value: {
+			get() {
+				return this.value
+			},
+			set(v) {
+				this.$emit('input', v)
+			},
+		},
+	},
 }
 </script>
-
 
 <style lang="sass">
 .DirectionAutocomplete
