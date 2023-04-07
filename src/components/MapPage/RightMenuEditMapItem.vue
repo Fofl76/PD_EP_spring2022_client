@@ -12,11 +12,11 @@
 		clipped
 	>
 		<div class="RightMenuEditMapItem__inner">
-			<div class="RightMenuEditMapItem__section">
-				<div class="RightMenuEditMapItem__section-title">
-					Основные настройки
-				</div>
+			<div class="RightMenuEditMapItem__panel-title">
+				Редактирование дисциплины
+			</div>
 
+			<div class="RightMenuEditMapItem__section">
 				<!-- Название -->
 				<v-text-field
 					v-model="copyItem.discipline"
@@ -30,112 +30,121 @@
 				/>
 			</div>
 
-			<div class="RightMenuEditMapItem__section">
-				<div class="RightMenuEditMapItem__section-title-block">
-					<div class="RightMenuEditMapItem__section-title">
-						Настройки объема
-					</div>
+			<v-expansion-panels
+				class="RightMenuEditMapItem__expansion-wrapper"
+				flat
+				hover
+			>
+				<v-expansion-panel class="RightMenuEditMapItem__expansion">
+					<v-expansion-panel-header>
+						<div class="RightMenuEditMapItem__expansion-header">
+							<div class="RightMenuEditMapItem__expansion-header-title">
+								Настройки объема
+							</div>
 
-					<MHint
-						class="RightMenuEditMapItem__hint"
-						tooltipText="СРС настраивается автоматически исходя из суммы"
-					/>
-				</div>
+							<MHint
+								contentClass="RightMenuEditMapItem__hint"
+								tooltipText="СРС настраивается автоматически исходя из суммы"
+							/>
+						</div>
+					</v-expansion-panel-header>
 
-				<!-- Настройки объемов -->
-				<div class="RightMenuEditMapItem__type-wrapper">
-					<div class="RightMenuEditMapItem__type-row">
-						<div>Зет</div>
-						<div>Часы</div>
-					</div>
+					<v-expansion-panel-content>
+						<div class="RightMenuEditMapItem__type-wrapper">
+							<div class="RightMenuEditMapItem__type-row">
+								<div>Зет</div>
+								<div>Часы</div>
+							</div>
 
-					<div
-						class="RightMenuEditMapItem__type-row"
-						v-for="(type, i) in copyItem.type"
-						:key="i"
-					>
-						<v-text-field
-							:value="copyItem.type[i].zet"
-							:label="copyItem.type[i].control"
-							:disabled="copyItem.type[i].control === 'СРС'"
-							:min="1"
-							:max="10"
-							type="number"
-							ref="zet"
-							:rules="zetRules"
-							hide-details
-							dense
-							filled
-							dark
-							@input="onInputZet(i, $event)"
-						/>
+							<div
+								class="RightMenuEditMapItem__type-row"
+								v-for="(type, i) in copyItem.type"
+								:key="i"
+							>
+								<v-text-field
+									:value="copyItem.type[i].zet"
+									:label="copyItem.type[i].control"
+									:disabled="copyItem.type[i].control === 'СРС'"
+									:min="1"
+									:max="10"
+									type="number"
+									ref="zet"
+									:rules="zetRules"
+									hide-details
+									dense
+									filled
+									dark
+									@input="onInputZet(i, $event)"
+								/>
 
-						<v-text-field
-							:value="copyItem.type[i].hours"
-							:label="copyItem.type[i].control"
-							:disabled="copyItem.type[i].control === 'СРС'"
-							type="number"
-							ref="zet"
-							:rules="hoursRules"
-							hide-details
-							dense
-							filled
-							dark
-							@input="onInputHours(i, $event)"
-						/>
-					</div>
+								<v-text-field
+									:value="copyItem.type[i].hours"
+									:label="copyItem.type[i].control"
+									:disabled="copyItem.type[i].control === 'СРС'"
+									type="number"
+									ref="zet"
+									:rules="hoursRules"
+									hide-details
+									dense
+									filled
+									dark
+									@input="onInputHours(i, $event)"
+								/>
+							</div>
 
-					<v-select
-						:value="selectedControlTypes"
-						:items="allControlTypes"
-						label="Нагрузки"
-						item-text="control"
-						item-disabled="disabled"
-						return-object
-						filled
-						dense
-						hide-details
-						multiple
-						no-data-text="Доступные нагрузки отсутствуют"
-						@input="onSelectControlTypes"
-					>
-						<template v-slot:selection="{ item, index }">
-							<v-chip small v-if="index === 0">
-								<span>{{ item.control }}</span>
-							</v-chip>
-							<span v-if="index === 1" class="grey--text text-caption">
-								(+{{ selectedControlTypes.length - 1 }} нагрузки)
-							</span>
-						</template>
-					</v-select>
+							<v-select
+								:value="selectedControlTypes"
+								:items="allControlTypes"
+								label="Нагрузки"
+								item-text="control"
+								item-disabled="disabled"
+								return-object
+								filled
+								dense
+								hide-details
+								multiple
+								no-data-text="Доступные нагрузки отсутствуют"
+								@input="onSelectControlTypes"
+							>
+								<template v-slot:selection="{ item, index }">
+									<v-chip small v-if="index === 0">
+										<span>{{ item.control }}</span>
+									</v-chip>
+									<span v-if="index === 1" class="grey--text text-caption">
+										(+{{ selectedControlTypes.length - 1 }} нагрузки)
+									</span>
+								</template>
+							</v-select>
 
-					<v-divider dark class="RightMenuEditMapItem__divider" />
+							<v-divider dark class="RightMenuEditMapItem__divider" />
 
-					<div class="RightMenuEditMapItem__type-row">
-						<v-text-field
-							:value="sumZet"
-							label="Сумма ЗЕТ"
-							type="number"
-							hide-details
-							dense
-							filled
-							dark
-							@input="onInputSumZet"
-						/>
+							<div class="RightMenuEditMapItem__type-row">
+								<v-text-field
+									:value="sumZet"
+									label="Сумма ЗЕТ"
+									type="number"
+									hide-details
+									dense
+									filled
+									dark
+									@input="onInputSumZet"
+								/>
 
-						<v-text-field
-							:value="sumHours"
-							label="Сумма часов"
-							type="number"
-							hide-details
-							dense
-							filled
-							dark
-							@input="onInputSumHours"
-						/>
-					</div>
-				</div>
-			</div>
+								<v-text-field
+									:value="sumHours"
+									label="Сумма часов"
+									type="number"
+									hide-details
+									dense
+									filled
+									dark
+									@input="onInputSumHours"
+								/>
+							</div>
+						</div>
+					</v-expansion-panel-content>
+				</v-expansion-panel>
+			</v-expansion-panels>
 
 			<div class="RightMenuEditMapItem__actions">
 				<v-btn
@@ -144,6 +153,7 @@
 					@click="onCancel"
 				>
 					<span>Отменить</span>
+					<v-icon right dark> mdi-close</v-icon>
 				</v-btn>
 
 				<v-btn
@@ -153,6 +163,7 @@
 					@click="onSave"
 				>
 					<span>Сохранить</span>
+					<v-icon right dark> mdi-content-save</v-icon>
 				</v-btn>
 			</div>
 		</div>
@@ -209,14 +220,12 @@ export default {
 		selectedControlTypes: [],
 
 		zetRules: [
-			v => (!!v && v !== 0) || 'Это поле является обязательным',
-			v => (v && +v >= 0) || 'Значение должно быть больше  0',
+			v => (v && +v >= 0) || 'Значение должно быть больше, либо равно 0',
 			v => (v && +v <= 10) || 'Значение должно быть меньше, либо равно 10',
 		],
 
 		hoursRules: [
-			v => (!!v && v !== 0) || 'Это поле является обязательным',
-			v => (v && +v >= 0) || 'Значение должно быть больше 0',
+			v => (v && +v >= 0) || 'Значение должно быть больше 0, либо равно 0',
 			v => (v && +v <= 320) || 'Значение должно быть меньше, либо равно 320',
 		],
 
@@ -401,8 +410,8 @@ export default {
 
 <style lang="sass">
 .RightMenuEditMapItem
-    &__divider
-        margin: 8px 0
+    &__panel-title
+        color: #fff
 
     .MHintActivator
         margin-left: 4px
@@ -420,22 +429,18 @@ export default {
     &__section-title-block
         display: flex
         align-items: center
-        margin-bottom: 8px
-
-    &__section-title
-        font-size: 1em
         color: #fff
 
     &__actions
-        display: flex
-        justify-content: flex-end
-    &__cancel-btn
-        margin-right: 8px
+        display: grid
+        grid-template-columns: 1fr 1fr
+        gap: 8px
 
     &__type-wrapper
         display: flex
         flex-direction: column
         color: #fff
+        margin-top: 8px
 
         & > *:not(:last-child)
             margin-bottom: 8px
@@ -446,4 +451,48 @@ export default {
         grid-template-rows: 1fr
         gap: 8px
         align-items: center
+
+    &__hint
+        margin-left: 8px
+
+    &__expansion-wrapper
+        border-radius: 4px 4px 0 0 !important
+
+    &__expansion
+        background-color: rgba(255, 255, 255, 0.08) !important
+
+        .v-expansion-panel-header
+            min-height: 52px !important
+            padding: 16px !important
+            border-bottom: 1px solid rgba(255, 255, 255, 0.7) !important
+            position: relative
+
+            &:after
+                content: ''
+                position: absolute
+                width: 100%
+                height: 1px
+                bottom: 0
+                left: 0
+                background-color: #fff
+                transform: rotateY(90deg)
+                transition: transform .25s ease
+
+
+        .v-expansion-panel-content__wrap
+            padding: 0 16px 16px 16px !important
+
+        &.v-expansion-panel--active
+
+            .v-expansion-panel-header
+                &:after
+                    transform: rotateY(0deg)
+
+    &__expansion-header
+        display: flex
+        align-items: center
+        color: #fff
+
+    &__expansion-header-title
+        font-size: 16px
 </style>

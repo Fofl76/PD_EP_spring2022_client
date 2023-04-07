@@ -1,9 +1,17 @@
 <template>
 	<v-tooltip class="MHint" top>
 		<template v-slot:activator="{ on, attrs }">
-			<v-btn class="MHintActivator" icon v-bind="attrs" v-on="on">
-				<v-icon color="grey lighten-1" :size="size" dense>{{ icon }}</v-icon>
-			</v-btn>
+			<v-icon
+				class="MHint-icon"
+				:class="[contentClass]"
+				color="grey lighten-1"
+				:size="size"
+				dense
+				v-bind="attrs"
+				v-on="on"
+			>
+				{{ icon }}
+			</v-icon>
 		</template>
 
 		<span>{{ tooltipText }}</span>
@@ -16,7 +24,7 @@ export default {
 	props: {
 		icon: {
 			type: String,
-			default: 'mdi-help',
+			default: 'mdi-information',
 		},
 
 		tooltipText: {
@@ -28,8 +36,17 @@ export default {
 			type: [String, Number],
 			default: 16,
 		},
+
+		contentClass: {
+			type: String,
+			default: '',
+		},
 	},
 }
 </script>
 
-<style></style>
+<style lang="sass">
+.MHint
+    &-icon
+        cursor: pointer
+</style>
