@@ -63,6 +63,7 @@ export default {
 		allGroupsMapId() {
 			return this.groupsService.allGroupsMapId
 		},
+
 		isLoadingMaps() {
 			return this.mapsService.isLoadingMapList
 		},
