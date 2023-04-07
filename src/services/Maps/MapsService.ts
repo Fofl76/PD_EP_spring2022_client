@@ -200,11 +200,7 @@ class MapsService extends Events {
 	 * @return {void}
 	 */
 
-	movedMapItemInColLocal(
-		item: IMapItemRaw,
-		oldIndex: number,
-		newIndex: number
-	) {
+	moveMapItemInColLocal(item: IMapItemRaw, oldIndex: number, newIndex: number) {
 		const copyColumn = _.cloneDeep(this._mapList.value[item.num_col - 1])
 
 		copyColumn.splice(oldIndex, 1)
