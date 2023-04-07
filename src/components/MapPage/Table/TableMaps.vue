@@ -67,16 +67,18 @@ export default {
 			isAvailableSave: false,
 		}
 	},
+
 	computed: {
 		maxZet() {
 			return MapsService.maxZet
 		},
+
 		isLoadingSaveMapList() {
 			return MapsService.isLoadingSaveMapList
 		},
 
 		isEmpty() {
-			return !this.table.length
+			return !this.table.length && !this.isLoadingSaveMapList
 		},
 	},
 	methods: {

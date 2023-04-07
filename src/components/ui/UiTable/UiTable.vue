@@ -1,22 +1,22 @@
 <template>
 	<div>
 		<div class="aup-table" :style="styleVars">
-			<div class="aup-table__left-column">
-				<div class="aup-table__column-header aup-table__left-column-header">
-					ЗЕТ
-				</div>
-
-				<div
-					class="aup-table__zet-block"
-					v-for="i in !loading ? maxZet : fakeMaxZet"
-					:key="i"
-					:style="{ height: heightZet() }"
-				>
-					<span>{{ i }}</span>
-				</div>
-			</div>
-
 			<template v-if="!loading">
+				<div class="aup-table__left-column">
+					<div class="aup-table__column-header aup-table__left-column-header">
+						ЗЕТ
+					</div>
+
+					<div
+						class="aup-table__zet-block"
+						v-for="i in !loading ? maxZet : fakeMaxZet"
+						:key="i"
+						:style="{ height: heightZet() }"
+					>
+						<span>{{ i }}</span>
+					</div>
+				</div>
+
 				<div
 					class="aup-table__column"
 					v-for="(column, key) in table"
@@ -38,9 +38,9 @@
 								:data="dataValue(element)"
 								:isEditing="activeEditingItemId === element.id"
 								:height="heightTableBlock(element)"
-                :class="{
-                  'aup-table__block-wrapper-small': isFullScreen,
-                }"
+								:class="{
+									'aup-table__block-wrapper-small': isFullScreen,
+								}"
 								@edit="$emit('edit', $event)"
 								@click.native="onClickBlock(element)"
 							/>
@@ -84,15 +84,15 @@ export default {
 			default: () => [],
 		},
 		maxZet: {
-      type: Number,
+			type: Number,
 			default: 30,
 		},
 		activeEditingItemId: {
-      type: [String, Number],
+			type: [String, Number],
 			default: null,
 		},
-    loading: Boolean,
-    isFullScreen:Boolean,
+		loading: Boolean,
+		isFullScreen: Boolean,
 	},
 	data() {
 		return {
@@ -102,15 +102,15 @@ export default {
 		}
 	},
 	computed: {
-    heightZet() {
-      return (countZet = 1) => {
-        if (this.isFullScreen) {
-          return `calc(((100vh - 80px - 32px - 30px) / ${this.maxZet}) * ${countZet})`
-        }
-    
-          return `calc(90px * ${countZet})`
-        }
-    },
+		heightZet() {
+			return (countZet = 1) => {
+				if (this.isFullScreen) {
+					return `calc(((100vh - 80px - 32px - 30px) / ${this.maxZet}) * ${countZet})`
+				}
+
+				return `calc(90px * ${countZet})`
+			}
+		},
 
 		dataValue() {
 			return element => ({
