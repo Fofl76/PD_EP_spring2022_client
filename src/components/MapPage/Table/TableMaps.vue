@@ -83,7 +83,7 @@ export default {
 	},
 	methods: {
 		onEdit(item) {
-			this.$emit('edit-click', item)
+			this.$emit('edit-click', item.id)
 		},
 		async onSaveMap() {
 			const aup = this.$route.query.aup

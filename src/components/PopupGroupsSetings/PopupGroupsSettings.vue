@@ -429,8 +429,10 @@ export default {
 		},
 
 		value(value) {
-			if (value) {
-				this.initAllDisciplines()
+			if (!value) {
+				setTimeout(() => {
+					this.initAllDisciplines()
+				}, 300);
 			}
 		},
 	},
@@ -441,7 +443,13 @@ export default {
 		},
 
 		initAllDisciplines() {
-			this.groupsService = GroupsService
+			this.newItemForm = {
+				nameModel: '',
+				colorModel: '#fff',
+			}
+
+			this.selectedItem = null
+			this.selectedItemIndex = null
 
 			this.newAllDisciplines = _.cloneDeep(
 				_.uniqBy(this.activeMapTable, el => el.discipline)

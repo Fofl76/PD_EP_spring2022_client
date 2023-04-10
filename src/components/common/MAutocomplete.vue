@@ -14,6 +14,12 @@
     v-bind="$attrs"
     v-on="$listeners"
 	>
+    <template #item="item">
+      <slot
+        name="item"
+        v-bind="item"
+      />
+    </template>
 		<template
         v-for="(_, name) in $scopedSlots"
         #[name]="scope"

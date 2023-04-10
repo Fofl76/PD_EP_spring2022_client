@@ -52,8 +52,8 @@
 					<v-expansion-panel-content>
 						<div class="RightMenuEditMapItem__type-wrapper">
 							<div class="RightMenuEditMapItem__type-row">
-								<div>Зет</div>
 								<div>Часы</div>
+								<div>Зет</div>
 							</div>
 
 							<div
@@ -61,6 +61,20 @@
 								v-for="(type, i) in copyItem.type"
 								:key="i"
 							>
+								<v-text-field
+									:value="copyItem.type[i].hours"
+									:label="copyItem.type[i].control"
+									:disabled="copyItem.type[i].control === 'СРС'"
+									type="number"
+									ref="zet"
+									:rules="hoursRules"
+									hide-details
+									dense
+									filled
+									dark
+									@input="onInputHours(i, $event)"
+								/>
+
 								<v-text-field
 									:value="copyItem.type[i].zet"
 									:label="copyItem.type[i].control"
@@ -75,20 +89,6 @@
 									filled
 									dark
 									@input="onInputZet(i, $event)"
-								/>
-
-								<v-text-field
-									:value="copyItem.type[i].hours"
-									:label="copyItem.type[i].control"
-									:disabled="copyItem.type[i].control === 'СРС'"
-									type="number"
-									ref="zet"
-									:rules="hoursRules"
-									hide-details
-									dense
-									filled
-									dark
-									@input="onInputHours(i, $event)"
 								/>
 							</div>
 
@@ -120,17 +120,6 @@
 
 							<div class="RightMenuEditMapItem__type-row">
 								<v-text-field
-									:value="sumZet"
-									label="Сумма ЗЕТ"
-									type="number"
-									hide-details
-									dense
-									filled
-									dark
-									@input="onInputSumZet"
-								/>
-
-								<v-text-field
 									:value="sumHours"
 									label="Сумма часов"
 									type="number"
@@ -139,6 +128,17 @@
 									filled
 									dark
 									@input="onInputSumHours"
+								/>
+
+								<v-text-field
+									:value="sumZet"
+									label="Сумма ЗЕТ"
+									type="number"
+									hide-details
+									dense
+									filled
+									dark
+									@input="onInputSumZet"
 								/>
 							</div>
 						</div>
@@ -160,6 +160,7 @@
 					class="RightMenuEditMapItem__save-btn"
 					color="success"
 					:loading="loading"
+					:disabled="isDirty"
 					@click="onSave"
 				>
 					<span>Сохранить</span>
@@ -186,8 +187,8 @@ export default {
 			required: false,
 			default: false,
 		},
-		item: {
-			type: Object,
+		itemId: {
+			type: String,
 			required: false,
 			default: null,
 		},
@@ -213,6 +214,11 @@ export default {
 			type: [],
 		},
 
+		item: {
+			discipline: '',
+			type: [],
+		},
+
 		sumZet: 0,
 		sumHours: 0,
 
@@ -220,13 +226,15 @@ export default {
 		selectedControlTypes: [],
 
 		zetRules: [
-			v => (v && +v >= 0) || 'Значение должно быть больше, либо равно 0',
-			v => (v && +v <= 10) || 'Значение должно быть меньше, либо равно 10',
+			v => !!String(v).length || 'Это поле является обязательным',
+			v => (+v >= 0) || 'Значение должно быть больше, либо равно 0',
+			v => (+v <= 10) || 'Значение должно быть меньше, либо равно 10',
 		],
 
 		hoursRules: [
-			v => (v && +v >= 0) || 'Значение должно быть больше 0, либо равно 0',
-			v => (v && +v <= 320) || 'Значение должно быть меньше, либо равно 320',
+			v => !!String(v).length || 'Это поле является обязательным',
+			v => (+v >= 0) || 'Значение должно быть больше 0, либо равно 0',
+			v => (+v <= 320) || 'Значение должно быть меньше, либо равно 320',
 		],
 
 		disciplineRules: [
@@ -241,6 +249,10 @@ export default {
 			return this.$refs.zet.validate()
 		},
 
+		isDirty() {
+			return _.isEqual(this.item, this.copyItem)
+		},
+
 		isValidName() {
 			return this.$refs.discipline.validate()
 		},
@@ -248,7 +260,7 @@ export default {
 		zetEqualsHours() {
 			return this.MapsService.ZETQUEALSHOURS
 		},
-
+		
 		// Открытие/закрытие панели
 		value_: {
 			get() {
@@ -256,21 +268,29 @@ export default {
 			},
 
 			set(value) {
-				if (value) this.setNewEditingItem(this.item)
-
 				this.$emit('input', value)
 			},
 		},
 	},
 
+	watch: {
+		itemId() {
+			this.setNewEditingItem()
+		}
+	},
+
 	methods: {
-		setNewEditingItem(item) {
-			const copyItem = _.cloneDeep(item)
+		setNewEditingItem() {
+			this.item = _.cloneDeep(this.MapsService.getMapItemById(this.itemId))
+
+			const copyItem = _.cloneDeep(this.item)
 
 			copyItem.type = this.buildControlTypes(copyItem.type)
-			copyItem.type = this.sortControlTypes(copyItem.type)
+			// copyItem.type = this.sortControlTypes(copyItem.type)
 
-			this.initSelectedControlTypes(item)
+			this.item.type = this.buildControlTypes(this.item.type)
+
+			this.initSelectedControlTypes(this.item)
 
 			this.copyItem = copyItem
 
@@ -279,7 +299,7 @@ export default {
 					control: controlType.name,
 					controlTypeId: controlType.id,
 					zet: 0,
-					disabled: item.type.find(e => e.controlTypeId == controlType.id),
+					disabled: this.item.type.find(e => e.controlTypeId == controlType.id),
 				})
 			)
 
@@ -290,12 +310,14 @@ export default {
 		},
 
 		buildControlTypes(controlTypes) {
-			return controlTypes.map(type => {
+			const buildControlTypes = controlTypes.map(type => {
 				return {
 					...type,
 					hours: type.zet * this.zetEqualsHours,
 				}
 			})
+
+			return this.sortControlTypes(buildControlTypes)
 		},
 
 		// Временный костыль, чтобы СРС был всегда вверху

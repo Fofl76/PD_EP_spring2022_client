@@ -12,7 +12,7 @@
 					<TableMaps
 						:loading="isLoadingMaps"
 						:table="mapsService.mapList?.value"
-						:activeEditingItemId="editingMapItemId"
+						:activeEditingItemId="rightMenuEditItemId"
 						@edit-click="onEditClick"
 					/>
 				</v-container>
@@ -22,7 +22,7 @@
 
 			<RightMenuEditMapItem
 				v-model="rightMenuEditModel"
-				:item="rightMenuEditItem"
+				:itemId="rightMenuEditItemId"
 				@close="onCloseEditingItemPanel"
 			/>
 		</div>
@@ -53,10 +53,8 @@ export default {
 
 			snackbarOptions: null,
 
-			editingMapItemId: null,
-
 			rightMenuEditModel: false,
-			rightMenuEditItem: null,
+			rightMenuEditItemId: null,
 		}
 	},
 	computed: {
@@ -110,10 +108,9 @@ export default {
 			}
 		},
 
-		onEditClick(item) {
+		onEditClick(id) {
 			this.rightMenuEditModel = true
-			this.rightMenuEditItem = item
-			this.editingMapItemId = item.id
+			this.rightMenuEditItemId = id
 		},
 
 		onCloseEditingItemPanel() {

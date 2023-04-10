@@ -159,6 +159,10 @@ class MapsService extends Events {
 		this._isLoadingSaveMapList = false
 	}
 
+	getMapItemById(id: string): IMapItemRaw | null {
+		return this._mapList.value.flat().find(item => item.id === id) || null
+	}
+
 	/**
 	 * @desc Метод для локального удаления элемтна с колонке
 	 * @param {IMapItemRaw} item - Элемент, который необходимо удалить
