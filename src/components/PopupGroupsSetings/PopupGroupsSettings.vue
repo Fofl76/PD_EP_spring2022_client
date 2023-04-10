@@ -387,7 +387,7 @@ export default {
 						.toLowerCase()
 						.includes(this.searchModel.toLowerCase())
 				}),
-				'headline'
+				'name'
 			)
 		},
 

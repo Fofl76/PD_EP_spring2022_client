@@ -92,32 +92,6 @@
 								/>
 							</div>
 
-							<v-select
-								:value="selectedControlTypes"
-								:items="allControlTypes"
-								label="Нагрузки"
-								item-text="control"
-								item-disabled="disabled"
-								return-object
-								filled
-								dense
-								hide-details
-								multiple
-								no-data-text="Доступные нагрузки отсутствуют"
-								@input="onSelectControlTypes"
-							>
-								<template v-slot:selection="{ item, index }">
-									<v-chip small v-if="index === 0">
-										<span>{{ item.control }}</span>
-									</v-chip>
-									<span v-if="index === 1" class="grey--text text-caption">
-										(+{{ selectedControlTypes.length - 1 }} нагрузки)
-									</span>
-								</template>
-							</v-select>
-
-							<v-divider dark class="RightMenuEditMapItem__divider" />
-
 							<div class="RightMenuEditMapItem__type-row">
 								<v-text-field
 									:value="sumHours"
@@ -141,6 +115,32 @@
 									@input="onInputSumZet"
 								/>
 							</div>
+
+							<v-divider dark class="RightMenuEditMapItem__divider" />
+
+							<v-select
+								:value="selectedControlTypes"
+								:items="allControlTypes"
+								label="Нагрузки"
+								item-text="control"
+								item-disabled="disabled"
+								return-object
+								filled
+								dense
+								hide-details
+								multiple
+								no-data-text="Доступные нагрузки отсутствуют"
+								@input="onSelectControlTypes"
+							>
+								<template v-slot:selection="{ item, index }">
+									<v-chip small v-if="index === 0">
+										<span>{{ item.control }}</span>
+									</v-chip>
+									<span v-if="index === 1" class="grey--text text-caption">
+										(+{{ selectedControlTypes.length - 1 }} нагрузки)
+									</span>
+								</template>
+							</v-select>
 						</div>
 					</v-expansion-panel-content>
 				</v-expansion-panel>
