@@ -162,14 +162,14 @@ export default {
         color: #fff
 
     &__save-table-btn
-        position: fixed
-        bottom: 30px
-        right: 30px
+        position: sticky
+        bottom: 90px
+        left: 100%
         transition: right .2s cubic-bezier(0.4, 0, 0.2, 1)
     &__save-table-mode
-        position: fixed
+        position: sticky
         bottom: 30px
-        right: 30px
+        left: 100%
         transition: right .2s cubic-bezier(0.4, 0, 0.2, 1)
 
 .Home.withRightMenu

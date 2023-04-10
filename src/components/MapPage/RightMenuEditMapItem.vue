@@ -92,6 +92,8 @@
 								/>
 							</div>
 
+							<v-divider dark class="RightMenuEditMapItem__divider" />
+
 							<div class="RightMenuEditMapItem__type-row">
 								<v-text-field
 									:value="sumHours"
@@ -488,6 +490,7 @@ export default {
             padding: 16px !important
             border-bottom: 1px solid rgba(255, 255, 255, 0.7) !important
             position: relative
+            flex-direction: row-reverse !important
 
             &:after
                 content: ''
@@ -499,6 +502,12 @@ export default {
                 background-color: #fff
                 transform: rotateY(90deg)
                 transition: transform .25s ease
+						
+            .v-expansion-panel-header__icon
+                margin-right: 8px
+
+                i
+                    transform: rotate(-90deg)
 
 
         .v-expansion-panel-content__wrap
