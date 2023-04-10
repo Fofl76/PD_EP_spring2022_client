@@ -6,6 +6,10 @@
 		:items="items"
 		no-data-text="Сначала выберите факультет"
 		item-text="name"
+		filled
+		:menu-props="{
+			maxWidth: 500,
+		}"
 		v-bind="$attrs"
 		v-on="$listeners"
 	>
@@ -69,6 +73,7 @@ export default {
 
     &__year-chip
         justify-content: center
+        margin-right: 4px
 
         &--selected
             margin-right: 4px
