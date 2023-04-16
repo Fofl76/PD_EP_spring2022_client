@@ -24,14 +24,6 @@
 				>
 					<div class="aup-table__column-header">
 						{{ orderWords[key] }}
-						<!-- <MHint>
-							<div>
-								{{ statsColumn(key) }}
-							</div>
-						</MHint> -->
-						<m-test
-							:items="column"
-						/>
 					</div>
 
 					<draggable
@@ -85,12 +77,11 @@ import UiTableSkeletonBlock from './MTableSkeletonBlock.vue'
 import MapsService from '@services/Maps/MapsService'
 import _ from 'lodash'
 import MHint from './MHint.vue'
-import MTest from './MTest.vue'
 
 const dapsService = MapsService.ZETQUEALSHOURS
 
 export default {
-	components: { UiTableBlock, draggable, UiTableSkeletonBlock, MHint, MTest },
+	components: { UiTableBlock, draggable, UiTableSkeletonBlock, MHint },
 	props: {
 		table: {
 			type: Array,
@@ -131,15 +122,6 @@ export default {
 				element,
 				group: this.getGroupById(element.id_group),
 			})
-		},
-
-		statsColumn() {
-			
-			return (index) => {
-				console.log('statsColumn', this.table[0])
-
-				Math.random()
-			}
 		},
 
 		dragOptions() {

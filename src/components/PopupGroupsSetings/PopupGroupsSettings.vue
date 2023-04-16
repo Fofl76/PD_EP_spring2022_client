@@ -393,7 +393,6 @@ export default {
 
 
 			this.value_ = false
-			console.log('onSaveMap')
 		},
 
 		async deleteGroupHandler(group) {
