@@ -23,52 +23,10 @@
 
 						<v-divider class="PopupGroupsSettings__hor-divider"></v-divider>
 
-						<v-list style="height: 305px; overflow-y: scroll" dense>
-							<v-list-item-group v-model="selectedItemIndex" color="primary">
-								<v-tooltip
-									max-width="200"
-									open-delay="700"
-									left
-									v-for="item in filteredItems"
-									:key="item.id"
-								>
-									<template
-										v-if="item.id !== 1"
-										v-slot:activator="{ on, attrs }"
-									>
-									<v-hover
-										v-slot="{ hover }"
-									>
-										<v-list-item
-											v-bind="attrs"
-											:value="attrs.id"
-											v-on="on"
-										>
-											<v-list-item-icon>
-												<v-icon :color="item.color">mdi-circle</v-icon>
-											</v-list-item-icon>
-
-											<v-list-item-content>
-												<v-list-item-title>{{ item.name }}</v-list-item-title>
-											</v-list-item-content>
-
-											<v-list-item-icon
-												v-if="hover"
-												@click.stop="deleteGroupHandler(item)"
-											>
-												<v-hover
-													v-slot="{ hover: _hover }"
-												>
-													<v-icon :color="_hover ? 'black' : 'grey'">mdi-delete</v-icon>
-												</v-hover>
-											</v-list-item-icon>
-										</v-list-item>
-										</v-hover>
-									</template>
-									<span>{{ item.name }}</span>
-								</v-tooltip>
-							</v-list-item-group>
-						</v-list>
+						<PopupGroupsListDisciplines
+							v-model="selectedItemId"
+							:disciplines="filteredItems"
+						/>
 
 						<v-divider class="PopupGroupsSettings__hor-divider"></v-divider>
 						<v-list style="padding: 0px" dense>
@@ -89,7 +47,7 @@
 					<v-divider class="PopupGroupsSettings__ver-divider" vertical />
 
 					<div
-						v-if="selectedItemIndex || selectedItemIndex === 0"
+						v-if="selectedItemId"
 						class="PopupGroupsSettings__group-settings"
 					>
 						<div class="PopupGroupsSettings__group-settings-form">
@@ -201,59 +159,10 @@
 					</div>
 
 					<div v-else-if="createItem">
-						<div class="PopupGroupsSettings__create">
-							<div class="PopupGroupsSettings__create-form">
-								<div class="PopupGroupsSettings__create-header text-h5">
-									Добавление группы
-								</div>
-								<div class="PopupGroupsSettings__create-row">
-									<v-text-field
-										v-model="newItemForm.nameModel"
-										class="PopupGroupsSettings__name-group"
-										label="Наименование группировки"
-										outlined
-										dense
-										hide-details="auto"
-										:rules="nameRules"
-										ref="createNameGroupInput"
-									></v-text-field>
-
-									<v-menu offset-y :close-on-content-click="false">
-										<template v-slot:activator="{ on, attrs }">
-											<v-btn
-												:color="newItemForm.color"
-												v-bind="attrs"
-												v-on="on"
-												class="ml-2"
-												min-height="40px"
-											>
-												Цвет
-											</v-btn>
-										</template>
-
-										<v-color-picker
-											v-model="newItemForm.color"
-											dot-size="25"
-											hide-inputs
-											hide-mode-switch
-											swatches-max-height="200"
-										/>
-									</v-menu>
-								</div>
-								<div class="PopupGroupsSettings__create-footer">
-									<v-btn
-										color="success"
-										min-height="40px"
-										block
-										@click="addModel"
-										:disabled="isDisableAddGroups"
-										:loading="isLoadingAddGroups"
-									>
-										Добавить
-									</v-btn>
-								</div>
-							</div>
-						</div>
+						<PopupGroupsAddGrops
+							:groups="availableAppointedGroups"
+							@addGroup="onAddGroup"
+						/>
 					</div>
 
 					<div v-else>
@@ -291,10 +200,13 @@ import draggable from 'vuedraggable'
 import GroupsService from '@services/Groups/GroupsService'
 import MapsService from '@services/Maps/MapsService'
 import unbuildMapList from '@services/Maps/unbuildMapsList'
+import Api from '@services/api/Api'
+import PopupGroupsListDisciplines from './PopupGroupsListDisciplines.vue'
+import PopupGroupsAddGrops from './PopupGroupsAddGrops.vue'
 
 export default {
 	name: 'PopupGroupsSettings',
-	components: { draggable },
+	components: { draggable, PopupGroupsListDisciplines, PopupGroupsAddGrops },
 
 	props: {
 		value: {
@@ -305,24 +217,14 @@ export default {
 
 	data: () => ({
 		newAllDisciplines: [],
-		selectedItem: null,
-		selectedItemIndex: null,
+		selectedItemId: null,
+		
+		// доступные группы
+		items: [],
 
 		createItem: false,
 
-		newItemForm: {
-			nameModel: '',
-			color: '#FFFFFF',
-		},
-
 		groupsService: GroupsService,
-
-		nameRules: [
-			v => !!v || 'Это поле является обязательным',
-			v =>
-				(v && v.length < 70) ||
-				'Название дисциплины не может превышать 70 символов',
-		],
 
 		isLoadingAddGroups: false,
 
@@ -334,6 +236,16 @@ export default {
 	}),
 
 	computed: {
+		availableAppointedGroups() {
+			const allGroups = this.groupsService.groupsList.value
+			const appointedGroups = this.items
+			
+			const appointedGroupsIds = appointedGroups?.map(el => el.id)
+			const setAppointedGroupsIds = new Set(appointedGroupsIds)
+
+			return allGroups.filter(group => !setAppointedGroupsIds.has(group.id))		
+		},
+
 		isLoadingSaveTable() {
 			return MapsService.isLoadingSaveMapList
 		},
@@ -364,19 +276,21 @@ export default {
 			return this.selectedItem.name === this.nameModel && this.selectedItem.color === this.colorModel
 		},
 
-		items() {
-			return this.groupsService.groupsList.value?.filter(el => el.id !== 1)
-		},
-
 		availableDisciplines() {
-			return this.newAllDisciplines?.filter(
-				el => el.id_group !== this.selectedItem.id
+			return _.orderBy(
+				this.newAllDisciplines?.filter(
+					el => el.id_group !== this.selectedItem?.id
+				),
+				'discipline'
 			)
 		},
 
 		appointedDisciplines() {
-			return this.newAllDisciplines?.filter(
-				el => el.id_group === this.selectedItem.id
+			return _.orderBy(
+				this.newAllDisciplines?.filter(
+					el => el.id_group === this.selectedItem?.id
+				),
+				'discipline'
 			)
 		},
 
@@ -398,9 +312,9 @@ export default {
 			}
 		},
 
-		isDisableAddGroups() {
-			return !this.newItemForm.nameModel.length
-		},
+		selectedItem() {
+			return this.filteredItems.find(item => item.id === this.selectedItemId)
+		}
 	},
 
 	watch: {
@@ -410,29 +324,29 @@ export default {
 
 		createItem(value) {
 			if (value) {
-				this.selectedItemIndex = null
-				this.selectedItem = null
+				this.selectedItemId = null
 			}
 		},
 
-		selectedItemIndex(id) {
+		selectedItemId(id) {
 			if (!id && id !== 0) return
 
 			if (this.createItem) {
 				this.createItem = null
 			}
 
-			this.selectedItem = this.filteredItems[this.selectedItemIndex]
-
 			this.nameModel = this.selectedItem.name
 			this.colorModel = this.selectedItem.color
 		},
 
-		value(value) {
+		async value(value) {
 			if (!value) {
 				setTimeout(() => {
 					this.initAllDisciplines()
 				}, 300);
+			}
+			else {
+				this.getAllDisciplines()
 			}
 		},
 	},
@@ -442,47 +356,29 @@ export default {
 			this.$emit('input', event)
 		},
 
-		initAllDisciplines() {
-			this.newItemForm = {
-				nameModel: '',
-				colorModel: '#fff',
-			}
+		onAddGroup(group) {
+			this.items.push(group)
 
-			this.selectedItem = null
-			this.selectedItemIndex = null
+			this.selectedItemId = group.id
+			this.createItem = false
+		},
 
+		async initAllDisciplines() {
+			this.items = await Api.fetchGroupsByAup(this.$route.query.aup)
+
+			this.getAllDisciplines()
+
+			this.selectedItemId = null
+		},
+
+		getAllDisciplines () {
 			this.newAllDisciplines = _.cloneDeep(
 				_.uniqBy(this.activeMapTable, el => el.discipline)
 			)
 		},
 
-		async addModel() {
-			if (this.isDisableAddGroups) return
-
-			this.isLoadingAddGroups = true
-			const newGroup = {
-				name: this.newItemForm.nameModel,
-				color: this.newItemForm.color,
-			}
-
-			try {
-				await this.groupsService.addGroup(newGroup)
-
-				this.newItemForm = {
-					nameModel: '',
-					color: '#FFFFFF',
-				}
-
-			} catch (e) {
-				console.log(e)
-			} finally {
-				this.selectedItemIndex = this.items.length - 1
-				this.isLoadingAddGroups = false
-			}
-		},
-
 		clearSelectedItem() {
-			this.selectedItemIndex = null
+			this.selectedItemId = null
 		},
 
 		async onSaveMap() {
@@ -503,8 +399,7 @@ export default {
 		async deleteGroupHandler(group) {
 			await this.groupsService.deleteGroup(group.id)
 			this.initAllDisciplines()
-			this.selectedItem = null
-			this.selectedItemIndex = null
+			this.selectedItemId = null
 		},
 
 		async updateGroupHandler() {
@@ -537,6 +432,9 @@ export default {
 			dataTransfer.setDragImage(document.createElement('div'), 0, 0)
 		},
 	},
+	async created() {
+		await this.initAllDisciplines()
+	}
 }
 </script>
 

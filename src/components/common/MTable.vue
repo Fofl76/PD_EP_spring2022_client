@@ -24,6 +24,14 @@
 				>
 					<div class="aup-table__column-header">
 						{{ orderWords[key] }}
+						<!-- <MHint>
+							<div>
+								{{ statsColumn(key) }}
+							</div>
+						</MHint> -->
+						<m-test
+							:items="column"
+						/>
 					</div>
 
 					<draggable
@@ -74,10 +82,15 @@ import UiTableBlock from './MTableBlock.vue'
 import GroupsService from '@services/Groups/GroupsService'
 import orderWords from '@utils/orderWords'
 import UiTableSkeletonBlock from './MTableSkeletonBlock.vue'
+import MapsService from '@services/Maps/MapsService'
 import _ from 'lodash'
+import MHint from './MHint.vue'
+import MTest from './MTest.vue'
+
+const dapsService = MapsService.ZETQUEALSHOURS
 
 export default {
-	components: { UiTableBlock, draggable, UiTableSkeletonBlock },
+	components: { UiTableBlock, draggable, UiTableSkeletonBlock, MHint, MTest },
 	props: {
 		table: {
 			type: Array,
@@ -99,13 +112,14 @@ export default {
 			orderWords,
 			fakeElementsCount: 8,
 			fakeMaxZet: 30,
+			zetQuealsHours: MapsService.ZETQUEALSHOURS,
 		}
 	},
 	computed: {
 		heightZet() {
 			return (countZet = 1) => {
 				if (this.isFullScreen) {
-					return `calc(((100vh - 80px - 32px - 30px) / ${this.maxZet}) * ${countZet})`
+					return `calc(((100vh - 80px - 32px - 30px) / ${this.maxZet || 1}) * ${countZet || 1})`
 				}
 
 				return `calc(90px * ${countZet})`
@@ -118,6 +132,16 @@ export default {
 				group: this.getGroupById(element.id_group),
 			})
 		},
+
+		statsColumn() {
+			
+			return (index) => {
+				console.log('statsColumn', this.table[0])
+
+				Math.random()
+			}
+		},
+
 		dragOptions() {
 			return {
 				animation: 250,
@@ -155,9 +179,12 @@ export default {
 		},
 
 		totalZet(data) {
-			return data.type.reduce((sum, zetBlock) => {
-				return sum + zetBlock?.zet
+			const hours = data.type.reduce((sum, zetBlock) => {
+				return sum + zetBlock?.hours
 			}, 0)
+
+			const zet = Math.max(hours / this.zetQuealsHours, 1)
+			return zet
 		},
 
 		setData(dataTransfer) {

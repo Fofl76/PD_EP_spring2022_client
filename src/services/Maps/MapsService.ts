@@ -128,13 +128,13 @@ class MapsService extends Events {
 		this.mapList.value.forEach(column => {
 			let sum = 0
 			column.forEach(element => {
-				sum += element?.type?.reduce((sum, zetBlock) => sum + zetBlock?.zet, 0)
+				sum += element?.type?.reduce((sum, zetBlock) => sum + zetBlock.hours, 0)
 			})
 
 			if (sum > maxZet) maxZet = sum
 		})
 
-		maxZet = Math.ceil(maxZet)
+		maxZet = Math.ceil(maxZet / this.ZETQUEALSHOURS)
 
 		return maxZet
 	}
@@ -144,7 +144,7 @@ class MapsService extends Events {
 	 * @param {Key} aupCode - Ауп код направления
 	 * @return {Promise<void>}
 	 */
-	async saveAllMap(aupCode: Key, mapList: IMapList[] | null = null) {
+	async saveAllMap(aupCode: Key, mapList: IMapItemRaw[] | null = null) {
 		this._isLoadingSaveMapList = true
 
 		const res = await Api.saveMap(
@@ -157,6 +157,8 @@ class MapsService extends Events {
 		}
 
 		this._isLoadingSaveMapList = false
+
+		return res
 	}
 
 	getMapItemById(id: string): IMapItemRaw | null {
@@ -219,17 +221,18 @@ class MapsService extends Events {
 	async editMapItem(aup, item: IMapItemRaw, newItem: IMapItemRaw) {
 		const copyMap = _.cloneDeep(this._mapList.value)
 
-		copyMap[item.num_col + 1][item.num_row] = newItem
+		copyMap[item.num_col - 1][item.num_row] = newItem
 
-		// @ts-ignore
 		const res = await this.saveAllMap(aup, unbuildMapList(copyMap))
 
-		console.log(res)
+		if (res) {	
+			const copyColumn = _.cloneDeep(this._mapList.value[item.num_col - 1])
+			copyColumn[item.num_row] = newItem
+			const recalculateColumn = getRecalculatedColumn(copyColumn)
+			Vue.set(this._mapList.value, item.num_col - 1, recalculateColumn)
 
-		const copyColumn = _.cloneDeep(this._mapList.value[item.num_col - 1])
-		copyColumn[item.num_row] = newItem
-		const recalculateColumn = getRecalculatedColumn(copyColumn)
-		Vue.set(this._mapList.value, item.num_col - 1, recalculateColumn)
+			return res
+		}
 	}
 
 	/**

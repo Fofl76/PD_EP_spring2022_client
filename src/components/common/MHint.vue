@@ -13,8 +13,9 @@
 				{{ icon }}
 			</v-icon>
 		</template>
-
-		<span>{{ tooltipText }}</span>
+		<slot>
+			<span>{{ tooltipText }}</span>
+		</slot>
 	</v-tooltip>
 </template>
 

@@ -64,13 +64,8 @@ class GroupsService extends Events {
 
   updateGroupLocal(group: IGroup) {
     const indexGroup = _.findIndex(this._groupsList.value, function (el) {
-      console.log(el.id, group.id);
-      
       return el.id === group.id
     })
-
-    console.log(indexGroup);
-    
 
     Vue.set(this._groupsList.value, indexGroup, group)
   }

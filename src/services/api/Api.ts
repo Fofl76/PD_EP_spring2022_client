@@ -50,6 +50,15 @@ abstract class Api {
 	}
 
 	/**
+	 * @desc Запрос на получение групп для таблицы
+	 * @param {Key} aupCode - Код карты
+	 * @return {Promise<IFetchMapResponse | null>}
+	 */
+	static fetchGroupsByAup(aupCode: Key) {
+		return this.callFetch<IFetchAllGroupsResponse[]>(`get-group-by-aup/${aupCode}`)
+	}
+
+	/**
 	 * @desc Получение всех типов для айтема
 	 * @return {Promise<ResponseFetchMap | null>}
 	 */

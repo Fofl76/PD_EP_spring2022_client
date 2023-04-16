@@ -1,7 +1,8 @@
 interface IMapItemValueRaw {
   control: string;
   id: number;
-  zet: number;
+  controlTypeId: number;
+  hours: number;
 }
 
 export default IMapItemValueRaw

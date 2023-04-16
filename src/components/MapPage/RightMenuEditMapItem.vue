@@ -161,13 +161,20 @@
 				<v-btn
 					class="RightMenuEditMapItem__save-btn"
 					color="success"
-					:loading="loading"
+					:loading="isLoading"
 					:disabled="isDirty"
 					@click="onSave"
 				>
 					<span>Сохранить</span>
 					<v-icon right dark> mdi-content-save</v-icon>
 				</v-btn>
+			</div>
+
+			<div
+				v-if="isError"
+				class="v-messages theme--light error--text"
+			>
+				Не удалось сохранить изменения
 			</div>
 		</div>
 	</v-navigation-drawer>
@@ -221,6 +228,8 @@ export default {
 			type: [],
 		},
 
+		isError: false,
+
 		sumZet: 0,
 		sumHours: 0,
 
@@ -249,6 +258,10 @@ export default {
 	computed: {
 		isValidZet() {
 			return this.$refs.zet.validate()
+		},
+
+		isLoading() {
+			return this.MapsService.isLoadingSaveMapList
 		},
 
 		isDirty() {
@@ -283,6 +296,8 @@ export default {
 
 	methods: {
 		setNewEditingItem() {
+			this.isError = false
+
 			this.item = _.cloneDeep(this.MapsService.getMapItemById(this.itemId))
 
 			const copyItem = _.cloneDeep(this.item)
@@ -315,7 +330,7 @@ export default {
 			const buildControlTypes = controlTypes.map(type => {
 				return {
 					...type,
-					hours: type.zet * this.zetEqualsHours,
+					zet: type.hours / this.zetEqualsHours,
 				}
 			})
 
@@ -349,12 +364,19 @@ export default {
 			this.clear()
 			this.$emit('close')
 		},
-		onSave() {
-			this.MapsService.editMapItem(
+		async onSave() {
+			const res = await this.MapsService.editMapItem(
 				this.$route.query.aup,
 				this.item,
 				this.copyItem
 			)
+
+			if (res) {
+				this.setNewEditingItem()
+			}
+			else {
+				this.isError = true
+			}
 		},
 
 		clear() {
