@@ -1,38 +1,37 @@
 <template>
-	<div
-		class="aup-table__block-wrapper"
-		:class="{ isEditing }"
-		:style="{ height: height }"
-	>
-		<div class="aup-table__block" :style="{ backgroundColor }">
-			<v-tooltip bottom :open-delay="300">
-				<template v-slot:activator="{ on, attrs }">
-					<span
-						:style="styleName"
-						:class="classTableItem"
-						class="aup-table__name"
-						v-bind="attrs"
-						v-on="on"
-					>
-						{{ data.element.discipline }}
-					</span>
-				</template>
+  <div
+    class="aup-table__block-wrapper"
+    :class="{ isEditing, fitMode }"
+    :style="styleVars"
+  >
+    <div class="aup-table__block" :style="{ backgroundColor }">
+      <v-tooltip bottom :open-delay="300">
+        <template v-slot:activator="{ on, attrs }">
+          <span
+            :class="classTableItem"
+            class="aup-table__name"
+            v-bind="attrs"
+            v-on="on"
+          >
+            {{ data.element.discipline }}
+          </span>
+        </template>
 
-				<span>{{ data.element.discipline }}</span>
-			</v-tooltip>
+        <span>{{ data.element.discipline }}</span>
+      </v-tooltip>
 
-			<v-btn
-				class="aup-table__edit-btn"
-				color="white"
-				x-small
-				fab
-				icon
-				@click="onEdit"
-			>
-				<v-icon dark> mdi-pen </v-icon>
-			</v-btn>
-		</div>
-	</div>
+      <v-btn
+        class="aup-table__edit-btn"
+        color="white"
+        x-small
+        fab
+        icon
+        @click="onEdit"
+      >
+        <v-icon dark> mdi-pen </v-icon>
+      </v-btn>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -40,54 +39,57 @@ import Vue from 'vue'
 import determinateTextColor from '@utils/determinateTextColor'
 
 export default {
-	props: {
-		data: {
-			type: Object,
-			required: true,
-		},
+  props: {
+    data: {
+      type: Object,
+      required: true,
+    },
 
-		isEditing: {
-			type: Boolean,
-			default: false,
-		},
+    isEditing: {
+      type: Boolean,
+      default: false,
+    },
+    
+    fitMode: {
+      type: Boolean,
+      default: false,
+    },
 
-		height: {
-			type: String,
-			default: '90px',
-		},
-	},
-	data() {
-		return {
-			modeTable: 'default',
-		}
-	},
-	computed: {
-		backgroundColor() {
-			return this.data.group?.color
-		},
+    height: {
+      type: String,
+      default: '90px',
+    },
+  },
+  data() {
+    return {
+      modeTable: 'default',
+    }
+  },
+  computed: {
+    backgroundColor() {
+      return this.data.group?.color
+    },
 
-		classTableItem() {
-			return 'aup-table__name__' + this.modeTable
-		},
+    classTableItem() {
+      return 'aup-table__name__' + this.modeTable
+    },
 
-		needIsDarkText() {
-			return determinateTextColor(this.backgroundColor)
-		},
+    needIsDarkText() {
+      return determinateTextColor(this.backgroundColor)
+    },
 
-		styleName() {
-			const styles = {}
-
-			if (this.needIsDarkText) styles.color = '#333'
-			else styles.color = '#fff'
-
-			return styles
-		},
-	},
-	methods: {
-		onEdit() {
-			this.$emit('edit', this.data.element)
-		},
-	},
+    styleVars() {
+      return {
+        '--height-block': this.height,
+        '--text-color': this.needIsDarkText ? '#333' : '#fff',
+      }
+    },
+  },
+  methods: {
+    onEdit() {
+      this.$emit('edit', this.data.element)
+    },
+  },
 }
 </script>
 
@@ -113,11 +115,18 @@ export default {
                 opacity: 1
 
     &__block-wrapper
+        height: var(--height-block)
+
+
+        &.fitMode:hover
+          height: calc(var(--height-block) * 3)
+
         &.isEditing
             .aup-table__block
                 box-shadow: 0px 0px 3px 7px rgba(10, 110, 189, 0.7)
 
     &__name
+        color: var(--text-color)
         overflow: hidden
         line-height: 2rem
         max-height: 8rem

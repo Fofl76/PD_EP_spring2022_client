@@ -1,5 +1,9 @@
 <template>
-	<v-tooltip class="MHint" top>
+	<v-tooltip
+		class="MHint"
+		top
+		v-bind="$attrs"
+	>
 		<template v-slot:activator="{ on, attrs }">
 			<v-icon
 				class="MHint-icon"

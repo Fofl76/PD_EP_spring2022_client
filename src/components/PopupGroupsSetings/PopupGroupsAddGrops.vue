@@ -51,7 +51,7 @@
 				</v-btn>
 			</div>
 		</div>
-    <div class="PopupGroupsAddGroups-form">
+    <div class="PopupGroupsAddGroups-form mt-3">
 			<div class="PopupGroupsAddGroups-header text-h5">
 				Добавление группы
 			</div>

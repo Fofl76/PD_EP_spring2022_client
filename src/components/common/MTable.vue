@@ -24,6 +24,9 @@
 				>
 					<div class="aup-table__column-header">
 						{{ orderWords[key] }}
+						<TableHeaderStats
+							:items="column"
+						/>
 					</div>
 
 					<draggable
@@ -38,8 +41,9 @@
 								:data="dataValue(element)"
 								:isEditing="activeEditingItemId === element.id"
 								:height="heightTableBlock(element)"
+								:fitMode="fitMode"
 								:class="{
-									'aup-table__block-wrapper-small': isFullScreen,
+									'aup-table__block-wrapper-small': fitMode,
 								}"
 								@edit="$emit('edit', $event)"
 								@click.native="onClickBlock(element)"
@@ -77,11 +81,12 @@ import UiTableSkeletonBlock from './MTableSkeletonBlock.vue'
 import MapsService from '@services/Maps/MapsService'
 import _ from 'lodash'
 import MHint from './MHint.vue'
+import TableHeaderStats from '@components/MapPage/TableHeaderStats.vue'
 
 const dapsService = MapsService.ZETQUEALSHOURS
 
 export default {
-	components: { UiTableBlock, draggable, UiTableSkeletonBlock, MHint },
+	components: { UiTableBlock, draggable, UiTableSkeletonBlock, MHint, TableHeaderStats },
 	props: {
 		table: {
 			type: Array,
@@ -96,7 +101,7 @@ export default {
 			default: null,
 		},
 		loading: Boolean,
-		isFullScreen: Boolean,
+		fitMode: Boolean,
 	},
 	data() {
 		return {
@@ -109,7 +114,7 @@ export default {
 	computed: {
 		heightZet() {
 			return (countZet = 1) => {
-				if (this.isFullScreen) {
+				if (this.fitMode) {
 					return `calc(((100vh - 80px - 32px - 30px) / ${this.maxZet || 1}) * ${countZet || 1})`
 				}
 

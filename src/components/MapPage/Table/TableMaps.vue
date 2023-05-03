@@ -6,7 +6,7 @@
 				:loading="loading && !isLoadingSaveMapList"
 				:activeEditingItemId="activeEditingItemId"
 				:max-zet="maxZet"
-				:is-full-screen="isFullScreen"
+				:fit-mode="isFullScreen"
 				@edit="onEdit"
 				@drag="onDrag"
 			/>
