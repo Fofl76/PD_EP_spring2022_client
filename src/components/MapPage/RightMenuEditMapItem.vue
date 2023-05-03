@@ -58,13 +58,12 @@
 
 							<div
 								class="RightMenuEditMapItem__type-row"
-								v-for="(type, i) in copyItem.type"
+								v-for="(type, i) in copyItem.type.value"
 								:key="i"
 							>
 								<v-text-field
-									:value="copyItem.type[i].hours"
-									:label="copyItem.type[i].control"
-									:disabled="copyItem.type[i].control === 'СРС'"
+									:value="type.amount"
+									:label="getControlTypesLabel(type.control_type_id)"
 									type="number"
 									ref="zet"
 									:rules="hoursRules"
@@ -76,9 +75,8 @@
 								/>
 
 								<v-text-field
-									:value="copyItem.type[i].zet"
-									:label="copyItem.type[i].control"
-									:disabled="copyItem.type[i].control === 'СРС'"
+									:value="type.zet"
+									:label="getControlTypesLabel(type.control_type_id)"
 									:min="1"
 									:max="10"
 									type="number"
@@ -122,7 +120,7 @@
 
 							<v-select
 								:value="selectedControlTypes"
-								:items="allControlTypes"
+								:items="allValueTypes"
 								label="Нагрузки"
 								item-text="control"
 								item-disabled="disabled"
@@ -275,6 +273,16 @@ export default {
 		zetEqualsHours() {
 			return this.MapsService.ZETQUEALSHOURS
 		},
+
+		allValueTypes() {
+			return this.allControlTypes.filter(el => el.type === 'load')
+		},
+
+		getControlTypesLabel() {
+			return (control_id) => {
+				return this.MapsService.controlTypes.value.find(item => item.id === control_id).name
+			}
+		},
 		
 		// Открытие/закрытие панели
 		value_: {
@@ -299,13 +307,15 @@ export default {
 			this.isError = false
 
 			this.item = _.cloneDeep(this.MapsService.getMapItemById(this.itemId))
-
 			const copyItem = _.cloneDeep(this.item)
 
-			copyItem.type = this.buildControlTypes(copyItem.type)
-			// copyItem.type = this.sortControlTypes(copyItem.type)
-
-			this.item.type = this.buildControlTypes(this.item.type)
+			const buildedControlTypes = {
+				value: this.buildControlTypes(copyItem.type.value),
+				session: this.buildControlTypes(copyItem.type.session),
+			}
+			
+			copyItem.type = _.cloneDeep(buildedControlTypes)
+			this.item.type = _.cloneDeep(buildedControlTypes)
 
 			this.initSelectedControlTypes(this.item)
 
@@ -315,22 +325,23 @@ export default {
 				controlType => ({
 					control: controlType.name,
 					controlTypeId: controlType.id,
+					type: controlType.type,
 					zet: 0,
-					disabled: this.item.type.find(e => e.controlTypeId == controlType.id),
+					disabled: this.item.type.value.find(e => e.controlTypeId == controlType.id),
 				})
 			)
 
 			this.allControlTypes.sort(a => (a.disabled ? -1 : 1))
 
 			this.sumZet = this.getSum('zet')
-			this.sumHours = this.getSum('hours')
+			this.sumHours = this.getSum('amount')
 		},
 
 		buildControlTypes(controlTypes) {
 			const buildControlTypes = controlTypes.map(type => {
 				return {
 					...type,
-					zet: type.hours / this.zetEqualsHours,
+					zet: type.amount / this.zetEqualsHours,
 				}
 			})
 
@@ -349,7 +360,7 @@ export default {
 		},
 
 		initSelectedControlTypes(item) {
-			this.selectedControlTypes = [...item.type]
+			this.selectedControlTypes = [...item.type.value]
 		},
 
 		onSelectControlTypes(e) {
@@ -390,9 +401,9 @@ export default {
 			this.selectedControlTypes = []
 		},
 
-		// field: 'zet' | 'hours'
+		// field: 'zet' | 'amount'
 		getSum(field, withoutFirstItem) {
-			return this.copyItem.type.reduce(
+			return this.copyItem.type.value.reduce(
 				(accumulator, currentValue) =>
 					currentValue.control === 'СРС' && withoutFirstItem
 						? accumulator
@@ -405,7 +416,7 @@ export default {
 			value = +value
 
 			this.copyItem.type[indexType].zet = value
-			this.copyItem.type[indexType].hours = value * this.zetEqualsHours
+			this.copyItem.type[indexType].amount = value * this.zetEqualsHours
 
 			this.recalculateSum()
 		},
@@ -413,7 +424,7 @@ export default {
 		onInputHours(indexType, value) {
 			value = +value
 
-			this.copyItem.type[indexType].hours = value
+			this.copyItem.type[indexType].amount = value
 			this.copyItem.type[indexType].zet = value / this.zetEqualsHours
 
 			this.recalculateSum()
@@ -421,7 +432,7 @@ export default {
 
 		recalculateSum() {
 			this.sumZet = this.getSum('zet')
-			this.sumHours = this.getSum('hours')
+			this.sumHours = this.getSum('amount')
 		},
 
 		onInputSumZet(value) {
@@ -432,7 +443,7 @@ export default {
 			const newFirstItemZet = value - sumZet
 
 			this.copyItem.type[0].zet = newFirstItemZet
-			this.copyItem.type[0].hours = newFirstItemZet * this.zetEqualsHours
+			this.copyItem.type[0].amount = newFirstItemZet * this.zetEqualsHours
 
 			this.sumZet = value
 			this.sumHours = value * this.zetEqualsHours
@@ -440,11 +451,11 @@ export default {
 		onInputSumHours(value) {
 			value = +value
 
-			const sumHours = this.getSum('hours', true)
+			const sumHours = this.getSum('amount', true)
 
 			const newFirstItemHours = value - sumHours
 
-			this.copyItem.type[0].hours = newFirstItemHours
+			this.copyItem.type[0].amount = newFirstItemHours
 			this.copyItem.type[0].zet = newFirstItemHours / this.zetEqualsHours
 
 			this.sumHours = value

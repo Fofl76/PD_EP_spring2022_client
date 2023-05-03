@@ -6,7 +6,10 @@ interface IMapItemRaw {
   id_group: number;
   num_col: number;
   num_row: number;
-  type: IMapItemValueRaw[];
+  type: {
+    session: IMapItemValueRaw[];
+    value: IMapItemValueRaw[];
+  };
 }
 
 export default IMapItemRaw

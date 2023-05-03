@@ -128,7 +128,7 @@ class MapsService extends Events {
 		this.mapList.value.forEach(column => {
 			let sum = 0
 			column.forEach(element => {
-				sum += element?.type?.reduce((sum, zetBlock) => sum + zetBlock.hours, 0)
+				sum += element?.type?.value.reduce((sum, zetBlock) => sum + zetBlock.amount, 0)
 			})
 
 			if (sum > maxZet) maxZet = sum
@@ -171,35 +171,34 @@ class MapsService extends Events {
 	 * @return {void}
 	 */
 	deleteMapItemLocal(item: IMapItemRaw) {
-		const copyColumn = _.cloneDeep(this._mapList.value[item.num_col - 1])
+		const copyColumn = _.cloneDeep(this._mapList.value[item.num_col])
 
 		copyColumn.splice(item.num_row, 1)
 
 		const recalculateColumn = getRecalculatedColumn(copyColumn)
 
-		Vue.set(this._mapList.value, item.num_col - 1, recalculateColumn)
+		Vue.set(this._mapList.value, item.num_col, recalculateColumn)
 	}
 
 	/**
-	 * @desc Метод для локального добавления элемтна в колонку
+	 * @desc Метод для локального добавления элемента в колонку
 	 * @param {IMapItemRaw} item - Элемент, который необходимо добавить
 	 * @param {number} indexColumn - Номер колонки, в которую необходимо добавить
 	 * @param {number} indexRow - Номер строки, в которую необходимо добавить
 	 * @return {void}
 	 */
 	addMapItemLocal(item: IMapItemRaw) {
-		const copyColumn = _.cloneDeep(this._mapList.value[item.num_col - 1])
+		const copyColumn = _.cloneDeep(this._mapList.value[item.num_col])
 
 		copyColumn.splice(item.num_row, 0, item)
 
 		const recalculateColumn = getRecalculatedColumn(copyColumn)
 
-		Vue.set(this._mapList.value, item.num_col - 1, recalculateColumn)
+		Vue.set(this._mapList.value, item.num_col , recalculateColumn)
 	}
 
 	/**
 	 * @desc Метод для локального перемещения элемента в колонке
-	 * @desc Метод для локального перемещения элеметна в колонке
 	 * @param {IMapItemRaw} item - Элемент, который необходимо переместить
 	 * @param {number} oldIndex - Номер старой строки
 	 * @param {number} newIndex - Номер новой строки
@@ -207,7 +206,7 @@ class MapsService extends Events {
 	 */
 
 	moveMapItemInColLocal(item: IMapItemRaw, oldIndex: number, newIndex: number) {
-		const copyColumn = _.cloneDeep(this._mapList.value[item.num_col - 1])
+		const copyColumn = _.cloneDeep(this._mapList.value[item.num_col])
 
 		copyColumn.splice(oldIndex, 1)
 
@@ -215,21 +214,21 @@ class MapsService extends Events {
 
 		const recalculateColumn = getRecalculatedColumn(copyColumn)
 
-		Vue.set(this._mapList.value, item.num_col - 1, recalculateColumn)
+		Vue.set(this._mapList.value, item.num_col, recalculateColumn)
 	}
 
 	async editMapItem(aup, item: IMapItemRaw, newItem: IMapItemRaw) {
 		const copyMap = _.cloneDeep(this._mapList.value)
 
-		copyMap[item.num_col - 1][item.num_row] = newItem
+		copyMap[item.num_col][item.num_row] = newItem
 
 		const res = await this.saveAllMap(aup, unbuildMapList(copyMap))
 
 		if (res) {	
-			const copyColumn = _.cloneDeep(this._mapList.value[item.num_col - 1])
+			const copyColumn = _.cloneDeep(this._mapList.value[item.num_col])
 			copyColumn[item.num_row] = newItem
 			const recalculateColumn = getRecalculatedColumn(copyColumn)
-			Vue.set(this._mapList.value, item.num_col - 1, recalculateColumn)
+			Vue.set(this._mapList.value, item.num_col, recalculateColumn)
 
 			return res
 		}
@@ -270,9 +269,20 @@ class MapsService extends Events {
 	}
 
 	async fetchAllControlTypes() {
-		const controlTypes = await Api.fetchAllControlTypes()
+		let controlTypes = await Api.fetchAllControlTypes()
 
+		
 		if (controlTypes) {
+			// временная хуйня для controlTypes(добавление типов)
+			const controlId = [1, 5, 7, 9]
+	
+			controlTypes = controlTypes.map(el => ({
+				...el,
+				type: controlId.includes(+el.id)
+					? 'control'
+					: 'load'
+			}))
+
 			this.setAllControlTypes(controlTypes)
 			this.emit('fetchAllControlTypes', controlTypes)
 		}

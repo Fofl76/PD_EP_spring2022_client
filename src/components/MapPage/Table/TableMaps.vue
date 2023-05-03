@@ -106,7 +106,7 @@ export default {
 			if (added) {
 				const element = {
 					...added.element,
-					num_col: columnIndex + 1,
+					num_col: columnIndex,
 					num_row: added.newIndex,
 				}
 

@@ -166,8 +166,8 @@ export default {
 		},
 
 		totalZet(data) {
-			const hours = data.type.reduce((sum, zetBlock) => {
-				return sum + zetBlock?.hours
+			const hours = data.type.value.reduce((sum, zetBlock) => {
+				return sum + zetBlock?.amount
 			}, 0)
 
 			const zet = Math.max(hours / this.zetQuealsHours, 1)

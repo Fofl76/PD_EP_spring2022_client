@@ -46,18 +46,16 @@ export default {
     stats() {
       const stats = {}
 
-      this.items.forEach((item) => {
-        item.type.forEach((type) => {
-          console.log('old', stats)
-
-          if (stats[type.controlTypeId]) {
-            stats[type.controlTypeId] += type.hours
-          }
-          else {
-            stats[type.controlTypeId] = type.hours
-          }
-        })
-      })
+      // this.items.forEach((item) => {
+      //   item.type.value.forEach((type) => {
+      //     if (stats[type.value.controlTypeId]) {
+      //       stats[type.value.controlTypeId] += type.amount
+      //     }
+      //     else {
+      //       stats[type.value.controlTypeId] = type.amount
+      //     }
+      //   })
+      // })
 
       return stats
     },
