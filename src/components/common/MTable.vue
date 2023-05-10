@@ -42,6 +42,7 @@
 								:isEditing="activeEditingItemId === element.id"
 								:height="heightTableBlock(element)"
 								:fitMode="fitMode"
+								:total-zet="totalZet(element)"
 								:class="{
 									'aup-table__block-wrapper-small': fitMode,
 								}"
@@ -109,6 +110,7 @@ export default {
 			fakeElementsCount: 8,
 			fakeMaxZet: 30,
 			zetQuealsHours: MapsService.ZETQUEALSHOURS,
+			WEEKQUEALSHOURS: MapsService.WEEKQUEALSHOURS,
 		}
 	},
 	computed: {
@@ -167,6 +169,11 @@ export default {
 
 		totalZet(data) {
 			const hours = data.type.value.reduce((sum, zetBlock) => {
+				
+				if (zetBlock.id_edizm === 2) {
+					return sum + (zetBlock.amount * this.WEEKQUEALSHOURS)
+				}
+				
 				return sum + zetBlock?.amount
 			}, 0)
 

@@ -5,6 +5,7 @@ import IFacultyRaw from './IFacultyRaw'
 import IDirectionRaw from './IDirectionRaw'
 import IMapItemRaw from './IMapItemRaw'
 import IControlTypeRaw from './IControlTypeRaw'
+import IUnitsOfMeasurement from './IUnitsOfMeasurement'
 
 export {
 	IFetchAllMapsListResponse,
@@ -14,4 +15,5 @@ export {
 	IDirectionRaw,
 	IMapItemRaw,
 	IControlTypeRaw,
+	IUnitsOfMeasurement
 }

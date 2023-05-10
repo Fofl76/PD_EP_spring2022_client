@@ -2,6 +2,7 @@ import {
 	IFetchAllMapsListResponse,
 	IFetchMapResponse,
 	IFetchAllControlTypesResponse,
+	IUnitsOfMeasurement,
 } from '@models/Maps'
 import { IFetchAllGroupsResponse, IGroup } from '@models/Grops'
 import Key from '@models/Key'
@@ -47,6 +48,10 @@ abstract class Api {
 	 */
 	static fetchAllGroups() {
 		return this.callFetch<IFetchAllGroupsResponse[]>(`getGroups`)
+	}
+
+	static fetchUnitsOfMeasurement () {
+		return this.callFetch<IUnitsOfMeasurement[]>('get_id_edizm')
 	}
 
 	/**

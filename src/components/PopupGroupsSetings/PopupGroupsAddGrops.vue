@@ -32,10 +32,13 @@
 					<v-color-picker
 						v-model="newItemForm.color"
 						dot-size="25"
-						hide-inputs
-						hide-mode-switch
+						mode="hexa"
 						swatches-max-height="200"
 					/>
+						<!-- dot-size="25"
+						hide-inputs
+						hide-mode-switch
+						swatches-max-height="200" -->
 				</v-menu>
 			</div>
 			<div class="PopupGroupsAddGroups-footer">

@@ -121,6 +121,8 @@ export default {
 		await this.groupsService.fetchAllGroups()
 
 		await this.mapsService.fetchFacultiesList()
+
+		await this.mapsService.fetchUnitsOfMeasurement()
 	},
 }
 </script>

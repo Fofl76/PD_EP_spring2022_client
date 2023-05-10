@@ -1,7 +1,9 @@
 <template>
   <div
     class="aup-table__block-wrapper"
-    :class="{ isEditing, fitMode }"
+    :class="{
+      isEditing, 
+      fitMode: fitMode && totalZet <= 2}"
     :style="styleVars"
   >
     <div class="aup-table__block" :style="{ backgroundColor }">
@@ -59,6 +61,11 @@ export default {
       type: String,
       default: '90px',
     },
+
+    totalZet: {
+      type: Number,
+      default: 0,
+    }
   },
   data() {
     return {

@@ -1,4 +1,4 @@
-import { IFacultyRaw, IMapItemRaw, IControlTypeRaw } from '@models/Maps'
+import { IFacultyRaw, IMapItemRaw, IControlTypeRaw, IUnitsOfMeasurement } from '@models/Maps'
 
 import Api from '@services/api/Api'
 
@@ -23,11 +23,25 @@ interface IMapList {
 	value: IMapItemRaw[][]
 }
 
+interface IUnitsOfMeasurementList {
+	value: IUnitsOfMeasurement[]
+}
+
 class MapsService extends Events {
 	// 1 зет = 36 часа
 	readonly ZETQUEALSHOURS = 36
 
+	// 1 неделя = 1,5 зет 
+	readonly WEEKQUEALSZET = 1.5
+
+	// 1 неделя = 54 часа
+	readonly WEEKQUEALSHOURS = 54
+
 	private _facultiesList: IFacultiesList = {
+		value: [],
+	}
+
+	private _unitsOfMeasurement: IUnitsOfMeasurementList = {
 		value: [],
 	}
 
@@ -43,6 +57,14 @@ class MapsService extends Events {
 	 */
 	get facultiesList() {
 		return new Proxy(this._facultiesList, {
+			set() {
+				throw new Error('is readonly')
+			},
+		})
+	}
+
+	get unitsOfMeasurement() {
+		return new Proxy(this._unitsOfMeasurement, {
 			set() {
 				throw new Error('is readonly')
 			},
@@ -128,7 +150,13 @@ class MapsService extends Events {
 		this.mapList.value.forEach(column => {
 			let sum = 0
 			column.forEach(element => {
-				sum += element?.type?.value.reduce((sum, zetBlock) => sum + zetBlock.amount, 0)
+				sum += element?.type?.value.reduce((sum, zetBlock) => {
+					if (zetBlock.id_edizm === 2) {
+						return sum + (zetBlock.amount * this.WEEKQUEALSHOURS)
+					}
+
+					return sum + zetBlock.amount
+				}, 0)
 			})
 
 			if (sum > maxZet) maxZet = sum
@@ -222,6 +250,9 @@ class MapsService extends Events {
 
 		copyMap[item.num_col][item.num_row] = newItem
 
+		console.log(copyMap[item.num_col][item.num_row])
+		
+
 		const res = await this.saveAllMap(aup, unbuildMapList(copyMap))
 
 		if (res) {	
@@ -269,22 +300,25 @@ class MapsService extends Events {
 	}
 
 	async fetchAllControlTypes() {
-		let controlTypes = await Api.fetchAllControlTypes()
+		const controlTypes = await Api.fetchAllControlTypes()
 
 		
 		if (controlTypes) {
-			// временная хуйня для controlTypes(добавление типов)
-			const controlId = [1, 5, 7, 9]
 	
-			controlTypes = controlTypes.map(el => ({
-				...el,
-				type: controlId.includes(+el.id)
-					? 'control'
-					: 'load'
-			}))
-
 			this.setAllControlTypes(controlTypes)
 			this.emit('fetchAllControlTypes', controlTypes)
+		}
+	}
+
+	setUnitsOfMeasurement(items: IUnitsOfMeasurement[]) {
+		this._unitsOfMeasurement.value = items
+	}
+
+  async fetchUnitsOfMeasurement() {
+		const unitsOfMeasurement = await Api.fetchUnitsOfMeasurement()
+
+		if (unitsOfMeasurement) {
+			this.setUnitsOfMeasurement(unitsOfMeasurement)
 		}
 	}
 }

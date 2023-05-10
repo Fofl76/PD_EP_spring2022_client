@@ -75,10 +75,14 @@
 								<v-color-picker
 									v-model="colorModel"
 									dot-size="25"
-									hide-inputs
-									hide-mode-switch
+									mode="hexa"
 									swatches-max-height="200"
 								/>
+									<!-- dot-size="25"
+									mode="hexa"
+									swatches-max-height="200" -->
+									<!-- hide-inputs -->
+									<!-- hide-mode-switch -->
 							</v-menu>
 							<v-btn
 							  color="success"
