@@ -150,7 +150,7 @@ class MapsService extends Events {
 		this.mapList.value.forEach(column => {
 			let sum = 0
 			column.forEach(element => {
-				sum += element?.type?.value.reduce((sum, zetBlock) => {
+				sum += element?.type?.value?.reduce((sum, zetBlock) => {
 					if (zetBlock.id_edizm === 2) {
 						return sum + (zetBlock.amount * this.WEEKQUEALSHOURS)
 					}

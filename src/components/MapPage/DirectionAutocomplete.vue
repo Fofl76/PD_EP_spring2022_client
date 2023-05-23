@@ -3,7 +3,7 @@
 		label="Введите направление"
 		class="DirectionAutocomplete__input DirectionAutocomplete__input-direction"
 		v-model="_value"
-		:items="items"
+		:items="sortedItems"
 		no-data-text="Сначала выберите факультет"
 		item-text="name"
 		filled
@@ -54,6 +54,15 @@ export default {
 		},
 	},
 	computed: {
+		sortedItems() {
+			return this.items.toSorted((a, b) => {
+				if (a.name < b.name) {
+					return -1
+				}
+
+				return 1
+			})
+		},
 		_value: {
 			get() {
 				return this.value

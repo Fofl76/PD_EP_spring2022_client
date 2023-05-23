@@ -7,12 +7,6 @@ Vue.use(VueRouter)
 const routes: Array<RouteConfig> = [
 	{
 		path: '/',
-		beforeEnter(to, from, next) {
-			next('/map')
-		},
-	},
-	{
-		path: '/map',
 		name: 'MapPage',
 		component: MapPage,
 	},

@@ -343,6 +343,16 @@ export default {
 			this.colorModel = this.selectedItem.color
 		},
 
+		'$route.query.aup': {
+			async handler(aupCode) {
+				if (!aupCode) return
+
+				this.initAllDisciplines()
+			},
+			deep: true,
+			immediate: true,
+		},
+
 		async value(value) {
 			if (!value) {
 				setTimeout(() => {

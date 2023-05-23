@@ -124,7 +124,13 @@ export default {
 			return !this.newItemForm.nameModel.length
 		},
     sortedGroupsStreetDisciplinesBangFacultyBlats() {
-      return _.orderBy(this.groups, 'name')
+      return _.orderBy(this.groups, 'name').sort((a, b) => {
+				if (a.name < b.name) {
+					return -1
+				}
+
+				return 1
+			})
     },
   },
   methods: {

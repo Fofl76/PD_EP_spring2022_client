@@ -1,7 +1,7 @@
 <template>
 	<ui-select
 		class="MapPageHeaderSelectMap__input MapPageHeaderSelectMap__input-faculty"
-		:items="items"
+		:items="sortedItems"
 		v-model="_value"
 		item-text="faculty_name"
 		no-data-text="Факультеты не найдены"
@@ -27,6 +27,15 @@ export default {
 		},
 	},
 	computed: {
+		sortedItems() {
+			return [...this.items].sort((a, b) => {
+				if (a.faculty_name < b.faculty_name) {
+					return -1
+				}
+
+				return 1
+			})
+		},
 		_value: {
 			get() {
 				return this.value

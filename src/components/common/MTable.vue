@@ -168,7 +168,7 @@ export default {
 		},
 
 		totalZet(data) {
-			const hours = data.type.value.reduce((sum, zetBlock) => {
+			const hours = data.type.value?.reduce((sum, zetBlock) => {
 				
 				if (zetBlock.id_edizm === 2) {
 					return sum + (zetBlock.amount * this.WEEKQUEALSHOURS)

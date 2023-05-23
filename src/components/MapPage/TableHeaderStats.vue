@@ -60,7 +60,7 @@ export default {
       }
 
       this.items.forEach((item) => {
-        item.type.value.forEach((type) => {
+        item.type.value?.forEach((type) => {
           const typeValue = typeValueByStats.find((_item) => type.control_type_id === _item.id)
 
           if (typeValue) {
@@ -83,7 +83,7 @@ export default {
           }
         })
 
-        item.type.session.forEach((session) => {
+        item.type.session?.forEach((session) => {
           if (stats.session[session.control_type_id]) {
             stats.session[session.control_type_id] += 1
           }
