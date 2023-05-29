@@ -7,6 +7,8 @@
 			:items="directionItems"
 			@input="onSelectDirection"
 		/>
+
+		<SelectYear v-model="year" :items="itemsYears"/>
 	</div>
 </template>
 
@@ -19,9 +21,10 @@ import MapsService from '@services/Maps/MapsService'
 
 import FacultySelect from '@components/MapPage/FacultySelect.vue'
 import DirectionAutocomplete from '@components/MapPage/DirectionAutocomplete.vue'
+import SelectYear from './SelectYear.vue'
 
 export default {
-	components: { FacultySelect, DirectionAutocomplete },
+	components: { FacultySelect, DirectionAutocomplete, SelectYear },
 	name: 'MapPageHeaderSelectMap',
 	mixins: [withEventEmitter('mapsService', 'mapsServiceHandlers')],
 	data() {
@@ -29,6 +32,7 @@ export default {
 			mapsService: MapsService,
 			facultyModel: null,
 			directionModel: null,
+			year: new Date(Date.now()).getFullYear(),
 			mapsServiceHandlers: {
 				fetchMapList: this.updateFormFields,
 			},
@@ -38,8 +42,19 @@ export default {
 		facultyItems() {
 			return this.mapsService.facultiesList.value
 		},
+		itemsYears() {
+			const years = {}
+
+			this.facultyModel?.directions.forEach((item) => {
+				years[item.year] = true
+			})
+
+			const yearKey = Object.keys(years).map(key => +key)
+
+			return yearKey.sort((a, b) => b - a)
+		},
 		directionItems() {
-			return this.facultyModel?.directions || []
+			return this.facultyModel?.directions?.filter(el => el.year === this.year) || []
 		},
 	},
 	methods: {
