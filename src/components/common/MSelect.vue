@@ -1,32 +1,16 @@
 <template>
-  <v-select
-    class="HomeHeader__input HomeHeader__input-faculty"
-    :menu-props="{ offsetY: false }"
-    :items="items"
-    v-model="_value"
-    :item-text="itemText"
-    :no-data-text="noDataText"
-    return-object
-    :item-value="itemValue"
-    :label="label"
-    hide-details="auto"
-    dark
-    filled
-    dense
-    v-bind="$attrs"
-    v-on="$listeners"
-  >
+  <v-select class="HomeHeader__input HomeHeader__input-faculty" :menu-props="{ offsetY: false }" :items="items"
+    v-model="_value" :item-text="itemText" :no-data-text="noDataText" :return-object="returnObject"
+    :item-value="itemValue" :label="label" hide-details="auto" dark filled dense v-bind="$attrs" v-on="$listeners">
   </v-select>
 </template>
 
 <script>
-import Vue from "vue"
-
 export default {
   props: {
     value: {
-      type: [Object, String],
-      default: () => ({}), 
+      type: [Object, String, Number, Boolean],
+      default: () => ({}),
     },
     label: {
       type: String,
@@ -48,6 +32,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    returnObject: {
+      type: Boolean,
+      default: true,
+    }
   },
   computed: {
     _value: {
@@ -62,6 +50,4 @@ export default {
 }
 </script>
 
-<style>
-
-</style>
+<style></style>

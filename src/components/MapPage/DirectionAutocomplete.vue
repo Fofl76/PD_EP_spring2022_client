@@ -1,27 +1,12 @@
 <template>
-	<ui-autocomplete
-		label="Введите направление"
-		class="DirectionAutocomplete__input DirectionAutocomplete__input-direction"
-		v-model="_value"
-		:items="sortedItems"
-		no-data-text="Сначала выберите факультет"
-		item-text="name"
-		filled
-		:menu-props="{
+	<ui-autocomplete label="Введите направление" class="DirectionAutocomplete__input DirectionAutocomplete__input-direction"
+		v-model="_value" :items="sortedItems" no-data-text="Сначала выберите факультет" item-text="name" filled :menu-props="{
 			maxWidth: 500,
-		}"
-		v-bind="$attrs"
-		v-on="$listeners"
-	>
+		}" v-bind="$attrs" v-on="$listeners">
 		<template #append>
 			<div class="DirectionAutocomplete__year-chip--selected">
-				<v-chip
-					v-if="_value"
-					class="DirectionAutocomplete__year-chip"
-					pill
-					label
-				>
-					{{ _value.year }}
+				<v-chip v-if="_value" class="DirectionAutocomplete__year-chip" pill label>
+					{{ formEduc[_value.form_educ] }}
 				</v-chip>
 			</div>
 		</template>
@@ -30,7 +15,7 @@
 			<v-list-item-title>{{ item.name }}</v-list-item-title>
 			<div>
 				<v-chip class="DirectionAutocomplete__year-chip" pill label>{{
-					item.year
+					formEduc[item.form_educ]
 				}}</v-chip>
 			</div>
 		</template>
@@ -39,10 +24,16 @@
 
 <script>
 import UiAutocomplete from '@components/common/MAutocomplete.vue'
+import formEduc from '@services/utils/formEduc'
 export default {
 	name: 'DirectionAutocomplete',
 
 	components: { UiAutocomplete },
+	data() {
+		return {
+			formEduc,
+		}
+	},
 	props: {
 		value: {
 			type: [Object, String],

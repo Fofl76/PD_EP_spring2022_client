@@ -29,5 +29,6 @@ export default {
 </script>
 
 <template>
-  <MSelect v-if="items.length" v-model="value_" :items="items" item-value="" item-title="" height="52" />
+  <MSelect v-if="items.length" v-model="value_" :items="items" item-value="" :return-object="false" item-title=""
+    height="52" />
 </template>

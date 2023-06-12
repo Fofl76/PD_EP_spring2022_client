@@ -2,25 +2,19 @@
 	<div class="MapPageHeaderSelectMap__wrap">
 		<FacultySelect v-model="facultyModel" :items="facultyItems" />
 
-		<DirectionAutocomplete
-			v-model="directionModel"
-			:items="directionItems"
-			@input="onSelectDirection"
-		/>
+		<DirectionAutocomplete v-model="directionModel" :items="directionItems" @input="onSelectDirection" />
 
-		<SelectYear v-model="year" :items="itemsYears"/>
+		<SelectYear style="max-width: 100px;" v-model="year" :items="itemsYears" />
 	</div>
 </template>
 
 <script>
-import { IDirection, IMaps } from '@models/Maps'
-
 import withEventEmitter from '@mixins/withEventEmitter'
 
 import MapsService from '@services/Maps/MapsService'
 
-import FacultySelect from '@components/MapPage/FacultySelect.vue'
 import DirectionAutocomplete from '@components/MapPage/DirectionAutocomplete.vue'
+import FacultySelect from '@components/MapPage/FacultySelect.vue'
 import SelectYear from './SelectYear.vue'
 
 export default {
@@ -63,7 +57,7 @@ export default {
 		},
 
 		setUrlAup(aupCode) {
-			this.$router.push({ query: { aup: aupCode } }).catch(() => {})
+			this.$router.push({ query: { aup: aupCode } }).catch(() => { })
 		},
 
 		findFacultyModelByAup(aup) {

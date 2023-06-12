@@ -13,41 +13,44 @@
 			<v-icon right dark>mdi-upload</v-icon>
 		</v-btn>
 
-		<v-btn
-			v-if="isReady"
-			:href="`${url}/save_excel/${aupCode}`"
-			target="_blank"
-			text
-			dark
-		>
+		<v-btn v-if="isReady" :href="`${url}/save_excel/${aupCode}`" target="_blank" text dark>
 			<span>Скачать</span>
 			<v-icon right dark>mdi-download</v-icon>
 		</v-btn>
 
-		<popup-upload-file
-			v-model="popupUploadModel"
-			@success="$emit('successUploadFile', $event)"
-			@error="$emit('errorUploadFile', $event)"
-		/>
+		<v-menu>
+			<template v-slot:activator="{ on, attrs }">
+				<v-icon v-bind="attrs" v-on="on" right dark @click="isOpenLoginDialog = !isOpenLoginDialog">mdi-account</v-icon>
+			</template>
+		</v-menu>
+		<popup-upload-file v-model="popupUploadModel" @success="$emit('successUploadFile', $event)"
+			@error="$emit('errorUploadFile', $event)" />
 
 		<popup-groups-settings v-model="popupGroupSettingsModel" />
+		<login-dialog v-model="isOpenLoginDialog" />
 	</v-app-bar>
 </template>
 
 <script>
-import MapsService from '@services/Maps/MapsService'
 import MapPageHeaderSelectMap from '@components/MapPage/MapPageHeaderSelectMap.vue'
-import PopupUploadFile from './PopupUploadFile/PopupUploadFile.vue'
 import PopupGroupsSettings from '@components/PopupGroupsSetings/PopupGroupsSettings.vue'
+import {
+	mdiAccount
+} from '@mdi/js'
+import MapsService from '@services/Maps/MapsService'
+import LoginDialog from './LoginDialog.vue'
+import PopupUploadFile from './PopupUploadFile/PopupUploadFile.vue'
 
 export default {
 	name: 'MapPageHeader',
 
-	components: { MapPageHeaderSelectMap, PopupUploadFile, PopupGroupsSettings },
+	components: { MapPageHeaderSelectMap, PopupUploadFile, PopupGroupsSettings, LoginDialog },
 	data() {
 		return {
 			popupUploadModel: false,
 			popupGroupSettingsModel: false,
+			mdiAccount,
+			isOpenLoginDialog: false,
 		}
 	},
 	computed: {

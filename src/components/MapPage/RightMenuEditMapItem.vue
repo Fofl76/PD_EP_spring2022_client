@@ -97,6 +97,30 @@
         </v-expansion-panel>
       </v-expansion-panels>
 
+      <v-expansion-panels class="RightMenuEditMapItem__expansion-wrapper" flat hover>
+        <v-expansion-panel class="RightMenuEditMapItem__expansion">
+          <v-expansion-panel-header>
+            <div class="RightMenuEditMapItem__expansion-header">
+              <div class="RightMenuEditMapItem__expansion-header-title">
+                Шифр
+              </div>
+
+              <v-chip class="RightMenuEditMapItem__expansion-header-chip DirectionAutocomplete__year-chip" pill label>
+                {{ item?.shifr }}
+              </v-chip>
+            </div>
+          </v-expansion-panel-header>
+
+          <v-expansion-panel-content>
+            <v-text-field v-model="copyShift.id_block" label="Блок" type="number" hide-details dense filled dark />
+            <v-text-field v-model="copyShift.id_parts" label="Часть" type="number" hide-details dense filled dark />
+            <v-text-field v-model="copyShift.id_models" label="Модуль" type="number" hide-details dense filled dark />
+            <v-text-field v-model="copyShift.id_direction" label="Дисциплина" type="number" hide-details dense filled
+              dark />
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panels>
+
       <div class="RightMenuEditMapItem__actions">
         <v-btn class="RightMenuEditMapItem__cancel-btn" color="error" @click="onCancel">
           <span>Отменить</span>
@@ -118,9 +142,9 @@
 </template>
 
 <script>
+import MHint from '@components/common/MHint.vue'
 import withEventEmitter from '@mixins/withEventEmitter'
 import MapsService from '@services/Maps/MapsService'
-import MHint from '@components/common/MHint.vue'
 
 import _ from 'lodash'
 
@@ -159,10 +183,18 @@ export default {
 
       copyItem: {
         discipline: '',
+        shifr: '',
         type: {
           session: [],
           value: [],
         },
+      },
+
+      copyShift: {
+        id_block: null,
+        id_parts: null,
+        id_models: null,
+        id_direction: null,
       },
 
       selectedControlTypes: [],
@@ -282,12 +314,26 @@ export default {
     initRightMenu() {
       this.copyItem = _.cloneDeep(this.item)
 
+      const shifr = this.getArrShifr()
+
+      this.copyShift = {
+        id_block: shifr[0],
+        id_parts: shifr[1],
+        id_models: shifr[3] ? shifr[2] : null,
+        id_direction: shifr[3] ? shifr[3] : shifr[2],
+      }
+
       this.copyItem.type.value = this.addZetInTypeValue(this.copyItem.type.value)
 
       this.selectedControlTypes = this.allValueTypes.filter(el => this.copyItem.type.value.find(_el => _el.control_type_id === el.id))
 
       this.sumHours = this.getSum('amount')
       this.sumZet = this.getSum('zet')
+    },
+
+
+    getArrShifr() {
+      return this.copyItem.shifr.split('.').map(el => el.match(/[0-9]+/gi).join())
     },
 
     addZetInTypeValue(value) {
@@ -364,7 +410,15 @@ export default {
       // this.clear()
     },
 
+    getShifr(data) {
+      return `Б${data.id_block}.${data.id_parts}.${data.id_models ? data.id_models : data.id_direction}${data.id_models ? '.' + data.id_direction : ''}`
+    },
+
     async onSave() {
+      this.copyItem.id_block = this.copyShift.id_block
+      this.copyItem.id_parts = this.copyShift.id_parts
+      this.copyItem.shifr = this.getShifr(this.copyShift)
+
       const res = await this.MapsService.editMapItem(
         this.$route.query.aup,
         this.item,
@@ -453,6 +507,9 @@ export default {
         display: flex
         align-items: center
         color: #fff
+
+        &-chip
+            margin-left: auto
 
     &__expansion-header-title
         font-size: 16px
