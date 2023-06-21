@@ -8,21 +8,34 @@
 			<span>Группировки</span>
 		</v-btn>
 
-		<v-btn text dark @click="popupUploadModel = true">
-			<span>Загрузить план</span>
-			<v-icon right dark>mdi-upload</v-icon>
-		</v-btn>
+		<v-menu offset-y :close-on-click="true">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn plain dark v-bind="attrs" v-on="on">
+            Меню
+          </v-btn>
+        </template>
+        <v-list dark>
+		  <v-list-item> 
+			<v-btn dark @click="popupUploadModel = true">
+				<span>Загрузить план</span>
+				<v-icon right dark>mdi-upload</v-icon>
+			</v-btn>
+		  </v-list-item>
+		  <v-list-item v-if="isReady"> 
+			<v-btn dark v-if="isReady" :href="`${url}/save_excel/${aupCode}`" target="_blank" text>
+				<span>Скачать</span>
+				<v-icon right dark>mdi-download</v-icon>
+			</v-btn>
+		  </v-list-item>
+		  <v-list-item> 
+			<v-btn dark v-bind="attrs" v-on="on" right @click="isOpenLoginDialog = !isOpenLoginDialog">Личный кабинет</v-btn>
+		  </v-list-item>
+        </v-list>
 
-		<v-btn v-if="isReady" :href="`${url}/save_excel/${aupCode}`" target="_blank" text dark>
-			<span>Скачать</span>
-			<v-icon right dark>mdi-download</v-icon>
-		</v-btn>
+      </v-menu>
 
-		<v-menu>
-			<template v-slot:activator="{ on, attrs }">
-				<v-icon v-bind="attrs" v-on="on" right dark @click="isOpenLoginDialog = !isOpenLoginDialog">mdi-account</v-icon>
-			</template>
-		</v-menu>
+
+		
 		<popup-upload-file v-model="popupUploadModel" @success="$emit('successUploadFile', $event)"
 			@error="$emit('errorUploadFile', $event)" />
 
