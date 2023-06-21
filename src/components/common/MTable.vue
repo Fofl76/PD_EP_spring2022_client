@@ -239,7 +239,7 @@ export default {
         align-items: center
 
 				&:not(:last-of-type)
-					border-bottom: 1px solid #fff
+		        border-bottom: 1px solid #fff
 .flip-list-move
     transition: transform 0.5s
 
