@@ -1,0 +1,29 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 16
+
+      # Setup key
+      - run: set -eu
+      - run: mkdir "$HOME/.ssh"
+      - run: echo "${{ secrets.DEPLOY_FOR_KD_MOSPOLYTECH_ROOT }}" > "$HOME/.ssh/key"
+      - run: chmod 600 "$HOME/.ssh/key"
+      - run: npm ci && npm run build
+
+      # pull all files at the server (just in case)
+      - run: ssh -i $HOME/.ssh/key -o StrictHostKeyChecking=no root@158.160.22.208 "cd /var/www/frontend/ && git fetch --all && git reset --hard origin/master"
+
+      # send only dist directory to the server
+      - run: rsync -e "ssh -i $HOME/.ssh/key -o StrictHostKeyChecking=no" --archive --compress dist/ root@158.160.22.208:/var/www/frontend/dist/
