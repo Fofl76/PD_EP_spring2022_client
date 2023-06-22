@@ -20,7 +20,7 @@ jobs:
       - run: mkdir "$HOME/.ssh"
       - run: echo "${{ secrets.DEPLOY_FOR_KD_MOSPOLYTECH_ROOT }}" > "$HOME/.ssh/key"
       - run: chmod 600 "$HOME/.ssh/key"
-      - run: npm ci && npm run build
+      - run: npm i && npm run build
 
       # send only dist directory to the server
       - run: rsync -e "ssh -i $HOME/.ssh/key -o StrictHostKeyChecking=no" --exclude=node_modules --archive --compress . root@158.160.22.208:/var/www/frontend/
