@@ -22,8 +22,5 @@ jobs:
       - run: chmod 600 "$HOME/.ssh/key"
       - run: npm ci && npm run build
 
-      # pull all files at the server (just in case)
-      - run: ssh -i $HOME/.ssh/key -o StrictHostKeyChecking=no root@158.160.22.208 "cd /var/www/frontend/ && git fetch --all && git reset --hard origin/master"
-
       # send only dist directory to the server
-      - run: rsync -e "ssh -i $HOME/.ssh/key -o StrictHostKeyChecking=no" --archive --compress dist/ root@158.160.22.208:/var/www/frontend/dist/
+      - run: rsync -e "ssh -i $HOME/.ssh/key -o StrictHostKeyChecking=no" --exclude=node_modules --archive --compress . root@158.160.22.208:/var/www/frontend/
