@@ -165,15 +165,13 @@ export default {
 
     &__save-table-btn
         position: sticky
-        bottom: 76px
-        left: calc(100% - 20px)
-        margin-right: 20px
+        bottom: 60px
+        left: calc(100% - 16px)
         transition: right .2s cubic-bezier(0.4, 0, 0.2, 1)
     &__save-table-mode
         position: sticky
-        bottom: 30px
-        left: calc(100% - 20px)
-        margin-right: 20px
+        bottom: 16px
+        left: calc(100% - 16px)
         transition: right .2s cubic-bezier(0.4, 0, 0.2, 1)
 
 .Home.withRightMenu
