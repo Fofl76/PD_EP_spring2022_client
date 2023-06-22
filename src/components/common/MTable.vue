@@ -24,9 +24,7 @@
 				>
 					<div class="aup-table__column-header">
 						{{ orderWords[key] }}
-						<TableHeaderStats
-							:items="column"
-						/>
+						<TableHeaderStats :items="column" />
 					</div>
 
 					<draggable
@@ -87,7 +85,13 @@ import TableHeaderStats from '@components/MapPage/TableHeaderStats.vue'
 const dapsService = MapsService.ZETQUEALSHOURS
 
 export default {
-	components: { UiTableBlock, draggable, UiTableSkeletonBlock, MHint, TableHeaderStats },
+	components: {
+		UiTableBlock,
+		draggable,
+		UiTableSkeletonBlock,
+		MHint,
+		TableHeaderStats,
+	},
 	props: {
 		table: {
 			type: Array,
@@ -117,7 +121,9 @@ export default {
 		heightZet() {
 			return (countZet = 1) => {
 				if (this.fitMode) {
-					return `calc(((100vh - 80px - 32px - 30px) / ${this.maxZet || 1}) * ${countZet || 1})`
+					return `calc(((100vh - 80px - 32px - 30px) / ${this.maxZet || 1}) * ${
+						countZet || 1
+					})`
 				}
 
 				return `calc(90px * ${countZet})`
@@ -169,11 +175,10 @@ export default {
 
 		totalZet(data) {
 			const hours = data.type.value?.reduce((sum, zetBlock) => {
-				
 				if (zetBlock.id_edizm === 2) {
-					return sum + (zetBlock.amount * this.WEEKQUEALSHOURS)
+					return sum + zetBlock.amount * this.WEEKQUEALSHOURS
 				}
-				
+
 				return sum + zetBlock?.amount
 			}, 0)
 
@@ -183,14 +188,6 @@ export default {
 
 		setData(dataTransfer) {
 			dataTransfer.setDragImage(document.createElement('div'), 0, 0)
-		},
-
-		onClickBlock(item) {
-			console.log(_.cloneDeep(item))
-		},
-
-		isEditingItem(item) {
-			console.log(item)
 		},
 	},
 }
@@ -233,12 +230,13 @@ export default {
     &__zet-block
         padding: 0
         text-align: center
-        border-bottom: 1px solid #fff
         transition: all 0.3s ease
         display: flex
         justify-content: center
         align-items: center
 
+        &:not(:last-of-type)
+            border-bottom: 1px solid #fff
 .flip-list-move
     transition: transform 0.5s
 
