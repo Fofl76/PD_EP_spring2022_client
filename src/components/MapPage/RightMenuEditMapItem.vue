@@ -226,6 +226,7 @@
 							dark
 						/>
 						<v-text-field
+                v-if="copyShift.id_models"
 							v-model="copyShift.id_models"
 							label="Модуль"
 							type="number"
