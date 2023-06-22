@@ -41,7 +41,7 @@
 					:loading="isLoadingUploadFile"
 					@click="onUploadBtnClick"
 				>
-					Отправить
+					Загрузить
 				</v-btn>
 			</v-card-actions>
 		</v-card>
