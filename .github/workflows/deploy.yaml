@@ -9,12 +9,15 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
+    env:
+      VUE_APP_API: https://kd.mospolytech.ru/api
+
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
           node-version: 16
-          file_name: .env
 
       # Setup key
       - run: set -eu
