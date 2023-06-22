@@ -1,39 +1,40 @@
 <template>
-  <div
-    class="aup-table__block-wrapper"
-    :class="{
-      isEditing, 
-      fitMode: fitMode && totalZet <= 2}"
-    :style="styleVars"
-  >
-    <div class="aup-table__block" :style="{ backgroundColor }">
-      <v-tooltip bottom :open-delay="300">
-        <template v-slot:activator="{ on, attrs }">
-          <span
-            :class="classTableItem"
-            class="aup-table__name"
-            v-bind="attrs"
-            v-on="on"
-          >
-            {{ data.element.discipline }}
-          </span>
-        </template>
+	<div
+		class="aup-table__block-wrapper"
+		:class="{
+			isEditing,
+			fitMode: fitMode && totalZet <= 2,
+		}"
+		:style="styleVars"
+	>
+		<div class="aup-table__block" :style="{ backgroundColor }">
+			<v-tooltip bottom :open-delay="300">
+				<template v-slot:activator="{ on, attrs }">
+					<span
+						:class="classTableItem"
+						class="aup-table__name"
+						v-bind="attrs"
+						v-on="on"
+					>
+						{{ data.element.discipline }}
+					</span>
+				</template>
 
-        <span>{{ data.element.discipline }}</span>
-      </v-tooltip>
+				<span>{{ data.element.discipline }}</span>
+			</v-tooltip>
 
-      <v-btn
-        class="aup-table__edit-btn"
-        color="white"
-        x-small
-        fab
-        icon
-        @click="onEdit"
-      >
-        <v-icon dark> mdi-pen </v-icon>
-      </v-btn>
-    </div>
-  </div>
+			<v-btn
+				class="aup-table__edit-btn"
+				color="white"
+				x-small
+				fab
+				icon
+				@click="onEdit"
+			>
+				<v-icon dark> mdi-pen </v-icon>
+			</v-btn>
+		</div>
+	</div>
 </template>
 
 <script>
@@ -41,62 +42,62 @@ import Vue from 'vue'
 import determinateTextColor from '@utils/determinateTextColor'
 
 export default {
-  props: {
-    data: {
-      type: Object,
-      required: true,
-    },
+	props: {
+		data: {
+			type: Object,
+			required: true,
+		},
 
-    isEditing: {
-      type: Boolean,
-      default: false,
-    },
-    
-    fitMode: {
-      type: Boolean,
-      default: false,
-    },
+		isEditing: {
+			type: Boolean,
+			default: false,
+		},
 
-    height: {
-      type: String,
-      default: '90px',
-    },
+		fitMode: {
+			type: Boolean,
+			default: false,
+		},
 
-    totalZet: {
-      type: Number,
-      default: 0,
-    }
-  },
-  data() {
-    return {
-      modeTable: 'default',
-    }
-  },
-  computed: {
-    backgroundColor() {
-      return this.data.group?.color
-    },
+		height: {
+			type: String,
+			default: '90px',
+		},
 
-    classTableItem() {
-      return 'aup-table__name__' + this.modeTable
-    },
+		totalZet: {
+			type: Number,
+			default: 0,
+		},
+	},
+	data() {
+		return {
+			modeTable: 'default',
+		}
+	},
+	computed: {
+		backgroundColor() {
+			return this.data.group?.color
+		},
 
-    needIsDarkText() {
-      return determinateTextColor(this.backgroundColor)
-    },
+		classTableItem() {
+			return 'aup-table__name__' + this.modeTable
+		},
 
-    styleVars() {
-      return {
-        '--height-block': this.height,
-        '--text-color': this.needIsDarkText ? '#333' : '#fff',
-      }
-    },
-  },
-  methods: {
-    onEdit() {
-      this.$emit('edit', this.data.element)
-    },
-  },
+		needIsDarkText() {
+			return determinateTextColor(this.backgroundColor)
+		},
+
+		styleVars() {
+			return {
+				'--height-block': this.height,
+				'--text-color': this.needIsDarkText ? '#333' : '#fff',
+			}
+		},
+	},
+	methods: {
+		onEdit() {
+			this.$emit('edit', this.data.element)
+		},
+	},
 }
 </script>
 
@@ -130,7 +131,8 @@ export default {
 
         &.isEditing
             .aup-table__block
-                box-shadow: 0px 0px 3px 7px rgba(10, 110, 189, 0.7)
+                border: 3px solid #8533ff
+                box-shadow: 0px 4px 8px 0px rgba(237, 84, 255, 0.2)
 
     &__name
         color: var(--text-color)
