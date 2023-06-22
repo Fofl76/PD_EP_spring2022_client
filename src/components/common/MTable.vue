@@ -189,6 +189,10 @@ export default {
 		setData(dataTransfer) {
 			dataTransfer.setDragImage(document.createElement('div'), 0, 0)
 		},
+
+		onClickBlock(item) {
+			console.log(_.cloneDeep(item))
+		},
 	},
 }
 </script>
