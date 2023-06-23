@@ -80,4 +80,6 @@ export default {
 
         .v-chip__content
             padding: 0 4px !important
+            justify-content: center
+            width: 20px
 </style>
