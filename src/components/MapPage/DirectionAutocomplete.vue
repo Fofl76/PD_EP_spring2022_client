@@ -70,6 +70,10 @@ export default {
 .DirectionAutocomplete
     &__input-direction
         width: 500px
+        height: inherit
+        
+        .v-select__slot input
+            margin-bottom: 3px
 
     &__year-chip
         justify-content: center
