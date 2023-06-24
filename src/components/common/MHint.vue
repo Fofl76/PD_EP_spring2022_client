@@ -54,4 +54,6 @@ export default {
 .MHint
     &-icon
         cursor: pointer
+.v-tooltip__content
+    opacity: 1 !important
 </style>
