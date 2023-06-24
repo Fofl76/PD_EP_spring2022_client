@@ -208,6 +208,7 @@
 
 					<v-expansion-panel-content>
 						<v-text-field
+							class="text-field"
 							v-model="copyShift.id_block"
 							label="Блок"
 							type="number"
@@ -217,6 +218,7 @@
 							dark
 						/>
 						<v-text-field
+							class="text-field"
 							v-model="copyShift.id_parts"
 							label="Часть"
 							type="number"
@@ -226,6 +228,7 @@
 							dark
 						/>
 						<v-text-field
+							class="text-field"
 							v-model="copyShift.id_models"
 							label="Модуль"
 							type="number"
@@ -235,6 +238,7 @@
 							dark
 						/>
 						<v-text-field
+							class="text-field"
 							v-model="copyShift.id_direction"
 							label="Дисциплина"
 							type="number"
@@ -670,4 +674,7 @@ export default {
 
     &__expansion-header-title
         font-size: 16px
+.text-field
+    & + &
+        margin-top: 8px
 </style>
