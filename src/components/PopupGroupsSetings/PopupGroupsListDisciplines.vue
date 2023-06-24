@@ -16,7 +16,7 @@
               v-on="on"
             >
 							<v-list-item-icon>
-								<v-icon :color="item.color">mdi-circle</v-icon>
+								<span :style="{ background: item.color }" class="circle" :class="{shadow: needIsDarkText(item.color)}"></span>
 							</v-list-item-icon>
 
 							<v-list-item-content>
@@ -41,6 +41,8 @@
 </template>
 
 <script>
+import determinateTextColor from '@utils/determinateTextColor'
+
 export default {
   props: {
     disciplines: {
@@ -62,8 +64,20 @@ export default {
         this.$emit('input', v)
       }
     }
-  }
+  },
+	methods: {
+		needIsDarkText(color) {
+			return determinateTextColor(color)
+		},
+	}
 }
 </script>
 
-<style></style>
+<style lang="sass" scoped>
+.circle
+    width: 24px
+    height: 24px
+    border-radius: 100%
+.shadow
+    box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px
+</style>
