@@ -87,6 +87,9 @@ export default {
 				this.$router.push({ query: { aup } }).catch(() => {})
 			}
 
+			this.mapsService.fetchMapList(aup)
+			this.rightMenuEditModel = false
+
 			this.snackbarOptions = {
 				value: true,
 				type: 'success',

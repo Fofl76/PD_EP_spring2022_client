@@ -108,7 +108,8 @@ export default {
         const res = await Api.uploadFile(form)
 
         this._value = false
-				this.$emit('success', res.data)
+				print(res.data)
+				this.$emit('success', res[0])
       }
       catch (res) {
 				this.$emit('error', res.response)
