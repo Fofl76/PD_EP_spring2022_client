@@ -1,21 +1,18 @@
 <template>
-	<ui-select
-		class="MapPageHeaderSelectMap__input MapPageHeaderSelectMap__input-faculty"
-		:items="sortedItems"
-		v-model="_value"
-		item-text="faculty_name"
-		no-data-text="Факультеты не найдены"
-		label="Выберите факультет"
-		v-bind="$attrs"
-		v-on="$listeners"
-	/>
+	<ui-autocomplete label="Выберите факультет" class="MapPageHeaderSelectMap__input MapPageHeaderSelectMap__input-faculty"
+									 v-model="_value" :items="sortedItems" no-data-text="Факультеты не найдены" item-text="faculty_name" filled :menu-props="{
+			maxWidth: 300,
+		}" v-bind="$attrs" v-on="$listeners">
+		<template #item="{ item }">
+			<v-list-item-title>{{ item.faculty_name }}</v-list-item-title>
+		</template>
+	</ui-autocomplete>
 </template>
 
 <script>
-import Vue from 'vue'
-import UiSelect from '@components/common/MSelect.vue'
+import UiAutocomplete from '@components/common/MAutocomplete.vue'
 export default {
-	components: { UiSelect },
+	components: { UiAutocomplete },
 	props: {
 		value: {
 			type: [Object, String],
