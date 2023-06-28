@@ -66,4 +66,9 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+.v-tooltip__content {
+    background-color: rgba(97, 97 ,97, 1);
+    opacity: 1!important;
+}
+</style>
