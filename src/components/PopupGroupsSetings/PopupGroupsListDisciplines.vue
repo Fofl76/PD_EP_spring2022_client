@@ -2,6 +2,7 @@
 	<v-list style="height: 305px; overflow-y: scroll" dense>
 		<v-list-item-group v-model="_value" color="primary">
 			<v-tooltip
+				content-class="PopupGroupsListDisciplines-tooltip"
 				max-width="200"
 				open-delay="700"
 				left
@@ -10,11 +11,7 @@
 			>
 				<template v-if="item.id !== 1" v-slot:activator="{ on, attrs }">
 					<v-hover v-slot="{ hover }">
-						<v-list-item
-              v-bind="attrs"
-              :value="item.id"
-              v-on="on"
-            >
+						<v-list-item v-bind="attrs" :value="item.id" v-on="on">
 							<v-list-item-icon>
 								<v-icon :color="item.color">mdi-circle</v-icon>
 							</v-list-item-icon>
@@ -42,33 +39,33 @@
 
 <script>
 export default {
-  props: {
-    disciplines: {
-      type: Array,
-      required: true,
-    },
-    value: {
-      type: [String, Number],
-      required: false,
-      default: null,
-    },
-  },
-  computed: {
-    _value: {
-      get() {
-        return this.value
-      },
-      set(v) {
-        this.$emit('input', v)
-      }
-    }
-  }
+	props: {
+		disciplines: {
+			type: Array,
+			required: true,
+		},
+		value: {
+			type: [String, Number],
+			required: false,
+			default: null,
+		},
+	},
+	computed: {
+		_value: {
+			get() {
+				return this.value
+			},
+			set(v) {
+				this.$emit('input', v)
+			},
+		},
+	},
 }
 </script>
 
-<style>
-.v-tooltip__content {
-    background-color: rgba(97, 97 ,97, 1);
-    opacity: 1!important;
-}
+<style lang="sass">
+.PopupGroupsListDisciplines
+    &-tooltip
+        background-color: rgba(97, 97 ,97, 1)
+        opacity: 1!important
 </style>
