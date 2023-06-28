@@ -7,6 +7,7 @@
 				left
 				v-for="item in disciplines"
 				:key="item.id"
+				content-class = "PopupGroupsListDisciplines-tooltip"
 			>
 				<template v-if="item.id !== 1" v-slot:activator="{ on, attrs }">
 					<v-hover v-slot="{ hover }">
@@ -66,4 +67,9 @@ export default {
 }
 </script>
 
-<style></style>
+<style lang="sass">
+.PopupGroupsListDisciplines
+	&-tooltip
+		background: rgba(97,97,97,1)
+		opacity: 1 !important
+</style>

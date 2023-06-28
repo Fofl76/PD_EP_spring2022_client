@@ -7,7 +7,10 @@
     :style="styleVars"
   >
     <div class="aup-table__block" :style="{ backgroundColor }">
-      <v-tooltip bottom :open-delay="300">
+      <v-tooltip 
+      bottom :open-delay="300"
+      content-class = "MTableBlock-tooltip"
+      >
         <template v-slot:activator="{ on, attrs }">
           <span
             :class="classTableItem"
@@ -165,4 +168,8 @@ export default {
           background-color: rgb(51, 51, 51, 0.1)
           color: #333 !important
 
+.MTableBlock
+  &-tooltip
+    background: rgba(97,97,97,1)
+    opacity: 1 !important
 </style>
