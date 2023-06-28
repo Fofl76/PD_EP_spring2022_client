@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="UploadFileDragArea"
+		class="MUploadFileDragArea"
 		@drop.prevent="onDrop($event)"
 		@dragover.prevent="dragover = true"
 		@dragenter.prevent="dragover = true"
@@ -153,7 +153,7 @@ export default {
 </script>
 
 <style lang="sass">
-.UploadFileDragArea
+.MUploadFileDragArea
     border: 1px dashed rgba(0, 0, 0, 0.6)
     border-radius: 6px
     padding: 10px

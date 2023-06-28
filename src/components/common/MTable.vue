@@ -1,14 +1,14 @@
 <template>
 	<div>
-		<div class="aup-table" :style="styleVars">
+		<div class="MTable" :style="styleVars">
 			<template v-if="!loading">
-				<div class="aup-table__left-column">
-					<div class="aup-table__column-header aup-table__left-column-header">
+				<div class="MTable__left-column">
+					<div class="MTable__column-header MTable__left-column-header">
 						ЗЕТ
 					</div>
 
 					<div
-						class="aup-table__zet-block"
+						class="MTable__zet-block"
 						v-for="i in !loading ? maxZet : fakeMaxZet"
 						:key="i"
 						:style="{ height: heightZet() }"
@@ -18,11 +18,11 @@
 				</div>
 
 				<div
-					class="aup-table__column"
+					class="MTable__column"
 					v-for="(column, key) in table"
 					:key="key"
 				>
-					<div class="aup-table__column-header">
+					<div class="MTable__column-header">
 						{{ orderWords[key] }}
 						<TableHeaderStats
 							:items="column"
@@ -30,7 +30,7 @@
 					</div>
 
 					<draggable
-						class="aup-table__draggable"
+						class="MTable__draggable"
 						v-bind="dragOptions"
 						:value="table[key]"
 						:setData="setData"
@@ -44,7 +44,7 @@
 								:fitMode="fitMode"
 								:total-zet="totalZet(element)"
 								:class="{
-									'aup-table__block-wrapper-small': fitMode,
+									'MTable__block-wrapper-small': fitMode,
 								}"
 								@edit="$emit('edit', $event)"
 								@click.native="onClickBlock(element)"
@@ -55,11 +55,11 @@
 			</template>
 			<template v-else>
 				<div
-					class="aup-table__column"
+					class="MTable__column"
 					v-for="(column, key) in fakeElementsCount"
 					:key="key"
 				>
-					<div class="aup-table__column-header">
+					<div class="MTable__column-header">
 						{{ orderWords[key] }}
 					</div>
 
@@ -197,14 +197,14 @@ export default {
 </script>
 
 <style lang="sass">
-.aup-table
+.MTable
     display: grid
     grid-template-columns: 30px repeat(var(--count-column), minmax(100px, 1fr))
     gap: 8px
     color: #fff
 
     &__block-wrapper-small
-        .aup-table__name
+        .MTable__name
             transform: scale(.75)
 
     &__draggable

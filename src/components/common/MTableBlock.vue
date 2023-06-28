@@ -1,17 +1,17 @@
 <template>
   <div
-    class="aup-table__block-wrapper"
+    class="MTableBlock__block-wrapper"
     :class="{
       isEditing, 
       fitMode: fitMode && totalZet <= 2}"
     :style="styleVars"
   >
-    <div class="aup-table__block" :style="{ backgroundColor }">
+    <div class="MTableBlock__block" :style="{ backgroundColor }">
       <v-tooltip bottom :open-delay="300">
         <template v-slot:activator="{ on, attrs }">
           <span
             :class="classTableItem"
-            class="aup-table__name"
+            class="MTableBlock__name"
             v-bind="attrs"
             v-on="on"
           >
@@ -23,7 +23,7 @@
       </v-tooltip>
 
       <v-btn
-        class="aup-table__edit-btn"
+        class="MTableBlock__edit-btn"
         color="white"
         x-small
         fab
@@ -37,7 +37,6 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import determinateTextColor from '@utils/determinateTextColor'
 
 export default {
@@ -78,7 +77,7 @@ export default {
     },
 
     classTableItem() {
-      return 'aup-table__name__' + this.modeTable
+      return 'MTableBlock__name__' + this.modeTable
     },
 
     needIsDarkText() {
@@ -101,7 +100,7 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.aup-table
+.MTableBlock
     &__block
         position: relative
         display: flex
@@ -118,7 +117,7 @@ export default {
         transition: box-shadow .25s ease
 
         &:hover
-            .aup-table__edit-btn
+            .MTableBlock__edit-btn
                 opacity: 1
 
     &__block-wrapper
@@ -129,7 +128,7 @@ export default {
           height: calc(var(--height-block) * 3)
 
         &.isEditing
-            .aup-table__block
+            .MTableBlock__block
                 box-shadow: 0px 0px 3px 7px rgba(10, 110, 189, 0.7)
 
     &__name

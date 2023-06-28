@@ -452,11 +452,6 @@ export default {
     &__panel-title
         color: #fff
 
-    .MHintActivator
-        margin-left: 4px
-        width: 25px
-        height: 25px
-
     &__inner
         padding: 16px
         display: grid

@@ -77,7 +77,4 @@ export default {
 
         &--selected
             margin-right: 4px
-
-        .v-chip__content
-            padding: 0 4px !important
 </style>

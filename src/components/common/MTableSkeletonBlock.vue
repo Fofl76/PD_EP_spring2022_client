@@ -1,11 +1,11 @@
 <template>
 	<div
-		class="TableSkeletonBlock"
+		class="MTableSkeletonBlock"
 		:style="{ height: getRandomNum() * 90 + 'px' }"
 	>
 		<v-skeleton-loader
 			dark
-			class="TableSkeletonBlock__skeleton"
+			class="MTableSkeletonBlock__skeleton"
 			max-width="300"
 			type="list-item-two-line"
 		></v-skeleton-loader>
@@ -29,7 +29,7 @@ export default {
 </script>
 
 <style lang="sass">
-.TableSkeletonBlock
+.MTableSkeletonBlock
     width: 100%
     padding: 5px 0
 
