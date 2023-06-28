@@ -3,6 +3,7 @@
 		class="MHint"
 		top
 		v-bind="$attrs"
+		content-class = "MHint-tooltip"
 	>
 		<template v-slot:activator="{ on, attrs }">
 			<v-icon
@@ -54,6 +55,7 @@ export default {
 .MHint
     &-icon
         cursor: pointer
-.v-tooltip__content
-    opacity: 1 !important
+    &-tooltip
+        background: rgba(97,97,97,1)
+        opacity: 1 !important
 </style>
