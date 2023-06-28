@@ -25,7 +25,11 @@
 
 			<v-btn
 				class="aup-table__edit-btn"
-				color="white"
+				:class="[
+					needIsDarkText
+						? 'aup-table__edit-btn--theme-white'
+						: 'aup-table__edit-btn--theme-black',
+				]"
 				x-small
 				fab
 				icon
@@ -38,7 +42,6 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import determinateTextColor from '@utils/determinateTextColor'
 
 export default {
@@ -154,10 +157,17 @@ export default {
         border: 111px solid red
 
     &__edit-btn
-        background-color: rgba(255, 255, 255, 0.1)
         position: absolute
         right: 8px
         top: 8px
         opacity: 0
         transition: opacity .25s ease
+
+        &--theme-black
+          background-color: rgba(255, 255, 255, 0.1)
+          color: #fff !important
+
+        &--theme-white
+          background-color: rgb(51, 51, 51, 0.1)
+          color: #333 !important
 </style>
