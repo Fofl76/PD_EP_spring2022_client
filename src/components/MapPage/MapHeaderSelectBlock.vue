@@ -1,12 +1,17 @@
 <template>
-	<div class="MapHeaderSelectMap__wrap">
+	<div class="MapHeaderSelectBlock">
 		<MapHeaderFacultySelect v-model="facultyModel" :items="facultyItems" />
 		<MapHeaderDirectionAutocomplete
 			v-model="directionModel"
 			:items="directionItems"
 			@input="onSelectDirection"
 		/>
-		<SelectYear style="max-width: 100px" v-model="year" :items="itemsYears" />
+
+		<MapHeaderYearSelect
+			style="max-width: 100px"
+			v-model="year"
+			:items="itemsYears"
+		/>
 	</div>
 </template>
 
@@ -17,16 +22,18 @@ import MapsService from '@services/Maps/MapsService'
 
 import MapHeaderDirectionAutocomplete from '@components/MapPage/MapHeaderDirectionAutocomplete.vue'
 import MapHeaderFacultySelect from '@components/MapPage/MapHeaderFacultySelect.vue'
-import SelectYear from './SelectYear.vue'
+import MapHeaderYearSelect from './MapHeaderYearSelect.vue'
 
 export default {
+	name: 'MapHeaderSelectBlock',
 	components: {
 		MapHeaderFacultySelect,
 		MapHeaderDirectionAutocomplete,
-		SelectYear,
+		MapHeaderYearSelect,
 	},
-	name: 'MapHeaderSelectMap',
+
 	mixins: [withEventEmitter('mapsService', 'mapsServiceHandlers')],
+
 	data() {
 		return {
 			mapsService: MapsService,
@@ -38,10 +45,12 @@ export default {
 			},
 		}
 	},
+
 	computed: {
 		facultyItems() {
 			return this.mapsService.facultiesList.value
 		},
+
 		itemsYears() {
 			const years = {}
 
@@ -53,6 +62,7 @@ export default {
 
 			return yearKey.sort((a, b) => b - a)
 		},
+
 		directionItems() {
 			return (
 				this.facultyModel?.directions?.filter(el => el.year === this.year) || []
@@ -96,9 +106,8 @@ export default {
 </script>
 
 <style lang="sass">
-.MapHeaderSelectMap
-    &__wrap
-        display: flex
-        align-items: center
-        gap: 8px
+.MapHeaderSelectBlock
+    display: flex
+    align-items: center
+    gap: 8px
 </style>

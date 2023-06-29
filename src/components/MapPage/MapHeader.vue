@@ -1,6 +1,6 @@
 <template>
 	<v-app-bar app class="MapHeader" height="80" dark clipped-right>
-		<MapHeaderSelectMap />
+		<MapHeaderSelectBlock />
 
 		<v-spacer></v-spacer>
 
@@ -45,7 +45,7 @@
 <script>
 import MapsService from '@services/Maps/MapsService'
 
-import MapHeaderSelectMap from '@components/MapPage/MapHeaderSelectMap.vue'
+import MapHeaderSelectBlock from '@components/MapPage/MapHeaderSelectBlock.vue'
 import PopupGroupsSettings from '@components/PopupGroupsSetings/PopupGroupsSettings.vue'
 import LoginDialog from './LoginDialog.vue'
 import PopupUploadFile from './PopupUploadFile/PopupUploadFile.vue'
@@ -54,7 +54,7 @@ export default {
 	name: 'MapHeader',
 
 	components: {
-		MapHeaderSelectMap,
+		MapHeaderSelectBlock,
 		PopupUploadFile,
 		PopupGroupsSettings,
 		LoginDialog,
