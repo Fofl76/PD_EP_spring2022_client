@@ -1,6 +1,6 @@
 <template>
 	<ui-select
-		class="MapPageHeaderSelectMap__input MapPageHeaderSelectMap__input-faculty"
+		class="MapHeaderSelectMap__input MapHeaderSelectMap__input-faculty"
 		:items="sortedItems"
 		v-model="_value"
 		item-text="faculty_name"
@@ -49,7 +49,7 @@ export default {
 </script>
 
 <style lang="sass">
-.MapPageHeaderSelectMap
+.MapHeaderSelectMap
     &__input-faculty
         width: 300px
 </style>
