@@ -13,7 +13,7 @@
 			<v-icon right dark>mdi-upload</v-icon>
 		</v-btn>
 
-		<v-btn v-if="isReady" :href="downloadURL" target="_blank" text dark>
+		<v-btn v-if="isReady" @click="downloadMap" text dark>
 			<span>Скачать</span>
 			<v-icon right dark>mdi-download</v-icon>
 		</v-btn>
@@ -49,6 +49,7 @@ import MapHeaderSelectBlock from '@components/MapPage/MapHeaderSelectBlock.vue'
 import PopupGroupsSettings from '@components/PopupGroupsSetings/PopupGroupsSettings.vue'
 import LoginDialog from './LoginDialog.vue'
 import PopupUploadFile from './PopupUploadFile/PopupUploadFile.vue'
+import axios from '@services/api/axios'
 
 export default {
 	name: 'MapHeader',
@@ -66,6 +67,28 @@ export default {
 			popupGroupSettingsModel: false,
 			isOpenLoginDialog: false,
 		}
+	},
+
+	methods: {
+		async downloadMap() {
+			try {
+				const resp = await axios.get(this.downloadURL, {
+					responseType: 'blob',
+				})
+
+				const file = new Blob([resp.data])
+
+				const link = document.createElement('a')
+				link.download = `${this.aupCode}.xlsx`
+				link.href = URL.createObjectURL(file)
+
+				link.click()
+				URL.revokeObjectURL(link.href)
+			} catch (err) {
+				// обработка ошибки в будущем
+				console.log(err)
+			}
+		},
 	},
 
 	computed: {
