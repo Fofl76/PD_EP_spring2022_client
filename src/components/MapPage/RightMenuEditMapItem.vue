@@ -36,7 +36,7 @@
 				hover
 			>
 				<v-expansion-panel class="RightMenuEditMapItem__expansion">
-					<v-expansion-panel-header>
+					<v-expansion-panel-header style="padding: 8px 24px;">
 						<div class="RightMenuEditMapItem__expansion-header">
 							<div class="RightMenuEditMapItem__expansion-header-title">
 								Настройки объема
@@ -158,7 +158,7 @@
 				hover
 			>
 				<v-expansion-panel class="RightMenuEditMapItem__expansion">
-					<v-expansion-panel-header>
+					<v-expansion-panel-header style="padding: 8px 24px;">
 						<div class="RightMenuEditMapItem__expansion-header">
 							<div class="RightMenuEditMapItem__expansion-header-title">
 								Настройки контроля
@@ -190,7 +190,7 @@
 				hover
 			>
 				<v-expansion-panel class="RightMenuEditMapItem__expansion">
-					<v-expansion-panel-header>
+					<v-expansion-panel-header style="padding: 8px 24px;">
 						<div class="RightMenuEditMapItem__expansion-header">
 							<div class="RightMenuEditMapItem__expansion-header-title">
 								Шифр
@@ -596,6 +596,7 @@ export default {
 </script>
 
 <style lang="sass">
+
 .RightMenuEditMapItem
 
     &__panel-title
@@ -611,7 +612,7 @@ export default {
         display: flex
         gap: 8px
         flex-direction: column
-        justify-content: flex-start
+        justify-content: start
         height: 100%
 
     &__section
@@ -663,7 +664,6 @@ export default {
     &__expansion-header
         display: flex
         align-items: center
-		min-height: 40px
         color: #fff
 
         &-chip
@@ -671,4 +671,6 @@ export default {
 
     &__expansion-header-title
         font-size: 16px
+
+	
 </style>
