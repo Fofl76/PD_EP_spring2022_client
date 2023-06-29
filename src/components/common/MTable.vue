@@ -24,7 +24,7 @@
 				>
 					<div class="aup-table__column-header">
 						{{ orderWords[key] }}
-						<TableHeaderStats :items="column" />
+						<TableHeaderStats :items="column"  />
 					</div>
 
 					<draggable
@@ -222,6 +222,9 @@ export default {
     &__column-header
         text-align: center
         margin-bottom: 5px
+		display: flex
+		justify-content: center
+		gap: 4px
 
     &__edit-btn
         background-color: rgba(255, 255, 255, 0.1)

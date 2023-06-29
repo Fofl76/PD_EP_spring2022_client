@@ -596,7 +596,6 @@ export default {
 </script>
 
 <style lang="sass">
-
 .RightMenuEditMapItem
 
     &__panel-title
@@ -612,7 +611,7 @@ export default {
         display: flex
         gap: 8px
         flex-direction: column
-        justify-content: start
+        justify-content: flex-start
         height: 100%
 
     &__section
@@ -664,7 +663,6 @@ export default {
     &__expansion-header
         display: flex
         align-items: center
-		min-height: 40px
         color: #fff
 
         &-chip
@@ -672,6 +670,4 @@ export default {
 
     &__expansion-header-title
         font-size: 16px
-
-	
 </style>
