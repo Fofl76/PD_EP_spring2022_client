@@ -3,32 +3,32 @@
 		:value="value"
 		@input="onInputPopup"
 		max-width="1000"
-		class="PopupGroupsSettings"
+		class="MapGroupsPopup"
 	>
-		<v-card class="PopupGroupsSettings__card">
-			<v-card-title class="text-h5"> Работа с группировками </v-card-title>
-			<v-card-subtitle> *Нажмите на дисциплину и перетащите её</v-card-subtitle>
+		<v-card class="MapGroupsPopup__card">
+			<v-card-title class="text-h5">Работа с группировками</v-card-title>
+			<v-card-subtitle>*Нажмите на дисциплину и перетащите её</v-card-subtitle>
 
-			<v-card-text class="PopupGroupsSettings__text">
-				<div class="PopupGroupsSettings__main">
-					<div class="PopupGroupsSettings__group">
+			<v-card-text class="MapGroupsPopup__text">
+				<div class="MapGroupsPopup__main">
+					<div class="MapGroupsPopup__group">
 						<v-text-field
 							v-model="searchModel"
-							class="PopupGroupsSettings__search"
+							class="MapGroupsPopup__search"
 							label="Поиск группировок"
 							outlined
 							dense
 							hide-details="auto"
 						></v-text-field>
 
-						<v-divider class="PopupGroupsSettings__hor-divider"></v-divider>
+						<v-divider class="MapGroupsPopup__hor-divider"></v-divider>
 
-						<PopupGroupsListDisciplines
+						<MapGroupsPopupSettingsTab
 							v-model="selectedItemId"
 							:disciplines="filteredItems"
 						/>
 
-						<v-divider class="PopupGroupsSettings__hor-divider"></v-divider>
+						<v-divider class="MapGroupsPopup__hor-divider"></v-divider>
 						<v-list style="padding: 0px" dense>
 							<v-list-item-group v-model="createItem" color="primary">
 								<v-list-item :value="true">
@@ -44,16 +44,13 @@
 						</v-list>
 					</div>
 
-					<v-divider class="PopupGroupsSettings__ver-divider" vertical />
+					<v-divider class="MapGroupsPopup__ver-divider" vertical />
 
-					<div
-						v-if="selectedItemId"
-						class="PopupGroupsSettings__group-settings"
-					>
-						<div class="PopupGroupsSettings__group-settings-form">
+					<div v-if="selectedItemId" class="MapGroupsPopup__group-settings">
+						<div class="MapGroupsPopup__group-settings-form">
 							<v-text-field
 								v-model="nameModel"
-								class="PopupGroupsSettings__name-group"
+								class="MapGroupsPopup__name-group"
 								label="Наименование группировки"
 								outlined
 								dense
@@ -64,10 +61,10 @@
 								<template v-slot:activator="{ on, attrs }">
 									<v-btn
 										:color="colorModel"
-										class="PopupGroupsSettings__color-picker"
+										class="MapGroupsPopup__color-picker"
 										v-bind="attrs"
 										v-on="on"
-										>
+									>
 										Цвет
 									</v-btn>
 								</template>
@@ -78,14 +75,14 @@
 									mode="hexa"
 									swatches-max-height="200"
 								/>
-									<!-- dot-size="25"
+								<!-- dot-size="25"
 									mode="hexa"
 									swatches-max-height="200" -->
-									<!-- hide-inputs -->
-									<!-- hide-mode-switch -->
+								<!-- hide-inputs -->
+								<!-- hide-mode-switch -->
 							</v-menu>
 							<v-btn
-							  color="success"
+								color="success"
 								:disabled="isDirtyGroup"
 								:loading="isLoadingUpdateGroup"
 								@click="updateGroupHandler"
@@ -94,9 +91,9 @@
 							</v-btn>
 						</div>
 
-						<div class="PopupGroupsSettings__group-settings-dnd">
-							<div class="PopupGroupsSettings__disciplines-block">
-								<div class="PopupGroupsSettings__disciplines-title">
+						<div class="MapGroupsPopup__group-settings-dnd">
+							<div class="MapGroupsPopup__disciplines-block">
+								<div class="MapGroupsPopup__disciplines-title">
 									Доступные дисциплины
 								</div>
 
@@ -110,7 +107,7 @@
 									<v-list-item
 										v-for="element in availableDisciplines"
 										:key="element.id"
-										class="PopupGroupsSettings__discipline-item"
+										class="MapGroupsPopup__discipline-item"
 									>
 										<v-list-item-icon class="mr-1">
 											<v-icon
@@ -126,10 +123,10 @@
 								</draggable>
 							</div>
 
-							<v-divider class="PopupGroupsSettings__ver-divider" vertical />
+							<v-divider class="MapGroupsPopup__ver-divider" vertical />
 
 							<div>
-								<div class="PopupGroupsSettings__disciplines-title">
+								<div class="MapGroupsPopup__disciplines-title">
 									Назначенные дисциплины
 								</div>
 
@@ -144,7 +141,7 @@
 									<v-list-item
 										v-for="element in appointedDisciplines"
 										:key="element.id"
-										class="PopupGroupsSettings__discipline-item"
+										class="MapGroupsPopup__discipline-item"
 									>
 										<v-list-item-icon class="mr-1">
 											<v-icon
@@ -163,22 +160,20 @@
 					</div>
 
 					<div v-else-if="createItem">
-						<PopupGroupsAddGrops
+						<MapGroupsPopupCreateTab
 							:groups="availableAppointedGroups"
 							@addGroup="onAddGroup"
 						/>
 					</div>
 
 					<div v-else>
-						<div class="PopupGroupsSettings__empty">
-							<div class="PopupGroupsSettings__empty-inner">
+						<div class="MapGroupsPopup__empty">
+							<div class="MapGroupsPopup__empty-inner">
 								<v-icon color="rgba(0, 0, 0, 0.3)" :size="120">
 									mdi-information-outline
 								</v-icon>
-								<p class="PopupGroupsSettings__empty-title text-h5">
-									Нет данных
-								</p>
-								<span class="PopupGroupsSettings__empty-subtitle subtitle-1">
+								<p class="MapGroupsPopup__empty-title text-h5">Нет данных</p>
+								<span class="MapGroupsPopup__empty-subtitle subtitle-1">
 									Выберите группировку для редактирования
 								</span>
 							</div>
@@ -201,16 +196,22 @@
 <script>
 import _ from 'lodash'
 import draggable from 'vuedraggable'
+
 import GroupsService from '@services/Groups/GroupsService'
 import MapsService from '@services/Maps/MapsService'
 import unbuildMapList from '@services/Maps/unbuildMapsList'
 import Api from '@services/api/Api'
-import PopupGroupsListDisciplines from './PopupGroupsListDisciplines.vue'
-import PopupGroupsAddGrops from './PopupGroupsAddGrops.vue'
+
+import MapGroupsPopupSettingsTab from './MapGroupsPopupSettingsTab.vue'
+import MapGroupsPopupCreateTab from './MapGroupsPopupCreateTab.vue'
 
 export default {
-	name: 'PopupGroupsSettings',
-	components: { draggable, PopupGroupsListDisciplines, PopupGroupsAddGrops },
+	name: 'MapGroupsPopup',
+	components: {
+		draggable,
+		MapGroupsPopupSettingsTab,
+		MapGroupsPopupCreateTab,
+	},
 
 	props: {
 		value: {
@@ -222,7 +223,7 @@ export default {
 	data: () => ({
 		newAllDisciplines: [],
 		selectedItemId: null,
-		
+
 		// доступные группы
 		items: [],
 
@@ -243,11 +244,11 @@ export default {
 		availableAppointedGroups() {
 			const allGroups = this.groupsService.groupsList.value
 			const appointedGroups = this.items
-			
+
 			const appointedGroupsIds = appointedGroups?.map(el => el.id)
 			const setAppointedGroupsIds = new Set(appointedGroupsIds)
 
-			return allGroups.filter(group => !setAppointedGroupsIds.has(group.id))		
+			return allGroups.filter(group => !setAppointedGroupsIds.has(group.id))
 		},
 
 		isLoadingSaveTable() {
@@ -277,7 +278,10 @@ export default {
 		},
 
 		isDirtyGroup() {
-			return this.selectedItem.name === this.nameModel && this.selectedItem.color === this.colorModel
+			return (
+				this.selectedItem.name === this.nameModel &&
+				this.selectedItem.color === this.colorModel
+			)
 		},
 
 		availableDisciplines() {
@@ -318,7 +322,7 @@ export default {
 
 		selectedItem() {
 			return this.filteredItems.find(item => item.id === this.selectedItemId)
-		}
+		},
 	},
 
 	watch: {
@@ -357,9 +361,8 @@ export default {
 			if (!value) {
 				setTimeout(() => {
 					this.initAllDisciplines()
-				}, 300);
-			}
-			else {
+				}, 300)
+			} else {
 				this.getAllDisciplines()
 			}
 		},
@@ -385,7 +388,7 @@ export default {
 			this.selectedItemId = null
 		},
 
-		getAllDisciplines () {
+		getAllDisciplines() {
 			this.newAllDisciplines = _.cloneDeep(
 				_.uniqBy(this.activeMapTable, el => el.discipline)
 			)
@@ -405,7 +408,6 @@ export default {
 
 			await MapsService.saveAllMap(this.$route.query.aup, newTable)
 
-
 			this.value_ = false
 		},
 
@@ -423,9 +425,9 @@ export default {
 			}
 
 			this.isLoadingUpdateGroup = true
-		
+
 			await this.groupsService.updateGroup(updatedGroup)
-			
+
 			this.isLoadingUpdateGroup = false
 
 			this.initAllDisciplines()
@@ -445,14 +447,15 @@ export default {
 			dataTransfer.setDragImage(document.createElement('div'), 0, 0)
 		},
 	},
+
 	async created() {
 		await this.initAllDisciplines()
-	}
+	},
 }
 </script>
 
 <style lang="sass">
-.PopupGroupsSettings
+.MapGroupsPopup
     &__text
         padding-bottom: 8px !important
 
@@ -522,11 +525,14 @@ export default {
         width: 400px
         display: flex
         flex-direction: column
-        > *
+
+        & > *
             margin: 6px !important
+
     &__create-row
         display: flex
-        > *:first-chield
+
+        & > *:first-chield
             margin-right: 6px !important
 
     &__create-header
@@ -552,6 +558,6 @@ export default {
     &__empty-title
         margin-bottom: 4px !important
 
-.v-btn::before
-    opacity: 0 !important
+    .v-btn::before
+        opacity: 0 !important
 </style>

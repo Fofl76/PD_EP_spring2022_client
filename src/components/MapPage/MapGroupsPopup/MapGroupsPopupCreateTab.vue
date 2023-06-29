@@ -1,13 +1,11 @@
 <template>
-	<div class="PopupGroupsAddGroups">
-		<div class="PopupGroupsAddGroups-form">
-			<div class="PopupGroupsAddGroups-header text-h5">
-				Cоздание группы
-			</div>
-			<div class="PopupGroupsAddGroups-row">
+	<div class="MapGroupsPopupCreateTab">
+		<div class="MapGroupsPopupCreateTab-form">
+			<div class="MapGroupsPopupCreateTab-header text-h5">Cоздание группы</div>
+			<div class="MapGroupsPopupCreateTab-row">
 				<v-text-field
 					v-model="newItemForm.nameModel"
-					class="PopupGroupsSettings__name-group"
+					class="MapGroupsPopup__name-group"
 					label="Наименование группировки"
 					outlined
 					dense
@@ -35,13 +33,13 @@
 						mode="hexa"
 						swatches-max-height="200"
 					/>
-						<!-- dot-size="25"
+					<!-- dot-size="25"
 						hide-inputs
 						hide-mode-switch
 						swatches-max-height="200" -->
 				</v-menu>
 			</div>
-			<div class="PopupGroupsAddGroups-footer">
+			<div class="MapGroupsPopupCreateTab-footer">
 				<v-btn
 					color="success"
 					min-height="40px"
@@ -54,30 +52,29 @@
 				</v-btn>
 			</div>
 		</div>
-    <div class="PopupGroupsAddGroups-form mt-3">
-			<div class="PopupGroupsAddGroups-header text-h5">
+		<div class="MapGroupsPopupCreateTab-form mt-3">
+			<div class="MapGroupsPopupCreateTab-header text-h5">
 				Добавление группы
 			</div>
-			<div class="PopupGroupsAddGroups-row">
+			<div class="MapGroupsPopupCreateTab-row">
 				<v-select
 					v-model="newGroup"
-          :items="sortedGroupsStreetDisciplinesBangFacultyBlats"
-          itemText="name"
-          outlined
-          return-object
-          dense
+					:items="sortedGroupsStreetDisciplinesBangFacultyBlats"
+					itemText="name"
+					outlined
+					return-object
+					dense
 				/>
-        <v-btn
-          @click="$emit('addGroup', newGroup)"
-          :disabled="!newGroup"
-          color="success"
-          height="40"
-          class="ml-2"
-        >
-          Добавить
-        </v-btn>
+				<v-btn
+					@click="$emit('addGroup', newGroup)"
+					:disabled="!newGroup"
+					color="success"
+					height="40"
+					class="ml-2"
+				>
+					Добавить
+				</v-btn>
 			</div>
-
 		</div>
 	</div>
 </template>
@@ -89,52 +86,52 @@ import GroupsService from '@services/Groups/GroupsService'
 import _ from 'lodash'
 
 export default {
-  components: {
-    MSelect,
-  },
-  props: {
-    groups: {
-      type: Array,
-      default: () => [],
-    },
-  },
-  data() {
-    return {
-      newGroup: null,
+	components: {
+		MSelect,
+	},
+	props: {
+		groups: {
+			type: Array,
+			default: () => [],
+		},
+	},
+	data() {
+		return {
+			newGroup: null,
 
-      groupsService: GroupsService,
+			groupsService: GroupsService,
 
-      newItemForm: {
-        nameModel: '',
-        color: '#FFFFFF',
-      },
+			newItemForm: {
+				nameModel: '',
+				color: '#FFFFFF',
+			},
 
-  		isLoadingAddGroups: false,
+			isLoadingAddGroups: false,
 
-      nameRules: [
-        v => !!v || 'Это поле является обязательным',
-        v =>
-          (v && v.length < 70) ||
-          'Название дисциплины не может превышать 70 символов',
-      ],
-    }
-  },
-  computed: {
-    isDisableAddGroups() {
+			nameRules: [
+				v => !!v || 'Это поле является обязательным',
+				v =>
+					(v && v.length < 70) ||
+					'Название дисциплины не может превышать 70 символов',
+			],
+		}
+	},
+	computed: {
+		isDisableAddGroups() {
 			return !this.newItemForm.nameModel.length
 		},
-    sortedGroupsStreetDisciplinesBangFacultyBlats() {
-      return _.orderBy(this.groups, 'name').sort((a, b) => {
+		sortedGroupsStreetDisciplinesBangFacultyBlats() {
+			return _.orderBy(this.groups, 'name').sort((a, b) => {
 				if (a.name < b.name) {
 					return -1
 				}
 
 				return 1
 			})
-    },
-  },
-  methods: {
-    async addModel() {
+		},
+	},
+	methods: {
+		async addModel() {
 			if (this.isDisableAddGroups) return
 
 			this.isLoadingAddGroups = true
@@ -147,22 +144,21 @@ export default {
 			try {
 				const res = await this.groupsService.addGroup(newGroup)
 
-        if (res) {
-          this.$emit('addGroup', res)
-        }
-
+				if (res) {
+					this.$emit('addGroup', res)
+				}
 			} catch (e) {
 				console.log(e)
 			} finally {
 				this.isLoadingAddGroups = false
 			}
 		},
-  }
+	},
 }
 </script>
 
 <style lang="sass">
-.PopupGroupsAddGroups
+.MapGroupsPopupCreateTab
     width: 100%
     height: 100%
     display: flex

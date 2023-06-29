@@ -1,6 +1,7 @@
 <template>
 	<div class="MapHeaderSelectBlock">
 		<MapHeaderFacultySelect v-model="facultyModel" :items="facultyItems" />
+
 		<MapHeaderDirectionAutocomplete
 			v-model="directionModel"
 			:items="directionItems"

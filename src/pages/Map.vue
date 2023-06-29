@@ -16,7 +16,7 @@
 			</v-container>
 		</v-main>
 
-		<ui-snackbar v-bind="snackbarOptions" @input="clearSnackbarOptions" />
+		<MSnackbar v-bind="snackbarOptions" @input="clearSnackbarOptions" />
 
 		<RightMenuEditMapItem
 			v-model="rightMenuEditModel"
@@ -32,7 +32,7 @@ import GroupsService from '@services/Groups/GroupsService'
 
 import MapHeader from '@components/MapPage/MapHeader.vue'
 import TableMaps from '@components/MapPage/Table/TableMaps.vue'
-import UiSnackbar from '@components/common/MSnackbar.vue'
+import MSnackbar from '@components/common/MSnackbar.vue'
 import RightMenuEditMapItem from '@components/MapPage/RightMenuEditMapItem.vue'
 
 export default {
@@ -41,7 +41,7 @@ export default {
 	components: {
 		MapHeader,
 		TableMaps,
-		UiSnackbar,
+		MSnackbar,
 		RightMenuEditMapItem,
 	},
 

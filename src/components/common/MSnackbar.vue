@@ -67,14 +67,14 @@ export default {
 	},
 
 	computed: {
-    _value: {
-      get() {
-        return this.value
-      },
-      set(v) {
-        this.$emit('input', v)
-      }
-    },
+		_value: {
+			get() {
+				return this.value
+			},
+			set(v) {
+				this.$emit('input', v)
+			},
+		},
 		snackbar() {
 			switch (this.type) {
 				case 'error':
