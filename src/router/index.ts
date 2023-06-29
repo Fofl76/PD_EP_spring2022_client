@@ -1,14 +1,14 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
-import MapPage from '../pages/MapPage.vue'
+import Map from '../pages/Map.vue'
 
 Vue.use(VueRouter)
 
 const routes: Array<RouteConfig> = [
 	{
 		path: '/',
-		name: 'MapPage',
-		component: MapPage,
+		name: 'Map',
+		component: Map,
 	},
 ]
 

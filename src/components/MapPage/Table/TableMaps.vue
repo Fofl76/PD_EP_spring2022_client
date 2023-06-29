@@ -14,7 +14,7 @@
 			<!-- Эти tools'ы таблицы вынести в отдельный компонент -->
 			<v-btn
 				v-if="isAvailableSave"
-				class="Home__save-table-btn"
+				class="Map__save-table-btn"
 				:loading="isLoadingSaveMapList"
 				color="success"
 				dark
@@ -25,7 +25,7 @@
 			</v-btn>
 
 			<v-btn
-				class="Home__save-table-mode"
+				class="Map__save-table-mode"
 				color="success"
 				dark
 				@click="isFullScreen = !isFullScreen"

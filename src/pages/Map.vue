@@ -1,31 +1,28 @@
 <template>
-	<v-app>
-		<div class="Home">
-			<MapPageHeader
-				:aupCode="'aupCode'"
-				@successUploadFile="onSuccessUploadFile"
-				@errorUploadFile="onErrorUploadFile"
-			/>
+	<v-app class="Map">
+		<MapPageHeader
+			@successUploadFile="onSuccessUploadFile"
+			@errorUploadFile="onErrorUploadFile"
+		/>
 
-			<v-main dark app class="Home__main">
-				<v-container class="Home__main-inner" fluid>
-					<TableMaps
-						:loading="isLoadingMaps"
-						:table="mapsService.mapList?.value"
-						:activeEditingItemId="rightMenuEditItemId"
-						@edit-click="onEditClick"
-					/>
-				</v-container>
-			</v-main>
+		<v-main dark app class="Map__main">
+			<v-container class="Map__main-inner" fluid>
+				<TableMaps
+					:loading="isLoadingMaps"
+					:table="tableData"
+					:activeEditingItemId="rightMenuEditItemId"
+					@edit-click="onEditClick"
+				/>
+			</v-container>
+		</v-main>
 
-			<ui-snackbar v-bind="snackbarOptions" @input="clearSnackbarOptions" />
+		<ui-snackbar v-bind="snackbarOptions" @input="clearSnackbarOptions" />
 
-			<RightMenuEditMapItem
-				v-model="rightMenuEditModel"
-				:itemId="rightMenuEditItemId"
-				@close="onCloseEditingItemPanel"
-			/>
-		</div>
+		<RightMenuEditMapItem
+			v-model="rightMenuEditModel"
+			:itemId="rightMenuEditItemId"
+			@close="onCloseEditingItemPanel"
+		/>
 	</v-app>
 </template>
 
@@ -39,15 +36,18 @@ import RightMenuEditMapItem from '@components/MapPage/RightMenuEditMapItem.vue'
 
 export default {
 	name: 'HomeView',
+
 	components: {
 		MapPageHeader,
 		TableMaps,
 		UiSnackbar,
 		RightMenuEditMapItem,
 	},
+
 	data() {
 		return {
 			isLoading: true,
+
 			mapsService: MapsService,
 			groupsService: GroupsService,
 
@@ -57,6 +57,7 @@ export default {
 			rightMenuEditItemId: null,
 		}
 	},
+
 	computed: {
 		allGroupsMapId() {
 			return this.groupsService.allGroupsMapId
@@ -65,7 +66,12 @@ export default {
 		isLoadingMaps() {
 			return this.mapsService.isLoadingMapList
 		},
+
+		tableData() {
+			return this.mapsService.mapList?.value
+		},
 	},
+
 	watch: {
 		'$route.query.aup': {
 			async handler(aupCode) {
@@ -77,6 +83,7 @@ export default {
 			immediate: true,
 		},
 	},
+
 	methods: {
 		clearSnackbarOptions() {
 			this.snackbarOptions = null
@@ -117,18 +124,17 @@ export default {
 			this.editingMapItemId = null
 		},
 	},
+
 	async created() {
 		await this.groupsService.fetchAllGroups()
-
 		await this.mapsService.fetchFacultiesList()
-
 		await this.mapsService.fetchUnitsOfMeasurement()
 	},
 }
 </script>
 
 <style lang="sass">
-.Home
+.Map
     height: 100%
 
     &__main
@@ -139,29 +145,6 @@ export default {
         box-shadow: 0px 0px 100px 5px rgba(0, 0, 0, 0.3) inset
         padding: 16px
         height: 100%
-
-    &__main-empty
-        width: 100%
-        height: 100%
-        display: flex
-        align-items: center
-        justify-content: center
-        font-size: 1.5em
-
-    &__main-empty-inner
-        color: #fff
-        display: flex
-        flex-direction: column
-        align-items: center
-
-    &__main-empty-icon
-        margin-bottom: 12px
-
-    &__main-empty-title
-        margin-bottom: 4px !important
-
-    &__nodata-block
-        color: #fff
 
     &__save-table-btn
         position: sticky
@@ -174,8 +157,8 @@ export default {
         left: calc(100% - 16px)
         transition: right .2s cubic-bezier(0.4, 0, 0.2, 1)
 
-.Home.withRightMenu
-    .Home
+.Map.withRightMenu
+    .Map
         &__save-table-btn
             right: calc(var(--drawer-width) + 30px)
         &__save-table-mode
