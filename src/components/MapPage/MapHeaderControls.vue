@@ -24,7 +24,7 @@
 import MapsService from '@services/Maps/MapsService'
 
 import MapHeaderButton from '@components/MapPage/common/MapHeaderButton.vue'
-import MapGroupsPopup from '@components/MapGroupsPopup/MapGroupsPopup.vue'
+import MapGroupsPopup from '@components/MapPage/MapGroupsPopup/MapGroupsPopup.vue'
 import MapUploadFilePopup from '@components/MapPage/MapUploadFilePopup.vue'
 
 export default {
