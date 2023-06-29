@@ -663,6 +663,7 @@ export default {
     &__expansion-header
         display: flex
         align-items: center
+		min-height: 40px
         color: #fff
 
         &-chip
