@@ -30,7 +30,7 @@
 import MapsService from '@services/Maps/MapsService'
 import GroupsService from '@services/Groups/GroupsService'
 
-import MapHeader from '@components/MapPage/MapHeader.vue'
+import MapHeader from '@components/MapPage/MapHeader/MapHeader.vue'
 import TableMaps from '@components/MapPage/Table/TableMaps.vue'
 import MSnackbar from '@components/common/MSnackbar.vue'
 import RightMenuEditMapItem from '@components/MapPage/RightMenuEditMapItem.vue'
