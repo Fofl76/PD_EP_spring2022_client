@@ -1,7 +1,7 @@
 <template>
 	<div class="MapHeaderSelectMap__wrap">
-		<FacultySelect v-model="facultyModel" :items="facultyItems" />
-		<DirectionAutocomplete
+		<MapHeaderFacultySelect v-model="facultyModel" :items="facultyItems" />
+		<MapHeaderDirectionAutocomplete
 			v-model="directionModel"
 			:items="directionItems"
 			@input="onSelectDirection"
@@ -15,12 +15,16 @@ import withEventEmitter from '@mixins/withEventEmitter'
 
 import MapsService from '@services/Maps/MapsService'
 
-import DirectionAutocomplete from '@components/MapPage/DirectionAutocomplete.vue'
-import FacultySelect from '@components/MapPage/FacultySelect.vue'
+import MapHeaderDirectionAutocomplete from '@components/MapPage/MapHeaderDirectionAutocomplete.vue'
+import MapHeaderFacultySelect from '@components/MapPage/MapHeaderFacultySelect.vue'
 import SelectYear from './SelectYear.vue'
 
 export default {
-	components: { FacultySelect, DirectionAutocomplete, SelectYear },
+	components: {
+		MapHeaderFacultySelect,
+		MapHeaderDirectionAutocomplete,
+		SelectYear,
+	},
 	name: 'MapHeaderSelectMap',
 	mixins: [withEventEmitter('mapsService', 'mapsServiceHandlers')],
 	data() {

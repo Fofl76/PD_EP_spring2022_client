@@ -1,31 +1,34 @@
 <template>
-	<ui-select
-		class="MapHeaderSelectMap__input MapHeaderSelectMap__input-faculty"
-		:items="sortedItems"
+	<MSelect
 		v-model="_value"
+		:items="sortedItems"
+		v-bind="$attrs"
+		v-on="$listeners"
+		class="MapHeaderFacultySelect"
 		item-text="faculty_name"
 		no-data-text="Факультеты не найдены"
 		label="Выберите факультет"
-		v-bind="$attrs"
-		v-on="$listeners"
 	/>
 </template>
 
 <script>
-import Vue from 'vue'
-import UiSelect from '@components/common/MSelect.vue'
+import MSelect from '@components/common/MSelect.vue'
 export default {
-	components: { UiSelect },
+	name: 'MapHeaderFacultySelect',
+	components: { MSelect },
+
 	props: {
 		value: {
 			type: [Object, String],
 			default: () => ({}),
 		},
+
 		items: {
 			type: Array,
 			default: () => [],
 		},
 	},
+
 	computed: {
 		sortedItems() {
 			return [...this.items].sort((a, b) => {
@@ -36,6 +39,7 @@ export default {
 				return 1
 			})
 		},
+
 		_value: {
 			get() {
 				return this.value
@@ -49,7 +53,6 @@ export default {
 </script>
 
 <style lang="sass">
-.MapHeaderSelectMap
-    &__input-faculty
-        width: 300px
+.MapHeaderFacultySelect
+    width: 300px
 </style>

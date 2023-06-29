@@ -1,11 +1,24 @@
 <template>
-	<ui-autocomplete label="Введите направление" class="DirectionAutocomplete__input DirectionAutocomplete__input-direction"
-		v-model="_value" :items="sortedItems" no-data-text="Сначала выберите факультет" item-text="name" filled :menu-props="{
-			maxWidth: 500,
-		}" v-bind="$attrs" v-on="$listeners">
+	<MAutocomplete
+		v-model="_value"
+		:items="sortedItems"
+		v-bind="$attrs"
+		v-on="$listeners"
+		:menu-props="{ maxWidth: 500 }"
+		class="MapHeaderDirectionAutocomplete"
+		label="Введите направление"
+		no-data-text="Сначала выберите факультет"
+		item-text="name"
+		filled
+	>
 		<template #append>
-			<div class="DirectionAutocomplete__year-chip--selected">
-				<v-chip v-if="_value" class="DirectionAutocomplete__year-chip" pill label>
+			<div class="MapHeaderDirectionAutocomplete__year-chip--selected">
+				<v-chip
+					v-if="_value"
+					class="MapHeaderDirectionAutocomplete__year-chip"
+					pill
+					label
+				>
 					{{ formEduc[_value.form_educ] }}
 				</v-chip>
 			</div>
@@ -14,26 +27,27 @@
 		<template #item="{ item }">
 			<v-list-item-title>{{ item.name }}</v-list-item-title>
 			<div>
-				<v-chip class="DirectionAutocomplete__year-chip" pill label>{{
+				<v-chip class="MapHeaderDirectionAutocomplete__year-chip" pill label>{{
 					formEduc[item.form_educ]
 				}}</v-chip>
 			</div>
 		</template>
-	</ui-autocomplete>
+	</MAutocomplete>
 </template>
 
 <script>
-import UiAutocomplete from '@components/common/MAutocomplete.vue'
+import MAutocomplete from '@components/common/MAutocomplete.vue'
 import formEduc from '@services/utils/formEduc'
 export default {
-	name: 'DirectionAutocomplete',
+	name: 'MapHeaderDirectionAutocomplete',
+	components: { MAutocomplete },
 
-	components: { UiAutocomplete },
 	data() {
 		return {
 			formEduc,
 		}
 	},
+
 	props: {
 		value: {
 			type: [Object, String],
@@ -44,6 +58,7 @@ export default {
 			default: () => [],
 		},
 	},
+
 	computed: {
 		sortedItems() {
 			return this.items.toSorted((a, b) => {
@@ -54,6 +69,7 @@ export default {
 				return 1
 			})
 		},
+
 		_value: {
 			get() {
 				return this.value
@@ -67,9 +83,8 @@ export default {
 </script>
 
 <style lang="sass">
-.DirectionAutocomplete
-    &__input-direction
-        width: 500px
+.MapHeaderDirectionAutocomplete
+    width: 500px
 
     &__year-chip
         justify-content: center
