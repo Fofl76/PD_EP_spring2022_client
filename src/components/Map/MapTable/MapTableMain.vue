@@ -3,7 +3,7 @@
 		<div class="MapTableMain" :style="styleVars">
 			<template v-if="!loading">
 				<!-- Левая колонка с линейкой ЗЕТ -->
-				<MapTableMainRulerColumn :maxZet="30" :heightZet="heightZet" />
+				<MapTableMainRulerColumn :maxZet="maxZet" :heightZet="heightZet" />
 
 				<!-- Вынести в отдельный компонент -->
 				<div
@@ -72,7 +72,6 @@ import MapTableMainSkeletonBlock from '@components/Map/MapTable/MapTableMainSkel
 
 export default {
 	name: 'MapTableMain',
-
 	components: {
 		draggable,
 		MapTableMainRulerColumn,
@@ -80,22 +79,34 @@ export default {
 		MapTableMainBlock,
 		MapTableMainSkeletonBlock,
 	},
+
 	props: {
 		table: {
 			type: Array,
 			default: () => [],
 		},
+
 		maxZet: {
 			type: Number,
 			default: 30,
 		},
+
 		activeEditingItemId: {
 			type: [String, Number],
 			default: null,
 		},
-		loading: Boolean,
-		fitMode: Boolean,
+
+		loading: {
+			type: Boolean,
+			default: false,
+		},
+
+		fitMode: {
+			type: Boolean,
+			default: false,
+		},
 	},
+
 	data() {
 		return {
 			orderWords,
@@ -105,6 +116,7 @@ export default {
 			WEEKQUEALSHOURS: MapsService.WEEKQUEALSHOURS,
 		}
 	},
+
 	computed: {
 		heightZet() {
 			return (countZet = 1) => {
@@ -143,6 +155,7 @@ export default {
 		styleVars() {
 			return {
 				'--count-column': this.countOfColumns,
+				'--max-height': this.heightZet(this.maxZet),
 			}
 		},
 
@@ -152,6 +165,7 @@ export default {
 			return Object.keys(this.table).length
 		},
 	},
+
 	methods: {
 		onDragElementTable(data, columnIndex) {
 			this.$emit('drag', { data, columnIndex })
@@ -191,6 +205,8 @@ export default {
     grid-template-columns: 30px repeat(var(--count-column), minmax(100px, 1fr))
     gap: 8px
     color: #fff
+    max-height: calc(var(--max-height) + 30px)
+    overflow: hidden
 
     &__draggable
         flex: 1 1 100%
