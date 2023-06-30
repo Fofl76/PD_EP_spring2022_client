@@ -41,3 +41,10 @@ export default {
 	},
 }
 </script>
+
+<style lang="sass">
+.MapHeaderYearSelect
+    // Фикс непонятного бага со стрелочкой у селекта
+    .v-input__append-inner
+        margin-top: 14px !important
+</style>
