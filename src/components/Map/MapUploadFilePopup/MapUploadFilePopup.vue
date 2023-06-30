@@ -1,5 +1,5 @@
 <template>
-	<v-dialog v-model="_value" max-width="500" class="MapUploadFilePopup">
+	<v-dialog class="MapUploadFilePopup" v-model="_value" max-width="500">
 		<v-card class="MapUploadFilePopup__card">
 			<v-card-title class="text-h5">Сформировать КД</v-card-title>
 
