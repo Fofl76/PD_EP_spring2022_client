@@ -1,8 +1,8 @@
 <template>
 	<div class="DataPreloader">
-		<div class="DataPreloader-smile">≧◉◡◉≦</div>
-		<div class="DataPreloader-title">Нет данных</div>
-		<div class="DataPreloader-subtitle">Выберите факультет и направление</div>
+		<div class="DataPreloader__smile">≧◉◡◉≦</div>
+		<div class="DataPreloader__title">Нет данных</div>
+		<div class="DataPreloader__subtitle">Выберите факультет и направление</div>
 	</div>
 </template>
 
@@ -20,7 +20,7 @@ export default {
     justify-content: center
     align-items: center
 
-    &-smile
+    &__smile
         user-select: none
         font-size: 30px
         margin-bottom: 16px
@@ -33,11 +33,11 @@ export default {
         justify-content: center
         border-radius: 50%
 
-    &-title
+    &__title
         font-size: 25px
         margin-bottom: 0px
 
-    &-subtitle
+    &__subtitle
         font-size: 20px
         color: #a8a8a8
         font-weight: 300

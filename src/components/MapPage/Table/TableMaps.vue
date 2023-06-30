@@ -35,7 +35,7 @@
 		</div>
 
 		<div v-else class="TableMaps-empty">
-			<DataPreloader />
+			<MDataPreloader />
 		</div>
 	</div>
 </template>
@@ -44,10 +44,10 @@
 import UiTable from '@components/common/MTable.vue'
 import MapsService from '@services/Maps/MapsService'
 
-import DataPreloader from '@components/MapPage/DataPreloader.vue'
+import MDataPreloader from '@components/common/MDataPreloader.vue'
 
 export default {
-	components: { UiTable, DataPreloader },
+	components: { UiTable, MDataPreloader },
 	props: {
 		table: {
 			type: Array,
