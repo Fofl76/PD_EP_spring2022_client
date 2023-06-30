@@ -10,7 +10,6 @@
 	>
 		<div
 			class="MapTableMainBlock"
-			:style="{ backgroundColor }"
 			@mouseover="isHovered = true"
 			@mouseleave="isHovered = false"
 		>
@@ -35,6 +34,7 @@
 
 <script>
 import determinateTextColor from '@utils/determinateTextColor'
+import shadeColor from '@utils/shadeColor'
 
 import MapTableMainBlockEditButton from '@components/Map/MapTable/MapTableMainBlockEditButton.vue'
 
@@ -78,7 +78,11 @@ export default {
 
 	computed: {
 		backgroundColor() {
-			return this.data.group?.color
+			return this.data.group?.color || '#ffffff'
+		},
+
+		shadowColor() {
+			return shadeColor(this.backgroundColor, -45)
 		},
 
 		needIsDarkMode() {
@@ -88,6 +92,8 @@ export default {
 		styleVars() {
 			return {
 				'--height-block': this.height,
+				'--background-color': this.backgroundColor,
+				'--shadow-color': this.shadowColor,
 				'--text-color': this.needIsDarkMode ? '#333' : '#fff',
 			}
 		},
@@ -120,6 +126,7 @@ export default {
     font-family: sans-serif
     cursor: grab
     transition: box-shadow .25s ease
+    background-color: var(--background-color)
 
     &__wrapper
         transition: all 0.3s ease
@@ -130,8 +137,8 @@ export default {
           height: calc(var(--height-block) * 3)
 
         &.isEditing
-            .MapTableMain__block
-                box-shadow: 0px 0px 3px 7px rgba(10, 110, 189, 0.7)
+            .MapTableMainBlock
+                box-shadow: 0px 0px 0px 5px var(--shadow-color)
 
         &--small
             .MapTableMainBlock__name
