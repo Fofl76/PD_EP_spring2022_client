@@ -27,6 +27,8 @@ import MapHeaderButton from '@components/MapPage/common/MapHeaderButton.vue'
 import MapGroupsPopup from '@components/MapPage/MapGroupsPopup/MapGroupsPopup.vue'
 import MapUploadFilePopup from '@components/MapPage/MapUploadFilePopup.vue'
 
+import axios from '@services/api/axios'
+
 export default {
 	name: 'MapHeaderControls',
 	components: { MapHeaderButton, MapGroupsPopup, MapUploadFilePopup },
@@ -48,8 +50,24 @@ export default {
 		},
 
 		// Нужно отрефакторить, сделать по-нормальному, чтобы не открывать вкладку
-		downloadMap() {
-			window.open(this.downloadURL, '_blank')
+		async downloadMap() {
+			try {
+				const resp = await axios.get(this.downloadURL, {
+					responseType: 'blob',
+				})
+
+				const file = new Blob([resp.data])
+
+				const link = document.createElement('a')
+				link.download = `${this.aupCode}.xlsx`
+				link.href = URL.createObjectURL(file)
+
+				link.click()
+				URL.revokeObjectURL(link.href)
+			} catch (err) {
+				// обработка ошибки в будущем
+				console.log(err)
+			}
 		},
 	},
 
