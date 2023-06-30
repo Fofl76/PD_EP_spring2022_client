@@ -1,6 +1,6 @@
 <template>
 	<v-select
-		class="MapHeader__input MapHeader__input-faculty"
+		class="MSelect"
 		:menu-props="{ offsetY: false }"
 		:items="items"
 		v-model="_value"
@@ -21,36 +21,45 @@
 
 <script>
 export default {
+	name: 'MSelect',
+
 	props: {
 		value: {
 			type: [Object, String, Number, Boolean],
 			default: () => ({}),
 		},
+
 		label: {
 			type: String,
 			default: '',
 		},
+
 		noDataText: {
 			type: String,
 			default: '',
 		},
+
 		itemText: {
 			type: String,
 			default: null,
 		},
+
 		itemValue: {
 			type: String,
 			default: null,
 		},
+
 		items: {
 			type: Array,
 			default: () => [],
 		},
+
 		returnObject: {
 			type: Boolean,
 			default: true,
 		},
 	},
+
 	computed: {
 		_value: {
 			get() {
@@ -64,4 +73,6 @@ export default {
 }
 </script>
 
-<style></style>
+<style lang="sass">
+.MSelect
+</style>
