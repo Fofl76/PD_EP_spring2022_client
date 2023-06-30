@@ -72,8 +72,6 @@ import MapTableMainColumnHeader from '@components/Map/MapTable/MapTableMainColum
 import MapTableMainBlock from '@components/Map/MapTable/MapTableMainBlock.vue'
 import MapTableMainSkeletonBlock from '@components/Map/MapTable/MapTableMainSkeletonBlock.vue'
 
-import MHint from '@components/common/MHint.vue'
-
 export default {
 	name: 'MapTableMain',
 
@@ -83,7 +81,6 @@ export default {
 		MapTableMainColumnHeader,
 		MapTableMainBlock,
 		MapTableMainSkeletonBlock,
-		MHint,
 	},
 	props: {
 		table: {
