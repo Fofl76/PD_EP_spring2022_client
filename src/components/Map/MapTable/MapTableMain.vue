@@ -11,11 +11,9 @@
 					v-for="(column, key) in table"
 					:key="key"
 				>
-					<div class="aup-table__column-header">
-						{{ orderWords[key] }}
-						<TableHeaderStats :items="column" />
-					</div>
+					<MapTableMainColumnHeader :ordinalNumber="key" :columnData="column" />
 
+					<!-- Вынести в отдельный компонент -->
 					<draggable
 						class="aup-table__draggable"
 						v-bind="dragOptions"
@@ -41,6 +39,7 @@
 				</div>
 			</template>
 
+			<!-- Вынести в отдельный компонент -->
 			<template v-else>
 				<div
 					class="aup-table__column"
@@ -68,10 +67,11 @@ import orderWords from '@utils/orderWords'
 import GroupsService from '@services/Groups/GroupsService'
 import MapsService from '@services/Maps/MapsService'
 
+import MapTableMainRulerColumn from '@components/Map/MapTable/MapTableMainRulerColumn.vue'
+import MapTableMainColumnHeader from '@components/Map/MapTable/MapTableMainColumnHeader.vue'
 import MapTableMainBlock from '@components/Map/MapTable/MapTableMainBlock.vue'
 import MapTableMainSkeletonBlock from '@components/Map/MapTable/MapTableMainSkeletonBlock.vue'
-import MapTableMainRulerColumn from '@components/Map/MapTable/MapTableMainRulerColumn.vue'
-import TableHeaderStats from '@components/Map/TableHeaderStats.vue'
+
 import MHint from '@components/common/MHint.vue'
 
 export default {
@@ -80,9 +80,9 @@ export default {
 	components: {
 		draggable,
 		MapTableMainRulerColumn,
+		MapTableMainColumnHeader,
 		MapTableMainBlock,
 		MapTableMainSkeletonBlock,
-		TableHeaderStats,
 		MHint,
 	},
 	props: {
@@ -211,10 +211,6 @@ export default {
     &__block-wrapper
         transition: all 0.3s ease
         padding: 5px 0
-
-    &__column-header
-        text-align: center
-        margin-bottom: 5px
 
     &__edit-btn
         background-color: rgba(255, 255, 255, 0.1)
