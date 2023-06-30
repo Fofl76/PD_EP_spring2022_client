@@ -46,7 +46,6 @@ import determinateTextColor from '@utils/determinateTextColor'
 
 export default {
 	name: 'MapTableMainBlock',
-
 	props: {
 		data: {
 			type: Object,
@@ -73,11 +72,13 @@ export default {
 			default: 0,
 		},
 	},
+
 	data() {
 		return {
 			modeTable: 'default',
 		}
 	},
+
 	computed: {
 		backgroundColor() {
 			return this.data.group?.color
@@ -98,6 +99,7 @@ export default {
 			}
 		},
 	},
+
 	methods: {
 		onEdit() {
 			this.$emit('edit', this.data.element)

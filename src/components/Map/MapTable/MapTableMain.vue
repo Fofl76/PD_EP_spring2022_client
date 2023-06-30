@@ -209,14 +209,6 @@ export default {
         transition: all 0.3s ease
         padding: 5px 0
 
-    &__edit-btn
-        background-color: rgba(255, 255, 255, 0.1)
-        position: absolute
-        right: 8px
-        top: 8px
-        opacity: 0
-        transition: opacity .25s ease
-
     .flip-list-move
         transition: transform 0.5s
 
