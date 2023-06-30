@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="UploadFileDragArea"
+		class="MUploadFileDragArea"
 		@drop.prevent="onDrop($event)"
 		@dragover.prevent="dragover = true"
 		@dragenter.prevent="dragover = true"
@@ -8,35 +8,35 @@
 	>
 		<v-badge
 			v-if="badgeLabel"
-			class="UploadFileDragArea__badge"
+			class="MUploadFileDragArea__badge"
 			color="green"
 			:content="badgeLabel"
 			inline
 		/>
 
-		<div class="UploadFileDragArea__wrapper">
+		<div class="MUploadFileDragArea__wrapper">
 			<v-row
-				class="UploadFileDragArea__row d-flex flex-column"
+				class="MUploadFileDragArea__row d-flex flex-column"
 				dense
 				align="center"
 				justify="center"
 			>
 				<v-icon
-					class="UploadFileDragArea__upload-icon"
+					class="MUploadFileDragArea__upload-icon"
 					:class="{ dragover }"
 					size="60"
 				>
 					{{ icon }}
 				</v-icon>
-				<div class="UploadFileDragArea__text-block text-center">
+				<div class="MUploadFileDragArea__text-block text-center">
 					Для загрузки файлов перетащите их сюда или
-					<span class="UploadFileDragArea__link-file" @click="onSelectFile">
+					<span class="MUploadFileDragArea__link-file" @click="onSelectFile">
 						выберите с устройства
 					</span>
 				</div>
 
 				<input
-					class="UploadFileDragArea__file-input"
+					class="MUploadFileDragArea__file-input"
 					type="file"
 					ref="fileInput"
 					:accept="accessTypes.join(', ')"
@@ -48,7 +48,7 @@
 		<div v-if="uploadedFiles.length > 0">
 			<v-list-item
 				dense
-				class="UploadFileDragArea__list-item"
+				class="MUploadFileDragArea__list-item"
 				v-for="item in uploadedFiles"
 				:key="item.name"
 			>
@@ -73,7 +73,7 @@
 
 <script>
 export default {
-	name: 'UploadFileDragArea',
+	name: 'MMUploadFileDragArea',
 
 	props: {
 		value: {
@@ -153,7 +153,7 @@ export default {
 </script>
 
 <style lang="sass">
-.UploadFileDragArea
+.MUploadFileDragArea
     border: 1px dashed rgba(0, 0, 0, 0.6)
     border-radius: 6px
     padding: 10px
