@@ -16,12 +16,7 @@
 		>
 			<v-tooltip bottom :open-delay="300">
 				<template v-slot:activator="{ on, attrs }">
-					<span
-						:class="classTableItem"
-						class="MapTableMainBlock__name"
-						v-bind="attrs"
-						v-on="on"
-					>
+					<span class="MapTableMainBlock__name" v-bind="attrs" v-on="on">
 						{{ data.element.discipline }}
 					</span>
 				</template>
@@ -84,10 +79,6 @@ export default {
 	computed: {
 		backgroundColor() {
 			return this.data.group?.color
-		},
-
-		classTableItem() {
-			return 'MapTableMain__name__' + this.modeTable
 		},
 
 		needIsDarkMode() {
@@ -155,6 +146,7 @@ export default {
         text-overflow: ellipsis
         font-weight: bold
         -webkit-line-clamp: 4
+        transition: transform .25s ease
 
         &__full
           -webkit-line-clamp: 1
