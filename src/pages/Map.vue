@@ -18,7 +18,7 @@
 
 		<MSnackbar v-bind="snackbarOptions" @input="clearSnackbarOptions" />
 
-		<RightMenuEditMapItem
+		<MapRightMenu
 			v-model="rightMenuEditModel"
 			:itemId="rightMenuEditItemId"
 			@close="onCloseEditingItemPanel"
@@ -33,7 +33,7 @@ import GroupsService from '@services/Groups/GroupsService'
 import MapHeader from '@components/Map/MapHeader/MapHeader.vue'
 import TableMaps from '@components/Map/Table/TableMaps.vue'
 import MSnackbar from '@components/common/MSnackbar.vue'
-import RightMenuEditMapItem from '@components/Map/RightMenuEditMapItem.vue'
+import MapRightMenu from '@components/Map/MapRightMenu/MapRightMenu.vue'
 
 export default {
 	name: 'HomeView',
@@ -42,7 +42,7 @@ export default {
 		MapHeader,
 		TableMaps,
 		MSnackbar,
-		RightMenuEditMapItem,
+		MapRightMenu,
 	},
 
 	data() {
