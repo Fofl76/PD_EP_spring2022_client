@@ -4,17 +4,17 @@
 			{{ orderWords[ordinalNumber] }}
 		</div>
 
-		<TableHeaderStats :items="columnData" />
+		<MapTableMainColumnHeaderDetails :items="columnData" />
 	</div>
 </template>
 
 <script>
 import orderWords from '@utils/orderWords'
-import TableHeaderStats from '@components/Map/TableHeaderStats.vue'
+import MapTableMainColumnHeaderDetails from '@components/Map/MapTable/MapTableMainColumnHeaderDetails.vue'
 
 export default {
 	name: 'MapTableMainColumnHeader',
-	components: { TableHeaderStats },
+	components: { MapTableMainColumnHeaderDetails },
 
 	props: {
 		ordinalNumber: {
