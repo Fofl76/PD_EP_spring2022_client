@@ -21,9 +21,9 @@ import withEventEmitter from '@mixins/withEventEmitter'
 
 import MapsService from '@services/Maps/MapsService'
 
-import MapHeaderDirectionAutocomplete from '@components/MapPage/MapHeader/MapHeaderDirectionAutocomplete.vue'
-import MapHeaderFacultySelect from '@components/MapPage/MapHeader/MapHeaderFacultySelect.vue'
-import MapHeaderYearSelect from '@components/MapPage/MapHeader/MapHeaderYearSelect.vue'
+import MapHeaderDirectionAutocomplete from '@components/Map/MapHeader/MapHeaderDirectionAutocomplete.vue'
+import MapHeaderFacultySelect from '@components/Map/MapHeader/MapHeaderFacultySelect.vue'
+import MapHeaderYearSelect from '@components/Map/MapHeader/MapHeaderYearSelect.vue'
 
 export default {
 	name: 'MapHeaderSelectBlock',

@@ -11,8 +11,8 @@
 <script>
 import MapsService from '@services/Maps/MapsService'
 
-import MapHeaderSelectBlock from '@components/MapPage/MapHeader/MapHeaderSelectBlock.vue'
-import MapHeaderControls from '@components/MapPage/MapHeader/MapHeaderControls.vue'
+import MapHeaderSelectBlock from '@components/Map/MapHeader/MapHeaderSelectBlock.vue'
+import MapHeaderControls from '@components/Map/MapHeader/MapHeaderControls.vue'
 
 export default {
 	name: 'MapHeader',

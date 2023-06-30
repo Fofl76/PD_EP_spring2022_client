@@ -30,10 +30,10 @@
 import MapsService from '@services/Maps/MapsService'
 import GroupsService from '@services/Groups/GroupsService'
 
-import MapHeader from '@components/MapPage/MapHeader/MapHeader.vue'
-import TableMaps from '@components/MapPage/Table/TableMaps.vue'
+import MapHeader from '@components/Map/MapHeader/MapHeader.vue'
+import TableMaps from '@components/Map/Table/TableMaps.vue'
 import MSnackbar from '@components/common/MSnackbar.vue'
-import RightMenuEditMapItem from '@components/MapPage/RightMenuEditMapItem.vue'
+import RightMenuEditMapItem from '@components/Map/RightMenuEditMapItem.vue'
 
 export default {
 	name: 'HomeView',

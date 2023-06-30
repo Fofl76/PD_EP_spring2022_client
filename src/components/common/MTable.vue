@@ -80,7 +80,7 @@ import UiTableSkeletonBlock from './MTableSkeletonBlock.vue'
 import MapsService from '@services/Maps/MapsService'
 import _ from 'lodash'
 import MHint from './MHint.vue'
-import TableHeaderStats from '@components/MapPage/TableHeaderStats.vue'
+import TableHeaderStats from '@components/Map/TableHeaderStats.vue'
 
 const dapsService = MapsService.ZETQUEALSHOURS
 
