@@ -16,6 +16,7 @@ module.exports = {
 		strict: 'off',
 		'no-unused-vars': 'off',
 		'vue/no-unused-components': 'off',
+		'vue/multi-word-component-names': 'off',
 		'no-mixed-spaces-and-tabs': 'off',
 	},
 }

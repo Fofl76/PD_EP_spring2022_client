@@ -1,7 +1,7 @@
 <template>
-	<div class="TableMaps">
-		<div class="TableMaps-content" v-if="!isEmpty">
-			<UiTable
+	<div class="MapTable">
+		<div class="MapTable__inner" v-if="!isEmpty">
+			<MapTableMain
 				:table="table"
 				:loading="loading && !isLoadingSaveMapList"
 				:activeEditingItemId="activeEditingItemId"
@@ -11,43 +11,30 @@
 				@drag="onDrag"
 			/>
 
-			<!-- Эти tools'ы таблицы вынести в отдельный компонент -->
-			<v-btn
-				v-if="isAvailableSave"
-				class="Home__save-table-btn"
-				:loading="isLoadingSaveMapList"
-				color="success"
-				dark
-				@click="onSaveMap"
-			>
-				<span>Сохранить карту</span>
-				<v-icon right dark> mdi-content-save </v-icon>
-			</v-btn>
-
-			<v-btn
-				class="Home__save-table-mode"
-				color="success"
-				dark
-				@click="isFullScreen = !isFullScreen"
-			>
-				<span>Изменить вид таблицы</span>
-			</v-btn>
+			<MapTableTools
+				:availableSave="isAvailableSave"
+				:loadingSave="isLoadingSaveMapList"
+				@clickSave="onClickSave"
+				@clickChangeMode="onClickChangeMode"
+			/>
 		</div>
 
-		<div v-else class="TableMaps-empty">
-			<DataPreloader />
+		<div v-else class="MapTable__empty">
+			<MDataPreloader />
 		</div>
 	</div>
 </template>
 
 <script>
-import UiTable from '@components/common/MTable.vue'
 import MapsService from '@services/Maps/MapsService'
 
-import DataPreloader from '@components/MapPage/DataPreloader.vue'
+import MapTableMain from '@components/Map/MapTable/MapTableMain.vue'
+import MapTableTools from '@components/Map/MapTable/MapTableTools.vue'
+import MDataPreloader from '@components/common/MDataPreloader.vue'
 
 export default {
-	components: { UiTable, DataPreloader },
+	name: 'MapTable',
+	components: { MapTableMain, MapTableTools, MDataPreloader },
 	props: {
 		table: {
 			type: Array,
@@ -61,6 +48,7 @@ export default {
 
 		loading: Boolean,
 	},
+
 	data() {
 		return {
 			isFullScreen: true,
@@ -81,10 +69,12 @@ export default {
 			return !this.table.length && !this.isLoadingSaveMapList
 		},
 	},
+
 	methods: {
 		onEdit(item) {
-			this.$emit('edit-click', item.id)
+			this.$emit('editClick', item.id)
 		},
+
 		async onSaveMap() {
 			const aup = this.$route.query.aup
 
@@ -94,6 +84,7 @@ export default {
 
 			this.isAvailableSave = false
 		},
+
 		onDrag({ data, columnIndex }) {
 			const added = data?.added
 			const removed = data?.removed
@@ -123,15 +114,23 @@ export default {
 
 			this.isAvailableSave = true
 		},
+
+		onClickSave() {
+			this.onSaveMap()
+		},
+
+		onClickChangeMode() {
+			this.isFullScreen = !this.isFullScreen
+		},
 	},
 }
 </script>
 
 <style lang="sass">
-.TableMaps
+.MapTable
     height: 100%
 
-    &-empty
+    &__empty
         height: 100%
         display: flex
         align-items: center

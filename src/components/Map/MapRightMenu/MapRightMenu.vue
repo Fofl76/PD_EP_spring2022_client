@@ -1,6 +1,6 @@
 <template>
 	<v-navigation-drawer
-		class="RightMenuEditMapItem"
+		class="MapRightMenu"
 		v-model="value_"
 		:width="width"
 		right
@@ -11,12 +11,10 @@
 		app
 		clipped
 	>
-		<div class="RightMenuEditMapItem__inner">
-			<div class="RightMenuEditMapItem__panel-title">
-				Редактирование дисциплины
-			</div>
+		<div class="MapRightMenu__inner">
+			<div class="MapRightMenu__panel-title">Редактирование дисциплины</div>
 
-			<div class="RightMenuEditMapItem__section">
+			<div class="MapRightMenu__section">
 				<!-- Название -->
 				<v-text-field
 					v-model="copyItem.discipline"
@@ -30,32 +28,28 @@
 				/>
 			</div>
 
-			<v-expansion-panels
-				class="RightMenuEditMapItem__expansion-wrapper"
-				flat
-				hover
-			>
-				<v-expansion-panel class="RightMenuEditMapItem__expansion">
+			<v-expansion-panels class="MapRightMenu__expansion-wrapper" flat hover>
+				<v-expansion-panel class="MapRightMenu__expansion">
 					<v-expansion-panel-header>
-						<div class="RightMenuEditMapItem__expansion-header">
-							<div class="RightMenuEditMapItem__expansion-header-title">
+						<div class="MapRightMenu__expansion-header">
+							<div class="MapRightMenu__expansion-header-title">
 								Настройки объема
 							</div>
 
-							<!-- <MHint contentClass="RightMenuEditMapItem__hint"
+							<!-- <MHint contentClass="MapRightMenu__hint"
                 tooltipText="СРС настраивается автоматически исходя из суммы" /> -->
 						</div>
 					</v-expansion-panel-header>
 
 					<v-expansion-panel-content>
-						<div class="RightMenuEditMapItem__type-wrapper">
-							<div class="RightMenuEditMapItem__type-row">
+						<div class="MapRightMenu__type-wrapper">
+							<div class="MapRightMenu__type-row">
 								<div>Часы</div>
 								<div>Зет</div>
 							</div>
 
 							<div
-								class="RightMenuEditMapItem__type-row"
+								class="MapRightMenu__type-row"
 								v-for="(type, i) in copyItem.type.value"
 								:key="i"
 							>
@@ -89,15 +83,15 @@
 
 								<v-switch
 									:value="type.id_edizm === 2"
-									class="RightMenuEditMapItem__type-row__switch"
+									class="MapRightMenu__type-row__switch"
 									label="Измерять в неделях"
 									@change="onUpdateUnitsOfMeasurement(i)"
 								/>
 							</div>
 
-							<v-divider dark class="RightMenuEditMapItem__divider" />
+							<v-divider dark class="MapRightMenu__divider" />
 
-							<div class="RightMenuEditMapItem__type-row">
+							<div class="MapRightMenu__type-row">
 								<v-text-field
 									:value="sumHours"
 									label="Сумма часов"
@@ -121,7 +115,7 @@
 								/>
 							</div>
 
-							<v-divider dark class="RightMenuEditMapItem__divider" />
+							<v-divider dark class="MapRightMenu__divider" />
 
 							<v-select
 								:value="selectedControlTypes"
@@ -152,19 +146,15 @@
 				</v-expansion-panel>
 			</v-expansion-panels>
 
-			<v-expansion-panels
-				class="RightMenuEditMapItem__expansion-wrapper"
-				flat
-				hover
-			>
-				<v-expansion-panel class="RightMenuEditMapItem__expansion">
+			<v-expansion-panels class="MapRightMenu__expansion-wrapper" flat hover>
+				<v-expansion-panel class="MapRightMenu__expansion">
 					<v-expansion-panel-header>
-						<div class="RightMenuEditMapItem__expansion-header">
-							<div class="RightMenuEditMapItem__expansion-header-title">
+						<div class="MapRightMenu__expansion-header">
+							<div class="MapRightMenu__expansion-header-title">
 								Настройки контроля
 							</div>
 
-							<!-- <MHint contentClass="RightMenuEditMapItem__hint"
+							<!-- <MHint contentClass="MapRightMenu__hint"
                 tooltipText="СРС настраивается автоматически исходя из суммы" /> -->
 						</div>
 					</v-expansion-panel-header>
@@ -184,20 +174,14 @@
 				</v-expansion-panel>
 			</v-expansion-panels>
 
-			<v-expansion-panels
-				class="RightMenuEditMapItem__expansion-wrapper"
-				flat
-				hover
-			>
-				<v-expansion-panel class="RightMenuEditMapItem__expansion">
+			<v-expansion-panels class="MapRightMenu__expansion-wrapper" flat hover>
+				<v-expansion-panel class="MapRightMenu__expansion">
 					<v-expansion-panel-header>
-						<div class="RightMenuEditMapItem__expansion-header">
-							<div class="RightMenuEditMapItem__expansion-header-title">
-								Шифр
-							</div>
+						<div class="MapRightMenu__expansion-header">
+							<div class="MapRightMenu__expansion-header-title">Шифр</div>
 
 							<v-chip
-								class="RightMenuEditMapItem__expansion-header-chip DirectionAutocomplete__year-chip"
+								class="MapRightMenu__expansion-header-chip DirectionAutocomplete__year-chip"
 								pill
 								label
 							>
@@ -247,18 +231,14 @@
 				</v-expansion-panel>
 			</v-expansion-panels>
 
-			<div class="RightMenuEditMapItem__actions">
-				<v-btn
-					class="RightMenuEditMapItem__cancel-btn"
-					color="error"
-					@click="onCancel"
-				>
+			<div class="MapRightMenu__actions">
+				<v-btn class="MapRightMenu__cancel-btn" color="error" @click="onCancel">
 					<span>Отменить</span>
 					<v-icon right dark> mdi-close</v-icon>
 				</v-btn>
 
 				<v-btn
-					class="RightMenuEditMapItem__save-btn"
+					class="MapRightMenu__save-btn"
 					color="success"
 					:loading="isLoading"
 					@click="onSave"
@@ -283,9 +263,9 @@ import MapsService from '@services/Maps/MapsService'
 import _ from 'lodash'
 
 export default {
-	components: {
-		MHint,
-	},
+	name: 'MapRightMenu',
+
+	components: { MHint },
 	props: {
 		value: {
 			type: Boolean,
@@ -596,7 +576,7 @@ export default {
 </script>
 
 <style lang="sass">
-.RightMenuEditMapItem
+.MapRightMenu
 
     &__panel-title
         color: #fff

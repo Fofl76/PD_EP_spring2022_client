@@ -1,8 +1,8 @@
 <template>
-	<v-list style="height: 305px; overflow-y: scroll" dense>
+	<v-list class="MapGroupsPopupSettingsTab" dense>
 		<v-list-item-group v-model="_value" color="primary">
 			<v-tooltip
-				content-class="PopupGroupsListDisciplines-tooltip"
+				content-class="MapGroupsPopupSettingsTab__tooltip"
 				max-width="200"
 				open-delay="700"
 				left
@@ -39,22 +39,27 @@
 
 <script>
 export default {
+	name: 'MapGroupsPopupSettingsTab',
+
 	props: {
 		disciplines: {
 			type: Array,
 			required: true,
 		},
+
 		value: {
 			type: [String, Number],
 			required: false,
 			default: null,
 		},
 	},
+
 	computed: {
 		_value: {
 			get() {
 				return this.value
 			},
+
 			set(v) {
 				this.$emit('input', v)
 			},
@@ -64,8 +69,11 @@ export default {
 </script>
 
 <style lang="sass">
-.PopupGroupsListDisciplines
-    &-tooltip
-        background-color: rgba(97, 97 ,97, 1)
-        opacity: 1!important
+.MapGroupsPopupSettingsTab
+    height: 305px
+    overflow-y: scroll
+
+    &__tooltip
+        background-color: rgba(97, 97, 97, 1)
+        opacity: 1 !important
 </style>

@@ -1,10 +1,18 @@
 <template>
-	<div class="MapPageHeaderSelectMap__wrap">
-		<FacultySelect v-model="facultyModel" :items="facultyItems" />
+	<div class="MapHeaderSelectBlock">
+		<MapHeaderFacultySelect v-model="facultyModel" :items="facultyItems" />
 
-		<DirectionAutocomplete v-model="directionModel" :items="directionItems" @input="onSelectDirection" />
+		<MapHeaderDirectionAutocomplete
+			v-model="directionModel"
+			:items="directionItems"
+			@input="onSelectDirection"
+		/>
 
-		<SelectYear style="max-width: 100px;" v-model="year" :items="itemsYears" />
+		<MapHeaderYearSelect
+			style="max-width: 100px"
+			v-model="year"
+			:items="itemsYears"
+		/>
 	</div>
 </template>
 
@@ -13,14 +21,20 @@ import withEventEmitter from '@mixins/withEventEmitter'
 
 import MapsService from '@services/Maps/MapsService'
 
-import DirectionAutocomplete from '@components/MapPage/DirectionAutocomplete.vue'
-import FacultySelect from '@components/MapPage/FacultySelect.vue'
-import SelectYear from './SelectYear.vue'
+import MapHeaderDirectionAutocomplete from '@components/Map/MapHeader/MapHeaderDirectionAutocomplete.vue'
+import MapHeaderFacultySelect from '@components/Map/MapHeader/MapHeaderFacultySelect.vue'
+import MapHeaderYearSelect from '@components/Map/MapHeader/MapHeaderYearSelect.vue'
 
 export default {
-	components: { FacultySelect, DirectionAutocomplete, SelectYear },
-	name: 'MapPageHeaderSelectMap',
+	name: 'MapHeaderSelectBlock',
+	components: {
+		MapHeaderFacultySelect,
+		MapHeaderDirectionAutocomplete,
+		MapHeaderYearSelect,
+	},
+
 	mixins: [withEventEmitter('mapsService', 'mapsServiceHandlers')],
+
 	data() {
 		return {
 			mapsService: MapsService,
@@ -32,14 +46,16 @@ export default {
 			},
 		}
 	},
+
 	computed: {
 		facultyItems() {
 			return this.mapsService.facultiesList.value
 		},
+
 		itemsYears() {
 			const years = {}
 
-			this.facultyModel?.directions.forEach((item) => {
+			this.facultyModel?.directions.forEach(item => {
 				years[item.year] = true
 			})
 
@@ -47,8 +63,11 @@ export default {
 
 			return yearKey.sort((a, b) => b - a)
 		},
+
 		directionItems() {
-			return this.facultyModel?.directions?.filter(el => el.year === this.year) || []
+			return (
+				this.facultyModel?.directions?.filter(el => el.year === this.year) || []
+			)
 		},
 	},
 	methods: {
@@ -57,7 +76,7 @@ export default {
 		},
 
 		setUrlAup(aupCode) {
-			this.$router.push({ query: { aup: aupCode } }).catch(() => { })
+			this.$router.push({ query: { aup: aupCode } }).catch(() => {})
 		},
 
 		findFacultyModelByAup(aup) {
@@ -88,9 +107,8 @@ export default {
 </script>
 
 <style lang="sass">
-.MapPageHeaderSelectMap
-    &__wrap
-        display: flex
-        align-items: center
-        gap: 8px
+.MapHeaderSelectBlock
+    display: flex
+    align-items: center
+    gap: 8px
 </style>

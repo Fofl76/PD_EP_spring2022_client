@@ -4,7 +4,7 @@ import {
 	IFetchAllControlTypesResponse,
 	IUnitsOfMeasurement,
 } from '@models/Maps'
-import { IFetchAllGroupsResponse, IGroup } from '@models/Grops'
+import { IFetchAllGroupsResponse, IGroup } from '@models/Groups'
 import Key from '@models/Key'
 
 import { AxiosResponse } from 'axios'
@@ -50,7 +50,7 @@ abstract class Api {
 		return this.callFetch<IFetchAllGroupsResponse[]>(`getGroups`)
 	}
 
-	static fetchUnitsOfMeasurement () {
+	static fetchUnitsOfMeasurement() {
 		return this.callFetch<IUnitsOfMeasurement[]>('get_id_edizm')
 	}
 
@@ -60,7 +60,9 @@ abstract class Api {
 	 * @return {Promise<IFetchMapResponse | null>}
 	 */
 	static fetchGroupsByAup(aupCode: Key) {
-		return this.callFetch<IFetchAllGroupsResponse[]>(`get-group-by-aup/${aupCode}`)
+		return this.callFetch<IFetchAllGroupsResponse[]>(
+			`get-group-by-aup/${aupCode}`
+		)
 	}
 
 	/**

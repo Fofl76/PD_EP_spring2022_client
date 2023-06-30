@@ -1,20 +1,20 @@
 <template>
 	<div
-		class="TableSkeletonBlock"
+		class="MapTableMainSkeletonBlock"
 		:style="{ height: getRandomNum() * 90 + 'px' }"
 	>
 		<v-skeleton-loader
 			dark
-			class="TableSkeletonBlock__skeleton"
+			class="MapTableMainSkeletonBlock__skeleton"
 			max-width="300"
 			type="list-item-two-line"
-		></v-skeleton-loader>
+		/>
 	</div>
 </template>
 
 <script>
 export default {
-	name: 'TableSkeletonBlock',
+	name: 'MapTableMainSkeletonBlock',
 
 	data: () => ({
 		randomNums: [1, 2, 3, 4],
@@ -29,7 +29,7 @@ export default {
 </script>
 
 <style lang="sass">
-.TableSkeletonBlock
+.MapTableMainSkeletonBlock
     width: 100%
     padding: 5px 0
 
