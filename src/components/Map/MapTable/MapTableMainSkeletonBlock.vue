@@ -8,7 +8,7 @@
 			class="MapTableMainSkeletonBlock__skeleton"
 			max-width="300"
 			type="list-item-two-line"
-		></v-skeleton-loader>
+		/>
 	</div>
 </template>
 

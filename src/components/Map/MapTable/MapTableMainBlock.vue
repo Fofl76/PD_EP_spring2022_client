@@ -8,7 +8,12 @@
 		}"
 		:style="styleVars"
 	>
-		<div class="MapTableMainBlock" :style="{ backgroundColor }">
+		<div
+			class="MapTableMainBlock"
+			:style="{ backgroundColor }"
+			@mouseover="isHovered = true"
+			@mouseleave="isHovered = false"
+		>
 			<v-tooltip bottom :open-delay="300">
 				<template v-slot:activator="{ on, attrs }">
 					<span
@@ -24,20 +29,11 @@
 				<span>{{ data.element.discipline }}</span>
 			</v-tooltip>
 
-			<v-btn
-				class="MapTableMainBlock__edit-btn"
-				:class="[
-					needIsDarkText
-						? 'MapTableMainBlock__edit-btn--theme-white'
-						: 'MapTableMainBlock__edit-btn--theme-black',
-				]"
-				x-small
-				fab
-				icon
+			<MapTableMainBlockEditButton
+				:darkMode="needIsDarkMode"
+				:show="isHovered"
 				@click="onEdit"
-			>
-				<v-icon dark> mdi-pen </v-icon>
-			</v-btn>
+			/>
 		</div>
 	</div>
 </template>
@@ -45,8 +41,12 @@
 <script>
 import determinateTextColor from '@utils/determinateTextColor'
 
+import MapTableMainBlockEditButton from '@components/Map/MapTable/MapTableMainBlockEditButton.vue'
+
 export default {
 	name: 'MapTableMainBlock',
+	components: { MapTableMainBlockEditButton },
+
 	props: {
 		data: {
 			type: Object,
@@ -77,6 +77,7 @@ export default {
 	data() {
 		return {
 			modeTable: 'default',
+			isHovered: false,
 		}
 	},
 
@@ -89,14 +90,14 @@ export default {
 			return 'MapTableMain__name__' + this.modeTable
 		},
 
-		needIsDarkText() {
+		needIsDarkMode() {
 			return determinateTextColor(this.backgroundColor)
 		},
 
 		styleVars() {
 			return {
 				'--height-block': this.height,
-				'--text-color': this.needIsDarkText ? '#333' : '#fff',
+				'--text-color': this.needIsDarkMode ? '#333' : '#fff',
 			}
 		},
 	},
@@ -124,11 +125,6 @@ export default {
     font-family: sans-serif
     cursor: grab
     transition: box-shadow .25s ease
-
-    &:hover
-        .MapTableMainBlock__edit-btn
-            opacity: 1
-
 
     &__wrapper
         transition: all 0.3s ease
@@ -162,19 +158,4 @@ export default {
 
         &__full
           -webkit-line-clamp: 1
-
-    &__edit-btn
-        position: absolute
-        right: 8px
-        top: 8px
-        opacity: 0
-        transition: opacity .25s ease
-
-        &--theme-black
-            background-color: rgba(255, 255, 255, 0.1)
-            color: #fff !important
-
-        &--theme-white
-            background-color: rgb(51, 51, 51, 0.1)
-            color: #333 !important
 </style>
