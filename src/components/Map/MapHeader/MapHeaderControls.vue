@@ -2,6 +2,8 @@
 	<div class="MapHeaderControls">
 		<MapHeaderButton label="Группировки" @click="openGroupSettingsPopupModel" />
 
+		<MapHeaderButton label="Модули" @click="openModulesPopup" />
+
 		<MapHeaderButton
 			label="Загрузить план"
 			icon="mdi-upload"
@@ -17,6 +19,7 @@
 		/>
 
 		<MapGroupsPopup v-model="groupSettingsPopupModel" />
+		<MapPopupModules v-model="popupModulesModel" v-if="popupModulesModel" />
 	</div>
 </template>
 
@@ -26,23 +29,34 @@ import MapsService from '@services/Maps/MapsService'
 import MapHeaderButton from '@components/Map/MapHeader/MapHeaderButton.vue'
 import MapGroupsPopup from '@components/Map/MapGroupsPopup/MapGroupsPopup.vue'
 import MapUploadFilePopup from '@components/Map/MapUploadFilePopup/MapUploadFilePopup.vue'
+import MapPopupModules from '@components/Map/MapModules/MapPopupModules.vue'
 
 import axios from '@services/api/axios'
 
 export default {
 	name: 'MapHeaderControls',
-	components: { MapHeaderButton, MapGroupsPopup, MapUploadFilePopup },
+	components: {
+		MapHeaderButton,
+		MapGroupsPopup,
+		MapUploadFilePopup,
+		MapPopupModules,
+	},
 
 	data() {
 		return {
 			uploadPopupModel: false,
 			groupSettingsPopupModel: false,
+			popupModulesModel: false,
 		}
 	},
 
 	methods: {
 		openGroupSettingsPopupModel() {
 			this.groupSettingsPopupModel = true
+		},
+
+		openModulesPopup() {
+			this.popupModulesModel = true
 		},
 
 		openUploadPopup() {
