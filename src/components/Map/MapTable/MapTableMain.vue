@@ -2,20 +2,7 @@
 	<div>
 		<div class="aup-table" :style="styleVars">
 			<template v-if="!loading">
-				<div class="aup-table__left-column">
-					<div class="aup-table__column-header aup-table__left-column-header">
-						ЗЕТ
-					</div>
-
-					<div
-						class="aup-table__zet-block"
-						v-for="i in !loading ? maxZet : fakeMaxZet"
-						:key="i"
-						:style="{ height: heightZet() }"
-					>
-						<span>{{ i }}</span>
-					</div>
-				</div>
+				<MapTableMainRulerColumn :maxZet="30" :heightZet="heightZet" />
 
 				<div
 					class="aup-table__column"
@@ -81,6 +68,7 @@ import MapsService from '@services/Maps/MapsService'
 
 import MapTableMainBlock from '@components/Map/MapTable/MapTableMainBlock.vue'
 import MapTableMainSkeletonBlock from '@components/Map/MapTable/MapTableMainSkeletonBlock.vue'
+import MapTableMainRulerColumn from '@components/Map/MapTable/MapTableMainRulerColumn.vue'
 import TableHeaderStats from '@components/Map/TableHeaderStats.vue'
 import MHint from '@components/common/MHint.vue'
 
@@ -89,6 +77,7 @@ export default {
 
 	components: {
 		draggable,
+		MapTableMainRulerColumn,
 		MapTableMainBlock,
 		MapTableMainSkeletonBlock,
 		TableHeaderStats,
