@@ -20,7 +20,7 @@
 					hide-details="auto"
 				/>
 
-				<ui-upload-file-drag-area
+				<MUploadFileDragArea
 					v-model="form.uploadedFiles"
 					:accessTypes="accessTypes"
 					icon="mdi-file-excel"
@@ -45,13 +45,14 @@
 </template>
 
 <script>
-import UiUploadFileDragArea from '@components/common/MUploadFileDragArea.vue'
 import Api from '@services/api/Api'
+
+import MUploadFileDragArea from '@components/common/MUploadFileDragArea.vue'
+
 export default {
-	components: { UiUploadFileDragArea },
-	props: {
-		value: Boolean,
-	},
+	name: 'MapUploadFilePopup',
+	components: { MUploadFileDragArea },
+	props: { value: Boolean },
 
 	data() {
 		return {

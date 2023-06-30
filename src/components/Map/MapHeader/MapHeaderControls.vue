@@ -25,7 +25,7 @@ import MapsService from '@services/Maps/MapsService'
 
 import MapHeaderButton from '@components/Map/MapHeader/MapHeaderButton.vue'
 import MapGroupsPopup from '@components/Map/MapGroupsPopup/MapGroupsPopup.vue'
-import MapUploadFilePopup from '@components/Map/MapUploadFilePopup.vue'
+import MapUploadFilePopup from '@components/Map/MapUploadFilePopup/MapUploadFilePopup.vue'
 
 import axios from '@services/api/axios'
 
