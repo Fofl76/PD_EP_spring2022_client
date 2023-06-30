@@ -35,7 +35,7 @@
 						@change="onDragElementTable($event, key)"
 					>
 						<div v-for="element in column" :key="element.id">
-							<UiTableBlock
+							<MapTableMainBlock
 								:data="dataValue(element)"
 								:isEditing="activeEditingItemId === element.id"
 								:height="heightTableBlock(element)"
@@ -51,6 +51,7 @@
 					</draggable>
 				</div>
 			</template>
+
 			<template v-else>
 				<div
 					class="aup-table__column"
@@ -71,22 +72,21 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import draggable from 'vuedraggable'
-import UiTableBlock from './MTableBlock.vue'
-import GroupsService from '@services/Groups/GroupsService'
-import orderWords from '@utils/orderWords'
-import UiTableSkeletonBlock from './MTableSkeletonBlock.vue'
-import MapsService from '@services/Maps/MapsService'
 import _ from 'lodash'
-import MHint from './MHint.vue'
-import TableHeaderStats from '@components/Map/TableHeaderStats.vue'
+import draggable from 'vuedraggable'
 
-const dapsService = MapsService.ZETQUEALSHOURS
+import orderWords from '@utils/orderWords'
+import GroupsService from '@services/Groups/GroupsService'
+import MapsService from '@services/Maps/MapsService'
+
+import MapTableMainBlock from '@components/Map/MapTable/MapTableMainBlock.vue'
+import UiTableSkeletonBlock from '@components/common/MTableSkeletonBlock.vue'
+import TableHeaderStats from '@components/Map/TableHeaderStats.vue'
+import MHint from '@components/common/MHint.vue'
 
 export default {
 	components: {
-		UiTableBlock,
+		MapTableMainBlock,
 		draggable,
 		UiTableSkeletonBlock,
 		MHint,

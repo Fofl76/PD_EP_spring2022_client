@@ -1,7 +1,7 @@
 <template>
 	<div class="MapTable">
 		<div class="MapTable__inner" v-if="!isEmpty">
-			<MTable
+			<MapTableMain
 				:table="table"
 				:loading="loading && !isLoadingSaveMapList"
 				:activeEditingItemId="activeEditingItemId"
@@ -26,15 +26,15 @@
 </template>
 
 <script>
-import MTable from '@components/common/MTable.vue'
 import MapsService from '@services/Maps/MapsService'
 
+import MapTableMain from '@components/Map/MapTable/MapTableMain.vue'
 import MapTableTools from '@components/Map/MapTable/MapTableTools.vue'
 import MDataPreloader from '@components/common/MDataPreloader.vue'
 
 export default {
 	name: 'MapTable',
-	components: { MTable, MapTableTools, MDataPreloader },
+	components: { MapTableMain, MapTableTools, MDataPreloader },
 	props: {
 		table: {
 			type: Array,
