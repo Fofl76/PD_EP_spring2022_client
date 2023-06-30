@@ -1,18 +1,18 @@
 <template>
 	<div
-		class="aup-table__block-wrapper"
+		class="MapTableMain__block-wrapper"
 		:class="{
 			isEditing,
 			fitMode: fitMode && totalZet <= 2,
 		}"
 		:style="styleVars"
 	>
-		<div class="aup-table__block" :style="{ backgroundColor }">
+		<div class="MapTableMain__block" :style="{ backgroundColor }">
 			<v-tooltip bottom :open-delay="300">
 				<template v-slot:activator="{ on, attrs }">
 					<span
 						:class="classTableItem"
-						class="aup-table__name"
+						class="MapTableMain__name"
 						v-bind="attrs"
 						v-on="on"
 					>
@@ -24,11 +24,11 @@
 			</v-tooltip>
 
 			<v-btn
-				class="aup-table__edit-btn"
+				class="MapTableMain__edit-btn"
 				:class="[
 					needIsDarkText
-						? 'aup-table__edit-btn--theme-white'
-						: 'aup-table__edit-btn--theme-black',
+						? 'MapTableMain__edit-btn--theme-white'
+						: 'MapTableMain__edit-btn--theme-black',
 				]"
 				x-small
 				fab
@@ -84,7 +84,7 @@ export default {
 		},
 
 		classTableItem() {
-			return 'aup-table__name__' + this.modeTable
+			return 'MapTableMain__name__' + this.modeTable
 		},
 
 		needIsDarkText() {
@@ -107,7 +107,7 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.aup-table
+.MapTableMain
     &__block
         position: relative
         display: flex
@@ -124,7 +124,7 @@ export default {
         transition: box-shadow .25s ease
 
         &:hover
-            .aup-table__edit-btn
+            .MapTableMain__edit-btn
                 opacity: 1
 
     &__block-wrapper
@@ -135,7 +135,7 @@ export default {
           height: calc(var(--height-block) * 3)
 
         &.isEditing
-            .aup-table__block
+            .MapTableMain__block
                 box-shadow: 0px 0px 3px 7px rgba(10, 110, 189, 0.7)
 
     &__name

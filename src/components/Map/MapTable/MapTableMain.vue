@@ -1,13 +1,13 @@
 <template>
 	<div>
-		<div class="aup-table" :style="styleVars">
+		<div class="MapTableMain" :style="styleVars">
 			<template v-if="!loading">
 				<!-- Левая колонка с линейкой ЗЕТ -->
 				<MapTableMainRulerColumn :maxZet="30" :heightZet="heightZet" />
 
 				<!-- Вынести в отдельный компонент -->
 				<div
-					class="aup-table__column"
+					class="MapTableMain__column"
 					v-for="(column, key) in table"
 					:key="key"
 				>
@@ -15,7 +15,7 @@
 
 					<!-- Вынести в отдельный компонент -->
 					<draggable
-						class="aup-table__draggable"
+						class="MapTableMain__draggable"
 						v-bind="dragOptions"
 						:value="table[key]"
 						:setData="setData"
@@ -29,7 +29,7 @@
 								:fitMode="fitMode"
 								:total-zet="totalZet(element)"
 								:class="{
-									'aup-table__block-wrapper-small': fitMode,
+									'MapTableMain__block-wrapper-small': fitMode,
 								}"
 								@edit="$emit('edit', $event)"
 								@click.native="onClickBlock(element)"
@@ -42,11 +42,11 @@
 			<!-- Вынести в отдельный компонент -->
 			<template v-else>
 				<div
-					class="aup-table__column"
+					class="MapTableMain__column"
 					v-for="(column, key) in fakeElementsCount"
 					:key="key"
 				>
-					<div class="aup-table__column-header">
+					<div class="MapTableMain__column-header">
 						{{ orderWords[key] }}
 					</div>
 
@@ -191,14 +191,14 @@ export default {
 </script>
 
 <style lang="sass">
-.aup-table
+.MapTableMain
     display: grid
     grid-template-columns: 30px repeat(var(--count-column), minmax(100px, 1fr))
     gap: 8px
     color: #fff
 
     &__block-wrapper-small
-        .aup-table__name
+        .MapTableMain__name
             transform: scale(.75)
 
     &__draggable
