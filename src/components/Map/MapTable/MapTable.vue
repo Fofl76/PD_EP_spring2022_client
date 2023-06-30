@@ -12,26 +12,12 @@
 			/>
 
 			<!-- Эти tools'ы таблицы вынести в отдельный компонент -->
-			<v-btn
-				v-if="isAvailableSave"
-				class="Map__save-table-btn"
-				:loading="isLoadingSaveMapList"
-				color="success"
-				dark
-				@click="onSaveMap"
-			>
-				<span>Сохранить карту</span>
-				<v-icon right dark> mdi-content-save </v-icon>
-			</v-btn>
-
-			<v-btn
-				class="Map__save-table-mode"
-				color="success"
-				dark
-				@click="isFullScreen = !isFullScreen"
-			>
-				<span>Изменить вид таблицы</span>
-			</v-btn>
+			<MapTableTools
+				:availableSave="isAvailableSave"
+				:loadingSave="isLoadingSaveMapList"
+				@clickSave="onClickSave"
+				@clickChangeMode="onClickChangeMode"
+			/>
 		</div>
 
 		<div v-else class="MapTable__empty">
@@ -44,10 +30,12 @@
 import UiTable from '@components/common/MTable.vue'
 import MapsService from '@services/Maps/MapsService'
 
+import MapTableTools from '@components/Map/MapTable/MapTableTools.vue'
 import MDataPreloader from '@components/common/MDataPreloader.vue'
 
 export default {
-	components: { UiTable, MDataPreloader },
+	name: 'MapTable',
+	components: { UiTable, MapTableTools, MDataPreloader },
 	props: {
 		table: {
 			type: Array,
@@ -85,7 +73,7 @@ export default {
 
 	methods: {
 		onEdit(item) {
-			this.$emit('edit-click', item.id)
+			this.$emit('editClick', item.id)
 		},
 
 		async onSaveMap() {
@@ -126,6 +114,14 @@ export default {
 			}
 
 			this.isAvailableSave = true
+		},
+
+		onClickSave() {
+			this.onSaveMap()
+		},
+
+		onClickChangeMode() {
+			this.isFullScreen = !this.isFullScreen
 		},
 	},
 }

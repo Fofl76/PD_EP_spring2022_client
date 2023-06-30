@@ -11,7 +11,7 @@
 					:loading="isLoadingMaps"
 					:table="tableData"
 					:activeEditingItemId="rightMenuEditItemId"
-					@edit-click="onEditClick"
+					@editClick="onEditClick"
 				/>
 			</v-container>
 		</v-main>
@@ -36,7 +36,7 @@ import MSnackbar from '@components/common/MSnackbar.vue'
 import MapRightMenu from '@components/Map/MapRightMenu/MapRightMenu.vue'
 
 export default {
-	name: 'HomeView',
+	name: 'Map',
 
 	components: {
 		MapHeader,
@@ -146,22 +146,4 @@ export default {
         box-shadow: 0px 0px 100px 5px rgba(0, 0, 0, 0.3) inset
         padding: 16px
         height: 100%
-
-    &__save-table-btn
-        position: sticky
-        bottom: 60px
-        left: calc(100% - 16px)
-        transition: right .2s cubic-bezier(0.4, 0, 0.2, 1)
-    &__save-table-mode
-        position: sticky
-        bottom: 16px
-        left: calc(100% - 16px)
-        transition: right .2s cubic-bezier(0.4, 0, 0.2, 1)
-
-.Map.withRightMenu
-    .Map
-        &__save-table-btn
-            right: calc(var(--drawer-width) + 30px)
-        &__save-table-mode
-            right: calc(var(--drawer-width) + 30px)
 </style>
