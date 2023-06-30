@@ -1,5 +1,10 @@
 <template>
-	<MHint v-if="items.length" :top="false" bottom>
+	<MHint
+		class="MapTableMainColumnHeaderDetails"
+		v-if="items.length"
+		:top="false"
+		bottom
+	>
 		<div v-for="stats in controlStats" :key="stats.id">
 			<span> {{ stats.name }}: </span>
 			<span> {{ stats.count }}, </span>
