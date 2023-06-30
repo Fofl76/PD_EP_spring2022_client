@@ -11,7 +11,6 @@
 				@drag="onDrag"
 			/>
 
-			<!-- Эти tools'ы таблицы вынести в отдельный компонент -->
 			<MapTableTools
 				:availableSave="isAvailableSave"
 				:loadingSave="isLoadingSaveMapList"
