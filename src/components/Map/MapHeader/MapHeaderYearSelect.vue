@@ -14,10 +14,8 @@
 <script>
 import MSelect from '@components/common/MSelect.vue'
 export default {
-	name: 'SelectYear',
-	components: {
-		MSelect,
-	},
+	name: 'MapHeaderYearSelect',
+	components: { MSelect },
 
 	props: {
 		value: {
@@ -43,7 +41,3 @@ export default {
 	},
 }
 </script>
-
-<style lang="sass">
-.MapHeaderYearSelect
-</style>
