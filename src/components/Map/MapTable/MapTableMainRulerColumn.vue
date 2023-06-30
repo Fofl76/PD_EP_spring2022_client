@@ -1,6 +1,6 @@
 <template>
 	<div class="MapTableMainRulerColumn">
-		<div>ЗЕТ</div>
+		<div class="MapTableMainRulerColumn__header">ЗЕТ</div>
 
 		<div
 			class="aup-table__zet-block"
@@ -33,4 +33,8 @@ export default {
 }
 </script>
 
-<style lang="sass"></style>
+<style lang="sass">
+.MapTableMainRulerColumn
+    &__header
+        margin-bottom: 5px
+</style>

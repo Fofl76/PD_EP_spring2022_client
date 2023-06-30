@@ -2,8 +2,10 @@
 	<div>
 		<div class="aup-table" :style="styleVars">
 			<template v-if="!loading">
+				<!-- Левая колонка с линейкой ЗЕТ -->
 				<MapTableMainRulerColumn :maxZet="30" :heightZet="heightZet" />
 
+				<!-- Вынести в отдельный компонент -->
 				<div
 					class="aup-table__column"
 					v-for="(column, key) in table"
