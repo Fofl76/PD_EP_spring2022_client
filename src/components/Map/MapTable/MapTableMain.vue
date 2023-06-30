@@ -63,7 +63,7 @@
 					</div>
 
 					<div v-for="item in 10" :key="item.id">
-						<ui-table-skeleton-block />
+						<MapTableMainSkeletonBlock />
 					</div>
 				</div>
 			</template>
@@ -80,17 +80,17 @@ import GroupsService from '@services/Groups/GroupsService'
 import MapsService from '@services/Maps/MapsService'
 
 import MapTableMainBlock from '@components/Map/MapTable/MapTableMainBlock.vue'
-import UiTableSkeletonBlock from '@components/common/MTableSkeletonBlock.vue'
+import MapTableMainSkeletonBlock from '@components/Map/MapTable/MapTableMainSkeletonBlock.vue'
 import TableHeaderStats from '@components/Map/TableHeaderStats.vue'
 import MHint from '@components/common/MHint.vue'
 
 export default {
 	components: {
-		MapTableMainBlock,
 		draggable,
-		UiTableSkeletonBlock,
-		MHint,
+		MapTableMainBlock,
+		MapTableMainSkeletonBlock,
 		TableHeaderStats,
+		MHint,
 	},
 	props: {
 		table: {
