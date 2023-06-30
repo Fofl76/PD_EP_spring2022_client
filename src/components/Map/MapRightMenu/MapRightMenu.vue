@@ -2,7 +2,7 @@
 	<v-navigation-drawer
 		class="MapRightMenu"
 		v-model="value_"
-		:width="width"
+		:width="rightMenuEditWidth"
 		right
 		dark
 		disable-resize-watcher
@@ -256,11 +256,13 @@
 </template>
 
 <script>
+import _ from 'lodash'
+
+import { mapGetters } from 'vuex'
+
 import MHint from '@components/common/MHint.vue'
 import withEventEmitter from '@mixins/withEventEmitter'
 import MapsService from '@services/Maps/MapsService'
-
-import _ from 'lodash'
 
 export default {
 	name: 'MapRightMenu',
@@ -281,11 +283,6 @@ export default {
 			type: Boolean,
 			required: false,
 			default: false,
-		},
-		width: {
-			type: Number,
-			required: false,
-			default: 400,
 		},
 	},
 
@@ -352,6 +349,8 @@ export default {
 	},
 
 	computed: {
+		...mapGetters('Map', ['rightMenuEditWidth']),
+
 		value_: {
 			get() {
 				return this.value

@@ -1,5 +1,9 @@
 <template>
-	<div class="MapTableTools">
+	<div
+		class="MapTableTools"
+		:class="{ isOpenRightMenu: rightMenuEditModel }"
+		:style="styleVars"
+	>
 		<v-btn
 			v-if="availableSave"
 			:loading="loadingSave"
@@ -26,6 +30,8 @@
 <script>
 /* Нужно задизайнить этот компонент */
 
+import { mapGetters } from 'vuex'
+
 export default {
 	name: 'MapTableTools',
 	props: {
@@ -37,6 +43,16 @@ export default {
 		loadingSave: {
 			type: Boolean,
 			default: false,
+		},
+	},
+
+	computed: {
+		...mapGetters('Map', ['rightMenuEditModel', 'rightMenuEditWidth']),
+
+		styleVars() {
+			return {
+				'--right-menu-width': this.rightMenuEditWidth + 'px',
+			}
 		},
 	},
 
@@ -56,10 +72,13 @@ export default {
 .MapTableTools
     display: inline-flex
     flex-direction: column
-    position: sticky
+    position: fixed
     bottom: 16px
-    left: calc(100% - 16px)
+    right: 16px
     transition: right .2s cubic-bezier(0.4, 0, 0.2, 1)
+
+    &.isOpenRightMenu
+        right: calc(16px + var(--right-menu-width))
 
     &__save-btn
         margin-bottom: 8px
