@@ -11,6 +11,7 @@
 					v-for="(column, key) in table"
 					:key="key"
 				>
+					<!-- Шапка колонки с блоками -->
 					<MapTableMainColumnHeader :ordinalNumber="key" :columnData="column" />
 
 					<!-- Вынести в отдельный компонент -->

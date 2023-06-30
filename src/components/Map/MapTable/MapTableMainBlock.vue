@@ -17,11 +17,11 @@
 			<v-tooltip bottom :open-delay="300">
 				<template v-slot:activator="{ on, attrs }">
 					<span class="MapTableMainBlock__name" v-bind="attrs" v-on="on">
-						{{ data.element.discipline }}
+						{{ disciplineName }}
 					</span>
 				</template>
 
-				<span>{{ data.element.discipline }}</span>
+				<span>{{ disciplineName }}</span>
 			</v-tooltip>
 
 			<MapTableMainBlockEditButton
@@ -90,6 +90,10 @@ export default {
 				'--height-block': this.height,
 				'--text-color': this.needIsDarkMode ? '#333' : '#fff',
 			}
+		},
+
+		disciplineName() {
+			return this.data?.element?.discipline || ''
 		},
 	},
 
