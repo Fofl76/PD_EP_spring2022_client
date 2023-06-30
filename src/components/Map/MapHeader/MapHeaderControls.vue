@@ -49,7 +49,6 @@ export default {
 			this.uploadPopupModel = true
 		},
 
-		// Нужно отрефакторить, сделать по-нормальному, чтобы не открывать вкладку
 		async downloadMap() {
 			try {
 				const resp = await axios.get(this.downloadURL, {
@@ -65,7 +64,6 @@ export default {
 				link.click()
 				URL.revokeObjectURL(link.href)
 			} catch (err) {
-				// обработка ошибки в будущем
 				console.log(err)
 			}
 		},
