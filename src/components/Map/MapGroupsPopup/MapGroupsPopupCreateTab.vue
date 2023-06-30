@@ -1,8 +1,8 @@
 <template>
 	<div class="MapGroupsPopupCreateTab">
-		<div class="MapGroupsPopupCreateTab-form">
-			<div class="MapGroupsPopupCreateTab-header text-h5">Cоздание группы</div>
-			<div class="MapGroupsPopupCreateTab-row">
+		<div class="MapGroupsPopupCreateTab__form">
+			<div class="MapGroupsPopupCreateTab__header text-h5">Cоздание группы</div>
+			<div class="MapGroupsPopupCreateTab__row">
 				<v-text-field
 					v-model="newItemForm.nameModel"
 					class="MapGroupsPopup__name-group"
@@ -39,7 +39,7 @@
 						swatches-max-height="200" -->
 				</v-menu>
 			</div>
-			<div class="MapGroupsPopupCreateTab-footer">
+			<div class="MapGroupsPopupCreateTab__footer">
 				<v-btn
 					color="success"
 					min-height="40px"
@@ -52,11 +52,11 @@
 				</v-btn>
 			</div>
 		</div>
-		<div class="MapGroupsPopupCreateTab-form mt-3">
-			<div class="MapGroupsPopupCreateTab-header text-h5">
+		<div class="MapGroupsPopupCreateTab__form mt-3">
+			<div class="MapGroupsPopupCreateTab__header text-h5">
 				Добавление группы
 			</div>
-			<div class="MapGroupsPopupCreateTab-row">
+			<div class="MapGroupsPopupCreateTab__row">
 				<v-select
 					v-model="newGroup"
 					:items="sortedGroupsStreetDisciplinesBangFacultyBlats"
@@ -86,15 +86,14 @@ import GroupsService from '@services/Groups/GroupsService'
 import _ from 'lodash'
 
 export default {
-	components: {
-		MSelect,
-	},
+	components: { MSelect },
 	props: {
 		groups: {
 			type: Array,
 			default: () => [],
 		},
 	},
+
 	data() {
 		return {
 			newGroup: null,
@@ -116,10 +115,12 @@ export default {
 			],
 		}
 	},
+
 	computed: {
 		isDisableAddGroups() {
 			return !this.newItemForm.nameModel.length
 		},
+
 		sortedGroupsStreetDisciplinesBangFacultyBlats() {
 			return _.orderBy(this.groups, 'name').sort((a, b) => {
 				if (a.name < b.name) {
@@ -130,6 +131,7 @@ export default {
 			})
 		},
 	},
+
 	methods: {
 		async addModel() {
 			if (this.isDisableAddGroups) return
@@ -167,18 +169,19 @@ export default {
     justify-content: center
     font-size: 1.5em
 
-    &-form
+    &__form
         margin: -6px !important
         width: 400px
         display: flex
         flex-direction: column
-        > *
+
+        & > *
             margin: 6px !important
-    &-row
+    &__row
         display: flex
         > *:first-chield
             margin-right: 6px !important
 
-    &-header
+    &__header
         font-weight: bold !important
 </style>
