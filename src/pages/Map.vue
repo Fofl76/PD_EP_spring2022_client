@@ -19,8 +19,9 @@
 		<MSnackbar v-bind="snackbarOptions" @input="clearSnackbarOptions" />
 
 		<MapRightMenu
-			v-model="rightMenuEditModel"
+			:value="rightMenuEditModel"
 			:itemId="rightMenuEditItemId"
+			@input="onInputRightMenuEditModel"
 			@close="onCloseEditingItemPanel"
 		/>
 	</v-app>
@@ -34,6 +35,8 @@ import MapHeader from '@components/Map/MapHeader/MapHeader.vue'
 import MapTable from '@components/Map/MapTable/MapTable.vue'
 import MSnackbar from '@components/common/MSnackbar.vue'
 import MapRightMenu from '@components/Map/MapRightMenu/MapRightMenu.vue'
+
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
 	name: 'Map',
@@ -53,13 +56,12 @@ export default {
 			groupsService: GroupsService,
 
 			snackbarOptions: null,
-
-			rightMenuEditModel: false,
-			rightMenuEditItemId: null,
 		}
 	},
 
 	computed: {
+		...mapGetters('Map', ['rightMenuEditModel', 'rightMenuEditItemId']),
+
 		allGroupsMapId() {
 			return this.groupsService.allGroupsMapId
 		},
@@ -86,6 +88,8 @@ export default {
 	},
 
 	methods: {
+		...mapMutations('Map', ['setRightMenuEditModel', 'setRightMenuEditItemId']),
+
 		clearSnackbarOptions() {
 			this.snackbarOptions = null
 		},
@@ -117,12 +121,16 @@ export default {
 		},
 
 		onEditClick(id) {
-			this.rightMenuEditModel = true
-			this.rightMenuEditItemId = id
+			this.setRightMenuEditModel(true)
+			this.setRightMenuEditItemId(id)
 		},
 
 		onCloseEditingItemPanel() {
 			this.editingMapItemId = null
+		},
+
+		onInputRightMenuEditModel(value) {
+			this.setRightMenuEditModel(value)
 		},
 	},
 
