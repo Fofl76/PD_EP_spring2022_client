@@ -45,6 +45,8 @@
 import determinateTextColor from '@utils/determinateTextColor'
 
 export default {
+	name: 'MapTableMainBlock',
+
 	props: {
 		data: {
 			type: Object,

@@ -85,6 +85,8 @@ import TableHeaderStats from '@components/Map/TableHeaderStats.vue'
 import MHint from '@components/common/MHint.vue'
 
 export default {
+	name: 'MapTableMain',
+
 	components: {
 		draggable,
 		MapTableMainBlock,
@@ -241,9 +243,10 @@ export default {
 
         &:not(:last-of-type)
             border-bottom: 1px solid #fff
-.flip-list-move
-    transition: transform 0.5s
 
-.no-move
-  transition: transform 0s
+    .flip-list-move
+        transition: transform 0.5s
+
+    .no-move
+        transition: transform 0s
 </style>
