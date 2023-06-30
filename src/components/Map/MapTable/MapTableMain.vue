@@ -28,9 +28,6 @@
 								:height="heightTableBlock(element)"
 								:fitMode="fitMode"
 								:total-zet="totalZet(element)"
-								:class="{
-									'MapTableMain__block-wrapper-small': fitMode,
-								}"
 								@edit="$emit('edit', $event)"
 								@click.native="onClickBlock(element)"
 							/>
@@ -194,24 +191,10 @@ export default {
     gap: 8px
     color: #fff
 
-    &__block-wrapper-small
-        .MapTableMain__name
-            transform: scale(.75)
-
     &__draggable
         flex: 1 1 100%
 
     &__column
         display: flex
         flex-direction: column
-
-    &__block-wrapper
-        transition: all 0.3s ease
-        padding: 5px 0
-
-    .flip-list-move
-        transition: transform 0.5s
-
-    .no-move
-        transition: transform 0s
 </style>

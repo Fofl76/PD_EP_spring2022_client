@@ -1,18 +1,19 @@
 <template>
 	<div
-		class="MapTableMain__block-wrapper"
+		class="MapTableMainBlock__wrapper"
 		:class="{
 			isEditing,
 			fitMode: fitMode && totalZet <= 2,
+			'MapTableMainBlock__wrapper--small': fitMode,
 		}"
 		:style="styleVars"
 	>
-		<div class="MapTableMain__block" :style="{ backgroundColor }">
+		<div class="MapTableMainBlock" :style="{ backgroundColor }">
 			<v-tooltip bottom :open-delay="300">
 				<template v-slot:activator="{ on, attrs }">
 					<span
 						:class="classTableItem"
-						class="MapTableMain__name"
+						class="MapTableMainBlock__name"
 						v-bind="attrs"
 						v-on="on"
 					>
@@ -24,11 +25,11 @@
 			</v-tooltip>
 
 			<v-btn
-				class="MapTableMain__edit-btn"
+				class="MapTableMainBlock__edit-btn"
 				:class="[
 					needIsDarkText
-						? 'MapTableMain__edit-btn--theme-white'
-						: 'MapTableMain__edit-btn--theme-black',
+						? 'MapTableMainBlock__edit-btn--theme-white'
+						: 'MapTableMainBlock__edit-btn--theme-black',
 				]"
 				x-small
 				fab
@@ -109,29 +110,30 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.MapTableMain
-    &__block
-        position: relative
-        display: flex
-        justify-content: center
-        align-items: center
-        width: 100%
-        height: 100%
-        padding: 5px
-        text-align: center
-        border-radius: 8px
-        font-size: 100%
-        font-family: sans-serif
-        cursor: grab
-        transition: box-shadow .25s ease
+.MapTableMainBlock
+    position: relative
+    display: flex
+    justify-content: center
+    align-items: center
+    width: 100%
+    height: 100%
+    padding: 5px
+    text-align: center
+    border-radius: 8px
+    font-size: 100%
+    font-family: sans-serif
+    cursor: grab
+    transition: box-shadow .25s ease
 
-        &:hover
-            .MapTableMain__edit-btn
-                opacity: 1
+    &:hover
+        .MapTableMainBlock__edit-btn
+            opacity: 1
 
-    &__block-wrapper
+
+    &__wrapper
+        transition: all 0.3s ease
+        padding: 5px 0
         height: var(--height-block)
-
 
         &.fitMode:hover
           height: calc(var(--height-block) * 3)
@@ -139,6 +141,10 @@ export default {
         &.isEditing
             .MapTableMain__block
                 box-shadow: 0px 0px 3px 7px rgba(10, 110, 189, 0.7)
+
+        &--small
+            .MapTableMainBlock__name
+                transform: scale(.75)
 
     &__name
         color: var(--text-color)
@@ -153,11 +159,9 @@ export default {
         text-overflow: ellipsis
         font-weight: bold
         -webkit-line-clamp: 4
+
         &__full
           -webkit-line-clamp: 1
-
-    &__name-tooltip
-        border: 111px solid red
 
     &__edit-btn
         position: absolute
@@ -167,10 +171,10 @@ export default {
         transition: opacity .25s ease
 
         &--theme-black
-          background-color: rgba(255, 255, 255, 0.1)
-          color: #fff !important
+            background-color: rgba(255, 255, 255, 0.1)
+            color: #fff !important
 
         &--theme-white
-          background-color: rgb(51, 51, 51, 0.1)
-          color: #333 !important
+            background-color: rgb(51, 51, 51, 0.1)
+            color: #333 !important
 </style>
