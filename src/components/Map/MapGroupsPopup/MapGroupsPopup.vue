@@ -19,16 +19,17 @@
 							outlined
 							dense
 							hide-details="auto"
-						></v-text-field>
+						/>
 
-						<v-divider class="MapGroupsPopup__hor-divider"></v-divider>
+						<v-divider class="MapGroupsPopup__hor-divider" />
 
 						<MapGroupsPopupSettingsTab
 							v-model="selectedItemId"
 							:disciplines="filteredItems"
 						/>
 
-						<v-divider class="MapGroupsPopup__hor-divider"></v-divider>
+						<v-divider class="MapGroupsPopup__hor-divider" />
+
 						<v-list style="padding: 0px" dense>
 							<v-list-item-group v-model="createItem" color="primary">
 								<v-list-item :value="true">
@@ -75,11 +76,6 @@
 									mode="hexa"
 									swatches-max-height="200"
 								/>
-								<!-- dot-size="25"
-									mode="hexa"
-									swatches-max-height="200" -->
-								<!-- hide-inputs -->
-								<!-- hide-mode-switch -->
 							</v-menu>
 							<v-btn
 								color="success"
@@ -184,9 +180,11 @@
 
 			<v-card-actions>
 				<v-spacer />
-				<v-btn color="success" :loading="isLoadingSaveTable" @click="onSaveMap"
-					>Сохранить</v-btn
-				>
+
+				<v-btn color="success" :loading="isLoadingSaveTable" @click="onSaveMap">
+					Сохранить
+				</v-btn>
+
 				<v-btn color="error" @click="value_ = false">Отмена</v-btn>
 			</v-card-actions>
 		</v-card>
