@@ -36,9 +36,9 @@ export default {
 <style lang="sass">
 .MapPageHeaderSelectMap
     &__input-year
-        .v-input__control .v-input__slot .v-select__slot
+        .v-input__control .v-input__slot .v-select__slot .v-select__selections
             margin-top: 20px !important
 
         .v-input__append-inner
-            margin-top: 0 !important
+            margin-top: 14px !important
 </style>
