@@ -2,7 +2,7 @@
 	<v-list class="MapGroupsPopupSettingsTab" dense>
 		<v-list-item-group v-model="_value" color="primary">
 			<v-tooltip
-				content-class="MapGroupsPopupSettingsTab-tooltip"
+				content-class="MapGroupsPopupSettingsTab__tooltip"
 				max-width="200"
 				open-delay="700"
 				left
@@ -73,7 +73,7 @@ export default {
     height: 305px
     overflow-y: scroll
 
-    &-tooltip
+    &__tooltip
         background-color: rgba(97, 97, 97, 1)
         opacity: 1 !important
 </style>
