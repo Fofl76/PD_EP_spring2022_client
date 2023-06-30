@@ -3,7 +3,7 @@
 		<div class="MapTableMainRulerColumn__header">ЗЕТ</div>
 
 		<div
-			class="aup-table__zet-block"
+			class="MapTableMainRulerColumn__block"
 			v-for="i in maxZet"
 			:key="i"
 			:style="{ height: heightZet() }"
@@ -37,4 +37,15 @@ export default {
 .MapTableMainRulerColumn
     &__header
         margin-bottom: 5px
+
+    &__block
+        padding: 0
+        text-align: center
+        transition: all 0.3s ease
+        display: flex
+        justify-content: center
+        align-items: center
+
+        &:not(:last-of-type)
+            border-bottom: 1px solid #fff
 </style>

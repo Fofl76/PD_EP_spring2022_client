@@ -224,17 +224,6 @@ export default {
         opacity: 0
         transition: opacity .25s ease
 
-    &__zet-block
-        padding: 0
-        text-align: center
-        transition: all 0.3s ease
-        display: flex
-        justify-content: center
-        align-items: center
-
-        &:not(:last-of-type)
-            border-bottom: 1px solid #fff
-
     .flip-list-move
         transition: transform 0.5s
 
