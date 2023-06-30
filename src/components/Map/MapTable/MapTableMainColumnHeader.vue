@@ -36,7 +36,7 @@ export default {
 .MapTableMainColumnHeader
     display: flex
     justify-content: center
-    margin-bottom: 5px
+    margin-bottom: 6px
 
     &__order
         margin-right: 4px

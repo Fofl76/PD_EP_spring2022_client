@@ -36,7 +36,7 @@ export default {
 <style lang="sass">
 .MapTableMainRulerColumn
     &__header
-        margin-bottom: 5px
+        margin-bottom: 6px
 
     &__block
         padding: 0
