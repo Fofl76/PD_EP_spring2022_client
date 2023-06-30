@@ -7,7 +7,7 @@
 
 		<v-main dark app class="Map__main">
 			<v-container class="Map__main-inner" fluid>
-				<TableMaps
+				<MapTable
 					:loading="isLoadingMaps"
 					:table="tableData"
 					:activeEditingItemId="rightMenuEditItemId"
@@ -31,7 +31,7 @@ import MapsService from '@services/Maps/MapsService'
 import GroupsService from '@services/Groups/GroupsService'
 
 import MapHeader from '@components/Map/MapHeader/MapHeader.vue'
-import TableMaps from '@components/Map/Table/TableMaps.vue'
+import MapTable from '@components/Map/MapTable/MapTable.vue'
 import MSnackbar from '@components/common/MSnackbar.vue'
 import MapRightMenu from '@components/Map/MapRightMenu/MapRightMenu.vue'
 
@@ -40,7 +40,7 @@ export default {
 
 	components: {
 		MapHeader,
-		TableMaps,
+		MapTable,
 		MSnackbar,
 		MapRightMenu,
 	},

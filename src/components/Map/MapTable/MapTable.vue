@@ -1,6 +1,6 @@
 <template>
-	<div class="TableMaps">
-		<div class="TableMaps-content" v-if="!isEmpty">
+	<div class="MapTable">
+		<div class="MapTable__inner" v-if="!isEmpty">
 			<UiTable
 				:table="table"
 				:loading="loading && !isLoadingSaveMapList"
@@ -34,7 +34,7 @@
 			</v-btn>
 		</div>
 
-		<div v-else class="TableMaps-empty">
+		<div v-else class="MapTable__empty">
 			<MDataPreloader />
 		</div>
 	</div>
@@ -61,6 +61,7 @@ export default {
 
 		loading: Boolean,
 	},
+
 	data() {
 		return {
 			isFullScreen: true,
@@ -81,10 +82,12 @@ export default {
 			return !this.table.length && !this.isLoadingSaveMapList
 		},
 	},
+
 	methods: {
 		onEdit(item) {
 			this.$emit('edit-click', item.id)
 		},
+
 		async onSaveMap() {
 			const aup = this.$route.query.aup
 
@@ -94,6 +97,7 @@ export default {
 
 			this.isAvailableSave = false
 		},
+
 		onDrag({ data, columnIndex }) {
 			const added = data?.added
 			const removed = data?.removed
@@ -128,10 +132,10 @@ export default {
 </script>
 
 <style lang="sass">
-.TableMaps
+.MapTable
     height: 100%
 
-    &-empty
+    &__empty
         height: 100%
         display: flex
         align-items: center
