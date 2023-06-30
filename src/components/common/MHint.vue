@@ -1,9 +1,5 @@
 <template>
-	<v-tooltip
-		class="MHint"
-		top
-		v-bind="$attrs"
-	>
+	<v-tooltip class="MHint" top v-bind="$attrs">
 		<template v-slot:activator="{ on, attrs }">
 			<v-icon
 				class="MHint-icon"
@@ -26,6 +22,7 @@
 <script>
 export default {
 	name: 'MHint',
+
 	props: {
 		icon: {
 			type: String,
