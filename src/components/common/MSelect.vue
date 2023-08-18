@@ -9,13 +9,13 @@
 		:return-object="returnObject"
 		:item-value="itemValue"
 		:label="label"
+		:dark="dark"
 		hide-details="auto"
-		dark
 		filled
 		dense
 		v-bind="$attrs"
 		v-on="$listeners"
-	>
+		>
 	</v-select>
 </template>
 
@@ -27,6 +27,11 @@ export default {
 		value: {
 			type: [Object, String, Number, Boolean],
 			default: () => ({}),
+		},
+
+		dark: {
+			type: Boolean,
+			default: true,
 		},
 
 		label: {

@@ -8,7 +8,7 @@
 			@click="openUploadPopup"
 		/>
 
-		<MapHeaderButton label="Скачать" icon="mdi-download" @click="downloadMap" />
+		<MapHeaderButton label="Скачать" icon="mdi-download" @click="openDownloadPopup" />
 
 		<MapUploadFilePopup
 			v-model="uploadPopupModel"
@@ -16,6 +16,7 @@
 			@error="$emit('errorUploadFile', $event)"
 		/>
 
+		<MapDownloadPopup v-model="downloadPopupModel"/>
 		<MapGroupsPopup v-model="groupSettingsPopupModel" />
 	</div>
 </template>
@@ -27,16 +28,17 @@ import MapHeaderButton from '@components/Map/MapHeader/MapHeaderButton.vue'
 import MapGroupsPopup from '@components/Map/MapGroupsPopup/MapGroupsPopup.vue'
 import MapUploadFilePopup from '@components/Map/MapUploadFilePopup/MapUploadFilePopup.vue'
 
-import axios from '@services/api/axios'
+import MapDownloadPopup from '../MapDownloadPopup/MapDownloadPopup.vue'
 
 export default {
 	name: 'MapHeaderControls',
-	components: { MapHeaderButton, MapGroupsPopup, MapUploadFilePopup },
+	components: { MapHeaderButton, MapGroupsPopup, MapUploadFilePopup, MapDownloadPopup },
 
 	data() {
 		return {
 			uploadPopupModel: false,
 			groupSettingsPopupModel: false,
+			downloadPopupModel: false,
 		}
 	},
 
@@ -49,37 +51,14 @@ export default {
 			this.uploadPopupModel = true
 		},
 
-		async downloadMap() {
-			try {
-				const resp = await axios.get(this.downloadURL, {
-					responseType: 'blob',
-				})
-
-				const file = new Blob([resp.data])
-
-				const link = document.createElement('a')
-				link.download = `${this.aupCode}.xlsx`
-				link.href = URL.createObjectURL(file)
-
-				link.click()
-				URL.revokeObjectURL(link.href)
-			} catch (err) {
-				console.log(err)
-			}
+		openDownloadPopup() {
+			this.downloadPopupModel = true
 		},
 	},
 
 	computed: {
 		isReady() {
 			return !!MapsService.mapList.value.length
-		},
-
-		aupCode() {
-			return this.$route.query.aup
-		},
-
-		downloadURL() {
-			return `${process.env.VUE_APP_API}/save_excel/${this.aupCode}`
 		},
 	},
 }
