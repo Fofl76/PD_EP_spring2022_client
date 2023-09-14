@@ -1,0 +1,2499 @@
+[
+  {
+      "discipline": "Иностранный язык",
+      "id": "173461734717348",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 1,
+      "num_col": 1,
+      "num_row": 0,
+      "shifr": "Б1.1.3",
+      "type": [
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 40,
+              "id": 17348,
+              "zet": 1.1111111111111112
+          },
+          {
+              "control": "Зачет",
+              "controlTypeId": 5,
+              "hours": 36,
+              "id": 17346,
+              "zet": 1
+          },
+          {
+              "control": "Практические занятия",
+              "controlTypeId": 8,
+              "hours": 32,
+              "id": 17347,
+              "zet": 0.8888888888888888
+          },
+          {
+              "control": "Экзамен",
+              "controlTypeId": 1,
+              "zet": 1,
+              "hours": 36
+          }
+      ]
+  },
+  {
+      "discipline": "Алгоритмы и структуры данных",
+      "id": "173491735017351",
+      "id_block": 5,
+      "id_group": 17,
+      "id_module": 19,
+      "id_part": 2,
+      "num_col": 1,
+      "num_row": 1,
+      "shifr": "Б1.2.2",
+      "type": [
+          {
+              "control": "Экзамен",
+              "controlTypeId": 1,
+              "hours": 0,
+              "id": 17349
+          },
+          {
+              "control": "Лабораторные работы",
+              "controlTypeId": 6,
+              "hours": 72,
+              "id": 17350
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 72,
+              "id": 17351
+          }
+      ]
+  },
+  {
+      "discipline": "Информационные системы и технологии",
+      "id": "173521735317354",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 2,
+      "num_col": 1,
+      "num_row": 2,
+      "shifr": "Б1.2.4",
+      "type": [
+          {
+              "control": "Экзамен",
+              "controlTypeId": 1,
+              "hours": 0,
+              "id": 17352
+          },
+          {
+              "control": "Лабораторные работы",
+              "controlTypeId": 6,
+              "hours": 54,
+              "id": 17353
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 90,
+              "id": 17354
+          }
+      ]
+  },
+  {
+      "discipline": "Коммуникации в области информационных технологий",
+      "id": "17355173561735717358",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 1,
+      "num_col": 1,
+      "num_row": 3,
+      "shifr": "Б1.1.6",
+      "type": [
+          {
+              "control": "Зачет",
+              "controlTypeId": 5,
+              "hours": 0,
+              "id": 17355
+          },
+          {
+              "control": "Лекции",
+              "controlTypeId": 2,
+              "hours": 8,
+              "id": 17356
+          },
+          {
+              "control": "Практические занятия",
+              "controlTypeId": 8,
+              "hours": 24,
+              "id": 17357
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 40,
+              "id": 17358
+          }
+      ]
+  },
+  {
+      "discipline": "Линейная алгебра",
+      "id": "17359173601736117362",
+      "id_block": 5,
+      "id_group": 18,
+      "id_module": 18,
+      "id_part": 1,
+      "num_col": 1,
+      "num_row": 4,
+      "shifr": "Б1.1.18.1",
+      "type": [
+          {
+              "control": "Экзамен",
+              "controlTypeId": 1,
+              "hours": 0,
+              "id": 17359
+          },
+          {
+              "control": "Лекции",
+              "controlTypeId": 2,
+              "hours": 16,
+              "id": 17360
+          },
+          {
+              "control": "Семинарские занятия",
+              "controlTypeId": 3,
+              "hours": 32,
+              "id": 17361
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 60,
+              "id": 17362
+          }
+      ]
+  },
+  {
+      "discipline": "Основы информационно-коммуникационных технологий",
+      "id": "173631736417365",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 1,
+      "num_col": 1,
+      "num_row": 5,
+      "shifr": "Б1.1.7",
+      "type": [
+          {
+              "control": "Экзамен",
+              "controlTypeId": 1,
+              "hours": 0,
+              "id": 17363
+          },
+          {
+              "control": "Лабораторные работы",
+              "controlTypeId": 6,
+              "hours": 54,
+              "id": 17364
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 90,
+              "id": 17365
+          }
+      ]
+  },
+  {
+      "discipline": "Основы программирования",
+      "id": "17366173671736817369",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 2,
+      "num_col": 1,
+      "num_row": 6,
+      "shifr": "Б1.2.3",
+      "type": [
+          {
+              "control": "Курсовой проект",
+              "controlTypeId": 7,
+              "hours": 0,
+              "id": 17366
+          },
+          {
+              "control": "Экзамен",
+              "controlTypeId": 1,
+              "hours": 0,
+              "id": 17367
+          },
+          {
+              "control": "Лабораторные работы",
+              "controlTypeId": 6,
+              "hours": 72,
+              "id": 17368
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 108,
+              "id": 17369
+          }
+      ]
+  },
+  {
+      "discipline": "Физическая культура и спорт",
+      "id": "173701737117372",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 1,
+      "num_col": 1,
+      "num_row": 7,
+      "shifr": "Б1.1.4",
+      "type": [
+          {
+              "control": "Зачет",
+              "controlTypeId": 5,
+              "hours": 0,
+              "id": 17370
+          },
+          {
+              "control": "Практические занятия",
+              "controlTypeId": 8,
+              "hours": 32,
+              "id": 17371
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 40,
+              "id": 17372
+          }
+      ]
+  },
+  {
+      "discipline": "Электронный документооборот",
+      "id": "173731737417375",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 2,
+      "num_col": 1,
+      "num_row": 8,
+      "shifr": "Б1.2.1",
+      "type": [
+          {
+              "control": "Зачет",
+              "controlTypeId": 5,
+              "hours": 0,
+              "id": 17373
+          },
+          {
+              "control": "Лабораторные работы",
+              "controlTypeId": 6,
+              "hours": 36,
+              "id": 17374
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 36,
+              "id": 17375
+          }
+      ]
+  },
+  {
+      "discipline": "Введение в проектную деятельность",
+      "id": "173761737717378",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 1,
+      "num_col": 1,
+      "num_row": 9,
+      "shifr": "Б1.1.5",
+      "type": [
+          {
+              "control": "Зачет",
+              "controlTypeId": 5,
+              "hours": 0,
+              "id": 17376
+          },
+          {
+              "control": "Семинарские занятия",
+              "controlTypeId": 3,
+              "hours": 32,
+              "id": 17377
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 40,
+              "id": 17378
+          }
+      ]
+  },
+  {
+      "discipline": "Иностранный язык",
+      "id": "173791738017381",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 1,
+      "num_col": 2,
+      "num_row": 0,
+      "shifr": "Б1.1.3",
+      "type": [
+          {
+              "control": "Дифференцированный зачет",
+              "controlTypeId": 9,
+              "hours": 0,
+              "id": 17379
+          },
+          {
+              "control": "Практические занятия",
+              "controlTypeId": 8,
+              "hours": 36,
+              "id": 17380
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 36,
+              "id": 17381
+          }
+      ]
+  },
+  {
+      "discipline": "Базы данных",
+      "id": "1738217383173841738517386",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 1,
+      "num_col": 2,
+      "num_row": 1,
+      "shifr": "Б1.1.9",
+      "type": [
+          {
+              "control": "Дифференцированный зачет",
+              "controlTypeId": 9,
+              "hours": 0,
+              "id": 17382
+          },
+          {
+              "control": "Курсовой проект",
+              "controlTypeId": 7,
+              "hours": 0,
+              "id": 17383
+          },
+          {
+              "control": "Лабораторные работы",
+              "controlTypeId": 6,
+              "hours": 64,
+              "id": 17384
+          },
+          {
+              "control": "Лекции",
+              "controlTypeId": 2,
+              "hours": 8,
+              "id": 17385
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 72,
+              "id": 17386
+          }
+      ]
+  },
+  {
+      "discipline": "Имитационное моделирование для бизнеса",
+      "id": "173871738817389",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 2,
+      "num_col": 2,
+      "num_row": 2,
+      "shifr": "Б1.2.8",
+      "type": [
+          {
+              "control": "Зачет",
+              "controlTypeId": 5,
+              "hours": 0,
+              "id": 17387
+          },
+          {
+              "control": "Лабораторные работы",
+              "controlTypeId": 6,
+              "hours": 36,
+              "id": 17388
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 36,
+              "id": 17389
+          }
+      ]
+  },
+  {
+      "discipline": "Корпоративные информационные системы",
+      "id": "173901739117392",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 2,
+      "num_col": 2,
+      "num_row": 3,
+      "shifr": "Б1.2.9",
+      "type": [
+          {
+              "control": "Зачет",
+              "controlTypeId": 5,
+              "hours": 0,
+              "id": 17390
+          },
+          {
+              "control": "Лабораторные работы",
+              "controlTypeId": 6,
+              "hours": 36,
+              "id": 17391
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 36,
+              "id": 17392
+          }
+      ]
+  },
+  {
+      "discipline": "Математический анализ",
+      "id": "17393173941739517396",
+      "id_block": 5,
+      "id_group": 18,
+      "id_module": 18,
+      "id_part": 1,
+      "num_col": 2,
+      "num_row": 4,
+      "shifr": "Б1.1.18.2",
+      "type": [
+          {
+              "control": "Экзамен",
+              "controlTypeId": 1,
+              "hours": 0,
+              "id": 17393
+          },
+          {
+              "control": "Лекции",
+              "controlTypeId": 2,
+              "hours": 18,
+              "id": 17394
+          },
+          {
+              "control": "Семинарские занятия",
+              "controlTypeId": 3,
+              "hours": 54,
+              "id": 17395
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 72,
+              "id": 17396
+          }
+      ]
+  },
+  {
+      "discipline": "Навыки эффективной презентации",
+      "id": "173971739817399",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 1,
+      "num_col": 2,
+      "num_row": 5,
+      "shifr": "Б1.1.8",
+      "type": [
+          {
+              "control": "Зачет",
+              "controlTypeId": 5,
+              "hours": 0,
+              "id": 17397
+          },
+          {
+              "control": "Лабораторные работы",
+              "controlTypeId": 6,
+              "hours": 36,
+              "id": 17398
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 36,
+              "id": 17399
+          }
+      ]
+  },
+  {
+      "discipline": "Основы проектирования бизнес-процессов и структур",
+      "id": "174021740317404",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 2,
+      "num_col": 2,
+      "num_row": 6,
+      "shifr": "Б1.2.7",
+      "type": [
+          {
+              "control": "Зачет",
+              "controlTypeId": 5,
+              "hours": 0,
+              "id": 17402
+          },
+          {
+              "control": "Лабораторные работы",
+              "controlTypeId": 6,
+              "hours": 36,
+              "id": 17403
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 36,
+              "id": 17404
+          }
+      ]
+  },
+  {
+      "discipline": "Основы тестирования",
+      "id": "174051740617407",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 2,
+      "num_col": 2,
+      "num_row": 7,
+      "shifr": "Б1.2.6",
+      "type": [
+          {
+              "control": "Экзамен",
+              "controlTypeId": 1,
+              "hours": 0,
+              "id": 17405
+          },
+          {
+              "control": "Лабораторные работы",
+              "controlTypeId": 6,
+              "hours": 54,
+              "id": 17406
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 54,
+              "id": 17407
+          }
+      ]
+  },
+  {
+      "discipline": "Прикладное программирование",
+      "id": "174081740917410",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 2,
+      "num_col": 2,
+      "num_row": 8,
+      "shifr": "Б1.2.5",
+      "type": [
+          {
+              "control": "Экзамен",
+              "controlTypeId": 1,
+              "hours": 0,
+              "id": 17408
+          },
+          {
+              "control": "Лабораторные работы",
+              "controlTypeId": 6,
+              "hours": 54,
+              "id": 17409
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 54,
+              "id": 17410
+          }
+      ]
+  },
+  {
+      "discipline": "Учебная практика (проектно-технологическая)",
+      "id": "1741417415",
+      "id_block": 2,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 1,
+      "num_col": 2,
+      "num_row": 9,
+      "shifr": "Б2.1.1",
+      "type": [
+          {
+              "control": "Дифференцированный зачет",
+              "controlTypeId": 9,
+              "hours": 0,
+              "id": 17414
+          },
+          {
+              "control": "Учебная практика",
+              "controlTypeId": 10,
+              "hours": 72,
+              "id": 17415
+          }
+      ]
+  },
+  {
+      "discipline": "Проектная деятельность",
+      "id": "174161741717418",
+      "id_block": 5,
+      "id_group": 6,
+      "id_module": 6,
+      "id_part": 1,
+      "num_col": 2,
+      "num_row": 10,
+      "shifr": "Б1.1.19.1",
+      "type": [
+          {
+              "control": "Зачет",
+              "controlTypeId": 5,
+              "hours": 0,
+              "id": 17416
+          },
+          {
+              "control": "Семинарские занятия",
+              "controlTypeId": 3,
+              "hours": 36,
+              "id": 17417
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 36,
+              "id": 17418
+          }
+      ]
+  },
+  {
+      "discipline": "Управление проектами",
+      "id": "174191742017421",
+      "id_block": 5,
+      "id_group": 6,
+      "id_module": 6,
+      "id_part": 1,
+      "num_col": 2,
+      "num_row": 11,
+      "shifr": "Б1.1.19.2",
+      "type": [
+          {
+              "control": "Зачет",
+              "controlTypeId": 5,
+              "hours": 0,
+              "id": 17419
+          },
+          {
+              "control": "Семинарские занятия",
+              "controlTypeId": 3,
+              "hours": 36,
+              "id": 17420
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 36,
+              "id": 17421
+          }
+      ]
+  },
+  {
+      "discipline": "Иностранный язык",
+      "id": "174221742317424",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 1,
+      "num_col": 3,
+      "num_row": 0,
+      "shifr": "Б1.1.3",
+      "type": [
+          {
+              "control": "Зачет",
+              "controlTypeId": 5,
+              "hours": 0,
+              "id": 17422
+          },
+          {
+              "control": "Практические занятия",
+              "controlTypeId": 8,
+              "hours": 36,
+              "id": 17423
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 36,
+              "id": 17424
+          }
+      ]
+  },
+  {
+      "discipline": "Математическая логика и теория алгоритмов в практике программирования",
+      "id": "17425174261742717428",
+      "id_block": 5,
+      "id_group": 18,
+      "id_module": 18,
+      "id_part": 1,
+      "num_col": 3,
+      "num_row": 1,
+      "shifr": "Б1.1.18.3",
+      "type": [
+          {
+              "control": "Экзамен",
+              "controlTypeId": 1,
+              "hours": 0,
+              "id": 17425
+          },
+          {
+              "control": "Лабораторные работы",
+              "controlTypeId": 6,
+              "hours": 36,
+              "id": 17426
+          },
+          {
+              "control": "Лекции",
+              "controlTypeId": 2,
+              "hours": 36,
+              "id": 17427
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 72,
+              "id": 17428
+          }
+      ]
+  },
+  {
+      "discipline": "Основы бухгалтерского и управленческого учёта",
+      "id": "174311743217433",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 2,
+      "num_col": 3,
+      "num_row": 2,
+      "shifr": "Б1.2.11",
+      "type": [
+          {
+              "control": "Зачет",
+              "controlTypeId": 5,
+              "hours": 0,
+              "id": 17431
+          },
+          {
+              "control": "Семинарские занятия",
+              "controlTypeId": 3,
+              "hours": 36,
+              "id": 17432
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 36,
+              "id": 17433
+          }
+      ]
+  },
+  {
+      "discipline": "Основы веб-технологий",
+      "id": "174341743517436",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 2,
+      "num_col": 3,
+      "num_row": 3,
+      "shifr": "Б1.2.12",
+      "type": [
+          {
+              "control": "Дифференцированный зачет",
+              "controlTypeId": 9,
+              "hours": 0,
+              "id": 17434
+          },
+          {
+              "control": "Лабораторные работы",
+              "controlTypeId": 6,
+              "hours": 54,
+              "id": 17435
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 54,
+              "id": 17436
+          }
+      ]
+  },
+  {
+      "discipline": "Основы разработки корпоративных информационных систем",
+      "id": "174371743817439",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 2,
+      "num_col": 3,
+      "num_row": 4,
+      "shifr": "Б1.2.15",
+      "type": [
+          {
+              "control": "Экзамен",
+              "controlTypeId": 1,
+              "hours": 0,
+              "id": 17437
+          },
+          {
+              "control": "Лабораторные работы",
+              "controlTypeId": 6,
+              "hours": 54,
+              "id": 17438
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 54,
+              "id": 17439
+          }
+      ]
+  },
+  {
+      "discipline": "Письменная инженерная коммуникация в ИТ-сфере",
+      "id": "174401744117442",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 2,
+      "num_col": 3,
+      "num_row": 5,
+      "shifr": "Б1.2.10",
+      "type": [
+          {
+              "control": "Зачет",
+              "controlTypeId": 5,
+              "hours": 0,
+              "id": 17440
+          },
+          {
+              "control": "Лабораторные работы",
+              "controlTypeId": 6,
+              "hours": 54,
+              "id": 17441
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 54,
+              "id": 17442
+          }
+      ]
+  },
+  {
+      "discipline": "Проектирование баз данных",
+      "id": "17443174441744517446",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 2,
+      "num_col": 3,
+      "num_row": 6,
+      "shifr": "Б1.2.13",
+      "type": [
+          {
+              "control": "Курсовой проект",
+              "controlTypeId": 7,
+              "hours": 0,
+              "id": 17443
+          },
+          {
+              "control": "Экзамен",
+              "controlTypeId": 1,
+              "hours": 0,
+              "id": 17444
+          },
+          {
+              "control": "Лабораторные работы",
+              "controlTypeId": 6,
+              "hours": 72,
+              "id": 17445
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 108,
+              "id": 17446
+          }
+      ]
+  },
+  {
+      "discipline": "Структурное проектирование",
+      "id": "174471744817449",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 2,
+      "num_col": 3,
+      "num_row": 7,
+      "shifr": "Б1.2.14",
+      "type": [
+          {
+              "control": "Экзамен",
+              "controlTypeId": 1,
+              "hours": 0,
+              "id": 17447
+          },
+          {
+              "control": "Лабораторные работы",
+              "controlTypeId": 6,
+              "hours": 54,
+              "id": 17448
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 54,
+              "id": 17449
+          }
+      ]
+  },
+  {
+      "discipline": "Шаблоны проектирования приложений",
+      "id": "174501745117452",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 2,
+      "num_col": 3,
+      "num_row": 8,
+      "shifr": "Б1.2.16",
+      "type": [
+          {
+              "control": "Экзамен",
+              "controlTypeId": 1,
+              "hours": 0,
+              "id": 17450
+          },
+          {
+              "control": "Лабораторные работы",
+              "controlTypeId": 6,
+              "hours": 54,
+              "id": 17451
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 54,
+              "id": 17452
+          }
+      ]
+  },
+  {
+      "discipline": "Проектная деятельность",
+      "id": "174531745417455",
+      "id_block": 5,
+      "id_group": 6,
+      "id_module": 6,
+      "id_part": 1,
+      "num_col": 3,
+      "num_row": 9,
+      "shifr": "Б1.1.19.1",
+      "type": [
+          {
+              "control": "Зачет",
+              "controlTypeId": 5,
+              "hours": 0,
+              "id": 17453
+          },
+          {
+              "control": "Семинарские занятия",
+              "controlTypeId": 3,
+              "hours": 36,
+              "id": 17454
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 36,
+              "id": 17455
+          }
+      ]
+  },
+  {
+      "discipline": "Иностранный язык",
+      "id": "174561745717458",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 1,
+      "num_col": 4,
+      "num_row": 0,
+      "shifr": "Б1.1.3",
+      "type": [
+          {
+              "control": "Дифференцированный зачет",
+              "controlTypeId": 9,
+              "hours": 0,
+              "id": 17456
+          },
+          {
+              "control": "Практические занятия",
+              "controlTypeId": 8,
+              "hours": 36,
+              "id": 17457
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 36,
+              "id": 17458
+          }
+      ]
+  },
+  {
+      "discipline": "Веб-разработка",
+      "id": "174591746017461",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 2,
+      "num_col": 4,
+      "num_row": 1,
+      "shifr": "Б1.2.19",
+      "type": [
+          {
+              "control": "Дифференцированный зачет",
+              "controlTypeId": 9,
+              "hours": 0,
+              "id": 17459
+          },
+          {
+              "control": "Лабораторные работы",
+              "controlTypeId": 6,
+              "hours": 72,
+              "id": 17460
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 72,
+              "id": 17461
+          }
+      ]
+  },
+  {
+      "discipline": "Дискретные структуры и компьютинг",
+      "id": "17462174631746417465",
+      "id_block": 5,
+      "id_group": 18,
+      "id_module": 18,
+      "id_part": 1,
+      "num_col": 4,
+      "num_row": 2,
+      "shifr": "Б1.1.18.4",
+      "type": [
+          {
+              "control": "Экзамен",
+              "controlTypeId": 1,
+              "hours": 0,
+              "id": 17462
+          },
+          {
+              "control": "Лекции",
+              "controlTypeId": 2,
+              "hours": 18,
+              "id": 17463
+          },
+          {
+              "control": "Семинарские занятия",
+              "controlTypeId": 3,
+              "hours": 36,
+              "id": 17464
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 90,
+              "id": 17465
+          }
+      ]
+  },
+  {
+      "discipline": "Инженерная коммуникация в области информационных технологий",
+      "id": "174661746717468",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 2,
+      "num_col": 4,
+      "num_row": 3,
+      "shifr": "Б1.2.17",
+      "type": [
+          {
+              "control": "Зачет",
+              "controlTypeId": 5,
+              "hours": 0,
+              "id": 17466
+          },
+          {
+              "control": "Лабораторные работы",
+              "controlTypeId": 6,
+              "hours": 54,
+              "id": 17467
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 54,
+              "id": 17468
+          }
+      ]
+  },
+  {
+      "discipline": "Моделирование бизнес-процессов",
+      "id": "174721747317474",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 2,
+      "num_col": 4,
+      "num_row": 4,
+      "shifr": "Б1.2.20",
+      "type": [
+          {
+              "control": "Экзамен",
+              "controlTypeId": 1,
+              "hours": 0,
+              "id": 17472
+          },
+          {
+              "control": "Лабораторные работы",
+              "controlTypeId": 6,
+              "hours": 72,
+              "id": 17473
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 72,
+              "id": 17474
+          }
+      ]
+  },
+  {
+      "discipline": "Основы технологического предпринимательства",
+      "id": "174771747817479",
+      "id_block": 5,
+      "id_group": 6,
+      "id_module": 6,
+      "id_part": 1,
+      "num_col": 4,
+      "num_row": 5,
+      "shifr": "Б1.1.19.3",
+      "type": [
+          {
+              "control": "Зачет",
+              "controlTypeId": 5,
+              "hours": 0,
+              "id": 17477
+          },
+          {
+              "control": "Семинарские занятия",
+              "controlTypeId": 3,
+              "hours": 36,
+              "id": 17478
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 36,
+              "id": 17479
+          }
+      ]
+  },
+  {
+      "discipline": "Разработка корпоративных информационных систем",
+      "id": "17480174811748217483",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 2,
+      "num_col": 4,
+      "num_row": 6,
+      "shifr": "Б1.2.18",
+      "type": [
+          {
+              "control": "Курсовой проект",
+              "controlTypeId": 7,
+              "hours": 0,
+              "id": 17480
+          },
+          {
+              "control": "Экзамен",
+              "controlTypeId": 1,
+              "hours": 0,
+              "id": 17481
+          },
+          {
+              "control": "Лабораторные работы",
+              "controlTypeId": 6,
+              "hours": 72,
+              "id": 17482
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 72,
+              "id": 17483
+          }
+      ]
+  },
+  {
+      "discipline": "Сети и системы передачи информации",
+      "id": "174841748517486",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 1,
+      "num_col": 4,
+      "num_row": 7,
+      "shifr": "Б1.1.10",
+      "type": [
+          {
+              "control": "Экзамен",
+              "controlTypeId": 1,
+              "hours": 0,
+              "id": 17484
+          },
+          {
+              "control": "Лабораторные работы",
+              "controlTypeId": 6,
+              "hours": 72,
+              "id": 17485
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 72,
+              "id": 17486
+          }
+      ]
+  },
+  {
+      "discipline": "Проектная деятельность",
+      "id": "174871748817489",
+      "id_block": 5,
+      "id_group": 6,
+      "id_module": 6,
+      "id_part": 1,
+      "num_col": 4,
+      "num_row": 8,
+      "shifr": "Б1.1.19.1",
+      "type": [
+          {
+              "control": "Зачет",
+              "controlTypeId": 5,
+              "hours": 0,
+              "id": 17487
+          },
+          {
+              "control": "Семинарские занятия",
+              "controlTypeId": 3,
+              "hours": 54,
+              "id": 17488
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 54,
+              "id": 17489
+          }
+      ]
+  },
+  {
+      "discipline": "Иностранный язык",
+      "id": "174901749117492",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 1,
+      "num_col": 5,
+      "num_row": 0,
+      "shifr": "Б1.1.3",
+      "type": [
+          {
+              "control": "Зачет",
+              "controlTypeId": 5,
+              "hours": 0,
+              "id": 17490
+          },
+          {
+              "control": "Практические занятия",
+              "controlTypeId": 8,
+              "hours": 36,
+              "id": 17491
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 36,
+              "id": 17492
+          }
+      ]
+  },
+  {
+      "discipline": "Администрирование информационных систем",
+      "id": "17493174941749517496",
+      "id_block": 5,
+      "id_group": 73,
+      "id_module": 19,
+      "id_part": 2,
+      "num_col": 5,
+      "num_row": 1,
+      "shifr": "Б1.2.25",
+      "type": [
+          {
+              "control": "Экзамен",
+              "controlTypeId": 1,
+              "hours": 0,
+              "id": 17493
+          },
+          {
+              "control": "Лабораторные работы",
+              "controlTypeId": 6,
+              "hours": 54,
+              "id": 17494
+          },
+          {
+              "control": "Лекции",
+              "controlTypeId": 2,
+              "hours": 18,
+              "id": 17495
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 72,
+              "id": 17496
+          }
+      ]
+  },
+  {
+      "discipline": "Методологии программирования",
+      "id": "175001750117502",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 2,
+      "num_col": 5,
+      "num_row": 2,
+      "shifr": "Б1.2.23",
+      "type": [
+          {
+              "control": "Зачет",
+              "controlTypeId": 5,
+              "hours": 0,
+              "id": 17500
+          },
+          {
+              "control": "Лабораторные работы",
+              "controlTypeId": 6,
+              "hours": 72,
+              "id": 17501
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 72,
+              "id": 17502
+          }
+      ]
+  },
+  {
+      "discipline": "Методы управления проектами в области  информационных технологий",
+      "id": "175031750417505",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 2,
+      "num_col": 5,
+      "num_row": 3,
+      "shifr": "Б1.2.22",
+      "type": [
+          {
+              "control": "Зачет",
+              "controlTypeId": 5,
+              "hours": 0,
+              "id": 17503
+          },
+          {
+              "control": "Лабораторные работы",
+              "controlTypeId": 6,
+              "hours": 54,
+              "id": 17504
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 54,
+              "id": 17505
+          }
+      ]
+  },
+  {
+      "discipline": "Программная инженерия",
+      "id": "17508175091751017511",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 2,
+      "num_col": 5,
+      "num_row": 4,
+      "shifr": "Б1.2.26",
+      "type": [
+          {
+              "control": "Курсовой проект",
+              "controlTypeId": 7,
+              "hours": 0,
+              "id": 17508
+          },
+          {
+              "control": "Экзамен",
+              "controlTypeId": 1,
+              "hours": 0,
+              "id": 17509
+          },
+          {
+              "control": "Лабораторные работы",
+              "controlTypeId": 6,
+              "hours": 72,
+              "id": 17510
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 108,
+              "id": 17511
+          }
+      ]
+  },
+  {
+      "discipline": "Проектирование пользовательских интерфейсов",
+      "id": "175121751317514",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 2,
+      "num_col": 5,
+      "num_row": 5,
+      "shifr": "Б1.2.24",
+      "type": [
+          {
+              "control": "Экзамен",
+              "controlTypeId": 1,
+              "hours": 0,
+              "id": 17512
+          },
+          {
+              "control": "Лабораторные работы",
+              "controlTypeId": 6,
+              "hours": 72,
+              "id": 17513
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 72,
+              "id": 17514
+          }
+      ]
+  },
+  {
+      "discipline": "Тайм-менеджмент",
+      "id": "175151751617517",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 2,
+      "num_col": 5,
+      "num_row": 6,
+      "shifr": "Б1.2.21",
+      "type": [
+          {
+              "control": "Зачет",
+              "controlTypeId": 5,
+              "hours": 0,
+              "id": 17515
+          },
+          {
+              "control": "Семинарские занятия",
+              "controlTypeId": 3,
+              "hours": 36,
+              "id": 17516
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 36,
+              "id": 17517
+          }
+      ]
+  },
+  {
+      "discipline": "Теория вероятностей и математическая статистика",
+      "id": "17518175191752017521",
+      "id_block": 5,
+      "id_group": 18,
+      "id_module": 18,
+      "id_part": 1,
+      "num_col": 5,
+      "num_row": 7,
+      "shifr": "Б1.1.18.5",
+      "type": [
+          {
+              "control": "Экзамен",
+              "controlTypeId": 1,
+              "hours": 0,
+              "id": 17518
+          },
+          {
+              "control": "Лекции",
+              "controlTypeId": 2,
+              "hours": 36,
+              "id": 17519
+          },
+          {
+              "control": "Семинарские занятия",
+              "controlTypeId": 3,
+              "hours": 36,
+              "id": 17520
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 72,
+              "id": 17521
+          }
+      ]
+  },
+  {
+      "discipline": "Проектная деятельность",
+      "id": "175221752317524",
+      "id_block": 5,
+      "id_group": 6,
+      "id_module": 6,
+      "id_part": 1,
+      "num_col": 5,
+      "num_row": 8,
+      "shifr": "Б1.1.19.1",
+      "type": [
+          {
+              "control": "Зачет",
+              "controlTypeId": 5,
+              "hours": 0,
+              "id": 17522
+          },
+          {
+              "control": "Семинарские занятия",
+              "controlTypeId": 3,
+              "hours": 36,
+              "id": 17523
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 36,
+              "id": 17524
+          }
+      ]
+  },
+  {
+      "discipline": "Иностранный язык",
+      "id": "175251752617527",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 1,
+      "num_col": 6,
+      "num_row": 0,
+      "shifr": "Б1.1.3",
+      "type": [
+          {
+              "control": "Экзамен",
+              "controlTypeId": 1,
+              "hours": 0,
+              "id": 17525
+          },
+          {
+              "control": "Практические занятия",
+              "controlTypeId": 8,
+              "hours": 36,
+              "id": 17526
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 36,
+              "id": 17527
+          }
+      ]
+  },
+  {
+      "discipline": "Безопасность жизнедеятельности",
+      "id": "1752817529175301753117532",
+      "id_block": 5,
+      "id_group": 17,
+      "id_module": 17,
+      "id_part": 1,
+      "num_col": 6,
+      "num_row": 1,
+      "shifr": "Б1.1.20.1",
+      "type": [
+          {
+              "control": "Зачет",
+              "controlTypeId": 5,
+              "hours": 0,
+              "id": 17528
+          },
+          {
+              "control": "Лабораторные работы",
+              "controlTypeId": 6,
+              "hours": 6,
+              "id": 17529
+          },
+          {
+              "control": "Лекции",
+              "controlTypeId": 2,
+              "hours": 6,
+              "id": 17530
+          },
+          {
+              "control": "Практические занятия",
+              "controlTypeId": 8,
+              "hours": 6,
+              "id": 17531
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 18,
+              "id": 17532
+          }
+      ]
+  },
+  {
+      "discipline": "Документирование этапов жизненного цикла информационных систем",
+      "id": "175331753417535",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 1,
+      "num_col": 6,
+      "num_row": 2,
+      "shifr": "Б1.1.12",
+      "type": [
+          {
+              "control": "Экзамен",
+              "controlTypeId": 1,
+              "hours": 0,
+              "id": 17533
+          },
+          {
+              "control": "Лабораторные работы",
+              "controlTypeId": 6,
+              "hours": 72,
+              "id": 17534
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 72,
+              "id": 17535
+          }
+      ]
+  },
+  {
+      "discipline": "Защита информации",
+      "id": "17536175371753817539",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 2,
+      "num_col": 6,
+      "num_row": 3,
+      "shifr": "Б1.2.29",
+      "type": [
+          {
+              "control": "Дифференцированный зачет",
+              "controlTypeId": 9,
+              "hours": 0,
+              "id": 17536
+          },
+          {
+              "control": "Лабораторные работы",
+              "controlTypeId": 6,
+              "hours": 18,
+              "id": 17537
+          },
+          {
+              "control": "Лекции",
+              "controlTypeId": 2,
+              "hours": 36,
+              "id": 17538
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 54,
+              "id": 17539
+          }
+      ]
+  },
+  {
+      "discipline": "История России",
+      "id": "17540175411754217543",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 1,
+      "num_col": 6,
+      "num_row": 4,
+      "shifr": "Б1.1.1",
+      "type": [
+          {
+              "control": "Зачет",
+              "controlTypeId": 5,
+              "hours": 0,
+              "id": 17540
+          },
+          {
+              "control": "Лекции",
+              "controlTypeId": 2,
+              "hours": 34,
+              "id": 17541
+          },
+          {
+              "control": "Семинарские занятия",
+              "controlTypeId": 3,
+              "hours": 26,
+              "id": 17542
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 12,
+              "id": 17543
+          }
+      ]
+  },
+  {
+      "discipline": "Математические методы анализа данных",
+      "id": "17544175451754617547",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 2,
+      "num_col": 6,
+      "num_row": 5,
+      "shifr": "Б1.2.28",
+      "type": [
+          {
+              "control": "Дифференцированный зачет",
+              "controlTypeId": 9,
+              "hours": 0,
+              "id": 17544
+          },
+          {
+              "control": "Лабораторные работы",
+              "controlTypeId": 6,
+              "hours": 54,
+              "id": 17545
+          },
+          {
+              "control": "Лекции",
+              "controlTypeId": 2,
+              "hours": 36,
+              "id": 17546
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 54,
+              "id": 17547
+          }
+      ]
+  },
+  {
+      "discipline": "Надежность информационных систем",
+      "id": "175481754917550",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 2,
+      "num_col": 6,
+      "num_row": 6,
+      "shifr": "Б1.2.27",
+      "type": [
+          {
+              "control": "Зачет",
+              "controlTypeId": 5,
+              "hours": 0,
+              "id": 17548
+          },
+          {
+              "control": "Лабораторные работы",
+              "controlTypeId": 6,
+              "hours": 36,
+              "id": 17549
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 36,
+              "id": 17550
+          }
+      ]
+  },
+  {
+      "discipline": "Основы военной подготовки",
+      "id": "17553175541755517556",
+      "id_block": 5,
+      "id_group": 17,
+      "id_module": 17,
+      "id_part": 1,
+      "num_col": 6,
+      "num_row": 7,
+      "shifr": "Б1.1.20.2",
+      "type": [
+          {
+              "control": "Зачет",
+              "controlTypeId": 5,
+              "hours": 0,
+              "id": 17553
+          },
+          {
+              "control": "Лекции",
+              "controlTypeId": 2,
+              "hours": 6,
+              "id": 17554
+          },
+          {
+              "control": "Практические занятия",
+              "controlTypeId": 8,
+              "hours": 12,
+              "id": 17555
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 18,
+              "id": 17556
+          }
+      ]
+  },
+  {
+      "discipline": "Разработка мобильных приложений",
+      "id": "17557175581755917560",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 1,
+      "num_col": 6,
+      "num_row": 8,
+      "shifr": "Б1.1.11",
+      "type": [
+          {
+              "control": "Курсовой проект",
+              "controlTypeId": 7,
+              "hours": 0,
+              "id": 17557
+          },
+          {
+              "control": "Экзамен",
+              "controlTypeId": 1,
+              "hours": 0,
+              "id": 17558
+          },
+          {
+              "control": "Лабораторные работы",
+              "controlTypeId": 6,
+              "hours": 72,
+              "id": 17559
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 108,
+              "id": 17560
+          }
+      ]
+  },
+  {
+      "discipline": "Проектная деятельность",
+      "id": "175641756517566",
+      "id_block": 5,
+      "id_group": 6,
+      "id_module": 6,
+      "id_part": 1,
+      "num_col": 6,
+      "num_row": 9,
+      "shifr": "Б1.1.19.1",
+      "type": [
+          {
+              "control": "Зачет",
+              "controlTypeId": 5,
+              "hours": 0,
+              "id": 17564
+          },
+          {
+              "control": "Семинарские занятия",
+              "controlTypeId": 3,
+              "hours": 54,
+              "id": 17565
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 54,
+              "id": 17566
+          }
+      ]
+  },
+  {
+      "discipline": "Аналитика информационной безопасности",
+      "id": "17567175681756917570",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 2,
+      "num_col": 7,
+      "num_row": 0,
+      "shifr": "Б1.2.30",
+      "type": [
+          {
+              "control": "Экзамен",
+              "controlTypeId": 1,
+              "hours": 0,
+              "id": 17567
+          },
+          {
+              "control": "Лабораторные работы",
+              "controlTypeId": 6,
+              "hours": 54,
+              "id": 17568
+          },
+          {
+              "control": "Лекции",
+              "controlTypeId": 2,
+              "hours": 18,
+              "id": 17569
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 72,
+              "id": 17570
+          }
+      ]
+  },
+  {
+      "discipline": "История России",
+      "id": "17571175721757317574",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 1,
+      "num_col": 7,
+      "num_row": 1,
+      "shifr": "Б1.1.1",
+      "type": [
+          {
+              "control": "Экзамен",
+              "controlTypeId": 1,
+              "hours": 0,
+              "id": 17571
+          },
+          {
+              "control": "Лекции",
+              "controlTypeId": 2,
+              "hours": 34,
+              "id": 17572
+          },
+          {
+              "control": "Семинарские занятия",
+              "controlTypeId": 3,
+              "hours": 26,
+              "id": 17573
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 12,
+              "id": 17574
+          }
+      ]
+  },
+  {
+      "discipline": "Менеджмент",
+      "id": "17575175761757717578",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 2,
+      "num_col": 7,
+      "num_row": 2,
+      "shifr": "Б1.2.32",
+      "type": [
+          {
+              "control": "Зачет",
+              "controlTypeId": 5,
+              "hours": 0,
+              "id": 17575
+          },
+          {
+              "control": "Лабораторные работы",
+              "controlTypeId": 6,
+              "hours": 18,
+              "id": 17576
+          },
+          {
+              "control": "Лекции",
+              "controlTypeId": 2,
+              "hours": 18,
+              "id": 17577
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 36,
+              "id": 17578
+          }
+      ]
+  },
+  {
+      "discipline": "Методы машинного обучения",
+      "id": "17579175801758117582",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 2,
+      "num_col": 7,
+      "num_row": 3,
+      "shifr": "Б1.2.31",
+      "type": [
+          {
+              "control": "Экзамен",
+              "controlTypeId": 1,
+              "hours": 0,
+              "id": 17579
+          },
+          {
+              "control": "Лабораторные работы",
+              "controlTypeId": 6,
+              "hours": 54,
+              "id": 17580
+          },
+          {
+              "control": "Лекции",
+              "controlTypeId": 2,
+              "hours": 18,
+              "id": 17581
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 72,
+              "id": 17582
+          }
+      ]
+  },
+  {
+      "discipline": "Нормативное регулирование внедрения и эксплуатации информационных систем",
+      "id": "17583175841758517586",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 1,
+      "num_col": 7,
+      "num_row": 4,
+      "shifr": "Б1.1.14",
+      "type": [
+          {
+              "control": "Экзамен",
+              "controlTypeId": 1,
+              "hours": 0,
+              "id": 17583
+          },
+          {
+              "control": "Лабораторные работы",
+              "controlTypeId": 6,
+              "hours": 18,
+              "id": 17584
+          },
+          {
+              "control": "Лекции",
+              "controlTypeId": 2,
+              "hours": 18,
+              "id": 17585
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 36,
+              "id": 17586
+          }
+      ]
+  },
+  {
+      "discipline": "Правовое обеспечение цифровых технологий",
+      "id": "175871758817589",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 1,
+      "num_col": 7,
+      "num_row": 5,
+      "shifr": "Б1.1.16",
+      "type": [
+          {
+              "control": "Зачет",
+              "controlTypeId": 5,
+              "hours": 0,
+              "id": 17587
+          },
+          {
+              "control": "Семинарские занятия",
+              "controlTypeId": 3,
+              "hours": 36,
+              "id": 17588
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 36,
+              "id": 17589
+          }
+      ]
+  },
+  {
+      "discipline": "Проектирование интеграционных решений / Внедрение и сопровождение программного обеспечения",
+      "id": "17590175911759217593",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 2,
+      "num_col": 7,
+      "num_row": 6,
+      "shifr": "Б1.2.ЭД.2",
+      "type": [
+          {
+              "control": "Дифференцированный зачет",
+              "controlTypeId": 9,
+              "hours": 0,
+              "id": 17590
+          },
+          {
+              "control": "Курсовой проект",
+              "controlTypeId": 7,
+              "hours": 0,
+              "id": 17591
+          },
+          {
+              "control": "Лабораторные работы",
+              "controlTypeId": 6,
+              "hours": 72,
+              "id": 17592
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 72,
+              "id": 17593
+          }
+      ]
+  },
+  {
+      "discipline": "Разработка технико-экономического обоснования проекта / Бизнес-планирование разработки в области информационных технологий",
+      "id": "175941759517596",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 2,
+      "num_col": 7,
+      "num_row": 7,
+      "shifr": "Б1.2.ЭД.1",
+      "type": [
+          {
+              "control": "Зачет",
+              "controlTypeId": 5,
+              "hours": 0,
+              "id": 17594
+          },
+          {
+              "control": "Лабораторные работы",
+              "controlTypeId": 6,
+              "hours": 36,
+              "id": 17595
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 36,
+              "id": 17596
+          }
+      ]
+  },
+  {
+      "discipline": "Технический перевод",
+      "id": "175971759817599",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 1,
+      "num_col": 7,
+      "num_row": 8,
+      "shifr": "Б1.1.15",
+      "type": [
+          {
+              "control": "Экзамен",
+              "controlTypeId": 1,
+              "hours": 0,
+              "id": 17597
+          },
+          {
+              "control": "Семинарские занятия",
+              "controlTypeId": 3,
+              "hours": 36,
+              "id": 17598
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 36,
+              "id": 17599
+          }
+      ]
+  },
+  {
+      "discipline": "Философия",
+      "id": "17600176011760217603",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 1,
+      "num_col": 7,
+      "num_row": 9,
+      "shifr": "Б1.1.2",
+      "type": [
+          {
+              "control": "Зачет",
+              "controlTypeId": 5,
+              "hours": 0,
+              "id": 17600
+          },
+          {
+              "control": "Лекции",
+              "controlTypeId": 2,
+              "hours": 18,
+              "id": 17601
+          },
+          {
+              "control": "Семинарские занятия",
+              "controlTypeId": 3,
+              "hours": 18,
+              "id": 17602
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 36,
+              "id": 17603
+          }
+      ]
+  },
+  {
+      "discipline": "Экономика",
+      "id": "176041760517606",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 1,
+      "num_col": 7,
+      "num_row": 10,
+      "shifr": "Б1.1.13",
+      "type": [
+          {
+              "control": "Зачет",
+              "controlTypeId": 5,
+              "hours": 0,
+              "id": 17604
+          },
+          {
+              "control": "Семинарские занятия",
+              "controlTypeId": 3,
+              "hours": 36,
+              "id": 17605
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 36,
+              "id": 17606
+          }
+      ]
+  },
+  {
+      "discipline": "Проектная деятельность",
+      "id": "176071760817609",
+      "id_block": 5,
+      "id_group": 6,
+      "id_module": 6,
+      "id_part": 1,
+      "num_col": 7,
+      "num_row": 11,
+      "shifr": "Б1.1.19.1",
+      "type": [
+          {
+              "control": "Зачет",
+              "controlTypeId": 5,
+              "hours": 0,
+              "id": 17607
+          },
+          {
+              "control": "Семинарские занятия",
+              "controlTypeId": 3,
+              "hours": 36,
+              "id": 17608
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 36,
+              "id": 17609
+          }
+      ]
+  },
+  {
+      "discipline": "Выполнение и защита выпускной квалификационной работы",
+      "id": "17610",
+      "id_block": 3,
+      "id_group": 17,
+      "id_module": 19,
+      "id_part": 2,
+      "num_col": 8,
+      "num_row": 0,
+      "shifr": "Б3.1",
+      "type": [
+          {
+              "control": "ГЭК. Защита ВКР",
+              "controlTypeId": 15,
+              "hours": 36,
+              "id": 17610
+          }
+      ]
+  },
+  {
+      "discipline": "Производственная практика (преддипломная)",
+      "id": "1761117612",
+      "id_block": 2,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 2,
+      "num_col": 8,
+      "num_row": 1,
+      "shifr": "Б2.2.2",
+      "type": [
+          {
+              "control": "Дифференцированный зачет",
+              "controlTypeId": 9,
+              "hours": 0,
+              "id": 17611
+          },
+          {
+              "control": "Преддипломная практика",
+              "controlTypeId": 13,
+              "hours": 6,
+              "id": 17612
+          }
+      ]
+  },
+  {
+      "discipline": "Производственная практика (проектно-технологическая)",
+      "id": "1761317614",
+      "id_block": 2,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 2,
+      "num_col": 8,
+      "num_row": 2,
+      "shifr": "Б2.2.1",
+      "type": [
+          {
+              "control": "Дифференцированный зачет",
+              "controlTypeId": 9,
+              "hours": 0,
+              "id": 17613
+          },
+          {
+              "control": "Производственная практика",
+              "controlTypeId": 11,
+              "hours": 6,
+              "id": 17614
+          }
+      ]
+  },
+  {
+      "discipline": "Управление предпринимательской деятельностью",
+      "id": "176151761617617",
+      "id_block": 5,
+      "id_group": 1,
+      "id_module": 19,
+      "id_part": 1,
+      "num_col": 8,
+      "num_row": 3,
+      "shifr": "Б1.1.17",
+      "type": [
+          {
+              "control": "Зачет",
+              "controlTypeId": 5,
+              "hours": 0,
+              "id": 17615
+          },
+          {
+              "control": "Семинарские занятия",
+              "controlTypeId": 3,
+              "hours": 56,
+              "id": 17616
+          },
+          {
+              "control": "СРС",
+              "controlTypeId": 4,
+              "hours": 52,
+              "id": 17617
+          }
+      ]
+  }
+]
