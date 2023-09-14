@@ -26,7 +26,7 @@
 			<template v-slot:activator="{ on }">
 			<v-avatar v-on="on">
 				<v-img
-				src="http://placekitten.com/200/300"
+				src="http://placekitten.com/250/300"
 				alt="User Avatar"
 				class="avatar-icon"
 				style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid #ccc; padding: 2px;"
