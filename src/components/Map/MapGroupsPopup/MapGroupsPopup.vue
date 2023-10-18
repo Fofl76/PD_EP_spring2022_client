@@ -379,6 +379,8 @@ export default {
 		},
 
 		async initAllDisciplines() {
+			if (!this.$route.query.aup) return
+
 			this.items = await Api.fetchGroupsByAup(this.$route.query.aup)
 
 			this.getAllDisciplines()

@@ -6,10 +6,13 @@ import {
 } from '@models/Maps'
 import { IFetchAllGroupsResponse, IGroup } from '@models/Groups'
 import Key from '@models/Key'
+import jwtDecode from 'jwt-decode'
 
-import { AxiosResponse } from 'axios'
+import { AxiosError, AxiosResponse, HttpStatusCode } from 'axios'
 import axios from './axios'
 import objectToFormData from '@utils/objectToFormData'
+import { ITokenPayload, ITokens } from '@models/Auth'
+import tokenService from '@services/auth/TokenService'
 
 enum AxiosMethodsEnum {
 	GET = 'GET',
@@ -25,6 +28,43 @@ interface IFormUpload {
 }
 
 abstract class Api {
+	/**
+	 * @desc Запрос для авторизации
+	 * @param {any} payload - Группа
+	 * @return {Promise<ITokens | null>}
+	 */
+	static login(payload: { username: string; password: string }) {
+		return this.callFetch<ITokens>('login', AxiosMethodsEnum.POST, payload)
+	}
+
+	/**
+	 * @desc Запрос для обновления токенов
+	 * @return {Promise<void>}
+	 */
+	static async refresh() {
+		const access = tokenService.tokens.access
+		const refresh = tokenService.tokens.refresh
+
+		if (!access || !refresh) return
+
+		const data = await this.callFetch<ITokens>(
+			'refresh',
+			AxiosMethodsEnum.POST,
+			{
+				access,
+				refresh,
+			}
+		)
+
+		if (!data) return
+
+		tokenService.emit('tokens-fetched', data)
+	}
+
+	static test(aup: string) {
+		this.callFetch(`test/${aup}`)
+	}
+
 	/**
 	 * @desc Запрос на получение всех дисциплин и факультетов
 	 * @return {Promise<IFetchAllMapsListResponse[] | null>}
@@ -141,17 +181,36 @@ abstract class Api {
 		headers?: Record<string, string>
 	): Promise<T | null> {
 		try {
+			const token = tokenService.tokens.access || ''
+
+			if (token && endpoint !== 'refresh') {
+				const decoded = jwtDecode<ITokenPayload>(token)
+
+				if (decoded.exp * 1000 < Date.now()) {
+					await this.refresh()
+				}
+			}
+
 			const res: AxiosResponse<T> = await axios(endpoint, {
 				method,
 				data: args,
-				headers,
+				headers: {
+					...headers,
+					Authorization: token,
+				},
 			})
 
 			const data = res.data
 
 			return data
 		} catch (e) {
-			console.log(e)
+			if (
+				endpoint === 'refresh' &&
+				(e as AxiosError).response?.status === HttpStatusCode.Unauthorized
+			) {
+				tokenService.emit('logout')
+			}
+
 			return null
 		}
 	}
