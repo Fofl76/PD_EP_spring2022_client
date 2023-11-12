@@ -60,7 +60,13 @@ export default {
 
 	methods: {
 		async onLogin() {
-			await authService.login(this.form)
+			const res = await authService.login(this.form)
+
+			if (res === 'error') {
+				// TODO вывести ошибку
+				return
+			}
+
 			this.$emit('login')
 			this._value = false
 			this.clearForm()

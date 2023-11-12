@@ -5,15 +5,19 @@ import tokenService, { TokenService } from './TokenService'
 class AuthService extends Events {
 	private tokenService: TokenService
 
-	async login(payload: { username: string; password: string }) {
+	async login(payload: {
+		username: string
+		password: string
+	}): Promise<'success' | 'error'> {
 		const resp = await Api.login(payload)
 
 		if (!resp) {
-			//TODO вывести сообщение об ошибке
-			return
+			return 'error'
 		}
 
 		this.tokenService.emit('tokens-fetched', resp)
+
+		return 'success'
 	}
 
 	logout() {
