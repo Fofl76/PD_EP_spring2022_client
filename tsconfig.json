@@ -22,6 +22,7 @@
 			"@api/*": ["src/services/api/*"],
 			"@models/*": ["src/models/*"],
 			"@mixins/*": ["src/mixins/*"],
+			"@store/*": ["src/store/*"],
 			"@assets/*": ["src/assets/*"],
 			"@styles/*": ["src/styles/*"]
 		},
