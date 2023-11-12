@@ -17,6 +17,50 @@
 		/>
 
 		<MapGroupsPopup v-model="groupSettingsPopupModel" />
+
+		<div v-if="!isAuth" class="header-buttons">
+			<MapHeaderButton label="Войти" @click="openAuthPopup" />
+		</div>
+		<div v-else class="AuthUser">
+			<v-menu offset-y>
+				<template v-slot:activator="{ on }">
+					<v-avatar v-on="on">
+						<v-img
+							src="http://placekitten.com/250/300"
+							alt="User Avatar"
+							class="avatar-icon"
+							style="
+								width: 40px;
+								height: 40px;
+								border-radius: 50%;
+								border: 2px solid #ccc;
+								padding: 2px;
+							"
+						></v-img>
+					</v-avatar>
+				</template>
+				<v-list>
+					<v-list-item>
+						<v-list-item-title>
+							<!-- Отображение имени пользователя -->
+							Фамилия
+						</v-list-item-title>
+					</v-list-item>
+					<v-list-item>
+						<v-list-item-title>
+							<!-- Отображение почты пользователя -->
+							user@example.com
+						</v-list-item-title>
+					</v-list-item>
+					<v-list-item @click="logout">
+						<v-list-item-title>
+							<v-btn text color="error"> Выйти </v-btn>
+						</v-list-item-title>
+					</v-list-item>
+				</v-list>
+			</v-menu>
+		</div>
+		<MapAuthPopup v-model="authPopupModel" @login="onLogin" />
 	</div>
 </template>
 
@@ -27,16 +71,24 @@ import MapHeaderButton from '@components/Map/MapHeader/MapHeaderButton.vue'
 import MapGroupsPopup from '@components/Map/MapGroupsPopup/MapGroupsPopup.vue'
 import MapUploadFilePopup from '@components/Map/MapUploadFilePopup/MapUploadFilePopup.vue'
 
+import { mapGetters, mapMutations } from 'vuex'
 import axios from '@services/api/axios'
+import authService from '@services/auth/AuthService'
 
 export default {
 	name: 'MapHeaderControls',
-	components: { MapHeaderButton, MapGroupsPopup, MapUploadFilePopup },
+	components: {
+		MapHeaderButton,
+		MapGroupsPopup,
+		MapUploadFilePopup,
+		MapAuthPopup,
+	},
 
 	data() {
 		return {
 			uploadPopupModel: false,
 			groupSettingsPopupModel: false,
+			authPopupModel: false,
 		}
 	},
 
@@ -47,6 +99,20 @@ export default {
 
 		openUploadPopup() {
 			this.uploadPopupModel = true
+		},
+
+		openAuthPopup() {
+			console.log(this.$store.getters['Map/isAuth'])
+			this.authPopupModel = true
+		},
+
+		onLogin() {
+			this.authPopupModel = false
+			this.$store.commit('Map/setAuthStatus', true)
+		},
+
+		logout() {
+			authService.logout()
 		},
 
 		async downloadMap() {
@@ -70,6 +136,7 @@ export default {
 	},
 
 	computed: {
+		...mapGetters('Map', ['isAuth']),
 		isReady() {
 			return !!MapsService.mapList.value.length
 		},
@@ -87,5 +154,19 @@ export default {
 
 <style lang="sass">
 .MapHeaderControls
-    display: flex
+  display: flex
+  align-items: center
+
+.header-buttons
+  display: flex
+  align-items: center
+  margin-right: 20px  // Расстояние между кнопками
+  border-right: 2px solid #ccc  // Серый бордер справа
+
+.AuthUser
+  display: flex
+  align-items: center
+
+.avatar-icon
+  margin-right: 7px  // Расстояние между аватаркой и текстом
 </style>
