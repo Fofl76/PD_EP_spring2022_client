@@ -3,7 +3,7 @@ const state = {
 	rightMenuEditModel: false,
 	rightMenuEditItemId: null,
 
-	isAuth: !!localStorage.getItem('access'),
+	isAuth: false,
 }
 
 export default state

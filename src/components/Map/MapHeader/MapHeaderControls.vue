@@ -2,13 +2,21 @@
 	<div class="MapHeaderControls">
 		<MapHeaderButton label="Группировки" @click="openGroupSettingsPopupModel" />
 
-		<MapHeaderButton
-			label="Загрузить план"
-			icon="mdi-upload"
-			@click="openUploadPopup"
-		/>
+		<!-- Работа с файлами -->
+		<MapHeaderDropdown icon="mdi-file">
+			<MapHeaderButton
+				label="Загрузить план"
+				icon="mdi-upload"
+				@click="openUploadPopup"
+			/>
 
-		<MapHeaderButton label="Скачать" icon="mdi-download" @click="downloadMap" />
+			<MapHeaderButton
+				label="Скачать"
+				icon="mdi-download"
+				@click="downloadMap"
+			/>
+		</MapHeaderDropdown>
+		<!--  -->
 
 		<MapUploadFilePopup
 			v-model="uploadPopupModel"
@@ -18,48 +26,14 @@
 
 		<MapGroupsPopup v-model="groupSettingsPopupModel" />
 
+		<v-divider vertical></v-divider>
+
 		<div v-if="!isAuth" class="header-buttons">
 			<MapHeaderButton label="Войти" @click="openAuthPopup" />
 		</div>
-		<div v-else class="AuthUser">
-			<v-menu offset-y>
-				<template v-slot:activator="{ on }">
-					<v-avatar v-on="on">
-						<v-img
-							src="http://placekitten.com/250/300"
-							alt="User Avatar"
-							class="avatar-icon"
-							style="
-								width: 40px;
-								height: 40px;
-								border-radius: 50%;
-								border: 2px solid #ccc;
-								padding: 2px;
-							"
-						></v-img>
-					</v-avatar>
-				</template>
-				<v-list>
-					<v-list-item>
-						<v-list-item-title>
-							<!-- Отображение имени пользователя -->
-							Фамилия
-						</v-list-item-title>
-					</v-list-item>
-					<v-list-item>
-						<v-list-item-title>
-							<!-- Отображение почты пользователя -->
-							user@example.com
-						</v-list-item-title>
-					</v-list-item>
-					<v-list-item @click="logout">
-						<v-list-item-title>
-							<v-btn text color="error"> Выйти </v-btn>
-						</v-list-item-title>
-					</v-list-item>
-				</v-list>
-			</v-menu>
-		</div>
+
+		<MapHeaderAuthDropdown v-else @onLogout="logout" />
+
 		<MapAuthPopup v-model="authPopupModel" @login="onLogin" />
 	</div>
 </template>
@@ -68,6 +42,8 @@
 import MapsService from '@services/Maps/MapsService'
 
 import MapHeaderButton from '@components/Map/MapHeader/MapHeaderButton.vue'
+import MapHeaderDropdown from '@components/Map/MapHeader/MapHeaderDropdown.vue'
+import MapHeaderAuthDropdown from '@components/Map/MapHeader/MapHeaderAuthDropdown.vue'
 import MapGroupsPopup from '@components/Map/MapGroupsPopup/MapGroupsPopup.vue'
 import MapUploadFilePopup from '@components/Map/MapUploadFilePopup/MapUploadFilePopup.vue'
 
@@ -79,6 +55,8 @@ export default {
 	name: 'MapHeaderControls',
 	components: {
 		MapHeaderButton,
+		MapHeaderDropdown,
+		MapHeaderAuthDropdown,
 		MapGroupsPopup,
 		MapUploadFilePopup,
 		MapAuthPopup,
@@ -102,13 +80,11 @@ export default {
 		},
 
 		openAuthPopup() {
-			console.log(this.$store.getters['Map/isAuth'])
 			this.authPopupModel = true
 		},
 
 		onLogin() {
 			this.authPopupModel = false
-			this.$store.commit('Map/setAuthStatus', true)
 		},
 
 		logout() {
@@ -155,13 +131,13 @@ export default {
 <style lang="sass">
 .MapHeaderControls
   display: flex
+  gap: 8px
   align-items: center
 
 .header-buttons
   display: flex
   align-items: center
   margin-right: 20px  // Расстояние между кнопками
-  border-right: 2px solid #ccc  // Серый бордер справа
 
 .AuthUser
   display: flex
