@@ -11,8 +11,9 @@ import jwtDecode from 'jwt-decode'
 import { AxiosError, AxiosResponse, HttpStatusCode } from 'axios'
 import axios from './axios'
 import objectToFormData from '@utils/objectToFormData'
-import { ITokenPayload, ITokens } from '@models/Auth'
+import { ITokenPayload, ITokens, IUser } from '@models/Auth'
 import tokenService from '@services/auth/TokenService'
+import authService from '@services/auth/AuthService'
 
 enum AxiosMethodsEnum {
 	GET = 'GET',
@@ -59,6 +60,12 @@ abstract class Api {
 		if (!data) return
 
 		tokenService.emit('tokens-fetched', data)
+	}
+
+	static async fetchUser(userId: Key) {
+		return this.callFetch<IUser>(`user/${userId}`, AxiosMethodsEnum.GET, null, {
+			Authorization: tokenService.tokens.access || '',
+		})
 	}
 
 	/**

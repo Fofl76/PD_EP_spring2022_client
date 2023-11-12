@@ -1,10 +1,8 @@
 <template>
-	<div class="MapHeaderButton">
-		<v-btn @click="onClick" text dark>
-			<span>{{ label }}</span>
-			<v-icon v-if="icon" right dark>{{ icon }}</v-icon>
-		</v-btn>
-	</div>
+	<v-btn class="MapHeaderButton" @click="onClick" text dark>
+		<span>{{ label }}</span>
+		<v-icon v-if="icon" right dark>{{ icon }}</v-icon>
+	</v-btn>
 </template>
 
 <script>
@@ -32,4 +30,5 @@ export default {
 
 <style lang="sass">
 .MapHeaderButton
+    display: inline-block
 </style>
