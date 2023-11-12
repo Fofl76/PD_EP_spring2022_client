@@ -19,45 +19,48 @@
 		<MapGroupsPopup v-model="groupSettingsPopupModel" />
 
 		<div v-if="!isAuth" class="header-buttons">
-		<MapHeaderButton label="Войти" @click="openAuthPopup" />
+			<MapHeaderButton label="Войти" @click="openAuthPopup" />
 		</div>
 		<div v-else class="AuthUser">
-		<v-menu offset-y>
-			<template v-slot:activator="{ on }">
-			<v-avatar v-on="on">
-				<v-img
-				src="http://placekitten.com/250/300"
-				alt="User Avatar"
-				class="avatar-icon"
-				style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid #ccc; padding: 2px;"
-				></v-img>
-			</v-avatar>
-			</template>
-			<v-list>
-			<v-list-item>
-				<v-list-item-title>
-				<!-- Отображение имени пользователя -->
-				Фамилия
-				</v-list-item-title>
-			</v-list-item>
-			<v-list-item>
-				<v-list-item-title>
-				<!-- Отображение почты пользователя -->
-				user@example.com
-				</v-list-item-title>
-			</v-list-item>
-			<v-list-item @click="logout">
-				<v-list-item-title>
-				<v-btn text color="error">
-					Выйти
-				</v-btn>
-				</v-list-item-title>
-			</v-list-item>
-			</v-list>
-		</v-menu>
+			<v-menu offset-y>
+				<template v-slot:activator="{ on }">
+					<v-avatar v-on="on">
+						<v-img
+							src="http://placekitten.com/250/300"
+							alt="User Avatar"
+							class="avatar-icon"
+							style="
+								width: 40px;
+								height: 40px;
+								border-radius: 50%;
+								border: 2px solid #ccc;
+								padding: 2px;
+							"
+						></v-img>
+					</v-avatar>
+				</template>
+				<v-list>
+					<v-list-item>
+						<v-list-item-title>
+							<!-- Отображение имени пользователя -->
+							Фамилия
+						</v-list-item-title>
+					</v-list-item>
+					<v-list-item>
+						<v-list-item-title>
+							<!-- Отображение почты пользователя -->
+							user@example.com
+						</v-list-item-title>
+					</v-list-item>
+					<v-list-item @click="logout">
+						<v-list-item-title>
+							<v-btn text color="error"> Выйти </v-btn>
+						</v-list-item-title>
+					</v-list-item>
+				</v-list>
+			</v-menu>
 		</div>
 		<MapAuthPopup v-model="authPopupModel" @login="onLogin" />
-
 	</div>
 </template>
 
@@ -68,19 +71,24 @@ import MapGroupsPopup from '@components/Map/MapGroupsPopup/MapGroupsPopup.vue'
 import MapUploadFilePopup from '@components/Map/MapUploadFilePopup/MapUploadFilePopup.vue'
 import MapAuthPopup from '@components/Map/MapAuthPopup/MapAuthPopup.vue'
 
-import { mapGetters, mapMutations } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex'
 import axios from '@services/api/axios'
+import authService from '@services/auth/AuthService'
 
 export default {
 	name: 'MapHeaderControls',
-	components: { MapHeaderButton, MapGroupsPopup, MapUploadFilePopup, MapAuthPopup},
+	components: {
+		MapHeaderButton,
+		MapGroupsPopup,
+		MapUploadFilePopup,
+		MapAuthPopup,
+	},
 
 	data() {
 		return {
 			uploadPopupModel: false,
 			groupSettingsPopupModel: false,
 			authPopupModel: false,
-			isAuth: false,
 		}
 	},
 
@@ -95,25 +103,18 @@ export default {
 		},
 
 		openAuthPopup() {
-			console.log("Open Auth Popup"); // Добавьте эту строку
-			console.log(this.$store.getters['Map/isAuth']);
-  			this.authPopupModel = true;
+			console.log(this.$store.getters['Map/isAuth'])
+			this.authPopupModel = true
 		},
 
 		onLogin() {
-			this.authPopupModel = false;
-			// Установить состояние авторизации на true
-			this.$store.commit('Map/setAuthStatus', true);
-			this.isAuth = this.$store.getters['Map/isAuth'];
+			this.authPopupModel = false
+			this.$store.commit('Map/setAuthStatus', true)
 		},
 
 		logout() {
-			// Здесь вы можете добавить логику для выхода из системы, если это необходимо
-			// Сбросить состояние авторизации
-			this.$store.commit('Map/setAuthStatus', false);
-			this.isAuth = this.$store.getters['Map/isAuth'];
+			authService.logout()
 		},
-
 
 		async downloadMap() {
 			try {
@@ -136,7 +137,7 @@ export default {
 	},
 
 	computed: {
-		...mapGetters(['isAuth']),
+		...mapGetters('Map', ['isAuth']),
 		isReady() {
 			return !!MapsService.mapList.value.length
 		},

@@ -1,59 +1,57 @@
 <template>
-	<div>
-		<div class="MapTableMain" :style="styleVars">
-			<template v-if="!loading">
-				<!-- Левая колонка с линейкой ЗЕТ -->
-				<MapTableMainRulerColumn :maxZet="maxZet" :heightZet="heightZet" />
-
-				<!-- Вынести в отдельный компонент -->
-				<div
-					class="MapTableMain__column"
-					v-for="(column, key) in table"
-					:key="key"
-				>
-					<!-- Шапка колонки с блоками -->
-					<MapTableMainColumnHeader :ordinalNumber="key" :columnData="column" />
-
-					<!-- Вынести в отдельный компонент -->
-					<draggable
-						class="MapTableMain__draggable"
-						v-bind="dragOptions"
-						:value="table[key]"
-						:setData="setData"
-						@change="onDragElementTable($event, key)"
-					>
-						<div v-for="element in column" :key="element.id">
-							<MapTableMainBlock
-								:data="dataValue(element)"
-								:isEditing="activeEditingItemId === element.id"
-								:height="heightTableBlock(element)"
-								:fitMode="fitMode"
-								:total-zet="totalZet(element)"
-								@edit="$emit('edit', $event)"
-								@click.native="onClickBlock(element)"
-							/>
-						</div>
-					</draggable>
-				</div>
-			</template>
+	<div class="MapTableMain" :style="styleVars">
+		<template v-if="!loading">
+			<!-- Левая колонка с линейкой ЗЕТ -->
+			<MapTableMainRulerColumn :maxZet="maxZet" :heightZet="heightZet" />
 
 			<!-- Вынести в отдельный компонент -->
-			<template v-else>
-				<div
-					class="MapTableMain__column"
-					v-for="(column, key) in fakeElementsCount"
-					:key="key"
-				>
-					<div class="MapTableMain__column-header">
-						{{ orderWords[key] }}
-					</div>
+			<div
+				class="MapTableMain__column"
+				v-for="(column, key) in table"
+				:key="key"
+			>
+				<!-- Шапка колонки с блоками -->
+				<MapTableMainColumnHeader :ordinalNumber="key" :columnData="column" />
 
-					<div v-for="item in 10" :key="item.id">
-						<MapTableMainSkeletonBlock />
-					</div>
+				<!-- Вынести в отдельный компонент -->
+				<draggable
+					class="MapTableMain__draggable"
+					v-bind="dragOptions"
+					:value="table[key]"
+					:setData="setData"
+					@change="onDragElementTable($event, key)"
+				>
+					<MapTableMainBlock
+						v-for="element in column"
+						:key="element.id"
+						:data="dataValue(element)"
+						:isEditing="activeEditingItemId === element.id"
+						:height="heightTableBlock(element)"
+						:fitMode="fitMode"
+						:total-zet="totalZet(element)"
+						@edit="$emit('edit', $event)"
+						@click.native="onClickBlock(element)"
+					/>
+				</draggable>
+			</div>
+		</template>
+
+		<!-- Вынести в отдельный компонент -->
+		<template v-else>
+			<div
+				class="MapTableMain__column"
+				v-for="(column, key) in fakeElementsCount"
+				:key="key"
+			>
+				<div class="MapTableMain__column-header">
+					{{ orderWords[key] }}
 				</div>
-			</template>
-		</div>
+
+				<div v-for="item in 10" :key="item.id">
+					<MapTableMainSkeletonBlock />
+				</div>
+			</div>
+		</template>
 	</div>
 </template>
 

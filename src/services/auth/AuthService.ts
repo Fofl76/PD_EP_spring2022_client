@@ -21,11 +21,6 @@ class AuthService extends Events {
 		window.location.reload()
 	}
 
-	test(aup: string) {
-		//временный тест
-		Api.test(aup)
-	}
-
 	constructor(tokenService: TokenService) {
 		super()
 		this.tokenService = tokenService

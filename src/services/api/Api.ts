@@ -61,12 +61,6 @@ abstract class Api {
 		tokenService.emit('tokens-fetched', data)
 	}
 
-	static test(aup: string) {
-		this.callFetch(`test/${aup}`, AxiosMethodsEnum.GET, undefined, {
-			Authorization: tokenService.tokens.access || '',
-		})
-	}
-
 	/**
 	 * @desc Запрос на получение всех дисциплин и факультетов
 	 * @return {Promise<IFetchAllMapsListResponse[] | null>}

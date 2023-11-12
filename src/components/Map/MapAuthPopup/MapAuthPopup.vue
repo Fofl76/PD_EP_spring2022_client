@@ -26,8 +26,6 @@
 				<v-spacer></v-spacer>
 				<v-btn color="error" @click="_value = false">Отмена</v-btn>
 				<v-btn color="success" @click="onLogin">Войти</v-btn>
-
-				<v-btn color="error" @click="testAuthorization">Тест</v-btn>
 			</v-card-actions>
 		</v-card>
 	</v-dialog>
@@ -61,14 +59,11 @@ export default {
 	},
 
 	methods: {
-		onLogin() {
-			authService.login(this.form)
+		async onLogin() {
+			await authService.login(this.form)
+			this.$emit('login')
 			this._value = false
 			this.clearForm()
-		},
-
-		testAuthorization() {
-			authService.test(this.$route.query.aup)
 		},
 
 		clearForm() {
