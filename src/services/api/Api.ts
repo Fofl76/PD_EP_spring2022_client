@@ -62,7 +62,9 @@ abstract class Api {
 	}
 
 	static test(aup: string) {
-		this.callFetch(`test/${aup}`)
+		this.callFetch(`test/${aup}`, AxiosMethodsEnum.GET, undefined, {
+			Authorization: tokenService.tokens.access || '',
+		})
 	}
 
 	/**
@@ -120,7 +122,14 @@ abstract class Api {
 	 * @return {Promise<any | null>}
 	 */
 	static saveMap(aupCode: Key, table: any[]) {
-		return this.callFetch<any>(`save/${aupCode}`, AxiosMethodsEnum.POST, table)
+		return this.callFetch<any>(
+			`save/${aupCode}`,
+			AxiosMethodsEnum.POST,
+			table,
+			{
+				Authorization: tokenService.tokens.access || '',
+			}
+		)
 	}
 
 	/**
@@ -181,13 +190,16 @@ abstract class Api {
 		headers?: Record<string, string>
 	): Promise<T | null> {
 		try {
-			const token = tokenService.tokens.access || ''
+			if (headers?.Authorization) {
+				const token = tokenService.tokens.access
 
-			if (token && endpoint !== 'refresh') {
-				const decoded = jwtDecode<ITokenPayload>(token)
+				if (token && endpoint !== 'refresh') {
+					const decoded = jwtDecode<ITokenPayload>(token)
 
-				if (decoded.exp * 1000 < Date.now()) {
-					await this.refresh()
+					if (decoded.exp * 1000 < Date.now()) {
+						await this.refresh()
+						headers.Authorization = tokenService.tokens.access!
+					}
 				}
 			}
 
@@ -196,13 +208,10 @@ abstract class Api {
 				data: args,
 				headers: {
 					...headers,
-					Authorization: token,
 				},
 			})
 
-			const data = res.data
-
-			return data
+			return res.data
 		} catch (e) {
 			if (
 				endpoint === 'refresh' &&
