@@ -21,7 +21,8 @@
 			"@utils/*": ["src/services/utils/*"],
 			"@api/*": ["src/services/api/*"],
 			"@models/*": ["src/models/*"],
-			"@mixins/*": ["src/mixins/*"]
+			"@mixins/*": ["src/mixins/*"],
+			"@store/*": ["src/store/*"]
 		},
 		"lib": ["esnext", "dom", "dom.iterable", "scripthost"],
 		"incremental": false,
