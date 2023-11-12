@@ -190,16 +190,18 @@ abstract class Api {
 		headers?: Record<string, string>
 	): Promise<T | null> {
 		try {
-			if (headers?.Authorization) {
-				const token = tokenService.tokens.access
+			if (headers?.Authorization && endpoint !== 'refresh') {
+				const token = headers.Authorization
 
-				if (token && endpoint !== 'refresh') {
-					const decoded = jwtDecode<ITokenPayload>(token)
+				if (!token) {
+					return null
+				}
 
-					if (decoded.exp * 1000 < Date.now()) {
-						await this.refresh()
-						headers.Authorization = tokenService.tokens.access!
-					}
+				const decoded = jwtDecode<ITokenPayload>(token)
+
+				if (decoded.exp * 1000 < Date.now()) {
+					await this.refresh()
+					headers.Authorization = tokenService.tokens.access!
 				}
 			}
 
