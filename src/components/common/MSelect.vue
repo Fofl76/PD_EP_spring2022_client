@@ -9,6 +9,7 @@
 		:return-object="returnObject"
 		:item-value="itemValue"
 		:label="label"
+		:disabled="disabled"
 		hide-details="auto"
 		dark
 		filled
@@ -57,6 +58,11 @@ export default {
 		returnObject: {
 			type: Boolean,
 			default: true,
+		},
+
+		disabled: {
+			type: Boolean,
+			default: false,
 		},
 	},
 

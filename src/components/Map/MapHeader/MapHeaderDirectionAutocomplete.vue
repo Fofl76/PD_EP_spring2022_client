@@ -89,6 +89,7 @@ export default {
     &__year-chip
         justify-content: center
         margin-right: 4px
+        margin-bottom: 4px
 
         &--selected
             margin-right: 4px
