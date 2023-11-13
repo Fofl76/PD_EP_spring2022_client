@@ -7,6 +7,7 @@
 		:items="items"
 		item-value=""
 		:return-object="false"
+		:disabled="items.length === 1"
 		item-title=""
 		height="52"
 	/>
