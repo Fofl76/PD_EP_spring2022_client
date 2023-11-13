@@ -14,9 +14,9 @@
 					<v-avatar
 						class="MapHeaderAuthDropdownActivator__avatar"
 						size="48"
-						color="red"
+						:color="colorAvatar"
 					>
-						<span>CJ</span>
+						<span>{{ shortLogin }}</span>
 					</v-avatar>
 					<div class="MapHeaderAuthDropdownActivator__name-block">
 						<span class="MapHeaderAuthDropdownActivator__name">
@@ -50,6 +50,7 @@
 import MapHeaderDropdown from '@components/Map/MapHeader/MapHeaderDropdown.vue'
 import MChevron from '@components/common/MChevron.vue'
 import authService from '@services/auth/AuthService'
+import stringToColor from '@utils/stringToColor'
 
 export default {
 	name: 'MapHeaderAuthDropdown',
@@ -70,6 +71,14 @@ export default {
 
 		loginLoggedUser() {
 			return this.loggedUser?.login
+		},
+
+		shortLogin() {
+			return this.loginLoggedUser.slice(0, 3)
+		},
+
+		colorAvatar() {
+			return stringToColor(this.shortLogin)
 		},
 	},
 }
