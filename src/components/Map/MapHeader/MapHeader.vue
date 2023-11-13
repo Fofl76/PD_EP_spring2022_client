@@ -21,3 +21,12 @@ export default {
 	},
 }
 </script>
+
+<style lang="sass">
+.MapHeader
+    .v-toolbar__content
+        padding: 8px 16px !important
+
+    &__divider
+        margin: 0 4px
+</style>

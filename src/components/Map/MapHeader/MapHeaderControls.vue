@@ -1,22 +1,39 @@
 <template>
 	<div class="MapHeaderControls">
+		<!-- Группировки -->
 		<MapHeaderButton label="Группировки" @click="openGroupSettingsPopupModel" />
+		<!--  -->
+
+		<v-divider class="MapHeader__divider" vertical></v-divider>
 
 		<!-- Работа с файлами -->
-		<MapHeaderDropdown icon="mdi-file">
-			<MapHeaderButton
-				label="Загрузить план"
-				icon="mdi-upload"
+		<MapHeaderDropdown icon="mdi-file-download" :disabled="!isAuth && !aupCode">
+			<v-list-item
+				class="MapHeaderDropdownListItem"
 				@click="openUploadPopup"
-			/>
+				:disabled="!isAuth"
+			>
+				<v-list-item-icon>
+					<v-icon>mdi-upload</v-icon>
+				</v-list-item-icon>
+				<v-list-item-content>
+					<v-list-item-title>Загрузить план</v-list-item-title>
+				</v-list-item-content>
+			</v-list-item>
 
-			<MapHeaderButton
-				label="Скачать"
-				icon="mdi-download"
+			<v-list-item
+				class="MapHeaderDropdownListItem"
 				@click="downloadMap"
-			/>
+				:disabled="!aupCode"
+			>
+				<v-list-item-icon>
+					<v-icon>mdi-download</v-icon>
+				</v-list-item-icon>
+				<v-list-item-content>
+					<v-list-item-title>Скачать</v-list-item-title>
+				</v-list-item-content>
+			</v-list-item>
 		</MapHeaderDropdown>
-		<!--  -->
 
 		<MapUploadFilePopup
 			v-model="uploadPopupModel"
@@ -25,16 +42,16 @@
 		/>
 
 		<MapGroupsPopup v-model="groupSettingsPopupModel" />
+		<!--  -->
 
-		<v-divider vertical></v-divider>
+		<v-divider class="MapHeader__divider" vertical></v-divider>
 
-		<div v-if="!isAuth" class="header-buttons">
-			<MapHeaderButton label="Войти" @click="openAuthPopup" />
-		</div>
-
+		<!-- Авторизация -->
+		<MapHeaderButton v-if="!isAuth" label="Войти" @click="openAuthPopup" />
 		<MapHeaderAuthDropdown v-else @onLogout="logout" />
 
 		<MapAuthPopup v-model="authPopupModel" @login="onLogin" />
+		<!--  -->
 	</div>
 </template>
 
@@ -130,19 +147,21 @@ export default {
 
 <style lang="sass">
 .MapHeaderControls
-  display: flex
-  gap: 8px
-  align-items: center
+    display: flex
+    gap: 8px
+    align-items: center
+    height: 100%
+    max-height: 48px
 
 .header-buttons
-  display: flex
-  align-items: center
-  margin-right: 20px  // Расстояние между кнопками
+    display: flex
+    align-items: center
+    margin-right: 20px
 
 .AuthUser
-  display: flex
-  align-items: center
+    display: flex
+    align-items: center
 
 .avatar-icon
-  margin-right: 7px  // Расстояние между аватаркой и текстом
+    margin-right: 7px
 </style>

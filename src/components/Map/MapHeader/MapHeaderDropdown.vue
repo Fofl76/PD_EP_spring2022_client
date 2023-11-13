@@ -1,9 +1,14 @@
 <template>
 	<div class="MapHeaderDropdown">
-		<v-menu offset-y :value="value">
+		<v-menu
+			offset-y
+			nudge-bottom="5"
+			:value="value"
+			@input="$emit('input', $event)"
+		>
 			<template v-slot:activator="{ on, attrs }">
 				<slot name="activator">
-					<v-btn v-bind="attrs" v-on="on" text dark icon>
+					<v-btn v-bind="attrs" v-on="on" text dark icon :disabled="disabled">
 						<v-icon v-if="icon" dark>{{ icon }}</v-icon>
 					</v-btn>
 				</slot>
@@ -28,11 +33,16 @@ export default {
 			type: String,
 			default: null,
 		},
+
+		disabled: {
+			type: Boolean,
+			default: false,
+		},
 	},
 }
 </script>
 
-<style lang="sass" scoped>
+<style lang="sass">
 .MapHeaderDropdown
     &__list
         display: flex
@@ -41,4 +51,7 @@ export default {
 
         & > *
             width: 100%
+
+.MapHeaderDropdownListItem
+    cursor: pointer
 </style>
