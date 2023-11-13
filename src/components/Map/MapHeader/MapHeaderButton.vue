@@ -1,7 +1,7 @@
 <template>
-	<v-btn class="MapHeaderButton" @click="onClick" text dark>
+	<v-btn class="MapHeaderButton" @click="onClick" height="100%" text dark>
+		<v-icon v-if="icon" left dark>{{ icon }}</v-icon>
 		<span>{{ label }}</span>
-		<v-icon v-if="icon" right dark>{{ icon }}</v-icon>
 	</v-btn>
 </template>
 
