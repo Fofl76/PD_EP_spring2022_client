@@ -12,7 +12,7 @@ enum DefaultMessages {
  *  Инициализация Vue-плагина происходит в main.ts
  *  @see {@link https://vue-toastification.maronato.dev | Сайт плагина}
  */
-abstract class ToastsService {
+abstract class ToastService {
 	static defaultOptions = {
 		position: POSITION.BOTTOM_RIGHT,
 		draggable: false,
@@ -28,5 +28,5 @@ abstract class ToastsService {
 	}
 }
 
-export default ToastsService
-export { ToastsService }
+export default ToastService
+export { ToastService }
