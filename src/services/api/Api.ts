@@ -4,7 +4,7 @@ import {
 	IFetchAllControlTypesResponse,
 	IUnitsOfMeasurement,
 } from '@models/Maps'
-import { IFetchAllGroupsResponse, IGroup } from '@models/Groups'
+import { IFetchAllGroupsResponse, IGroup, IModule } from '@models/Groups'
 import Key from '@models/Key'
 
 import { AxiosResponse } from 'axios'
@@ -63,6 +63,15 @@ abstract class Api {
 		return this.callFetch<IFetchAllGroupsResponse[]>(
 			`get-group-by-aup/${aupCode}`
 		)
+	}
+
+	/**
+	 * @desc Запрос на получение групп для таблицы
+	 * @param {Key} aupCode - Код карты
+	 * @return {Promise<IModule | null>}
+	 */
+	static fetchModuleByAup(aupCode: Key) {
+		return this.callFetch<IModule[]>(`get-modules-by-aup/${aupCode}`)
 	}
 
 	/**
