@@ -11,7 +11,7 @@
 		hide-details="auto"
 		dark
 		filled
-		autocomplete="off"
+		autocomplete="false"
 		dense
 		v-bind="$attrs"
 		v-on="$listeners"
