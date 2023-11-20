@@ -1,17 +1,17 @@
 <template>
-  <div>
-    <router-view />
-  </div>
+	<div>
+		<router-view />
+	</div>
 </template>
 
 <script>
 export default {
-  name: "App",
+	name: 'App',
 
-  data: () => ({
-    //
-  }),
-};
+	data: () => ({
+		//
+	}),
+}
 </script>
 
 <style lang="sass">
