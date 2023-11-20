@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import orderWords from '@utils/orderWords.ts'
+import orderWords from '@utils/orderWords'
 import MapTableMainColumnHeaderDetails from '@components/Map/MapTable/MapTableMainColumnHeaderDetails.vue'
 
 export default {
