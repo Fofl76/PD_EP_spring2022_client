@@ -1,17 +1,17 @@
 <template>
-  <div>
-    <router-view />
-  </div>
+	<div>
+		<router-view />
+	</div>
 </template>
 
 <script>
 export default {
-  name: "App",
+	name: 'App',
 
-  data: () => ({
-    //
-  }),
-};
+	data: () => ({
+		//
+	}),
+}
 </script>
 
 <style lang="sass">
@@ -25,4 +25,7 @@ input::-webkit-inner-spin-button
 
 input[type=number]
   -moz-appearance: textfield
+
+input:-webkit-autofill
+    -webkit-background-clip: text
 </style>

@@ -1,33 +1,48 @@
 <template>
-	<v-dialog v-model="_value" max-width="500">
-		<v-card class="MapAuthPopup__card">
-			<v-card-title class="text-h5">Авторизация</v-card-title>
+	<v-dialog v-model="_value" width="unset">
+		<div class="MapAuthPopup">
+			<v-btn class="MapAuthPopup__close-btn" icon @click="closePopup">
+				<v-icon>mdi-close</v-icon>
+			</v-btn>
 
-			<v-card-text class="MapAuthPopup__text">
-				<v-text-field
-					v-model="form.username"
-					label="Логин"
-					outlined
-					dense
-					required
-				></v-text-field>
+			<!-- <div class="MapAuthPopup__side MapAuthPopup__side--left">
+				<div class="text-h6">Недавно входили с этих аккаунтов</div>
+				<div class="subtitle-1">Нажмите на фотографию или имя, чтобы войти</div>
+			</div> -->
 
-				<v-text-field
-					v-model="form.password"
-					label="Пароль"
-					type="password"
-					outlined
-					dense
-					required
-				></v-text-field>
-			</v-card-text>
+			<div class="MapAuthPopup__side MapAuthPopup__side--right">
+				<div class="MapAuthPopup__title text-h6">Авторизация</div>
 
-			<v-card-actions>
-				<v-spacer></v-spacer>
-				<v-btn color="error" @click="_value = false">Отмена</v-btn>
-				<v-btn color="success" @click="onLogin">Войти</v-btn>
-			</v-card-actions>
-		</v-card>
+				<div class="MapAuthPopup__input-block">
+					<v-text-field
+						class="MapAuthPopup__input"
+						v-model="form.username"
+						hide-details="auto"
+						label="Логин"
+						filled
+						dense
+						required
+					/>
+				</div>
+
+				<div class="MapAuthPopup__input-block">
+					<v-text-field
+						class="MapAuthPopup__input"
+						v-model="form.password"
+						hide-details="auto"
+						label="Пароль"
+						type="password"
+						filled
+						dense
+						required
+					/>
+				</div>
+
+				<!-- <v-checkbox dense label="Сохранить вход"></v-checkbox> -->
+
+				<v-btn color="success" block @click="onLogin">Войти</v-btn>
+			</div>
+		</div>
 	</v-dialog>
 </template>
 
@@ -72,6 +87,10 @@ export default {
 			this.clearForm()
 		},
 
+		closePopup() {
+			this._value = false
+		},
+
 		clearForm() {
 			this.form.username = ''
 			this.form.password = ''
@@ -80,4 +99,23 @@ export default {
 }
 </script>
 
-<style lang="sass"></style>
+<style lang="sass">
+.MapAuthPopup
+    background-color: #fff
+    display: flex
+    position: relative
+
+    &__close-btn
+        position: absolute
+        right: 12px
+        top: 12px
+
+    &__side
+        padding: 24px 32px
+
+    &__title
+        margin-bottom: 16px
+
+    &__input-block
+        margin-bottom: 12px
+</style>
