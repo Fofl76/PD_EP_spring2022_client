@@ -1,10 +1,15 @@
 <template>
 	<div class="MapHeaderSelectBlock">
-		<MapHeaderFacultySelect v-model="facultyModel" :items="facultyItems" />
+		<MapHeaderFacultySelect
+			v-model="facultyModel"
+			:loading="isLoadingFacultyInput"
+			:items="facultyItems"
+		/>
 
 		<MapHeaderDirectionAutocomplete
 			v-model="directionModel"
 			:items="directionItems"
+			:loading="isLoadingDirectionInput"
 			@input="onSelectDirection"
 		/>
 
@@ -44,6 +49,8 @@ export default {
 			mapsServiceHandlers: {
 				fetchMapList: this.updateFormFields,
 			},
+			isLoadingFacultyInput: false,
+			isLoadingDirectionInput: false,
 		}
 	},
 
@@ -101,7 +108,18 @@ export default {
 			if (this.facultyModel) {
 				this.directionModel = this.findDirectionInFacultyByAup(aupCode) || null
 			}
+
+			this.isLoadingFacultyInput = false
+			this.isLoadingDirectionInput = false
 		},
+	},
+
+	created() {
+		/* переделать на норм */
+		if (this.$route.query.aup) {
+			this.isLoadingFacultyInput = true
+			this.isLoadingDirectionInput = true
+		}
 	},
 }
 </script>
