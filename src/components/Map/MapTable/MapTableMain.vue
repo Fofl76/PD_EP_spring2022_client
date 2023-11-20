@@ -61,7 +61,7 @@
 import _ from 'lodash'
 import draggable from 'vuedraggable'
 
-import orderWords from '@utils/orderWords'
+import orderWords from '@utils/orderWords.ts'
 import GroupsService from '@services/Groups/GroupsService'
 import MapsService from '@services/Maps/MapsService'
 

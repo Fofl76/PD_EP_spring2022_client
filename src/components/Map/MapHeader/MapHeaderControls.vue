@@ -79,7 +79,7 @@ export default {
 		},
 
 		downloadURL() {
-			return `${process.env.VUE_APP_API}/save_excel/${this.aupCode}`
+			return `${process.env.VITE_API}/save_excel/${this.aupCode}`
 		},
 	},
 }
