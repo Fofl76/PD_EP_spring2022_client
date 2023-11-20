@@ -1,7 +1,6 @@
 <template>
 	<MSelect
 		class="MapHeaderYearSelect"
-		:disabled="!items.length"
 		label="Год"
 		v-model="value_"
 		:items="items"

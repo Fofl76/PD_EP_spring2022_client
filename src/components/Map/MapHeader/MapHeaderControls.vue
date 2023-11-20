@@ -63,6 +63,7 @@ import MapHeaderDropdown from '@components/Map/MapHeader/MapHeaderDropdown.vue'
 import MapHeaderAuthDropdown from '@components/Map/MapHeader/MapHeaderAuthDropdown.vue'
 import MapGroupsPopup from '@components/Map/MapGroupsPopup/MapGroupsPopup.vue'
 import MapUploadFilePopup from '@components/Map/MapUploadFilePopup/MapUploadFilePopup.vue'
+import MapAuthPopup from '@components/Map/MapAuthPopup/MapAuthPopup.vue'
 
 import { mapGetters, mapMutations } from 'vuex'
 import axios from '@services/api/axios'
