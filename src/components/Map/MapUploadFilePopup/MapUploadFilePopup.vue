@@ -1,41 +1,48 @@
 <template>
 	<v-dialog class="MapUploadFilePopup" v-model="_value" max-width="500">
 		<v-card class="MapUploadFilePopup__card">
+			<v-btn class="MapUploadFilePopup__close-btn" icon @click="_value = false">
+				<v-icon>mdi-close</v-icon>
+			</v-btn>
+
 			<v-card-title class="text-h5">Сформировать КД</v-card-title>
 
 			<v-card-text class="MapUploadFilePopup__text">
-				<v-checkbox
-					v-model="form.checkboxIntegralityModel"
-					:disabled="isLoadingUploadFile"
-					class="MapUploadFilePopup__checkbox"
-					label="Проверять целочисленность ЗЕТ"
-					hide-details="auto"
-				/>
-
-				<v-checkbox
-					v-model="form.checkboxSumModel"
-					:disabled="isLoadingUploadFile"
-					class="MapUploadFilePopup__checkbox"
-					label="Проверять объем программы в ЗЕТ"
-					hide-details="auto"
-				/>
-
 				<MUploadFileDragArea
 					v-model="form.uploadedFiles"
 					:accessTypes="accessTypes"
 					icon="mdi-file-excel"
 					badgeLabel=".xlsx, .xls"
 				/>
+
+				<div class="MapUploadFilePopup__checkbox-block">
+					<v-checkbox
+						v-model="form.checkboxIntegralityModel"
+						:disabled="isLoadingUploadFile"
+						class="MapUploadFilePopup__checkbox"
+						label="Проверять целочисленность ЗЕТ"
+						hide-details="auto"
+						dense
+					/>
+
+					<v-checkbox
+						v-model="form.checkboxSumModel"
+						:disabled="isLoadingUploadFile"
+						class="MapUploadFilePopup__checkbox"
+						label="Проверять объем программы в ЗЕТ"
+						hide-details="auto"
+						dense
+					/>
+				</div>
 			</v-card-text>
 
-			<v-card-actions>
-				<v-spacer />
-				<v-btn color="error" @click="_value = false">Отмена</v-btn>
+			<v-card-actions class="MapUploadFilePopup__actions">
 				<v-btn
 					color="success"
 					:disabled="!isValidForm"
 					:loading="isLoadingUploadFile"
 					@click="onUploadBtnClick"
+					block
 				>
 					Загрузить
 				</v-btn>
@@ -127,10 +134,22 @@ export default {
 
 <style lang="sass">
 .MapUploadFilePopup
+    &__card
+        position: relative
+
     &__text
         padding-bottom: 8px !important
 
-    &__checkbox
-        margin-top: 0px !important
-        margin-bottom: 12px
+    &__close-btn
+        position: absolute
+        right: 12px
+        top: 12px
+
+    &__checkbox-block
+        display: grid
+        gap: 4px
+        margin: 4px 0
+
+    &__actions
+        padding: 0 24px 8px 24px !important
 </style>
