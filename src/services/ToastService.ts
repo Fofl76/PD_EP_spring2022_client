@@ -28,5 +28,7 @@ abstract class ToastService {
 	}
 }
 
+Object.defineProperty(window, '_ToastService', { value: ToastService })
+
 export default ToastService
 export { ToastService }
