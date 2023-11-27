@@ -95,4 +95,5 @@ export default {
 
 <style lang="sass">
 .MapRightMenuValueLoadForm
+    margin-top: 8px
 </style>

@@ -24,6 +24,7 @@
 			</v-tooltip>
 
 			<MapTableMainBlockEditButton
+				v-if="!isEditing"
 				:darkMode="needIsDarkMode"
 				:show="isHovered"
 				@click="onEdit"
@@ -111,7 +112,7 @@ export default {
 }
 </script>
 
-<style lang="sass" scoped>
+<style lang="sass">
 .MapTableMainBlock
     position: relative
     display: flex
@@ -133,8 +134,9 @@ export default {
         padding: 5px 0
         height: var(--height-block)
 
-        &.fitMode:hover
-          height: calc(var(--height-block) * 3)
+        &:not(.isEditing)
+            &.fitMode:hover
+                height: calc(var(--height-block) * 3)
 
         &.isEditing
             .MapTableMainBlock

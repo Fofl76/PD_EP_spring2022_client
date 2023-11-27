@@ -138,6 +138,8 @@ export default {
 
 <style lang="sass">
 .MapRightMenuValueMainForm
+    margin-bottom: 8px
+
     &__row
         &:not(:last-child)
             margin-bottom: 16px
