@@ -109,10 +109,10 @@ export default {
 		onUpdateUnitOfMeasurement(index) {
 			const currentValue = this.values[index]
 
-			const id_edizm = (this.values[index].id_edizm % 2) + 1
+			const id_edizm = (currentValue.id_edizm % 2) + 1
 
 			const hours =
-				currentValue.id_edizm === 2
+				currentValue.id_edizm === 1
 					? currentValue.zet / this.MapsService.WEEKQUEALSZET
 					: currentValue.zet * this.MapsService.ZETQUEALSHOURS
 
