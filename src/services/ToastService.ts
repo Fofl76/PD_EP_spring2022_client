@@ -14,7 +14,7 @@ enum DefaultMessages {
  */
 abstract class ToastService {
 	static defaultOptions = {
-		position: POSITION.BOTTOM_RIGHT,
+		position: POSITION.BOTTOM_LEFT,
 		draggable: false,
 		closeOnClick: false,
 	}
