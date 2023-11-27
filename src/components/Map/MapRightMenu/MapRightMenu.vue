@@ -29,7 +29,7 @@
 				<!-- Название -->
 				<v-text-field
 					v-model="copyItem.discipline"
-					label="Введите название"
+					label="Название дисципплины"
 					hide-details="auto"
 					:rules="disciplineRules"
 					ref="discipline"
