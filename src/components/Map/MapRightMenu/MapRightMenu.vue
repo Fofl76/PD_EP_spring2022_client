@@ -14,7 +14,7 @@
 		<div class="MapRightMenu__inner">
 			<div class="MapRightMenu__panel-title">Редактирование дисциплины</div>
 
-			<div class="MapRightMenu__section">
+			<div class="MapRightMenu__name">
 				<!-- Название -->
 				<v-text-field
 					v-model="copyItem.discipline"
@@ -28,7 +28,12 @@
 				/>
 			</div>
 
-			<v-expansion-panels class="MapRightMenu__expansion-wrapper" flat hover>
+			<v-expansion-panels
+				class="MapRightMenu__expansion-wrapper"
+				flat
+				multiple
+				hover
+			>
 				<MapRightMenuCipherExpansion
 					:cipher="copyItem.shifr"
 					@inputCipher="onInputCipher"
@@ -134,8 +139,8 @@ export default {
 			disciplineRules: [
 				v => !!v || 'Это поле является обязательным',
 				v =>
-					(v && v.length < 70) ||
-					'Название дисциплины не может превышать 70 символов',
+					(v && v.length < 120) ||
+					'Название дисциплины не может превышать 120 символов',
 			],
 		}
 	},
@@ -208,6 +213,8 @@ export default {
 
 	methods: {
 		initRightMenu() {
+			if (!this.item) return
+
 			this.copyItem = _.cloneDeep(this.item)
 
 			this.copyItem.type.value = this.addZetInTypeValue(
@@ -288,14 +295,11 @@ export default {
 
 <style lang="sass">
 .MapRightMenu
+    &__name
+        margin-bottom: 8px
 
     &__panel-title
         color: #fff
-
-    .MHintActivator
-        margin-left: 4px
-        width: 25px
-        height: 25px
 
     &__inner
         padding: 16px
@@ -305,15 +309,6 @@ export default {
         justify-content: flex-start
         height: 100%
 
-    &__section
-        margin-bottom: 12px
-
-
-    &__section-title-block
-        display: flex
-        align-items: center
-        color: #fff
-
     &__actions
         display: flex
         gap: 8px
@@ -321,44 +316,4 @@ export default {
 
         button
           flex: 1
-
-
-    &__type-wrapper
-        display: flex
-        flex-direction: column
-        color: #fff
-        margin-top: 8px
-
-        & > *:not(:last-child)
-            margin-bottom: 8px
-
-    &__type-row
-        display: grid
-        grid-template-columns: 1fr 1fr
-        grid-template-rows: 1fr
-        gap: 8px
-        align-items: center
-
-        &__switch
-            grid-column: 1/3
-            margin: 0 !important
-
-    &__hint
-        margin-left: 8px
-
-    &__expansion-wrapper
-        border-radius: 4px 4px 0 0 !important
-
-    &__expansion
-
-    &__expansion-header
-        display: flex
-        align-items: center
-        color: #fff
-
-        &-chip
-            margin-left: auto
-
-    &__expansion-header-title
-        font-size: 16px
 </style>
