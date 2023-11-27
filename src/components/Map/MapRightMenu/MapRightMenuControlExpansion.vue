@@ -9,17 +9,22 @@
 		<template>
 			<div class="MapRightMenuControlExpansion__content">
 				<v-radio-group
+					class="MapRightMenuControlExpansion__radio-group"
 					:value="currentControlTypeId"
 					@change="onChange"
 					hide-details="auto"
 				>
 					<v-radio
+						class="MapRightMenuControlExpansion__radio"
 						v-for="control in allControlTypes"
 						:key="control.id"
-						:label="`${control.name}`"
 						:value="control.id"
 					>
-						{{ control.name }}
+						<template #label>
+							<div class="MapRightMenuControlExpansion__label">
+								{{ control.name }}
+							</div>
+						</template>
 					</v-radio>
 				</v-radio-group>
 			</div>
@@ -56,6 +61,13 @@ export default {
 
 <style lang="sass">
 .MapRightMenuControlExpansion
+    &__radio-group
+        .v-input--radio-group__input
+            gap: 8px
+
+    &__label
+        margin-left: 8px
+
     .v-input--selection-controls
         margin-top: 0 !important
 </style>

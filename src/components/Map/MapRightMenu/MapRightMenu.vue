@@ -12,7 +12,18 @@
 		clipped
 	>
 		<div class="MapRightMenu__inner">
-			<div class="MapRightMenu__panel-title">Редактирование дисциплины</div>
+			<div class="MapRightMenu__header">
+				<div class="MapRightMenu__panel-title">Редактирование дисциплины</div>
+				<v-btn
+					class="MapRightMenu__close"
+					dark
+					icon
+					color="#c1c1c1"
+					@click="onCancel"
+				>
+					<v-icon dark size="26"> mdi-window-close </v-icon>
+				</v-btn>
+			</div>
 
 			<div class="MapRightMenu__name">
 				<!-- Название -->
@@ -53,19 +64,8 @@
 			</v-expansion-panels>
 
 			<div class="MapRightMenu__actions">
-				<v-btn class="MapRightMenu__cancel-btn" color="error" @click="onCancel">
-					<span>Отменить</span>
-					<v-icon right dark> mdi-close</v-icon>
-				</v-btn>
-
-				<v-btn
-					class="MapRightMenu__save-btn"
-					color="success"
-					:loading="isLoading"
-					@click="onSave"
-				>
-					<span>Сохранить</span>
-					<v-icon right dark> mdi-content-save</v-icon>
+				<v-btn color="success" fab dark :loading="isLoading" @click="onSave">
+					<v-icon size="26">mdi-content-save</v-icon>
 				</v-btn>
 			</div>
 		</div>
@@ -295,6 +295,11 @@ export default {
 
 <style lang="sass">
 .MapRightMenu
+    &__header
+        display: flex
+        justify-content: space-between
+        align-items: center
+
     &__name
         margin-bottom: 8px
 
@@ -302,7 +307,8 @@ export default {
         color: #fff
 
     &__inner
-        padding: 16px
+        position: relative
+        padding: 12px 16px 16px 16px
         display: flex
         gap: 8px
         flex-direction: column
@@ -310,10 +316,8 @@ export default {
         height: 100%
 
     &__actions
-        display: flex
-        gap: 8px
-        margin-top: auto
-
-        button
-          flex: 1
+        position: fixed
+        right: 16px
+        bottom: 16px
+        z-index: 2
 </style>
