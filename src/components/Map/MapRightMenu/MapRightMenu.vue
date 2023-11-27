@@ -29,6 +29,13 @@
 			</div>
 
 			<v-expansion-panels class="MapRightMenu__expansion-wrapper" flat hover>
+				<MapRightMenuCipherExpansion
+					:cipher="copyItem.shifr"
+					@inputCipher="onInputCipher"
+				/>
+
+				<!-- <MapRightMenuValueExpansion :values="copyItem.type.value" /> -->
+
 				<v-expansion-panel class="MapRightMenu__expansion">
 					<v-expansion-panel-header>
 						<div class="MapRightMenu__expansion-header">
@@ -144,91 +151,12 @@
 						</div>
 					</v-expansion-panel-content>
 				</v-expansion-panel>
-			</v-expansion-panels>
 
-			<v-expansion-panels class="MapRightMenu__expansion-wrapper" flat hover>
-				<v-expansion-panel class="MapRightMenu__expansion">
-					<v-expansion-panel-header>
-						<div class="MapRightMenu__expansion-header">
-							<div class="MapRightMenu__expansion-header-title">
-								Настройки контроля
-							</div>
-
-							<!-- <MHint contentClass="MapRightMenu__hint"
-                tooltipText="СРС настраивается автоматически исходя из суммы" /> -->
-						</div>
-					</v-expansion-panel-header>
-
-					<v-expansion-panel-content>
-						<v-radio-group v-model="controlTypes">
-							<v-radio
-								v-for="control in allControlTypes"
-								:key="control.id"
-								:label="`${control.name}`"
-								:value="control.id"
-							>
-								{{ control.name }}
-							</v-radio>
-						</v-radio-group>
-					</v-expansion-panel-content>
-				</v-expansion-panel>
-			</v-expansion-panels>
-
-			<v-expansion-panels class="MapRightMenu__expansion-wrapper" flat hover>
-				<v-expansion-panel class="MapRightMenu__expansion">
-					<v-expansion-panel-header>
-						<div class="MapRightMenu__expansion-header">
-							<div class="MapRightMenu__expansion-header-title">Шифр</div>
-
-							<v-chip
-								class="MapRightMenu__expansion-header-chip DirectionAutocomplete__year-chip"
-								pill
-								label
-							>
-								{{ item?.shifr }}
-							</v-chip>
-						</div>
-					</v-expansion-panel-header>
-
-					<v-expansion-panel-content>
-						<v-text-field
-							v-model="copyShift.id_block"
-							label="Блок"
-							type="number"
-							hide-details
-							dense
-							filled
-							dark
-						/>
-						<v-text-field
-							v-model="copyShift.id_parts"
-							label="Часть"
-							type="number"
-							hide-details
-							dense
-							filled
-							dark
-						/>
-						<v-text-field
-							v-model="copyShift.id_models"
-							label="Модуль"
-							type="number"
-							hide-details
-							dense
-							filled
-							dark
-						/>
-						<v-text-field
-							v-model="copyShift.id_direction"
-							label="Дисциплина"
-							type="number"
-							hide-details
-							dense
-							filled
-							dark
-						/>
-					</v-expansion-panel-content>
-				</v-expansion-panel>
+				<MapRightMenuControlExpansion
+					:currentControlTypeId="controlTypes"
+					:allControlTypes="allControlTypes"
+					@changeControlType="onChangeControlType"
+				/>
 			</v-expansion-panels>
 
 			<div class="MapRightMenu__actions">
@@ -247,10 +175,6 @@
 					<v-icon right dark> mdi-content-save</v-icon>
 				</v-btn>
 			</div>
-
-			<div v-if="isError" class="v-messages theme--light error--text">
-				Не удалось сохранить изменения
-			</div>
 		</div>
 	</v-navigation-drawer>
 </template>
@@ -261,13 +185,23 @@ import _ from 'lodash'
 import { mapGetters } from 'vuex'
 
 import MHint from '@components/common/MHint.vue'
+import MapRightMenuCipherExpansion from './MapRightMenuCipherExpansion.vue'
+import MapRightMenuValueExpansion from './MapRightMenuValueExpansion/MapRightMenuValueExpansion.vue'
+import MapRightMenuControlExpansion from './MapRightMenuControlExpansion.vue'
+
 import withEventEmitter from '@mixins/withEventEmitter'
 import MapsService from '@services/Maps/MapsService'
+import ToastService from '@services/ToastService'
 
 export default {
 	name: 'MapRightMenu',
 
-	components: { MHint },
+	components: {
+		MHint,
+		MapRightMenuCipherExpansion,
+		MapRightMenuValueExpansion,
+		MapRightMenuControlExpansion,
+	},
 	props: {
 		value: {
 			type: Boolean,
@@ -301,19 +235,18 @@ export default {
 				},
 			},
 
-			copyShift: {
-				id_block: null,
-				id_parts: null,
-				id_models: null,
-				id_direction: null,
+			cipher: {
+				block: null,
+				part: null,
+				module: null,
+				discipline: null,
 			},
+			cipherStr: null,
 
 			selectedControlTypes: [],
 
 			sumHours: 0,
 			sumZet: 0,
-
-			isError: false,
 
 			zetRules: [
 				v => !!String(v).length || 'Это поле является обязательным',
@@ -428,15 +361,6 @@ export default {
 		initRightMenu() {
 			this.copyItem = _.cloneDeep(this.item)
 
-			const shifr = this.getArrShifr()
-
-			this.copyShift = {
-				id_block: shifr[0],
-				id_parts: shifr[1],
-				id_models: shifr[3] ? shifr[2] : null,
-				id_direction: shifr[3] ? shifr[3] : shifr[2],
-			}
-
 			this.copyItem.type.value = this.addZetInTypeValue(
 				this.copyItem.type.value
 			)
@@ -449,10 +373,13 @@ export default {
 			this.sumZet = this.getSum('zet')
 		},
 
-		getArrShifr() {
-			return this.copyItem.shifr
-				.split('.')
-				.map(el => el.match(/[0-9]+/gi).join())
+		onInputCipher({ cipherStr, cipher }) {
+			this.cipherStr = cipherStr
+			this.cipher = cipher
+		},
+
+		onChangeControlType(value) {
+			/* TODO */
 		},
 
 		addZetInTypeValue(value) {
@@ -533,19 +460,12 @@ export default {
 
 		onCancel() {
 			this.value_ = false
-			// this.clear()
-		},
-
-		getShifr(data) {
-			return `Б${data.id_block}.${data.id_parts}.${
-				data.id_models ? data.id_models : data.id_direction
-			}${data.id_models ? '.' + data.id_direction : ''}`
 		},
 
 		async onSave() {
-			this.copyItem.id_block = this.copyShift.id_block
-			this.copyItem.id_parts = this.copyShift.id_parts
-			this.copyItem.shifr = this.getShifr(this.copyShift)
+			this.copyItem.id_block = this.cipher.block
+			this.copyItem.id_parts = this.cipher.part
+			this.copyItem.shifr = this.cipherStr
 
 			const res = await this.MapsService.editMapItem(
 				this.$route.query.aup,
@@ -554,10 +474,12 @@ export default {
 			)
 
 			if (res) {
-				this.initRightMenu()
+				ToastService.showSuccess('Карта успешно сохранена.')
 			} else {
-				this.isError = true
+				ToastService.showError('Произошла ошибка при сохранении карты.')
 			}
+
+			this.initRightMenu()
 		},
 
 		clear() {
