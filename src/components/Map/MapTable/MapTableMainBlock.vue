@@ -138,8 +138,6 @@ export default {
             height: calc(var(--height-block) * 3)
 
         &.isEditing
-            height: calc(var(--height-block) * 3)
-
             .MapTableMainBlock
                 box-shadow: 0px 0px 0px 5px var(--shadow-color)
 
