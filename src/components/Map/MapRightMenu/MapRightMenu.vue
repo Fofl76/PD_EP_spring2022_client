@@ -68,6 +68,8 @@
 					<v-icon size="26">mdi-content-save</v-icon>
 				</v-btn>
 			</div>
+
+			<MapRightMenuConfirmPopup v-model="confirmPopupModel" />
 		</div>
 	</v-navigation-drawer>
 </template>
@@ -81,6 +83,7 @@ import MHint from '@components/common/MHint.vue'
 import MapRightMenuCipherExpansion from './MapRightMenuCipherExpansion.vue'
 import MapRightMenuValueExpansion from './MapRightMenuValueExpansion/MapRightMenuValueExpansion.vue'
 import MapRightMenuControlExpansion from './MapRightMenuControlExpansion.vue'
+import MapRightMenuConfirmPopup from './MapRightMenuConfirmPopup.vue'
 
 import withEventEmitter from '@mixins/withEventEmitter'
 import MapsService from '@services/Maps/MapsService'
@@ -94,6 +97,7 @@ export default {
 		MapRightMenuCipherExpansion,
 		MapRightMenuValueExpansion,
 		MapRightMenuControlExpansion,
+		MapRightMenuConfirmPopup,
 	},
 	props: {
 		value: {
@@ -118,6 +122,8 @@ export default {
 	data() {
 		return {
 			MapsService,
+
+			confirmPopupModel: false,
 
 			copyItem: {
 				discipline: '',
