@@ -134,8 +134,9 @@ export default {
         padding: 5px 0
         height: var(--height-block)
 
-        &.fitMode:hover
-            height: calc(var(--height-block) * 3)
+        &:not(.isEditing)
+            &.fitMode:hover
+                height: calc(var(--height-block) * 3)
 
         &.isEditing
             .MapTableMainBlock
