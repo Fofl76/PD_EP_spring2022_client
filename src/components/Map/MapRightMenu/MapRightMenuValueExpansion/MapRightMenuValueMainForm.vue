@@ -12,6 +12,7 @@
 			<div class="MapRightMenuValueMainForm__input-row">
 				<v-text-field
 					:value="type.amount"
+					:rules="hoursRules"
 					label="Часы"
 					type="number"
 					ref="zet"
@@ -24,6 +25,7 @@
 
 				<v-text-field
 					:value="type.zet"
+					:rules="zetRules"
 					label="ЗЕТ"
 					:min="1"
 					:max="10"
@@ -62,6 +64,18 @@ export default {
 
 	data: () => ({
 		MapsService,
+
+		zetRules: [
+			v => !!String(v).length || 'Это поле является обязательным',
+			v => +v >= 0 || 'Значение должно быть больше, либо равно 0',
+			v => +v <= 10 || 'Значение должно быть меньше, либо равно 10',
+		],
+
+		hoursRules: [
+			v => !!String(v).length || 'Это поле является обязательным',
+			v => +v >= 0 || 'Значение должно быть больше 0, либо равно 0',
+			v => +v <= 320 || 'Значение должно быть меньше, либо равно 320',
+		],
 	}),
 
 	props: {
