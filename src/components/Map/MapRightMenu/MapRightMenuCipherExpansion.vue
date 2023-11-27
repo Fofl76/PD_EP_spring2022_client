@@ -22,7 +22,7 @@
 					pill
 					label
 				>
-					Ошибка
+					Некорректно
 				</v-chip>
 			</div>
 		</template>
