@@ -11,10 +11,10 @@
 			</v-card-text>
 			<v-card-actions>
 				<v-spacer></v-spacer>
-				<v-btn color="red darken-1" text @click="$emit('input', false)">
+				<v-btn color="red darken-1" text @click="$emit('close')">
 					Закрыть без сохранения
 				</v-btn>
-				<v-btn color="green darken-1" text @click="$emit('input', false)">
+				<v-btn color="green darken-1" text @click="$emit('save')">
 					Сохранить
 				</v-btn>
 			</v-card-actions>

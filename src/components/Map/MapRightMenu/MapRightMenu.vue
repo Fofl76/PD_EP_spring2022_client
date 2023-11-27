@@ -19,7 +19,7 @@
 					dark
 					icon
 					color="#c1c1c1"
-					@click="onCancel"
+					@click="onCloseButtonClick"
 				>
 					<v-icon dark size="26"> mdi-window-close </v-icon>
 				</v-btn>
@@ -64,12 +64,23 @@
 			</v-expansion-panels>
 
 			<div class="MapRightMenu__actions">
-				<v-btn color="success" fab dark :loading="isLoading" @click="onSave">
+				<v-btn
+					color="success"
+					fab
+					dark
+					:disabled="!isEdited"
+					:loading="isLoading"
+					@click="onSave"
+				>
 					<v-icon size="26">mdi-content-save</v-icon>
 				</v-btn>
 			</div>
 
-			<MapRightMenuConfirmPopup v-model="confirmPopupModel" />
+			<MapRightMenuConfirmPopup
+				v-model="confirmPopupModel"
+				@close="onClosePopup"
+				@save="onSavePopup"
+			/>
 		</div>
 	</v-navigation-drawer>
 </template>
@@ -124,6 +135,7 @@ export default {
 			MapsService,
 
 			confirmPopupModel: false,
+			isEdited: false,
 
 			copyItem: {
 				discipline: '',
@@ -232,12 +244,14 @@ export default {
 		onUpdateValue({ index, hours, zet }) {
 			this.copyItem.type.value[index].amount = hours
 			this.copyItem.type.value[index].zet = zet
+			this.isEdited = true
 		},
 
 		/* Обновление объема x2 */
 		onUpdateUnitOfMeasurement({ index, id_edizm, hours }) {
 			this.copyItem.type.value[index].id_edizm = id_edizm
 			this.copyItem.type.value[index].amount = hours
+			this.isEdited = true
 		},
 
 		/* Перезапись объемов, используется для выбора нагрузок
@@ -245,12 +259,14 @@ export default {
         */
 		changeValues(values) {
 			this.copyItem.type.value = values
+			this.isEdited = true
 		},
 
 		/* Обновление шифра */
 		onInputCipher({ cipherStr, cipher }) {
 			this.cipherStr = cipherStr
 			this.cipher = cipher
+			this.isEdited = true
 		},
 
 		/* В данные дисциплины добавляет новое поле zet */
@@ -261,8 +277,28 @@ export default {
 			}))
 		},
 
-		onCancel() {
+		onCloseButtonClick() {
+			if (this.isEdited) {
+				this.confirmPopupModel = true
+			} else {
+				this.closeRightMenu()
+			}
+		},
+
+		closeRightMenu() {
 			this.value_ = false
+			this.clear()
+		},
+
+		async onClosePopup() {
+			this.confirmPopupModel = false
+			this.closeRightMenu()
+		},
+
+		async onSavePopup() {
+			this.confirmPopupModel = false
+			const res = await this.onSave()
+			if (res) this.closeRightMenu()
 		},
 
 		async onSave() {
@@ -278,11 +314,12 @@ export default {
 
 			if (res) {
 				ToastService.showSuccess('Карта успешно сохранена.')
+				this.isEdited = false
 			} else {
 				ToastService.showError('Произошла ошибка при сохранении карты.')
 			}
 
-			this.initRightMenu()
+			return res
 		},
 
 		clear() {
@@ -294,6 +331,8 @@ export default {
 					value: [],
 				},
 			}
+
+			this.isEdited = false
 		},
 	},
 }
