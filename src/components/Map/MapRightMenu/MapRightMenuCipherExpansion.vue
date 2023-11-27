@@ -47,9 +47,9 @@
 						dark
 						@input="onInput"
 					>
-						<template v-slot:append>
+						<!-- <template v-slot:append>
 							<MHint :top="false" size="20" bottom>Блок</MHint>
-						</template>
+						</template> -->
 					</v-text-field>
 
 					<v-text-field
@@ -65,9 +65,9 @@
 						dark
 						@input="onInput"
 					>
-						<template v-slot:append>
+						<!-- <template v-slot:append>
 							<MHint :top="false" size="20" bottom>Часть</MHint>
-						</template>
+						</template> -->
 					</v-text-field>
 
 					<v-text-field
@@ -83,9 +83,9 @@
 						dark
 						@input="onInput"
 					>
-						<template v-slot:append>
+						<!-- <template v-slot:append>
 							<MHint :top="false" size="20" bottom>Модуль</MHint>
-						</template>
+						</template> -->
 					</v-text-field>
 
 					<v-text-field
@@ -101,9 +101,9 @@
 						dark
 						@input="onInput"
 					>
-						<template v-slot:append>
+						<!-- <template v-slot:append>
 							<MHint :top="false" size="20" bottom>Дисциплина</MHint>
-						</template>
+						</template> -->
 					</v-text-field>
 				</v-form>
 			</div>
