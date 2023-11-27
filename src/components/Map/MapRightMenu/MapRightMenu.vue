@@ -34,128 +34,16 @@
 					@inputCipher="onInputCipher"
 				/>
 
-				<!-- <MapRightMenuValueExpansion :values="copyItem.type.value" /> -->
-
-				<v-expansion-panel class="MapRightMenu__expansion">
-					<v-expansion-panel-header>
-						<div class="MapRightMenu__expansion-header">
-							<div class="MapRightMenu__expansion-header-title">
-								Настройки объема
-							</div>
-
-							<!-- <MHint contentClass="MapRightMenu__hint"
-                tooltipText="СРС настраивается автоматически исходя из суммы" /> -->
-						</div>
-					</v-expansion-panel-header>
-
-					<v-expansion-panel-content>
-						<div class="MapRightMenu__type-wrapper">
-							<div class="MapRightMenu__type-row">
-								<div>Часы</div>
-								<div>Зет</div>
-							</div>
-
-							<div
-								class="MapRightMenu__type-row"
-								v-for="(type, i) in copyItem.type.value"
-								:key="i"
-							>
-								<v-text-field
-									:value="type.amount"
-									:label="getControlTypesLabel(type.control_type_id)"
-									type="number"
-									ref="zet"
-									:rules="hoursRules"
-									hide-details
-									dense
-									filled
-									dark
-									@input="onInputHours(i, $event)"
-								/>
-
-								<v-text-field
-									:value="type.zet"
-									:label="getControlTypesLabel(type.control_type_id)"
-									:min="1"
-									:max="10"
-									type="number"
-									ref="zet"
-									:rules="zetRules"
-									hide-details
-									dense
-									filled
-									dark
-									@input="onInputZet(i, $event)"
-								/>
-
-								<v-switch
-									:value="type.id_edizm === 2"
-									class="MapRightMenu__type-row__switch"
-									label="Измерять в неделях"
-									@change="onUpdateUnitsOfMeasurement(i)"
-								/>
-							</div>
-
-							<v-divider dark class="MapRightMenu__divider" />
-
-							<div class="MapRightMenu__type-row">
-								<v-text-field
-									:value="sumHours"
-									label="Сумма часов"
-									type="number"
-									hide-details
-									readonly
-									dense
-									filled
-									dark
-								/>
-
-								<v-text-field
-									:value="sumZet"
-									label="Сумма ЗЕТ"
-									type="number"
-									hide-details
-									readonly
-									dense
-									filled
-									dark
-								/>
-							</div>
-
-							<v-divider dark class="MapRightMenu__divider" />
-
-							<v-select
-								:value="selectedControlTypes"
-								:items="allValueTypes"
-								label="Нагрузки"
-								item-text="control"
-								item-disabled="disabled"
-								return-object
-								filled
-								dense
-								hide-details
-								multiple
-								no-data-text="Доступные нагрузки отсутствуют"
-								@change="onSelectControlTypes"
-							>
-								<!-- @input="onSelectControlTypes" -->
-								<template v-slot:selection="{ item, index }">
-									<v-chip small v-if="index === 0">
-										<span>{{ item.control }}</span>
-									</v-chip>
-									<span v-if="index === 1" class="grey--text text-caption">
-										(+{{ selectedControlTypes.length - 1 }} нагрузки)
-									</span>
-								</template>
-							</v-select>
-						</div>
-					</v-expansion-panel-content>
-				</v-expansion-panel>
+				<MapRightMenuValueExpansion
+					:values="copyItem.type.value"
+					@updateValue="onUpdateValue"
+					@updateUnitOfMeasurement="onUpdateUnitOfMeasurement"
+					@selectControlTypes="changeValues"
+				/>
 
 				<MapRightMenuControlExpansion
-					:currentControlTypeId="controlTypes"
+					:currentControlTypeId="null"
 					:allControlTypes="allControlTypes"
-					@changeControlType="onChangeControlType"
 				/>
 			</v-expansion-panels>
 
@@ -243,11 +131,6 @@ export default {
 			},
 			cipherStr: null,
 
-			selectedControlTypes: [],
-
-			sumHours: 0,
-			sumZet: 0,
-
 			zetRules: [
 				v => !!String(v).length || 'Это поле является обязательным',
 				v => +v >= 0 || 'Значение должно быть больше, либо равно 0',
@@ -271,7 +154,6 @@ export default {
 
 	watch: {
 		value(v) {
-			console.log(v)
 			if (v) {
 				this.initRightMenu()
 			}
@@ -294,22 +176,6 @@ export default {
 			},
 		},
 
-		controlTypes: {
-			get() {
-				return this.copyItem.type.session[0]?.control_type_id || null
-			},
-			set(v) {
-				if (this.copyItem.type.session[0]?.control_type_id)
-					this.copyItem.type.session[0] = {
-						control_type_id: v,
-						id: this.copyItem.type.session[0].id,
-						type: this.copyItem.type.session[0].type,
-						id_edizm: 1,
-						amount: 0,
-					}
-			},
-		},
-
 		isLoading() {
 			return this.MapsService.isLoadingSaveMapList
 		},
@@ -328,11 +194,6 @@ export default {
 
 		calculatedZet() {
 			return (amount, id_edizm) => {
-				const currentUnitsOfMeasurement =
-					this.MapsService.unitsOfMeasurement.value.find(
-						measurement => measurement.id_edizm === id_edizm
-					)
-
 				if (id_edizm === 2) {
 					return amount * this.MapsService.WEEKQUEALSZET
 				}
@@ -364,98 +225,39 @@ export default {
 			this.copyItem.type.value = this.addZetInTypeValue(
 				this.copyItem.type.value
 			)
-
-			this.selectedControlTypes = this.allValueTypes.filter(el =>
-				this.copyItem.type.value.find(_el => _el.control_type_id === el.id)
-			)
-
-			this.sumHours = this.getSum('amount')
-			this.sumZet = this.getSum('zet')
 		},
 
+		/* Обновление объема */
+		onUpdateValue({ index, hours, zet }) {
+			this.copyItem.type.value[index].amount = hours
+			this.copyItem.type.value[index].zet = zet
+		},
+
+		/* Обновление объема x2 */
+		onUpdateUnitOfMeasurement({ index, id_edizm, hours }) {
+			this.copyItem.type.value[index].id_edizm = id_edizm
+			this.copyItem.type.value[index].amount = hours
+		},
+
+		/* Перезапись объемов, используется для выбора нагрузок
+           TODO: Сделать нормально
+        */
+		changeValues(values) {
+			this.copyItem.type.value = values
+		},
+
+		/* Обновление шифра */
 		onInputCipher({ cipherStr, cipher }) {
 			this.cipherStr = cipherStr
 			this.cipher = cipher
 		},
 
-		onChangeControlType(value) {
-			/* TODO */
-		},
-
+		/* В данные дисциплины добавляет новое поле zet */
 		addZetInTypeValue(value) {
 			return value.map(el => ({
 				...el,
 				zet: this.calculatedZet(el.amount, el.id_edizm),
 			}))
-		},
-
-		onInputHours(index, value) {
-			this.copyItem.type.value[index].amount = +value
-			this.copyItem.type.value[index].zet = this.calculatedZet(
-				+value,
-				this.copyItem.type.value[index].id_edizm
-			)
-
-			this.sumHours = this.getSum('amount')
-			this.sumZet = this.getSum('zet')
-		},
-
-		onInputZet(index, value) {
-			this.copyItem.type.value[index].zet = +value
-
-			if (this.copyItem.type.value[index].id_edizm === 2) {
-				this.copyItem.type.value[index].amount =
-					+value / this.MapsService.WEEKQUEALSZET
-			} else {
-				this.copyItem.type.value[index].amount =
-					+value * this.MapsService.ZETQUEALSHOURS
-			}
-
-			this.sumHours = this.getSum('amount')
-			this.sumZet = this.getSum('zet')
-		},
-
-		getSum(field, withoutFirstItem) {
-			return this.copyItem.type.value.reduce((accumulator, currentValue) => {
-				if (currentValue.id_edizm === 1 || field === 'zet') {
-					return accumulator + currentValue[field]
-				} else {
-					return (
-						accumulator + currentValue[field] * this.MapsService.WEEKQUEALSHOURS
-					)
-				}
-			}, 0)
-		},
-
-		onSelectControlTypes(e) {
-			if (e.length < this.copyItem.type.value.length) {
-				this.copyItem.type.value = this.copyItem.type.value.filter(el =>
-					e.find(_el => _el.id === el.control_type_id)
-				)
-
-				this.sumHours = this.getSum('amount')
-				this.sumZet = this.getSum('zet')
-			} else {
-				const newType = e.at(-1)
-				this.copyItem.type.value.push({
-					control_type_id: newType.id,
-					amount: 0,
-					zet: 0,
-					id_edizm: 1,
-					type: 'load',
-				})
-			}
-		},
-
-		onUpdateUnitsOfMeasurement(index) {
-			this.copyItem.type.value[index].id_edizm =
-				(this.copyItem.type.value[index].id_edizm % 2) + 1
-
-			this.copyItem.type.value[index].amount =
-				this.copyItem.type.value[index].id_edizm === 2
-					? this.copyItem.type.value[index].zet / this.MapsService.WEEKQUEALSZET
-					: this.copyItem.type.value[index].zet *
-					  this.MapsService.ZETQUEALSHOURS
 		},
 
 		onCancel() {
@@ -485,12 +287,12 @@ export default {
 		clear() {
 			this.copyItem = {
 				discipline: '',
-				type: [],
+				shifr: '',
+				type: {
+					session: [],
+					value: [],
+				},
 			}
-
-			this.sumZet = 0
-			this.sumHours = 0
-			this.selectedControlTypes = []
 		},
 	},
 }

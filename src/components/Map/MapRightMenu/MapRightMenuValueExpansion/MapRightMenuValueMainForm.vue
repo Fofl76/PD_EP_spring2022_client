@@ -19,6 +19,7 @@
 					dense
 					filled
 					dark
+					@input="onInputHours(i, $event)"
 				/>
 
 				<v-text-field
@@ -32,6 +33,7 @@
 					dense
 					filled
 					dark
+					@input="onInputZet(i, $event)"
 				/>
 			</div>
 
@@ -40,6 +42,7 @@
 				class="MapRightMenuValueMainForm__week-checkbox"
 				hide-details
 				dense
+				@change="onUpdateUnitOfMeasurement(i)"
 			>
 				<template #label>
 					<div class="MapRightMenuValueMainForm__week-checkbox-label">
@@ -73,8 +76,47 @@ export default {
 			return control_id => {
 				return this.MapsService.controlTypes.value.find(
 					item => item.id === control_id
-				).name
+				)?.name
 			}
+		},
+	},
+
+	methods: {
+		onInputHours(index, value) {
+			const hours = +value
+			const zet = this.calculateZet(hours, this.values[index].id_edizm)
+
+			this.$emit('updateValue', { index, hours, zet })
+		},
+
+		onInputZet(index, value) {
+			const zet = +value
+			const hours = this.calculateHours(zet, this.values[index].id_edizm)
+
+			this.$emit('updateValue', { index, hours, zet })
+		},
+
+		calculateZet(hours, id_edizm) {
+			if (id_edizm === 2) return hours * this.MapsService.WEEKQUEALSZET
+			return hours / this.MapsService.ZETQUEALSHOURS
+		},
+
+		calculateHours(zet, id_edizm) {
+			if (id_edizm === 2) return zet / this.MapsService.WEEKQUEALSZET
+			return zet * this.MapsService.ZETQUEALSHOURS
+		},
+
+		onUpdateUnitOfMeasurement(index) {
+			const currentValue = this.values[index]
+
+			const id_edizm = (this.values[index].id_edizm % 2) + 1
+
+			const hours =
+				currentValue.id_edizm === 2
+					? currentValue.zet / this.MapsService.WEEKQUEALSZET
+					: currentValue.zet * this.MapsService.ZETQUEALSHOURS
+
+			this.$emit('updateUnitOfMeasurement', { index, id_edizm, hours })
 		},
 	},
 }
