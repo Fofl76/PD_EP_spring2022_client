@@ -117,16 +117,15 @@ export default {
 		},
 
 		infoUploadedFilesByFilename() {
-			return _.groupBy(this.info, 'filename')
+			return _.keyBy(this.infoUploadedFiles, 'filename')
 		},
 
 		sortedSelectedItems() {
-			return [...this.form.selectedFiles].sort((a, b) => {
-				return (
-					this.infoUploadedFilesByFilename[a.name]?.errors.length >
-					this.infoUploadedFilesByFilename[b.name]?.errors.length
-				)
-			})
+			const groupedByFilename = this.infoUploadedFilesByFilename
+
+			return _.sortBy(this.form.selectedFiles, [
+				o => groupedByFilename?.[o.name]?.errors?.length,
+			])
 		},
 	},
 
