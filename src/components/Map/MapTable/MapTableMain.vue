@@ -21,22 +21,24 @@
 					:setData="setData"
 					@change="onDragElementTable($event, key)"
 				>
-					<MapTableMainBlock
-						v-for="element in column"
-						:key="element.id"
-						:data="dataValue(element)"
-						:isEditing="activeEditingItemId === element.id"
-						:height="heightTableBlock(element)"
-						:fitMode="fitMode"
-						:total-zet="totalZet(element)"
-						@edit="$emit('edit', $event)"
-						@click.native="onClickBlock(element)"
-					/>
+					<div v-for="element in column" :key="element.id">
+						<div>
+							<MapTableMainBlock
+								:data="dataValue(element)"
+								:isEditing="activeEditingItemId === element.id"
+								:class="{ isEditing: activeEditingItemId === element.id }"
+								:height="heightTableBlock(element)"
+								:fitMode="fitMode"
+								:total-zet="totalZet(element)"
+								@edit="$emit('edit', $event)"
+								@click.native="onClickBlock(element)"
+							/>
+						</div>
+					</div>
 				</draggable>
 			</div>
 		</template>
 
-		<!-- Вынести в отдельный компонент -->
 		<template v-else>
 			<div
 				class="MapTableMain__column"
@@ -52,6 +54,13 @@
 				</div>
 			</div>
 		</template>
+
+		<v-overlay
+			v-if="activeEditingItemId"
+			:z-index="1"
+			absolute
+			color="#272727"
+		/>
 	</div>
 </template>
 
@@ -212,4 +221,11 @@ export default {
     &__column
         display: flex
         flex-direction: column
+
+    .MapTableMainBlock__wrapper.isEditing
+        position: relative
+        z-index: 1000
+
+        .MapTableMainBlock
+            cursor: default
 </style>

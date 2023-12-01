@@ -22,7 +22,6 @@
 			:value="rightMenuEditModel"
 			:itemId="rightMenuEditItemId"
 			@input="onInputRightMenuEditModel"
-			@close="onCloseEditingItemPanel"
 		/>
 	</v-app>
 </template>
@@ -125,12 +124,10 @@ export default {
 			this.setRightMenuEditItemId(id)
 		},
 
-		onCloseEditingItemPanel() {
-			this.editingMapItemId = null
-		},
-
 		onInputRightMenuEditModel(value) {
 			this.setRightMenuEditModel(value)
+
+			if (!value) this.setRightMenuEditItemId(null)
 		},
 	},
 

@@ -12,13 +12,24 @@
 		clipped
 	>
 		<div class="MapRightMenu__inner">
-			<div class="MapRightMenu__panel-title">Редактирование дисциплины</div>
+			<div class="MapRightMenu__header">
+				<div class="MapRightMenu__panel-title">Редактирование дисциплины</div>
+				<v-btn
+					class="MapRightMenu__close"
+					dark
+					icon
+					color="#c1c1c1"
+					@click="onCloseButtonClick"
+				>
+					<v-icon dark size="26"> mdi-window-close </v-icon>
+				</v-btn>
+			</div>
 
-			<div class="MapRightMenu__section">
+			<div class="MapRightMenu__name">
 				<!-- Название -->
 				<v-text-field
 					v-model="copyItem.discipline"
-					label="Введите название"
+					label="Название дисциплины"
 					hide-details="auto"
 					:rules="disciplineRules"
 					ref="discipline"
@@ -28,229 +39,48 @@
 				/>
 			</div>
 
-			<v-expansion-panels class="MapRightMenu__expansion-wrapper" flat hover>
-				<v-expansion-panel class="MapRightMenu__expansion">
-					<v-expansion-panel-header>
-						<div class="MapRightMenu__expansion-header">
-							<div class="MapRightMenu__expansion-header-title">
-								Настройки объема
-							</div>
+			<v-expansion-panels
+				class="MapRightMenu__expansion-wrapper"
+				flat
+				multiple
+				hover
+			>
+				<MapRightMenuCipherExpansion
+					:cipher="copyItem.shifr"
+					@inputCipher="onInputCipher"
+				/>
 
-							<!-- <MHint contentClass="MapRightMenu__hint"
-                tooltipText="СРС настраивается автоматически исходя из суммы" /> -->
-						</div>
-					</v-expansion-panel-header>
+				<MapRightMenuValueExpansion
+					:values="copyItem.type.value"
+					@updateValue="onUpdateValue"
+					@updateUnitOfMeasurement="onUpdateUnitOfMeasurement"
+					@selectControlTypes="changeValues"
+				/>
 
-					<v-expansion-panel-content>
-						<div class="MapRightMenu__type-wrapper">
-							<div class="MapRightMenu__type-row">
-								<div>Часы</div>
-								<div>Зет</div>
-							</div>
-
-							<div
-								class="MapRightMenu__type-row"
-								v-for="(type, i) in copyItem.type.value"
-								:key="i"
-							>
-								<v-text-field
-									:value="type.amount"
-									:label="getControlTypesLabel(type.control_type_id)"
-									type="number"
-									ref="zet"
-									:rules="hoursRules"
-									hide-details
-									dense
-									filled
-									dark
-									@input="onInputHours(i, $event)"
-								/>
-
-								<v-text-field
-									:value="type.zet"
-									:label="getControlTypesLabel(type.control_type_id)"
-									:min="1"
-									:max="10"
-									type="number"
-									ref="zet"
-									:rules="zetRules"
-									hide-details
-									dense
-									filled
-									dark
-									@input="onInputZet(i, $event)"
-								/>
-
-								<v-switch
-									:value="type.id_edizm === 2"
-									class="MapRightMenu__type-row__switch"
-									label="Измерять в неделях"
-									@change="onUpdateUnitsOfMeasurement(i)"
-								/>
-							</div>
-
-							<v-divider dark class="MapRightMenu__divider" />
-
-							<div class="MapRightMenu__type-row">
-								<v-text-field
-									:value="sumHours"
-									label="Сумма часов"
-									type="number"
-									hide-details
-									readonly
-									dense
-									filled
-									dark
-								/>
-
-								<v-text-field
-									:value="sumZet"
-									label="Сумма ЗЕТ"
-									type="number"
-									hide-details
-									readonly
-									dense
-									filled
-									dark
-								/>
-							</div>
-
-							<v-divider dark class="MapRightMenu__divider" />
-
-							<v-select
-								:value="selectedControlTypes"
-								:items="allValueTypes"
-								label="Нагрузки"
-								item-text="control"
-								item-disabled="disabled"
-								return-object
-								filled
-								dense
-								hide-details
-								multiple
-								no-data-text="Доступные нагрузки отсутствуют"
-								@change="onSelectControlTypes"
-							>
-								<!-- @input="onSelectControlTypes" -->
-								<template v-slot:selection="{ item, index }">
-									<v-chip small v-if="index === 0">
-										<span>{{ item.control }}</span>
-									</v-chip>
-									<span v-if="index === 1" class="grey--text text-caption">
-										(+{{ selectedControlTypes.length - 1 }} нагрузки)
-									</span>
-								</template>
-							</v-select>
-						</div>
-					</v-expansion-panel-content>
-				</v-expansion-panel>
-			</v-expansion-panels>
-
-			<v-expansion-panels class="MapRightMenu__expansion-wrapper" flat hover>
-				<v-expansion-panel class="MapRightMenu__expansion">
-					<v-expansion-panel-header>
-						<div class="MapRightMenu__expansion-header">
-							<div class="MapRightMenu__expansion-header-title">
-								Настройки контроля
-							</div>
-
-							<!-- <MHint contentClass="MapRightMenu__hint"
-                tooltipText="СРС настраивается автоматически исходя из суммы" /> -->
-						</div>
-					</v-expansion-panel-header>
-
-					<v-expansion-panel-content>
-						<v-radio-group v-model="controlTypes">
-							<v-radio
-								v-for="control in allControlTypes"
-								:key="control.id"
-								:label="`${control.name}`"
-								:value="control.id"
-							>
-								{{ control.name }}
-							</v-radio>
-						</v-radio-group>
-					</v-expansion-panel-content>
-				</v-expansion-panel>
-			</v-expansion-panels>
-
-			<v-expansion-panels class="MapRightMenu__expansion-wrapper" flat hover>
-				<v-expansion-panel class="MapRightMenu__expansion">
-					<v-expansion-panel-header>
-						<div class="MapRightMenu__expansion-header">
-							<div class="MapRightMenu__expansion-header-title">Шифр</div>
-
-							<v-chip
-								class="MapRightMenu__expansion-header-chip DirectionAutocomplete__year-chip"
-								pill
-								label
-							>
-								{{ item?.shifr }}
-							</v-chip>
-						</div>
-					</v-expansion-panel-header>
-
-					<v-expansion-panel-content>
-						<v-text-field
-							v-model="copyShift.id_block"
-							label="Блок"
-							type="number"
-							hide-details
-							dense
-							filled
-							dark
-						/>
-						<v-text-field
-							v-model="copyShift.id_parts"
-							label="Часть"
-							type="number"
-							hide-details
-							dense
-							filled
-							dark
-						/>
-						<v-text-field
-							v-model="copyShift.id_models"
-							label="Модуль"
-							type="number"
-							hide-details
-							dense
-							filled
-							dark
-						/>
-						<v-text-field
-							v-model="copyShift.id_direction"
-							label="Дисциплина"
-							type="number"
-							hide-details
-							dense
-							filled
-							dark
-						/>
-					</v-expansion-panel-content>
-				</v-expansion-panel>
+				<MapRightMenuControlExpansion
+					:currentControlTypeId="null"
+					:allControlTypes="allControlTypes"
+				/>
 			</v-expansion-panels>
 
 			<div class="MapRightMenu__actions">
-				<v-btn class="MapRightMenu__cancel-btn" color="error" @click="onCancel">
-					<span>Отменить</span>
-					<v-icon right dark> mdi-close</v-icon>
-				</v-btn>
-
 				<v-btn
-					class="MapRightMenu__save-btn"
 					color="success"
+					fab
+					dark
+					:disabled="!isEdited"
 					:loading="isLoading"
 					@click="onSave"
 				>
-					<span>Сохранить</span>
-					<v-icon right dark> mdi-content-save</v-icon>
+					<v-icon size="26">mdi-content-save</v-icon>
 				</v-btn>
 			</div>
 
-			<div v-if="isError" class="v-messages theme--light error--text">
-				Не удалось сохранить изменения
-			</div>
+			<MapRightMenuConfirmPopup
+				v-model="confirmPopupModel"
+				@close="onClosePopup"
+				@save="onSavePopup"
+			/>
 		</div>
 	</v-navigation-drawer>
 </template>
@@ -261,13 +91,25 @@ import _ from 'lodash'
 import { mapGetters } from 'vuex'
 
 import MHint from '@components/common/MHint.vue'
+import MapRightMenuCipherExpansion from './MapRightMenuCipherExpansion.vue'
+import MapRightMenuValueExpansion from './MapRightMenuValueExpansion/MapRightMenuValueExpansion.vue'
+import MapRightMenuControlExpansion from './MapRightMenuControlExpansion.vue'
+import MapRightMenuConfirmPopup from './MapRightMenuConfirmPopup.vue'
+
 import withEventEmitter from '@mixins/withEventEmitter'
 import MapsService from '@services/Maps/MapsService'
+import ToastService from '@services/ToastService'
 
 export default {
 	name: 'MapRightMenu',
 
-	components: { MHint },
+	components: {
+		MHint,
+		MapRightMenuCipherExpansion,
+		MapRightMenuValueExpansion,
+		MapRightMenuControlExpansion,
+		MapRightMenuConfirmPopup,
+	},
 	props: {
 		value: {
 			type: Boolean,
@@ -292,6 +134,9 @@ export default {
 		return {
 			MapsService,
 
+			confirmPopupModel: false,
+			isEdited: false,
+
 			copyItem: {
 				discipline: '',
 				shifr: '',
@@ -301,44 +146,25 @@ export default {
 				},
 			},
 
-			copyShift: {
-				id_block: null,
-				id_parts: null,
-				id_models: null,
-				id_direction: null,
+			cipher: {
+				block: null,
+				part: null,
+				module: null,
+				discipline: null,
 			},
-
-			selectedControlTypes: [],
-
-			sumHours: 0,
-			sumZet: 0,
-
-			isError: false,
-
-			zetRules: [
-				v => !!String(v).length || 'Это поле является обязательным',
-				v => +v >= 0 || 'Значение должно быть больше, либо равно 0',
-				v => +v <= 10 || 'Значение должно быть меньше, либо равно 10',
-			],
-
-			hoursRules: [
-				v => !!String(v).length || 'Это поле является обязательным',
-				v => +v >= 0 || 'Значение должно быть больше 0, либо равно 0',
-				v => +v <= 320 || 'Значение должно быть меньше, либо равно 320',
-			],
+			cipherStr: null,
 
 			disciplineRules: [
 				v => !!v || 'Это поле является обязательным',
 				v =>
-					(v && v.length < 70) ||
-					'Название дисциплины не может превышать 70 символов',
+					(v && v.length < 120) ||
+					'Название дисциплины не может превышать 120 символов',
 			],
 		}
 	},
 
 	watch: {
 		value(v) {
-			console.log(v)
 			if (v) {
 				this.initRightMenu()
 			}
@@ -361,22 +187,6 @@ export default {
 			},
 		},
 
-		controlTypes: {
-			get() {
-				return this.copyItem.type.session[0]?.control_type_id || null
-			},
-			set(v) {
-				if (this.copyItem.type.session[0]?.control_type_id)
-					this.copyItem.type.session[0] = {
-						control_type_id: v,
-						id: this.copyItem.type.session[0].id,
-						type: this.copyItem.type.session[0].type,
-						id_edizm: 1,
-						amount: 0,
-					}
-			},
-		},
-
 		isLoading() {
 			return this.MapsService.isLoadingSaveMapList
 		},
@@ -395,11 +205,6 @@ export default {
 
 		calculatedZet() {
 			return (amount, id_edizm) => {
-				const currentUnitsOfMeasurement =
-					this.MapsService.unitsOfMeasurement.value.find(
-						measurement => measurement.id_edizm === id_edizm
-					)
-
 				if (id_edizm === 2) {
 					return amount * this.MapsService.WEEKQUEALSZET
 				}
@@ -426,35 +231,45 @@ export default {
 
 	methods: {
 		initRightMenu() {
+			if (!this.item) return
+
 			this.copyItem = _.cloneDeep(this.item)
-
-			const shifr = this.getArrShifr()
-
-			this.copyShift = {
-				id_block: shifr[0],
-				id_parts: shifr[1],
-				id_models: shifr[3] ? shifr[2] : null,
-				id_direction: shifr[3] ? shifr[3] : shifr[2],
-			}
 
 			this.copyItem.type.value = this.addZetInTypeValue(
 				this.copyItem.type.value
 			)
-
-			this.selectedControlTypes = this.allValueTypes.filter(el =>
-				this.copyItem.type.value.find(_el => _el.control_type_id === el.id)
-			)
-
-			this.sumHours = this.getSum('amount')
-			this.sumZet = this.getSum('zet')
 		},
 
-		getArrShifr() {
-			return this.copyItem.shifr
-				.split('.')
-				.map(el => el.match(/[0-9]+/gi).join())
+		/* Обновление объема */
+		onUpdateValue({ index, hours, zet }) {
+			this.copyItem.type.value[index].amount = hours
+			this.copyItem.type.value[index].zet = zet
+			this.isEdited = true
 		},
 
+		/* Обновление объема x2 */
+		onUpdateUnitOfMeasurement({ index, id_edizm, hours }) {
+			this.copyItem.type.value[index].id_edizm = id_edizm
+			this.copyItem.type.value[index].amount = hours
+			this.isEdited = true
+		},
+
+		/* Перезапись объемов, используется для выбора нагрузок
+           TODO: Сделать нормально
+        */
+		changeValues(values) {
+			this.copyItem.type.value = values
+			this.isEdited = true
+		},
+
+		/* Обновление шифра */
+		onInputCipher({ cipherStr, cipher }) {
+			this.cipherStr = cipherStr
+			this.cipher = cipher
+			this.isEdited = true
+		},
+
+		/* В данные дисциплины добавляет новое поле zet */
 		addZetInTypeValue(value) {
 			return value.map(el => ({
 				...el,
@@ -462,90 +277,34 @@ export default {
 			}))
 		},
 
-		onInputHours(index, value) {
-			this.copyItem.type.value[index].amount = +value
-			this.copyItem.type.value[index].zet = this.calculatedZet(
-				+value,
-				this.copyItem.type.value[index].id_edizm
-			)
-
-			this.sumHours = this.getSum('amount')
-			this.sumZet = this.getSum('zet')
-		},
-
-		onInputZet(index, value) {
-			this.copyItem.type.value[index].zet = +value
-
-			if (this.copyItem.type.value[index].id_edizm === 2) {
-				this.copyItem.type.value[index].amount =
-					+value / this.MapsService.WEEKQUEALSZET
+		onCloseButtonClick() {
+			if (this.isEdited) {
+				this.confirmPopupModel = true
 			} else {
-				this.copyItem.type.value[index].amount =
-					+value * this.MapsService.ZETQUEALSHOURS
-			}
-
-			this.sumHours = this.getSum('amount')
-			this.sumZet = this.getSum('zet')
-		},
-
-		getSum(field, withoutFirstItem) {
-			return this.copyItem.type.value.reduce((accumulator, currentValue) => {
-				if (currentValue.id_edizm === 1 || field === 'zet') {
-					return accumulator + currentValue[field]
-				} else {
-					return (
-						accumulator + currentValue[field] * this.MapsService.WEEKQUEALSHOURS
-					)
-				}
-			}, 0)
-		},
-
-		onSelectControlTypes(e) {
-			if (e.length < this.copyItem.type.value.length) {
-				this.copyItem.type.value = this.copyItem.type.value.filter(el =>
-					e.find(_el => _el.id === el.control_type_id)
-				)
-
-				this.sumHours = this.getSum('amount')
-				this.sumZet = this.getSum('zet')
-			} else {
-				const newType = e.at(-1)
-				this.copyItem.type.value.push({
-					control_type_id: newType.id,
-					amount: 0,
-					zet: 0,
-					id_edizm: 1,
-					type: 'load',
-				})
+				this.closeRightMenu()
 			}
 		},
 
-		onUpdateUnitsOfMeasurement(index) {
-			this.copyItem.type.value[index].id_edizm =
-				(this.copyItem.type.value[index].id_edizm % 2) + 1
-
-			this.copyItem.type.value[index].amount =
-				this.copyItem.type.value[index].id_edizm === 2
-					? this.copyItem.type.value[index].zet / this.MapsService.WEEKQUEALSZET
-					: this.copyItem.type.value[index].zet *
-					  this.MapsService.ZETQUEALSHOURS
-		},
-
-		onCancel() {
+		closeRightMenu() {
 			this.value_ = false
-			// this.clear()
+			this.clear()
 		},
 
-		getShifr(data) {
-			return `Б${data.id_block}.${data.id_parts}.${
-				data.id_models ? data.id_models : data.id_direction
-			}${data.id_models ? '.' + data.id_direction : ''}`
+		async onClosePopup() {
+			this.confirmPopupModel = false
+			this.closeRightMenu()
+		},
+
+		async onSavePopup() {
+			this.confirmPopupModel = false
+			const res = await this.onSave()
+			if (res) this.closeRightMenu()
 		},
 
 		async onSave() {
-			this.copyItem.id_block = this.copyShift.id_block
-			this.copyItem.id_parts = this.copyShift.id_parts
-			this.copyItem.shifr = this.getShifr(this.copyShift)
+			this.copyItem.id_block = this.cipher.block
+			this.copyItem.id_parts = this.cipher.part
+			this.copyItem.shifr = this.cipherStr
 
 			const res = await this.MapsService.editMapItem(
 				this.$route.query.aup,
@@ -554,21 +313,26 @@ export default {
 			)
 
 			if (res) {
-				this.initRightMenu()
+				ToastService.showSuccess('Карта успешно сохранена.')
+				this.isEdited = false
 			} else {
-				this.isError = true
+				ToastService.showError('Произошла ошибка при сохранении карты.')
 			}
+
+			return res
 		},
 
 		clear() {
 			this.copyItem = {
 				discipline: '',
-				type: [],
+				shifr: '',
+				type: {
+					session: [],
+					value: [],
+				},
 			}
 
-			this.sumZet = 0
-			this.sumHours = 0
-			this.selectedControlTypes = []
+			this.isEdited = false
 		},
 	},
 }
@@ -576,77 +340,29 @@ export default {
 
 <style lang="sass">
 .MapRightMenu
+    &__header
+        display: flex
+        justify-content: space-between
+        align-items: center
+
+    &__name
+        margin-bottom: 8px
 
     &__panel-title
         color: #fff
 
-    .MHintActivator
-        margin-left: 4px
-        width: 25px
-        height: 25px
-
     &__inner
-        padding: 16px
+        position: relative
+        padding: 12px 16px 16px 16px
         display: flex
         gap: 8px
         flex-direction: column
         justify-content: flex-start
         height: 100%
 
-    &__section
-        margin-bottom: 12px
-
-
-    &__section-title-block
-        display: flex
-        align-items: center
-        color: #fff
-
     &__actions
-        display: flex
-        gap: 8px
-        margin-top: auto
-
-        button
-          flex: 1
-
-
-    &__type-wrapper
-        display: flex
-        flex-direction: column
-        color: #fff
-        margin-top: 8px
-
-        & > *:not(:last-child)
-            margin-bottom: 8px
-
-    &__type-row
-        display: grid
-        grid-template-columns: 1fr 1fr
-        grid-template-rows: 1fr
-        gap: 8px
-        align-items: center
-
-        &__switch
-            grid-column: 1/3
-            margin: 0 !important
-
-    &__hint
-        margin-left: 8px
-
-    &__expansion-wrapper
-        border-radius: 4px 4px 0 0 !important
-
-    &__expansion
-
-    &__expansion-header
-        display: flex
-        align-items: center
-        color: #fff
-
-        &-chip
-            margin-left: auto
-
-    &__expansion-header-title
-        font-size: 16px
+        position: fixed
+        right: 16px
+        bottom: 16px
+        z-index: 2
 </style>
