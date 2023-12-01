@@ -100,6 +100,8 @@ export default {
 				return this.value
 			},
 			set(v) {
+				if (!v) this.clearForm()
+
 				this.$emit('input', v)
 			},
 		},

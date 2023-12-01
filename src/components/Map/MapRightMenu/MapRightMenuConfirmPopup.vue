@@ -1,9 +1,8 @@
 <template>
-	<v-dialog :value="value" @input="$emit('input', $event)" width="400">
+	<v-dialog :value="value" @input="$emit('input', $event)" width="550">
 		<v-card>
 			<v-card-title class="text-h5">
-				Сохранить изменения перед <br />
-				закрытием?
+				Сохранить изменения перед закрытием?
 			</v-card-title>
 			<v-card-text>
 				Если вы не сохраните дисциплину, то все внесенные изменения будут
