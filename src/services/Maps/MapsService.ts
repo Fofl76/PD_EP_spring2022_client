@@ -1,4 +1,9 @@
-import { IFacultyRaw, IMapItemRaw, IControlTypeRaw, IUnitsOfMeasurement } from '@models/Maps'
+import {
+	IFacultyRaw,
+	IMapItemRaw,
+	IControlTypeRaw,
+	IUnitsOfMeasurement,
+} from '@models/Maps'
 
 import Api from '@services/api/Api'
 
@@ -31,7 +36,7 @@ class MapsService extends Events {
 	// 1 зет = 36 часа
 	readonly ZETQUEALSHOURS = 36
 
-	// 1 неделя = 1,5 зет 
+	// 1 неделя = 1,5 зет
 	readonly WEEKQUEALSZET = 1.5
 
 	// 1 неделя = 54 часа
@@ -90,11 +95,11 @@ class MapsService extends Events {
 	 * @return {Promise<void>}
 	 */
 	async fetchFacultiesList() {
-		const facultiesList = await Api.fetchAllMapsList()
+		const { success, data } = await Api.fetchAllMapsList()
 
-		if (facultiesList) {
-			this.setFacultiesList(facultiesList)
-			this.emit('fetchMapList', facultiesList)
+		if (success && data) {
+			this.setFacultiesList(data)
+			this.emit('fetchMapList', data)
 		}
 	}
 
@@ -152,7 +157,7 @@ class MapsService extends Events {
 			column.forEach(element => {
 				sum += element?.type?.value?.reduce((sum, zetBlock) => {
 					if (zetBlock.id_edizm === 2) {
-						return sum + (zetBlock.amount * this.WEEKQUEALSHOURS)
+						return sum + zetBlock.amount * this.WEEKQUEALSHOURS
 					}
 
 					return sum + zetBlock.amount
@@ -175,18 +180,18 @@ class MapsService extends Events {
 	async saveAllMap(aupCode: Key, mapList: IMapItemRaw[] | null = null) {
 		this._isLoadingSaveMapList = true
 
-		const res = await Api.saveMap(
+		const { success, data } = await Api.saveMap(
 			aupCode,
 			mapList || unbuildMapList(this._mapList.value)
 		)
 
-		if (res) {
+		if (success) {
 			await this.fetchMapList(aupCode)
 		}
 
 		this._isLoadingSaveMapList = false
 
-		return res
+		return data
 	}
 
 	getMapItemById(id: string): IMapItemRaw | null {
@@ -222,7 +227,7 @@ class MapsService extends Events {
 
 		const recalculateColumn = getRecalculatedColumn(copyColumn)
 
-		Vue.set(this._mapList.value, item.num_col , recalculateColumn)
+		Vue.set(this._mapList.value, item.num_col, recalculateColumn)
 	}
 
 	/**
@@ -251,11 +256,10 @@ class MapsService extends Events {
 		copyMap[item.num_col][item.num_row] = newItem
 
 		console.log(copyMap[item.num_col][item.num_row])
-		
 
 		const res = await this.saveAllMap(aup, unbuildMapList(copyMap))
 
-		if (res) {	
+		if (res) {
 			const copyColumn = _.cloneDeep(this._mapList.value[item.num_col])
 			copyColumn[item.num_row] = newItem
 			const recalculateColumn = getRecalculatedColumn(copyColumn)
@@ -281,12 +285,12 @@ class MapsService extends Events {
 	 */
 	async fetchMapList(aupCode: Key) {
 		this._isLoadingMapList = true
-		const mapList = await Api.fetchMap(aupCode)
+		const { success, data: mapList } = await Api.fetchMap(aupCode)
 
 		// Вместе с картой загружаем доступный список нагрузок (СРС, Семинарские и т.д.)
 		await this.fetchAllControlTypes()
 
-		if (mapList) {
+		if (success && mapList) {
 			this.setMapList(mapList.data)
 			this.emit('fetchMapList', mapList.data)
 		}
@@ -300,13 +304,11 @@ class MapsService extends Events {
 	}
 
 	async fetchAllControlTypes() {
-		const controlTypes = await Api.fetchAllControlTypes()
+		const { success, data } = await Api.fetchAllControlTypes()
 
-		
-		if (controlTypes) {
-	
-			this.setAllControlTypes(controlTypes)
-			this.emit('fetchAllControlTypes', controlTypes)
+		if (success && data) {
+			this.setAllControlTypes(data)
+			this.emit('fetchAllControlTypes', data)
 		}
 	}
 
@@ -314,11 +316,11 @@ class MapsService extends Events {
 		this._unitsOfMeasurement.value = items
 	}
 
-  async fetchUnitsOfMeasurement() {
-		const unitsOfMeasurement = await Api.fetchUnitsOfMeasurement()
+	async fetchUnitsOfMeasurement() {
+		const { success, data } = await Api.fetchUnitsOfMeasurement()
 
-		if (unitsOfMeasurement) {
-			this.setUnitsOfMeasurement(unitsOfMeasurement)
+		if (success && data) {
+			this.setUnitsOfMeasurement(data)
 		}
 	}
 }

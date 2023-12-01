@@ -5,6 +5,7 @@ import {
 	IUnitsOfMeasurement,
 } from '@models/Maps'
 import { IFetchAllGroupsResponse, IGroup } from '@models/Groups'
+import { IApiResponse } from '@models/Api'
 import Key from '@models/Key'
 import jwtDecode from 'jwt-decode'
 
@@ -14,6 +15,7 @@ import objectToFormData from '@utils/objectToFormData'
 import { ITokenPayload, ITokens, IUser } from '@models/Auth'
 import tokenService from '@services/auth/TokenService'
 import authService from '@services/auth/AuthService'
+import IUploadFileError from '@models/Maps/IUploadFileError'
 
 enum AxiosMethodsEnum {
 	GET = 'GET',
@@ -48,7 +50,7 @@ abstract class Api {
 
 		if (!access || !refresh) return
 
-		const data = await this.callFetch<ITokens>(
+		const { success, data } = await this.callFetch<ITokens>(
 			'refresh',
 			AxiosMethodsEnum.POST,
 			{
@@ -57,9 +59,7 @@ abstract class Api {
 			}
 		)
 
-		if (!data) return
-
-		tokenService.emit('tokens-fetched', data)
+		if (success && data) tokenService.emit('tokens-fetched', data)
 	}
 
 	static async fetchUser(userId: Key) {
@@ -168,7 +168,7 @@ abstract class Api {
 	 * @return {Promise<Key | null>}
 	 */
 	static uploadFile(form: IFormUpload) {
-		return this.callFetch<Key>(
+		return this.callFetch<Key | IUploadFileError>(
 			`upload`,
 			AxiosMethodsEnum.POST,
 			objectToFormData(form),
@@ -189,13 +189,17 @@ abstract class Api {
 		method: AxiosMethodsEnum = AxiosMethodsEnum.GET,
 		args?: any,
 		headers?: Record<string, string>
-	): Promise<T | null> {
+	): Promise<IApiResponse<T>> {
 		try {
 			if (headers?.Authorization && endpoint !== 'refresh') {
 				const token = headers.Authorization
 
 				if (!token) {
-					return null
+					return {
+						success: false,
+						status: 403,
+						data: null,
+					}
 				}
 
 				const decoded = jwtDecode<ITokenPayload>(token)
@@ -206,7 +210,7 @@ abstract class Api {
 				}
 			}
 
-			const res: AxiosResponse<T> = await axios(endpoint, {
+			const { status, data }: AxiosResponse<T> = await axios(endpoint, {
 				method,
 				data: args,
 				headers: {
@@ -214,16 +218,31 @@ abstract class Api {
 				},
 			})
 
-			return res.data
-		} catch (e) {
-			if (
-				endpoint === 'refresh' &&
-				(e as AxiosError).response?.status === HttpStatusCode.Unauthorized
-			) {
-				tokenService.emit('logout')
+			return {
+				success: true,
+				status,
+				data,
+			}
+		} catch (err) {
+			if (err instanceof AxiosError && err.response) {
+				const { data, status }: AxiosResponse = err.response
+
+				if (endpoint === 'refresh' && status === HttpStatusCode.Unauthorized) {
+					tokenService.emit('logout')
+				}
+
+				return {
+					success: false,
+					status,
+					data,
+				}
 			}
 
-			return null
+			return {
+				success: false,
+				status: null,
+				data: null,
+			}
 		}
 	}
 }

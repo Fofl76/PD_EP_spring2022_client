@@ -18,13 +18,13 @@ class AuthService extends Events {
 		username: string
 		password: string
 	}): Promise<'success' | 'error'> {
-		const resp = await Api.login(payload)
+		const { success, data } = await Api.login(payload)
 
-		if (!resp) {
+		if (!success) {
 			return 'error'
 		}
 
-		this.tokenService.emit('tokens-fetched', resp)
+		this.tokenService.emit('tokens-fetched', data)
 
 		this.fetchLoggedUser()
 
@@ -42,11 +42,10 @@ class AuthService extends Events {
 		const tokenDecoded = this.tokenService.decode()
 		if (!tokenDecoded) return null
 
-		const user = await Api.fetchUser(tokenDecoded.user_id)
+		const { success, data } = await Api.fetchUser(tokenDecoded.user_id)
+		if (success && data) this.updateLoggedUser(data)
 
-		if (user) this.updateLoggedUser(user)
-
-		return user
+		return data
 	}
 
 	logout() {
