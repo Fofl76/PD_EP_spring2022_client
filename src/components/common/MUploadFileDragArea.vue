@@ -59,11 +59,16 @@
 						isUploadedFile: isUploadedFile(item.name),
 					}"
 				>
-					<v-list-item-content>
-						<v-list-item-title>
-							{{ item.name }}
-						</v-list-item-title>
-					</v-list-item-content>
+					<v-tooltip top>
+						<template v-slot:activator="{ on }">
+							<v-list-item-content v-on="on">
+								<v-list-item-title>
+									{{ item.name }}
+								</v-list-item-title>
+							</v-list-item-content>
+						</template>
+						<span>{{ item.name }}</span>
+					</v-tooltip>
 
 					<v-list-item-action>
 						<v-btn @click.stop="removeFile(item.name)" icon :loading="loading">
