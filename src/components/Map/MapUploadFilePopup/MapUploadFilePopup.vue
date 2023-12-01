@@ -1,5 +1,10 @@
 <template>
-	<v-dialog class="MapUploadFilePopup" v-model="_value" max-width="500">
+	<v-dialog
+		class="MapUploadFilePopup"
+		v-model="_value"
+		max-width="500"
+		persistent
+	>
 		<v-card class="MapUploadFilePopup__card">
 			<v-btn class="MapUploadFilePopup__close-btn" icon @click="_value = false">
 				<v-icon>mdi-close</v-icon>
@@ -19,6 +24,7 @@
 					@input="onInput"
 					@drop="clearInfoUploadedFiles"
 					@selectFile="clearInfoUploadedFiles"
+					@removeFile="onRemoveFile"
 				/>
 
 				<!-- <MapUploadFileError :errors="errors" /> -->
@@ -46,13 +52,14 @@
 
 			<v-card-actions class="MapUploadFilePopup__actions">
 				<v-btn
+					class="MapUploadFilePopup__upload-btn"
 					color="success"
 					:disabled="!isValidForm"
 					:loading="isLoadingUploadFile"
 					@click="onUploadBtnClick"
-					block
 				>
-					Загрузить
+					<v-icon right dark> mdi-cloud-upload </v-icon>
+					<div style="margin-top: 2px">Загрузить</div>
 				</v-btn>
 			</v-card-actions>
 		</v-card>
@@ -128,6 +135,15 @@ export default {
 			this.form.selectedFiles = files
 		},
 
+		onRemoveFile(fileName) {
+			console.log('remove', fileName)
+			const index = this.form.selectedFiles.findIndex(
+				file => file.name === fileName
+			)
+
+			if (index > -1) this.form.selectedFiles.splice(index, 1)
+		},
+
 		async onUploadBtnClick() {
 			const formData = new FormData()
 
@@ -150,7 +166,11 @@ export default {
 				console.log({ success, data })
 
 				const hasErrors = data.some(info => {
-					if (info.errors.length === 0)
+					return info.errors.length > 0
+				})
+
+				data.forEach(info => {
+					if (info.errors.length === 0 && hasErrors)
 						ToastService.showSuccess(
 							'Файл был успешно загружен',
 							`АУП: ${info.aup}`
@@ -158,13 +178,16 @@ export default {
 
 					if (info.errors.length > 0)
 						ToastService.showError('В файле нашлась ошибка', `АУП: ${info.aup}`)
-
-					return info.errors.length > 0
 				})
+
 				this.infoUploadedFiles = data
 
 				if (!hasErrors) {
-					ToastService.showSuccess('Файлы были успешно загружены')
+					let text = 'Файлы были успешно загружены'
+					if (data.length === 1) text = 'Файл был успешно загружен'
+
+					ToastService.showSuccess(text)
+
 					this._value = false
 					this.clearForm()
 				}
@@ -211,5 +234,11 @@ export default {
         margin: 4px 0
 
     &__actions
-        padding: 0 24px 8px 24px !important
+        display: flex
+        justify-content: flex-end
+        padding: 0 24px 16px 24px !important
+
+    &__upload-btn
+        display: flex
+        align-items: center
 </style>

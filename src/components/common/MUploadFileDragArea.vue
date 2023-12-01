@@ -71,7 +71,7 @@
 					</v-tooltip>
 
 					<v-list-item-action>
-						<v-btn @click.stop="removeFile(item.name)" icon :loading="loading">
+						<v-btn @click="removeFile(item.name)" icon :loading="loading">
 							<v-icon> mdi-close-circle </v-icon>
 						</v-btn>
 					</v-list-item-action>
@@ -155,9 +155,7 @@ export default {
 
 	methods: {
 		removeFile(fileName) {
-			const index = this.uploadedFiles.findIndex(file => file.name === fileName)
-
-			if (index > -1) this.uploadedFiles.splice(index, 1)
+			this.$emit('removeFile', fileName)
 		},
 
 		getInfoUploadedFileByFilename(filename) {
