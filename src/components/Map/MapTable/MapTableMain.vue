@@ -40,14 +40,15 @@
 		</template>
 
 		<template v-else>
+			<!-- Левая колонка с линейкой ЗЕТ -->
+			<MapTableMainRulerColumn :maxZet="fakeMaxZet" :heightZet="heightZet" />
+
 			<div
 				class="MapTableMain__column"
 				v-for="(column, key) in fakeElementsCount"
 				:key="key"
 			>
-				<div class="MapTableMain__column-header">
-					{{ orderWords[key] }}
-				</div>
+				<MapTableMainColumnHeader :ordinalNumber="key" />
 
 				<div v-for="item in 10" :key="item.id">
 					<MapTableMainSkeletonBlock />
