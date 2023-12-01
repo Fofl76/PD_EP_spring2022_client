@@ -46,34 +46,50 @@
 		</div>
 
 		<div v-if="uploadedFiles.length > 0">
-			<v-list-item
-				dense
-				class="MUploadFileDragArea__list-item"
+			<div
+				class="MUploadFileDragArea__files-list"
 				v-for="item in uploadedFiles"
 				:key="item.name"
 			>
-				<v-list-item-content>
-					<v-list-item-title>
-						{{ item.name }}
-						<span class="ml-3 text--secondary">
-							{{ getItemSizeLabel(item.size) }}
-						</span>
-					</v-list-item-title>
-				</v-list-item-content>
+				<v-list-item
+					dense
+					class="MUploadFileDragArea__list-item"
+					:class="{
+						isErrorFile: isErrorFile(item.name),
+						isUploadedFile: isUploadedFile(item.name),
+					}"
+				>
+					<v-list-item-content>
+						<v-list-item-title>
+							{{ item.name }}
+						</v-list-item-title>
+					</v-list-item-content>
 
-				<v-list-item-action>
-					<v-btn @click.stop="removeFile(item.name)" icon>
-						<v-icon> mdi-close-circle </v-icon>
-					</v-btn>
-				</v-list-item-action>
-			</v-list-item>
+					<v-list-item-action>
+						<v-btn @click.stop="removeFile(item.name)" icon :loading="loading">
+							<v-icon> mdi-close-circle </v-icon>
+						</v-btn>
+					</v-list-item-action>
+				</v-list-item>
+
+				<div class="MUploadFileDragArea__errors-wrap">
+					<MapUploadFileError
+						class="MUploadFileDragArea__errors"
+						:data="getInfoUploadedFileByFilename(item.name)"
+					/>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script>
+import MapUploadFileError from '@components/Map/MapUploadFilePopup/MapUploadFileError.vue'
+import _ from 'lodash'
+
 export default {
-	name: 'MMUploadFileDragArea',
+	name: 'MUploadFileDragArea',
+	components: { MapUploadFileError },
 
 	props: {
 		value: {
@@ -95,6 +111,21 @@ export default {
 			type: String,
 			default: '',
 		},
+
+		multiple: {
+			type: Boolean,
+			default: false,
+		},
+
+		loading: {
+			type: Boolean,
+			default: false,
+		},
+
+		info: {
+			type: Array,
+			default: () => [],
+		},
 	},
 
 	data: () => ({
@@ -111,6 +142,10 @@ export default {
 				this.$emit('input', value)
 			},
 		},
+
+		infoUploadedFilesByFilename() {
+			return _.groupBy(this.info, 'filename')
+		},
 	},
 
 	methods: {
@@ -118,6 +153,18 @@ export default {
 			const index = this.uploadedFiles.findIndex(file => file.name === fileName)
 
 			if (index > -1) this.uploadedFiles.splice(index, 1)
+		},
+
+		getInfoUploadedFileByFilename(filename) {
+			return this.infoUploadedFilesByFilename[filename]?.[0]
+		},
+
+		isErrorFile(filename) {
+			return !!this.getInfoUploadedFileByFilename(filename)?.errors.length
+		},
+
+		isUploadedFile(filename) {
+			return !!this.infoUploadedFilesByFilename[filename]?.[0]
 		},
 
 		onDrop(e) {
@@ -134,6 +181,8 @@ export default {
 				if (filteredFiles.length === 0) return
 				this.uploadedFiles = files
 			}
+
+			this.$emit('drop')
 		},
 
 		getItemSizeLabel(size) {
@@ -146,7 +195,8 @@ export default {
 		},
 
 		onInputFileInput(e) {
-			this.uploadedFiles = [e.target.files[0]]
+			this.uploadedFiles = [e.target.files]
+			this.$emit('selectFile')
 		},
 	},
 }
@@ -182,7 +232,33 @@ export default {
         cursor: pointer
         text-decoration: underline
 
+    &__files-list
+        display: flex
+        flex-direction: column
+        gap: 8px
+
     &__list-item
         background-color: rgba(0, 0, 0, 0.1)
-        border-radius: 6px
+        border-radius: 0px 6px 6px 0px
+        position: relative
+
+        &.isUploadedFile
+            border-left: 3px solid #4CAF50
+        &.isErrorFile
+            border-left: 3px solid #F44336
+
+
+    &__list-item-title
+        display: flex
+        align-items: center
+        justify-content: space-between
+
+    &__list-item-size-chip
+        position: absolute
+        top: 0
+        left: 0
+        transform: translateY(-30%)
+
+    &__errors
+        margin-bottom: 8px
 </style>

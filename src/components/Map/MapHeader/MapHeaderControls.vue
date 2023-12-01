@@ -35,11 +35,7 @@
 			</v-list-item>
 		</MapHeaderDropdown>
 
-		<MapUploadFilePopup
-			v-model="uploadPopupModel"
-			@success="$emit('successUploadFile', $event)"
-			@error="$emit('errorUploadFile', $event)"
-		/>
+		<MapUploadFilePopup v-model="uploadPopupModel" />
 
 		<MapGroupsPopup v-model="groupSettingsPopupModel" />
 		<!--  -->

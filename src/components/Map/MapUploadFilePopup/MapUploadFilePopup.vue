@@ -9,11 +9,19 @@
 
 			<v-card-text class="MapUploadFilePopup__text">
 				<MUploadFileDragArea
-					v-model="form.uploadedFiles"
+					:value="sortedSelectedItems"
 					:accessTypes="accessTypes"
+					:info="infoUploadedFiles"
+					:loading="isLoadingUploadFile"
 					icon="mdi-file-excel"
 					badgeLabel=".xlsx, .xls"
+					multiple
+					@input="onInput"
+					@drop="clearInfoUploadedFiles"
+					@selectFile="clearInfoUploadedFiles"
 				/>
+
+				<!-- <MapUploadFileError :errors="errors" /> -->
 
 				<div class="MapUploadFilePopup__checkbox-block">
 					<v-checkbox
@@ -52,13 +60,17 @@
 </template>
 
 <script>
+import _ from 'lodash'
+
 import Api from '@services/api/Api'
 
 import MUploadFileDragArea from '@components/common/MUploadFileDragArea.vue'
+import MapUploadFileError from '@components/Map/MapUploadFilePopup/MapUploadFileError.vue'
+import ToastService from '@services/ToastService'
 
 export default {
 	name: 'MapUploadFilePopup',
-	components: { MUploadFileDragArea },
+	components: { MUploadFileDragArea, MapUploadFileError },
 	props: { value: Boolean },
 
 	data() {
@@ -66,8 +78,10 @@ export default {
 			form: {
 				checkboxIntegralityModel: true,
 				checkboxSumModel: true,
-				uploadedFiles: [],
+				selectedFiles: [],
 			},
+
+			infoUploadedFiles: [],
 
 			isLoadingUploadFile: false,
 		}
@@ -84,7 +98,7 @@ export default {
 		},
 
 		isValidForm() {
-			return !!this.form.uploadedFiles?.length
+			return !!this.form.selectedFiles?.length
 		},
 
 		// Файлы которые можно загружать через форму загрузки (только excel)
@@ -94,39 +108,85 @@ export default {
 				'application/vnd.ms-excel',
 			]
 		},
+
+		infoUploadedFilesByFilename() {
+			return _.groupBy(this.info, 'filename')
+		},
+
+		sortedSelectedItems() {
+			return [...this.form.selectedFiles].sort((a, b) => {
+				return (
+					this.infoUploadedFilesByFilename[a.name]?.errors.length >
+					this.infoUploadedFilesByFilename[b.name]?.errors.length
+				)
+			})
+		},
 	},
 
 	methods: {
+		onInput(files) {
+			this.form.selectedFiles = files
+		},
+
 		async onUploadBtnClick() {
-			const form = {
-				file: this.form.uploadedFiles[0],
-				options: {
+			const formData = new FormData()
+
+			this.form.selectedFiles.forEach(file => {
+				formData.append('file', file)
+			})
+
+			formData.append(
+				'options',
+				JSON.stringify({
 					checkboxIntegralityModel: this.form.checkboxIntegralityModel,
 					checkboxSumModel: this.form.checkboxSumModel,
-				},
+				})
+			),
+				(this.isLoadingUploadFile = true)
+
+			const { success, data } = await Api.uploadFile(formData)
+
+			if (success) {
+				console.log({ success, data })
+
+				const hasErrors = data.some(info => {
+					if (info.errors.length === 0)
+						ToastService.showSuccess(
+							'Файл был успешно загружен',
+							`АУП: ${info.aup}`
+						)
+
+					if (info.errors.length > 0)
+						ToastService.showError('В файле нашлась ошибка', `АУП: ${info.aup}`)
+
+					return info.errors.length > 0
+				})
+				this.infoUploadedFiles = data
+
+				if (!hasErrors) {
+					ToastService.showSuccess('Файлы были успешно загружены')
+					this._value = false
+					this.clearForm()
+				}
+			} else {
+				ToastService.showError('Произошла ошибка при загрузке файлов')
 			}
 
-			this.isLoadingUploadFile = true
-
-			try {
-				const res = await Api.uploadFile(form)
-
-				this._value = false
-				this.$emit('success', res.data)
-			} catch (res) {
-				this.$emit('error', res.response)
-			} finally {
-				this.isLoadingUploadFile = false
-				this.clearForm()
-			}
+			this.isLoadingUploadFile = false
 		},
 
 		clearForm() {
 			this.form = {
 				checkboxIntegralityModel: true,
 				checkboxSumModel: true,
-				uploadedFiles: [],
+				selectedFiles: [],
 			}
+
+			this.clearInfoUploadedFiles()
+		},
+
+		clearInfoUploadedFiles() {
+			this.infoUploadedFiles = []
 		},
 	},
 }

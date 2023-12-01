@@ -1,9 +1,6 @@
 <template>
 	<v-app class="Map">
-		<MapHeader
-			@successUploadFile="onSuccessUploadFile"
-			@errorUploadFile="onErrorUploadFile"
-		/>
+		<MapHeader @successUploadFile="onSuccessUploadFile" />
 
 		<v-main dark app class="Map__main">
 			<v-container class="Map__main-inner" fluid>
@@ -15,8 +12,6 @@
 				/>
 			</v-container>
 		</v-main>
-
-		<MSnackbar v-bind="snackbarOptions" @input="clearSnackbarOptions" />
 
 		<MapRightMenu
 			:value="rightMenuEditModel"
@@ -32,7 +27,6 @@ import GroupsService from '@services/Groups/GroupsService'
 
 import MapHeader from '@components/Map/MapHeader/MapHeader.vue'
 import MapTable from '@components/Map/MapTable/MapTable.vue'
-import MSnackbar from '@components/common/MSnackbar.vue'
 import MapRightMenu from '@components/Map/MapRightMenu/MapRightMenu.vue'
 
 import { mapGetters, mapMutations } from 'vuex'
@@ -43,7 +37,6 @@ export default {
 	components: {
 		MapHeader,
 		MapTable,
-		MSnackbar,
 		MapRightMenu,
 	},
 
@@ -89,33 +82,9 @@ export default {
 	methods: {
 		...mapMutations('Map', ['setRightMenuEditModel', 'setRightMenuEditItemId']),
 
-		clearSnackbarOptions() {
-			this.snackbarOptions = null
-		},
-
 		onSuccessUploadFile(aup) {
 			if (aup) {
 				this.$router.push({ query: { aup } }).catch(() => {})
-			}
-
-			this.snackbarOptions = {
-				value: true,
-				type: 'success',
-				timeout: 2500,
-			}
-		},
-
-		onErrorUploadFile(res) {
-			this.snackbarOptions = {
-				value: true,
-				type: 'error',
-				settings: {
-					error: {
-						title: 'Ошибка при загрузке файла',
-						text: res?.data || 'Не удалось сохранить карту.',
-					},
-				},
-				timeout: 2500,
 			}
 		},
 

@@ -167,11 +167,11 @@ abstract class Api {
 	 * @param {IFormUpload} group - Группа
 	 * @return {Promise<Key | null>}
 	 */
-	static uploadFile(form: IFormUpload) {
+	static uploadFile(form: IFormUpload[]) {
 		return this.callFetch<Key | IUploadFileError>(
 			`upload`,
 			AxiosMethodsEnum.POST,
-			objectToFormData(form),
+			form,
 			{ 'Content-Type': 'multipart/form-data' }
 		)
 	}
@@ -191,6 +191,8 @@ abstract class Api {
 		headers?: Record<string, string>
 	): Promise<IApiResponse<T>> {
 		try {
+			console.log('endpoint', args)
+
 			if (headers?.Authorization && endpoint !== 'refresh') {
 				const token = headers.Authorization
 
