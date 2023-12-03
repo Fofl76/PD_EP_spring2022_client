@@ -4,6 +4,10 @@
 		<MapHeaderButton label="Группировки" @click="openGroupSettingsPopupModel" />
 		<!--  -->
 
+		<!-- Группировки -->
+		<MapHeaderButton label="Модули" @click="openModulesPopup" />
+		<!--  -->
+
 		<v-divider class="MapHeader__divider" vertical></v-divider>
 
 		<!-- Работа с файлами -->
@@ -52,6 +56,10 @@
 
 		<MapAuthPopup v-model="authPopupModel" @login="onLogin" />
 		<!--  -->
+
+		<!-- Модули -->
+		<MapModulesPopup v-model="modulesPopupModel" v-if="modulesPopupModel" />
+		<!--  -->
 	</div>
 </template>
 
@@ -64,8 +72,9 @@ import MapHeaderAuthDropdown from '@components/Map/MapHeader/MapHeaderAuthDropdo
 import MapGroupsPopup from '@components/Map/MapGroupsPopup/MapGroupsPopup.vue'
 import MapUploadFilePopup from '@components/Map/MapUploadFilePopup/MapUploadFilePopup.vue'
 import MapAuthPopup from '@components/Map/MapAuthPopup/MapAuthPopup.vue'
+import MapModulesPopup from '@components/Map/MapModulesPopup/MapModulesPopup.vue'
 
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters } from 'vuex'
 import axios from '@services/api/axios'
 import authService from '@services/auth/AuthService'
 
@@ -78,6 +87,7 @@ export default {
 		MapGroupsPopup,
 		MapUploadFilePopup,
 		MapAuthPopup,
+		MapModulesPopup,
 	},
 
 	data() {
@@ -85,6 +95,7 @@ export default {
 			uploadPopupModel: false,
 			groupSettingsPopupModel: false,
 			authPopupModel: false,
+			modulesPopupModel: false,
 		}
 	},
 
@@ -99,6 +110,10 @@ export default {
 
 		openAuthPopup() {
 			this.authPopupModel = true
+		},
+
+		openModulesPopup() {
+			this.modulesPopupModel = true
 		},
 
 		onLogin() {

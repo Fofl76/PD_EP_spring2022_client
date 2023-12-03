@@ -13,7 +13,7 @@ import axios from './axios'
 import objectToFormData from '@utils/objectToFormData'
 import { ITokenPayload, ITokens, IUser } from '@models/Auth'
 import tokenService from '@services/auth/TokenService'
-import authService from '@services/auth/AuthService'
+import { IModule } from '@models/Modules'
 
 enum AxiosMethodsEnum {
 	GET = 'GET',
@@ -35,7 +35,11 @@ abstract class Api {
 	 * @return {Promise<ITokens | null>}
 	 */
 	static login(payload: { username: string; password: string }) {
-		return this.callFetch<ITokens>('login', AxiosMethodsEnum.POST, payload)
+		return this.callFetch<ITokens>({
+			endpoint: 'login',
+			method: AxiosMethodsEnum.POST,
+			args: payload,
+		})
 	}
 
 	/**
@@ -48,14 +52,14 @@ abstract class Api {
 
 		if (!access || !refresh) return
 
-		const data = await this.callFetch<ITokens>(
-			'refresh',
-			AxiosMethodsEnum.POST,
-			{
+		const data = await this.callFetch<ITokens>({
+			endpoint: 'refresh',
+			method: AxiosMethodsEnum.POST,
+			args: {
 				access,
 				refresh,
-			}
-		)
+			},
+		})
 
 		if (!data) return
 
@@ -63,8 +67,12 @@ abstract class Api {
 	}
 
 	static async fetchUser(userId: Key) {
-		return this.callFetch<IUser>(`user/${userId}`, AxiosMethodsEnum.GET, null, {
-			Authorization: tokenService.tokens.access || '',
+		return this.callFetch<IUser>({
+			endpoint: `user/${userId}`,
+			method: AxiosMethodsEnum.GET,
+			headers: {
+				Authorization: tokenService.tokens.access || '',
+			},
 		})
 	}
 
@@ -73,7 +81,9 @@ abstract class Api {
 	 * @return {Promise<IFetchAllMapsListResponse[] | null>}
 	 */
 	static fetchAllMapsList() {
-		return this.callFetch<IFetchAllMapsListResponse[]>('getAllMaps')
+		return this.callFetch<IFetchAllMapsListResponse[]>({
+			endpoint: 'getAllMaps',
+		})
 	}
 
 	/**
@@ -82,7 +92,9 @@ abstract class Api {
 	 * @return {Promise<IFetchMapResponse | null>}
 	 */
 	static fetchMap(aupCode: Key) {
-		return this.callFetch<IFetchMapResponse>(`map/${aupCode}`)
+		return this.callFetch<IFetchMapResponse>({
+			endpoint: `map/${aupCode}`,
+		})
 	}
 
 	/**
@@ -90,11 +102,15 @@ abstract class Api {
 	 * @return {Promise<ResponseFetchMap | null>}
 	 */
 	static fetchAllGroups() {
-		return this.callFetch<IFetchAllGroupsResponse[]>(`getGroups`)
+		return this.callFetch<IFetchAllGroupsResponse[]>({
+			endpoint: `getGroups`,
+		})
 	}
 
 	static fetchUnitsOfMeasurement() {
-		return this.callFetch<IUnitsOfMeasurement[]>('get_id_edizm')
+		return this.callFetch<IUnitsOfMeasurement[]>({
+			endpoint: 'get_id_edizm',
+		})
 	}
 
 	/**
@@ -103,9 +119,9 @@ abstract class Api {
 	 * @return {Promise<IFetchMapResponse | null>}
 	 */
 	static fetchGroupsByAup(aupCode: Key) {
-		return this.callFetch<IFetchAllGroupsResponse[]>(
-			`get-group-by-aup/${aupCode}`
-		)
+		return this.callFetch<IFetchAllGroupsResponse[]>({
+			endpoint: `get-group-by-aup/${aupCode}`,
+		})
 	}
 
 	/**
@@ -113,7 +129,9 @@ abstract class Api {
 	 * @return {Promise<ResponseFetchMap | null>}
 	 */
 	static fetchAllControlTypes() {
-		return this.callFetch<IFetchAllControlTypesResponse[]>(`getControlTypes`)
+		return this.callFetch<IFetchAllControlTypesResponse[]>({
+			endpoint: `getControlTypes`,
+		})
 	}
 
 	/**
@@ -123,14 +141,14 @@ abstract class Api {
 	 * @return {Promise<any | null>}
 	 */
 	static saveMap(aupCode: Key, table: any[]) {
-		return this.callFetch<any>(
-			`save/${aupCode}`,
-			AxiosMethodsEnum.POST,
-			table,
-			{
+		return this.callFetch<any>({
+			endpoint: `save/${aupCode}`,
+			method: AxiosMethodsEnum.POST,
+			args: table,
+			headers: {
 				Authorization: tokenService.tokens.access || '',
-			}
-		)
+			},
+		})
 	}
 
 	/**
@@ -139,7 +157,11 @@ abstract class Api {
 	 * @return {Promise<IGroup | null>}
 	 */
 	static addGroup(group: IGroup) {
-		return this.callFetch<IGroup>(`add-group`, AxiosMethodsEnum.POST, group)
+		return this.callFetch<IGroup>({
+			endpoint: `add-group`,
+			method: AxiosMethodsEnum.POST,
+			args: group,
+		})
 	}
 
 	/**
@@ -148,8 +170,12 @@ abstract class Api {
 	 * @return {Promise<any | null>}
 	 */
 	static deleteGroup(id: number) {
-		return this.callFetch<any>(`delete-group`, AxiosMethodsEnum.POST, {
-			id,
+		return this.callFetch<any>({
+			endpoint: `delete-group`,
+			method: AxiosMethodsEnum.POST,
+			args: {
+				id,
+			},
 		})
 	}
 
@@ -159,7 +185,11 @@ abstract class Api {
 	 * @return {Promise<void | null>}
 	 */
 	static updateGroup(group: IGroup) {
-		return this.callFetch<void>(`update-group`, AxiosMethodsEnum.POST, group)
+		return this.callFetch<void>({
+			endpoint: `update-group`,
+			method: AxiosMethodsEnum.POST,
+			args: group,
+		})
 	}
 
 	/**
@@ -168,12 +198,23 @@ abstract class Api {
 	 * @return {Promise<Key | null>}
 	 */
 	static uploadFile(form: IFormUpload) {
-		return this.callFetch<Key>(
-			`upload`,
-			AxiosMethodsEnum.POST,
-			objectToFormData(form),
-			{ 'Content-Type': 'multipart/form-data' }
-		)
+		return this.callFetch<Key>({
+			endpoint: `upload`,
+			method: AxiosMethodsEnum.POST,
+			args: objectToFormData(form),
+			headers: { 'Content-Type': 'multipart/form-data' },
+		})
+	}
+
+	/**
+	 * @desc Запрос на получение модулей
+	 * @param {Key} aupCode - Код карты
+	 * @return {Promise<IModule | null>}
+	 */
+	static fetchModuleByAup(aupCode: Key) {
+		return this.callFetch<IModule[]>({
+			endpoint: `get-modules-by-aup/${aupCode}`,
+		})
 	}
 
 	/**
@@ -184,12 +225,17 @@ abstract class Api {
 	 * @param {Record<string, string>} headers - Заголовки запроса
 	 * @return {Promise<T | undefined>} Промис
 	 */
-	private static async callFetch<T = any>(
-		endpoint: string,
-		method: AxiosMethodsEnum = AxiosMethodsEnum.GET,
-		args?: any,
+	private static async callFetch<T = any>({
+		endpoint,
+		method = AxiosMethodsEnum.GET,
+		args,
+		headers,
+	}: {
+		endpoint: string
+		method?: AxiosMethodsEnum
+		args?: any
 		headers?: Record<string, string>
-	): Promise<T | null> {
+	}): Promise<T | null> {
 		try {
 			if (headers?.Authorization && endpoint !== 'refresh') {
 				const token = headers.Authorization
