@@ -4,36 +4,38 @@
 			{{ getControlTypesLabel(item.control_type_id) }}
 		</div>
 
-		<div class="MapRightMenuValueMainForm__input-row">
-			<v-text-field
-				:value="hours"
-				:rules="hoursRules"
-				:disabled="isIndependentWork"
-				label="Часы"
-				type="number"
-				ref="zet"
-				hide-details
-				dense
-				filled
-				dark
-				@input="onInputHours(index, $event)"
-			/>
+		<div class="MapRightMenuValueMainFormRow__input-block">
+			<div class="MapRightMenuValueMainFormRow__input-row">
+				<v-text-field
+					:value="hours"
+					:rules="rules"
+					:disabled="isIndependentWork"
+					label="Часы"
+					type="number"
+					ref="hours"
+					:hide-details="'auto'"
+					dense
+					filled
+					dark
+					@input="onInputHours(index, $event)"
+				/>
 
-			<v-text-field
-				:value="zet"
-				:rules="zetRules"
-				:disabled="isIndependentWork"
-				label="ЗЕТ"
-				:min="1"
-				:max="10"
-				type="number"
-				ref="zet"
-				hide-details
-				dense
-				filled
-				dark
-				@input="onInputZet"
-			/>
+				<v-text-field
+					:value="zet"
+					:rules="rules"
+					:disabled="isIndependentWork"
+					label="ЗЕТ"
+					:min="1"
+					:max="10"
+					type="number"
+					ref="zet"
+					:hide-details="'auto'"
+					dense
+					filled
+					dark
+					@input="onInputZet"
+				/>
+			</div>
 		</div>
 
 		<v-checkbox
@@ -69,20 +71,15 @@ export default {
 			type: Number,
 			default: null,
 		},
-
-		hoursRules: {
-			type: Array,
-			default: () => [],
-		},
-
-		zetRules: {
-			type: Array,
-			default: () => [],
-		},
 	},
 
 	data: () => ({
 		MapsService,
+
+		rules: [
+			v => !!String(v).length || 'Значение должно быть числом',
+			v => +v >= 0 || 'Значение должно быть неотрицательным',
+		],
 	}),
 
 	computed: {
@@ -126,11 +123,13 @@ export default {
 
 	methods: {
 		onInputHours(index, value) {
-			this.$emit('inputHours', { index, value })
+			const isValid = this.$refs.hours.validate()
+			if (isValid) this.$emit('inputHours', { index, value })
 		},
 
 		onInputZet(value) {
-			this.zet = value
+			const isValid = this.$refs.zet.validate()
+			if (isValid) this.zet = value
 		},
 
 		onUpdateUnitOfMeasurement(index) {
@@ -140,4 +139,25 @@ export default {
 }
 </script>
 
-<style lang="sass"></style>
+<style lang="sass">
+.MapRightMenuValueMainFormRow
+
+    &__input-block
+        margin: 8px 0
+
+    &__input-row
+        display: grid
+        grid-template-columns: 1fr 1fr
+        grid-template-rows: 1fr
+        gap: 8px
+
+    /* Затираем vuetify стили у ошибки */
+    .v-text-field.v-text-field--enclosed .v-text-field__details
+        margin-bottom: 0px !important
+
+    .v-text-field.v-input--is-disabled
+        .v-input__control
+            & > .v-text-field__details
+                & > .v-messages
+                    color: #FF5252 !important
+</style>

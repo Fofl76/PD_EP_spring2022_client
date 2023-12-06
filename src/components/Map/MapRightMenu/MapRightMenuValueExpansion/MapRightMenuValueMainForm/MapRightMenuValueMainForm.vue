@@ -1,12 +1,10 @@
 <template>
-	<div class="MapRightMenuValueMainForm">
+	<div ref="form" class="MapRightMenuValueMainForm">
 		<MapRightMenuValueMainFormRow
 			v-for="(type, i) in values"
 			:key="i"
 			:item="type"
 			:index="i"
-			:hourRules="hoursRules"
-			:zetRules="zetRules"
 			@inputHours="onInputHours"
 			@updateUnitOfMeasurement="onUpdateUnitOfMeasurement"
 		/>
@@ -24,18 +22,6 @@ export default {
 
 	data: () => ({
 		MapsService,
-
-		zetRules: [
-			v => !!String(v).length || 'Это поле является обязательным',
-			v => +v >= 0 || 'Значение должно быть больше, либо равно нулю',
-			v => +v <= 10 || 'Значение должно быть меньше, либо равно 10',
-		],
-
-		hoursRules: [
-			v => !!String(v).length || 'Это поле является обязательным',
-			v => +v >= 0 || 'Значение должно быть больше нуля, либо равно нулю',
-			v => +v <= 320 || 'Значение должно быть меньше, либо равно 320',
-		],
 	}),
 
 	props: {
@@ -73,13 +59,6 @@ export default {
     .MapRightMenuValueMainFormRow
         &:not(:last-child)
             margin-bottom: 16px
-
-    &__input-row
-        margin: 8px 0
-        display: grid
-        grid-template-columns: 1fr 1fr
-        grid-template-rows: 1fr
-        gap: 8px
 
     &__week-checkbox
         margin-top: 0

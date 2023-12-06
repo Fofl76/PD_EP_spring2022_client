@@ -47,12 +47,14 @@
 				<MapRightMenuCipherExpansion
 					:cipher="formService.model.shifr"
 					@inputCipher="onInputCipher"
+					@inputError="onInputError('cipher', $event)"
 				/>
 
 				<MapRightMenuValueExpansion
 					:values="values"
 					@updateValue="onUpdateValue"
 					@selectControlTypes="changeValues"
+					@inputError="onInputError('values', $event)"
 				/>
 
 				<MapRightMenuControlExpansion :currentControlTypeId="null" />
@@ -63,7 +65,7 @@
 					color="success"
 					fab
 					dark
-					:disabled="!isEdited"
+					:disabled="!isAvailable"
 					:loading="isLoading"
 					@click="onSave"
 				>
@@ -156,6 +158,14 @@ export default {
 				shifr: null,
 			},
 
+			/* Объект хранящий состояние v-form каждой раскрывашки
+               true, означает, что в данном блоке некорректный ввод данных
+            */
+			errorExpansions: {
+				cipher: false,
+				values: false,
+			},
+
 			disciplineRules: [
 				v => !!v || 'Это поле является обязательным',
 				v =>
@@ -194,6 +204,17 @@ export default {
 
 		isEdited() {
 			return this.formService.hasDiffs()
+		},
+
+		/* Проверяем, что каждый блок с формами валидный */
+		isValid() {
+			return Object.values(this.errorExpansions).every(
+				errorState => !errorState
+			)
+		},
+
+		isAvailable() {
+			return this.isValid && this.isEdited
 		},
 
 		/* Проброс v-model для открытия/закрытия панели */
@@ -262,6 +283,12 @@ export default {
 			}
 
 			return res
+		},
+
+		// Обработчик который вызывается когда в каком-то поле
+		// с объемами происходит ошибка ввода
+		onInputError(type, value) {
+			this.errorExpansions[type] = value
 		},
 
 		// Закрытие

@@ -1,11 +1,21 @@
 <template>
 	<MapRightMenuExpansion class="MapRightMenuValueExpansion">
 		<template #header>
-			<div class="MapRightMenuValueExpansion__header">Настройка объема</div>
+			<div class="MapRightMenuValueExpansion__header">
+				<div class="MapRightMenuValueExpansion__label">Настройка объема</div>
+
+				<v-icon v-if="!isValid" size="24" dark color="red" text-color="white">
+					mdi-alert-circle
+				</v-icon>
+			</div>
 		</template>
 
 		<template>
-			<div class="MapRightMenuValueExpansion__content">
+			<v-form
+				class="MapRightMenuValueExpansion__content"
+				v-model="isValid"
+				@input="onInputError"
+			>
 				<div class="MapRightMenuValueExpansion__values-wrapper">
 					<MapRightMenuValueMainForm
 						:values="values"
@@ -22,7 +32,7 @@
 						@selectControlTypes="onSelectControlTypes"
 					/>
 				</div>
-			</div>
+			</v-form>
 		</template>
 	</MapRightMenuExpansion>
 </template>
@@ -53,6 +63,8 @@ export default {
 
 	data: () => ({
 		MapsService,
+
+		isValid: true,
 	}),
 
 	computed: {},
@@ -81,8 +93,19 @@ export default {
 				hours: hours,
 			})
 		},
+
+		onInputError(value) {
+			this.$emit('inputError', !value)
+		},
 	},
 }
 </script>
 
-<style lang="sass"></style>
+<style lang="sass">
+.MapRightMenuValueExpansion
+    &__header
+        display: flex
+        align-items: center
+        justify-content: space-between
+        margin-right: 8px
+</style>
