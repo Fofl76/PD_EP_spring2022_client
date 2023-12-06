@@ -77,9 +77,8 @@ export default {
 				const newType = e.at(-1)
 
 				const newValue = {
-					control_type_id: newType.id,
 					amount: 0,
-					zet: 0,
+					control_type_id: newType.id,
 					id_edizm: 1,
 					type: 'load',
 				}

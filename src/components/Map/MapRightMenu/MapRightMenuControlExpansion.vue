@@ -35,6 +35,8 @@
 <script>
 import MapRightMenuExpansion from './MapRightMenuExpansion.vue'
 
+import MapsService from '@services/Maps/MapsService'
+
 export default {
 	name: 'MapRightMenuControlExpansion',
 	components: { MapRightMenuExpansion },
@@ -44,10 +46,15 @@ export default {
 			type: Number,
 			default: null,
 		},
+	},
 
-		allControlTypes: {
-			type: Array,
-			default: () => [],
+	data: () => ({
+		MapsService,
+	}),
+
+	computed: {
+		allControlTypes() {
+			return this.MapsService.controlTypes.value.filter(el => el.is_control)
 		},
 	},
 

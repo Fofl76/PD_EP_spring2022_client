@@ -26,9 +26,8 @@
 			</div>
 
 			<div class="MapRightMenu__name">
-				<!-- Название -->
 				<v-text-field
-					v-model="copyItem.discipline"
+					v-model="formService.model.discipline"
 					label="Название дисциплины"
 					hide-details="auto"
 					:rules="disciplineRules"
@@ -46,21 +45,17 @@
 				hover
 			>
 				<MapRightMenuCipherExpansion
-					:cipher="copyItem.shifr"
+					:cipher="formService.model.shifr"
 					@inputCipher="onInputCipher"
 				/>
 
 				<MapRightMenuValueExpansion
-					:values="copyItem.type.value"
+					:values="values"
 					@updateValue="onUpdateValue"
-					@updateUnitOfMeasurement="onUpdateUnitOfMeasurement"
 					@selectControlTypes="changeValues"
 				/>
 
-				<MapRightMenuControlExpansion
-					:currentControlTypeId="null"
-					:allControlTypes="allControlTypes"
-				/>
+				<MapRightMenuControlExpansion :currentControlTypeId="null" />
 			</v-expansion-panels>
 
 			<div class="MapRightMenu__actions">
@@ -99,6 +94,23 @@ import MapRightMenuConfirmPopup from './MapRightMenuConfirmPopup.vue'
 import withEventEmitter from '@mixins/withEventEmitter'
 import MapsService from '@services/Maps/MapsService'
 import ToastService from '@services/ToastService'
+import FormService from '@services/Form/FormService'
+
+const valueInitialModel = {
+	discipline: '',
+	shifr: '',
+	shifr_new: {
+		block: '',
+		discipline: '',
+		module: '',
+		part: '',
+		shifr: '',
+	},
+	type: {
+		session: [],
+		value: [],
+	},
+}
 
 export default {
 	name: 'MapRightMenu',
@@ -110,21 +122,20 @@ export default {
 		MapRightMenuControlExpansion,
 		MapRightMenuConfirmPopup,
 	},
+
 	props: {
+		/* Флаг открытия панели */
 		value: {
 			type: Boolean,
 			required: false,
 			default: false,
 		},
+
+		/* ID редактируемого элемента */
 		itemId: {
 			type: String,
 			required: false,
 			default: null,
-		},
-		loading: {
-			type: Boolean,
-			required: false,
-			default: false,
 		},
 	},
 
@@ -132,19 +143,10 @@ export default {
 
 	data() {
 		return {
+			formService: null,
 			MapsService,
 
 			confirmPopupModel: false,
-			isEdited: false,
-
-			copyItem: {
-				discipline: '',
-				shifr: '',
-				type: {
-					session: [],
-					value: [],
-				},
-			},
 
 			cipher: {
 				block: null,
@@ -152,6 +154,7 @@ export default {
 				module: null,
 				discipline: null,
 			},
+
 			cipherStr: null,
 
 			disciplineRules: [
@@ -164,11 +167,6 @@ export default {
 	},
 
 	watch: {
-		value(v) {
-			if (v) {
-				this.initRightMenu()
-			}
-		},
 		itemId() {
 			this.initRightMenu()
 		},
@@ -177,6 +175,29 @@ export default {
 	computed: {
 		...mapGetters('Map', ['rightMenuEditWidth']),
 
+		/* Процесс сохранения карты */
+		isLoading() {
+			return this.MapsService.isLoadingSaveMapList
+		},
+
+		/* Текущий редактируемый элемент */
+		item() {
+			return _.cloneDeep(this.MapsService.getMapItemById(this.itemId))
+		},
+
+		formModel() {
+			return this.formService.model
+		},
+
+		values() {
+			return this.formModel?.type?.value
+		},
+
+		isEdited() {
+			return this.formService.hasDiffs()
+		},
+
+		/* Проброс v-model для открытия/закрытия панели */
 		value_: {
 			get() {
 				return this.value
@@ -186,111 +207,80 @@ export default {
 				this.$emit('input', value)
 			},
 		},
-
-		isLoading() {
-			return this.MapsService.isLoadingSaveMapList
-		},
-
-		item() {
-			return _.cloneDeep(this.MapsService.getMapItemById(this.itemId))
-		},
-
-		getControlTypesLabel() {
-			return control_id => {
-				return this.MapsService.controlTypes.value.find(
-					item => item.id === control_id
-				).name
-			}
-		},
-
-		calculatedZet() {
-			return (amount, id_edizm) => {
-				if (id_edizm === 2) {
-					return amount * this.MapsService.WEEKQUEALSZET
-				}
-
-				return amount / this.MapsService.ZETQUEALSHOURS
-			}
-		},
-
-		allValueTypes() {
-			return this.MapsService.controlTypes.value
-				.filter(el => !el.is_control)
-				.map(el => {
-					return {
-						...el,
-						control: el.name,
-					}
-				})
-		},
-
-		allControlTypes() {
-			return this.MapsService.controlTypes.value.filter(el => el.is_control)
-		},
 	},
 
 	methods: {
 		initRightMenu() {
 			if (!this.item) return
 
-			this.copyItem = _.cloneDeep(this.item)
+			/* TODO: Сделать по-человечески. Это нужно чтобы СРС был сверху.
+               Аккуратно, редактирование завязано на индексах массива с нагрузками
+               при рефакторинге может все сломатся
+            */
+			const item = _.cloneDeep(this.item)
+			item.type.value = [...item.type.value].sort((a, b) => {
+				/* control_type_id === 'СРС' */
+				if (a.control_type_id === 4) return -1
+				return 1
+			})
 
-			this.copyItem.type.value = this.addZetInTypeValue(
-				this.copyItem.type.value
-			)
+			this.formService.init(item)
 		},
 
-		/* Обновление объема */
-		onUpdateValue({ index, hours, zet }) {
-			this.copyItem.type.value[index].amount = hours
-			this.copyItem.type.value[index].zet = zet
-			this.isEdited = true
+		/* Обновление объема нагрузки */
+		onUpdateValue({ index, hours }) {
+			this.formService.setProperty(`type.value[${index}].amount`, hours)
 		},
 
-		/* Обновление объема x2 */
-		onUpdateUnitOfMeasurement({ index, id_edizm, hours }) {
-			this.copyItem.type.value[index].id_edizm = id_edizm
-			this.copyItem.type.value[index].amount = hours
-			this.isEdited = true
-		},
-
-		/* Перезапись объемов, используется для выбора нагрузок
-           TODO: Сделать нормально
-        */
+		/* Изменение списка нагрузок объема */
 		changeValues(values) {
-			this.copyItem.type.value = values
-			this.isEdited = true
+			this.formService.setProperty(`type.value`, values)
 		},
 
 		/* Обновление шифра */
 		onInputCipher({ cipherStr, cipher }) {
 			this.cipherStr = cipherStr
 			this.cipher = cipher
-			this.isEdited = true
 		},
 
-		/* В данные дисциплины добавляет новое поле zet */
-		addZetInTypeValue(value) {
-			return value.map(el => ({
-				...el,
-				zet: this.calculatedZet(el.amount, el.id_edizm),
-			}))
-		},
+		async onSave() {
+			this.formService.setProperty(`id_block`, this.cipher.block)
+			this.formService.setProperty(`id_parts`, this.cipher.part)
+			this.formService.setProperty(`shifr`, this.cipherStr)
 
-		onCloseButtonClick() {
-			if (this.isEdited) {
-				this.confirmPopupModel = true
+			const res = await this.MapsService.editMapItem(
+				this.$route.query.aup,
+				this.item,
+				this.formModel
+			)
+
+			if (res) {
+				ToastService.showSuccess('Карта успешно сохранена.')
 			} else {
-				this.closeRightMenu()
+				ToastService.showError('Произошла ошибка при сохранении карты.')
 			}
+
+			return res
 		},
 
+		// Закрытие
 		closeRightMenu() {
 			this.value_ = false
 			this.clear()
 		},
 
-		async onClosePopup() {
+		onCloseButtonClick() {
+			/* is edit
+			if (false) {
+				this.confirmPopupModel = true
+			} else {
+				this.closeRightMenu()
+			} */
+
+			this.closeRightMenu()
+		},
+
+		onClosePopup() {
 			this.confirmPopupModel = false
 			this.closeRightMenu()
 		},
@@ -300,40 +290,16 @@ export default {
 			const res = await this.onSave()
 			if (res) this.closeRightMenu()
 		},
+		//
 
-		async onSave() {
-			this.copyItem.id_block = this.cipher.block
-			this.copyItem.id_parts = this.cipher.part
-			this.copyItem.shifr = this.cipherStr
-
-			const res = await this.MapsService.editMapItem(
-				this.$route.query.aup,
-				this.item,
-				this.copyItem
-			)
-
-			if (res) {
-				ToastService.showSuccess('Карта успешно сохранена.')
-				this.isEdited = false
-			} else {
-				ToastService.showError('Произошла ошибка при сохранении карты.')
-			}
-
-			return res
-		},
-
+		// Очистка
 		clear() {
-			this.copyItem = {
-				discipline: '',
-				shifr: '',
-				type: {
-					session: [],
-					value: [],
-				},
-			}
-
-			this.isEdited = false
+			this.formService.init()
 		},
+	},
+
+	created() {
+		this.formService = new FormService(valueInitialModel)
 	},
 }
 </script>

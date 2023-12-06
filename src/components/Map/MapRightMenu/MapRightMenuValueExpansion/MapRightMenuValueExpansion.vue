@@ -15,9 +15,7 @@
 
 					<v-divider dark class="MapRightMenu__divider" />
 
-					<MapRightMenuValueSumForm :hours="sumHours" :zet="sumZet" />
-
-					<v-divider dark class="MapRightMenu__divider" />
+					<MapRightMenuValueSumForm :values="values" @input="onInputSums" />
 
 					<MapRightMenuValueLoadForm
 						:values="values"
@@ -31,7 +29,7 @@
 
 <script>
 import MapRightMenuExpansion from '../MapRightMenuExpansion.vue'
-import MapRightMenuValueMainForm from './MapRightMenuValueMainForm.vue'
+import MapRightMenuValueMainForm from './MapRightMenuValueMainForm/MapRightMenuValueMainForm.vue'
 import MapRightMenuValueSumForm from './MapRightMenuValueSumForm.vue'
 import MapRightMenuValueLoadForm from './MapRightMenuValueLoadForm.vue'
 
@@ -57,29 +55,11 @@ export default {
 		MapsService,
 	}),
 
-	computed: {
-		sumHours() {
-			return this.values.reduce((accumulator, currentValue) => {
-				if (currentValue.id_edizm === 1) {
-					return accumulator + currentValue.amount
-				} else {
-					return (
-						accumulator + currentValue.amount * this.MapsService.WEEKQUEALSHOURS
-					)
-				}
-			}, 0)
-		},
-
-		sumZet() {
-			return this.values.reduce((accumulator, currentValue) => {
-				return accumulator + currentValue.zet
-			}, 0)
-		},
-	},
+	computed: {},
 
 	methods: {
-		onUpdateValue({ index, hours, zet }) {
-			this.$emit('updateValue', { index, hours, zet })
+		onUpdateValue({ index, hours }) {
+			this.$emit('updateValue', { index, hours })
 		},
 
 		onSelectControlTypes(values) {
@@ -88,6 +68,18 @@ export default {
 
 		onUpdateUnitOfMeasurement(data) {
 			this.$emit('updateUnitOfMeasurement', data)
+		},
+
+		onInputSums(hours) {
+			/* control_type_id 4 === 'СРС' */
+			const independentWorkValueIndex = this.values.findIndex(
+				value => value.control_type_id === 4
+			)
+
+			this.onUpdateValue({
+				index: independentWorkValueIndex,
+				hours: hours,
+			})
 		},
 	},
 }
