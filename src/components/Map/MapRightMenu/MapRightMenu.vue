@@ -10,6 +10,7 @@
 		hide-overlay
 		app
 		clipped
+		@transitionend="onTransitionendMenu"
 	>
 		<div class="MapRightMenu__inner">
 			<div class="MapRightMenu__header">
@@ -39,6 +40,7 @@
 			</div>
 
 			<v-expansion-panels
+				v-model="expansionsModel"
 				class="MapRightMenu__expansion-wrapper"
 				flat
 				multiple
@@ -148,6 +150,7 @@ export default {
 			formService: null,
 			MapsService,
 
+			expansionsModel: [],
 			confirmPopupModel: false,
 
 			cipher: {
@@ -295,16 +298,23 @@ export default {
 		// Закрытие
 		closeRightMenu() {
 			this.value_ = false
-			this.clear()
+		},
+
+		// Очищаем форму и закрываем все раскрывашки
+		// после закрытия панели
+		onTransitionendMenu() {
+			if (!this.value) {
+				this.clear()
+				this.expansionsModel = []
+			}
 		},
 
 		onCloseButtonClick() {
-			/* is edit
-			if (false) {
+			if (this.isEdited) {
 				this.confirmPopupModel = true
 			} else {
 				this.closeRightMenu()
-			} */
+			}
 
 			this.closeRightMenu()
 		},
