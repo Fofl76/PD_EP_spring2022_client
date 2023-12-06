@@ -4,6 +4,7 @@
 			<v-text-field
 				:value="sumHours"
 				:rules="rules"
+				:disabled="!hasIndependentWorkValue"
 				label="Сумма часов"
 				type="number"
 				ref="hours"
@@ -17,6 +18,7 @@
 			<v-text-field
 				:value="sumZet"
 				:rules="rules"
+				:disabled="!hasIndependentWorkValue"
 				label="Сумма ЗЕТ"
 				type="number"
 				ref="zet"
@@ -50,9 +52,17 @@ export default {
 	computed: {
 		// Остаток суммы для назначения СРС, используем только
 		// для отображения ошибки если он стал меньше нуля
+		independentWorkValue() {
+			return this.values.find(value => value.control_type_id === 4)
+		},
+
+		hasIndependentWorkValue() {
+			return !!this.independentWorkValue
+		},
+
 		residualHours() {
 			// control_type_id 4 === 'СРС'
-			return this.values.find(value => value.control_type_id === 4)?.amount
+			return this.independentWorkValue?.amount
 		},
 
 		sumHours() {
