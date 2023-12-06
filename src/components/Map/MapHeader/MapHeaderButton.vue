@@ -1,5 +1,13 @@
 <template>
-	<v-btn class="MapHeaderButton" @click="onClick" height="100%" text dark>
+	<v-btn
+		class="MapHeaderButton"
+		:loading="loading"
+		:disabled="disabled"
+		height="100%"
+		text
+		dark
+		@click="onClick"
+	>
 		<v-icon v-if="icon" left dark>{{ icon }}</v-icon>
 		<span>{{ label }}</span>
 	</v-btn>
@@ -17,6 +25,16 @@ export default {
 		icon: {
 			type: String,
 			default: null,
+		},
+
+		loading: {
+			type: Boolean,
+			default: false,
+		},
+
+		disabled: {
+			type: Boolean,
+			default: false,
 		},
 	},
 

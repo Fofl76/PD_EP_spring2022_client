@@ -176,6 +176,10 @@ abstract class Api {
 		)
 	}
 
+	static async downloadMap(aupCode: Key) {
+		return await this.callFetch<any>(`save_excel/${aupCode}`)
+	}
+
 	/**
 	 * @desc Приватный общий метод для вызова запросов axios
 	 * @param {string} endpoint - Название энпдоинта на который отправляется запрос
