@@ -153,9 +153,8 @@ export default {
 				part: null,
 				module: null,
 				discipline: null,
+				shifr: null,
 			},
-
-			cipherStr: null,
 
 			disciplineRules: [
 				v => !!v || 'Это поле является обязательным',
@@ -239,14 +238,16 @@ export default {
 
 		/* Обновление шифра */
 		onInputCipher({ cipherStr, cipher }) {
-			this.cipherStr = cipherStr
-			this.cipher = cipher
+			this.formService.setProperty('shifr', cipherStr)
+			this.formService.setProperty('shifr_new', {
+				...cipher,
+				shifr: cipherStr,
+			})
 		},
 
 		async onSave() {
-			this.formService.setProperty(`id_block`, this.cipher.block)
-			this.formService.setProperty(`id_parts`, this.cipher.part)
-			this.formService.setProperty(`shifr`, this.cipherStr)
+			this.formService.setProperty(`id_block`, this.formModel.shifr_new.block)
+			this.formService.setProperty(`id_parts`, this.formModel.shifr_new.part)
 
 			const res = await this.MapsService.editMapItem(
 				this.$route.query.aup,
