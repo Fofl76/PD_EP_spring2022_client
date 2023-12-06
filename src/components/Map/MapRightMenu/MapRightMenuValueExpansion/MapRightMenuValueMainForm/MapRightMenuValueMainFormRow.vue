@@ -1,7 +1,21 @@
 <template>
 	<div class="MapRightMenuValueMainFormRow">
-		<div class="MapRightMenuValueMainForm__label">
-			{{ getControlTypesLabel(item.control_type_id) }}
+		<div class="MapRightMenuValueMainFormRow__header">
+			<div class="MapRightMenuValueMainFormRow__label">
+				{{ getControlTypesLabel(item.control_type_id) }}
+			</div>
+
+			<div
+				v-if="isIndependentWork"
+				class="MapRightMenuValueMainFormRow__hint-independent"
+			>
+				<MHint :top="false" maxWidth="200px" bottom>
+					<div>
+						Настройка значений у этого поля ограничена. Остаток суммы будет
+						автоматически назначаться в СРС
+					</div>
+				</MHint>
+			</div>
 		</div>
 
 		<div class="MapRightMenuValueMainFormRow__input-block">
@@ -42,13 +56,13 @@
 			v-if="!isIndependentWork"
 			:input-value="isWeekAmount"
 			:disabled="isIndependentWork"
-			class="MapRightMenuValueMainForm__week-checkbox"
+			class="MapRightMenuValueMainFormRow__week-checkbox"
 			hide-details
 			dense
 			@change="onUpdateUnitOfMeasurement(index)"
 		>
 			<template #label>
-				<div class="MapRightMenuValueMainForm__week-checkbox-label">
+				<div class="MapRightMenuValueMainFormRow__week-checkbox-label">
 					Измерять в неделях
 				</div>
 			</template>
@@ -57,12 +71,15 @@
 </template>
 
 <script>
+import MHint from '@components/common/MHint.vue'
+
 import MapsService from '@services/Maps/MapsService'
 
 import _ from 'lodash'
 
 export default {
 	name: 'MapRightMenuValueMainFormRow',
+	components: { MHint },
 
 	props: {
 		item: {
@@ -158,6 +175,15 @@ export default {
 
 <style lang="sass">
 .MapRightMenuValueMainFormRow
+    &__header
+        display: flex
+        align-items: center
+
+    &__hint-independent
+        display: flex
+        align-items: center
+        margin-left: 8px
+        margin-bottom: 2px
 
     &__input-block
         margin: 8px 0
@@ -167,6 +193,12 @@ export default {
         grid-template-columns: 1fr 1fr
         grid-template-rows: 1fr
         gap: 8px
+
+    &__week-checkbox
+        margin-top: 0
+
+    &__week-checkbox-label
+        font-size: 14px
 
     /* Затираем vuetify стили у ошибки */
     .v-text-field.v-text-field--enclosed .v-text-field__details

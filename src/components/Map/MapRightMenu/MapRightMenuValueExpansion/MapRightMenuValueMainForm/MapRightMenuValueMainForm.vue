@@ -68,10 +68,4 @@ export default {
     .MapRightMenuValueMainFormRow
         &:not(:last-child)
             margin-bottom: 16px
-
-    &__week-checkbox
-        margin-top: 0
-
-    &__week-checkbox-label
-        font-size: 14px
 </style>
