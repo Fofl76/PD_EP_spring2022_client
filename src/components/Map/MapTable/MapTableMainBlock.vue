@@ -140,7 +140,7 @@ export default {
 
         &.isEditing
             .MapTableMainBlock
-                box-shadow: 0px 0px 0px 5px var(--shadow-color)
+                box-shadow: 0px 0px 0px 4px var(--shadow-color) inset
 
         &--small
             .MapTableMainBlock__name
