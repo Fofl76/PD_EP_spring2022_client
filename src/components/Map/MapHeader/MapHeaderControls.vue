@@ -7,7 +7,11 @@
 		<v-divider class="MapHeader__divider" vertical></v-divider>
 
 		<!-- Работа с файлами -->
-		<MapHeaderDropdown icon="mdi-file-download" :disabled="!isAuth && !aupCode">
+		<MapHeaderDropdown
+			icon="mdi-file-download"
+			:disabled="!isAuth && !aupCode && isLoadingFile"
+			:loading="isLoadingFile"
+		>
 			<v-list-item
 				class="MapHeaderDropdownListItem"
 				@click="openUploadPopup"
@@ -52,8 +56,6 @@
 </template>
 
 <script>
-import MapsService from '@services/Maps/MapsService'
-
 import MapHeaderButton from '@components/Map/MapHeader/MapHeaderButton.vue'
 import MapHeaderDropdown from '@components/Map/MapHeader/MapHeaderDropdown.vue'
 import MapHeaderAuthDropdown from '@components/Map/MapHeader/MapHeaderAuthDropdown.vue'
@@ -62,8 +64,13 @@ import MapUploadFilePopup from '@components/Map/MapUploadFilePopup/MapUploadFile
 import MapAuthPopup from '@components/Map/MapAuthPopup/MapAuthPopup.vue'
 
 import { mapGetters, mapMutations } from 'vuex'
-import axios from '@services/api/axios'
+
+import MapsService from '@services/Maps/MapsService'
+import ToastService from '@services/ToastService'
+import Api from '@services/api/Api'
 import authService from '@services/auth/AuthService'
+
+import downloadAsFile from '@services/utils/downloadAsFile'
 
 export default {
 	name: 'MapHeaderControls',
@@ -81,6 +88,8 @@ export default {
 			uploadPopupModel: false,
 			groupSettingsPopupModel: false,
 			authPopupModel: false,
+
+			isLoadingFile: false,
 		}
 	},
 
@@ -107,20 +116,19 @@ export default {
 
 		async downloadMap() {
 			try {
-				const resp = await axios.get(this.downloadURL, {
-					responseType: 'blob',
-				})
+				this.isLoadingFile = true
 
-				const file = new Blob([resp.data])
+				const { data, success } = await Api.downloadMap(this.aupCode)
 
-				const link = document.createElement('a')
-				link.download = `${this.aupCode}.xlsx`
-				link.href = URL.createObjectURL(file)
-
-				link.click()
-				URL.revokeObjectURL(link.href)
+				if (success) {
+					downloadAsFile(data, `${this.aupCode}.xlsx`)
+					ToastService.showSuccess('Карта успешно загружена')
+				}
 			} catch (err) {
 				console.log(err)
+				ToastService.showSuccess('Произошла ошибка при загрузке карты')
+			} finally {
+				this.isLoadingFile = false
 			}
 		},
 	},

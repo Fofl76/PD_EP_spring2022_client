@@ -2,7 +2,7 @@
 	<MapRightMenuExpansion class="MapRightMenuCipherExpansion">
 		<template #header>
 			<div class="MapRightMenuCipherExpansion__header">
-				<div>Шифр</div>
+				<div class="MapRightMenuCipherExpansion__label">Шифр</div>
 
 				<v-chip
 					v-if="cipherLabel && isValid"
@@ -10,6 +10,7 @@
 					pill
 					label
 					:ripple="false"
+					:key="1"
 				>
 					{{ cipherLabel }}
 				</v-chip>
@@ -21,6 +22,7 @@
 					text-color="white"
 					pill
 					label
+					:key="2"
 				>
 					Некорректно
 				</v-chip>
@@ -30,9 +32,10 @@
 		<template>
 			<div class="MapRightMenuCipherExpansion__content">
 				<v-form
+					class="MapRightMenuCipherExpansion__form"
 					v-model="isValid"
 					ref="form"
-					class="MapRightMenuCipherExpansion__form"
+					@input="onInputError"
 				>
 					<v-text-field
 						v-model="cipherObj.block"
@@ -178,6 +181,10 @@ export default {
 				discipline: '',
 			}
 		},
+
+		onInputError(value) {
+			this.$emit('inputError', !value)
+		},
 	},
 
 	watch: {
@@ -251,4 +258,10 @@ export default {
             height: 52px
             display: flex
             align-items: center
+
+    .fade-enter-active, .fade-leave-active
+        transition: opacity .5s
+
+    .fade-enter, .fade-leave-to
+        opacity: 0
 </style>

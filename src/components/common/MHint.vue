@@ -13,9 +13,12 @@
 				{{ icon }}
 			</v-icon>
 		</template>
-		<slot>
-			<span>{{ tooltipText }}</span>
-		</slot>
+
+		<div class="MHint__content" :style="{ maxWidth }">
+			<slot>
+				<span>{{ tooltipText }}</span>
+			</slot>
+		</div>
 	</v-tooltip>
 </template>
 
@@ -43,12 +46,19 @@ export default {
 			type: String,
 			default: '',
 		},
+
+		maxWidth: {
+			type: String,
+			default: '400px',
+		},
 	},
 }
 </script>
 
 <style lang="sass">
 .MHint
+    $tooltip-opacity: 1
+
     &-icon
         cursor: pointer
 </style>

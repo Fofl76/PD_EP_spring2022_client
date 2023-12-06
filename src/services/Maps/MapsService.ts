@@ -279,6 +279,15 @@ class MapsService extends Events {
 		this.emit('onUpdatedMapList', newList)
 	}
 
+	convertHoursToZet(hours: number, unitOfMeasurement: number = 1) {
+		if (unitOfMeasurement === 2) return hours * this.WEEKQUEALSZET
+		return hours / this.ZETQUEALSHOURS
+	}
+	convertZetToHours(zet: number, unitOfMeasurement: number = 1) {
+		if (unitOfMeasurement === 2) return zet / this.WEEKQUEALSZET
+		return zet * this.ZETQUEALSHOURS
+	}
+
 	/**
 	 * @desc Метод для получения данных таблицы
 	 * @return {Promise<void>}

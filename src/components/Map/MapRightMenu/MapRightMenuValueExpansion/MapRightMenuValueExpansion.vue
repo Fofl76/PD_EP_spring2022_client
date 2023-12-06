@@ -1,11 +1,21 @@
 <template>
 	<MapRightMenuExpansion class="MapRightMenuValueExpansion">
 		<template #header>
-			<div class="MapRightMenuValueExpansion__header">Настройка объема</div>
+			<div class="MapRightMenuValueExpansion__header">
+				<div class="MapRightMenuValueExpansion__label">Настройка объема</div>
+
+				<v-icon v-if="!isValid" size="24" dark color="red" text-color="white">
+					mdi-alert-circle
+				</v-icon>
+			</div>
 		</template>
 
 		<template>
-			<div class="MapRightMenuValueExpansion__content">
+			<v-form
+				class="MapRightMenuValueExpansion__content"
+				v-model="isValid"
+				@input="onInputError"
+			>
 				<div class="MapRightMenuValueExpansion__values-wrapper">
 					<MapRightMenuValueMainForm
 						:values="values"
@@ -15,23 +25,21 @@
 
 					<v-divider dark class="MapRightMenu__divider" />
 
-					<MapRightMenuValueSumForm :hours="sumHours" :zet="sumZet" />
-
-					<v-divider dark class="MapRightMenu__divider" />
+					<MapRightMenuValueSumForm :values="values" @input="onInputSums" />
 
 					<MapRightMenuValueLoadForm
 						:values="values"
 						@selectControlTypes="onSelectControlTypes"
 					/>
 				</div>
-			</div>
+			</v-form>
 		</template>
 	</MapRightMenuExpansion>
 </template>
 
 <script>
 import MapRightMenuExpansion from '../MapRightMenuExpansion.vue'
-import MapRightMenuValueMainForm from './MapRightMenuValueMainForm.vue'
+import MapRightMenuValueMainForm from './MapRightMenuValueMainForm/MapRightMenuValueMainForm.vue'
 import MapRightMenuValueSumForm from './MapRightMenuValueSumForm.vue'
 import MapRightMenuValueLoadForm from './MapRightMenuValueLoadForm.vue'
 
@@ -55,31 +63,15 @@ export default {
 
 	data: () => ({
 		MapsService,
+
+		isValid: true,
 	}),
 
-	computed: {
-		sumHours() {
-			return this.values.reduce((accumulator, currentValue) => {
-				if (currentValue.id_edizm === 1) {
-					return accumulator + currentValue.amount
-				} else {
-					return (
-						accumulator + currentValue.amount * this.MapsService.WEEKQUEALSHOURS
-					)
-				}
-			}, 0)
-		},
-
-		sumZet() {
-			return this.values.reduce((accumulator, currentValue) => {
-				return accumulator + currentValue.zet
-			}, 0)
-		},
-	},
+	computed: {},
 
 	methods: {
-		onUpdateValue({ index, hours, zet }) {
-			this.$emit('updateValue', { index, hours, zet })
+		onUpdateValue({ index, value }) {
+			this.$emit('updateValue', { index, value })
 		},
 
 		onSelectControlTypes(values) {
@@ -89,8 +81,33 @@ export default {
 		onUpdateUnitOfMeasurement(data) {
 			this.$emit('updateUnitOfMeasurement', data)
 		},
+
+		onInputSums(hours) {
+			/* control_type_id 4 === 'СРС' */
+			const independentWorkValueIndex = this.values.findIndex(
+				value => value.control_type_id === 4
+			)
+			const independentWorkValue = this.values[independentWorkValueIndex]
+
+			/* Изменяем СРС, добавляя к нему лишний остаток от суммы */
+			this.onUpdateValue({
+				index: independentWorkValueIndex,
+				value: Object.assign(independentWorkValue, { amount: hours }),
+			})
+		},
+
+		onInputError(value) {
+			this.$emit('inputError', !value)
+		},
 	},
 }
 </script>
 
-<style lang="sass"></style>
+<style lang="sass">
+.MapRightMenuValueExpansion
+    &__header
+        display: flex
+        align-items: center
+        justify-content: space-between
+        margin-right: 8px
+</style>

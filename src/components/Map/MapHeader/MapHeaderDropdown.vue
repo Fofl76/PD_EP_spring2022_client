@@ -8,7 +8,15 @@
 		>
 			<template v-slot:activator="{ on, attrs }">
 				<slot name="activator">
-					<v-btn v-bind="attrs" v-on="on" text dark icon :disabled="disabled">
+					<v-btn
+						v-bind="attrs"
+						v-on="on"
+						:disabled="disabled"
+						:loading="loading"
+						text
+						dark
+						icon
+					>
 						<v-icon v-if="icon" dark>{{ icon }}</v-icon>
 					</v-btn>
 				</slot>
@@ -35,6 +43,11 @@ export default {
 		},
 
 		disabled: {
+			type: Boolean,
+			default: false,
+		},
+
+		loading: {
 			type: Boolean,
 			default: false,
 		},
