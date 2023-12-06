@@ -58,6 +58,8 @@
 <script>
 import MapsService from '@services/Maps/MapsService'
 
+import _ from 'lodash'
+
 export default {
 	name: 'MapRightMenuValueMainFormRow',
 
@@ -122,9 +124,15 @@ export default {
 	},
 
 	methods: {
-		onInputHours(index, value) {
+		onInputHours(index, hours) {
 			const isValid = this.$refs.hours.validate()
-			if (isValid) this.$emit('inputHours', { index, value })
+			if (isValid) {
+				const value = Object.assign(this.item, {
+					amount: +hours,
+				})
+
+				this.$emit('inputHours', { index, value })
+			}
 		},
 
 		onInputZet(value) {

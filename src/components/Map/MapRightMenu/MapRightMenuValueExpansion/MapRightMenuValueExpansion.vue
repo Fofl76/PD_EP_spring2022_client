@@ -70,8 +70,8 @@ export default {
 	computed: {},
 
 	methods: {
-		onUpdateValue({ index, hours }) {
-			this.$emit('updateValue', { index, hours })
+		onUpdateValue({ index, value }) {
+			this.$emit('updateValue', { index, value })
 		},
 
 		onSelectControlTypes(values) {
@@ -87,10 +87,11 @@ export default {
 			const independentWorkValueIndex = this.values.findIndex(
 				value => value.control_type_id === 4
 			)
+			const independentWorkValue = this.values[independentWorkValueIndex]
 
 			this.onUpdateValue({
 				index: independentWorkValueIndex,
-				hours: hours,
+				value: Object.assign(independentWorkValue, { amount: hours }),
 			})
 		},
 

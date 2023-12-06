@@ -33,7 +33,7 @@ export default {
 
 	methods: {
 		onInputHours({ index, value }) {
-			this.$emit('updateValue', { index, hours: +value })
+			this.$emit('updateValue', { index, value })
 		},
 
 		onUpdateUnitOfMeasurement({ index }) {

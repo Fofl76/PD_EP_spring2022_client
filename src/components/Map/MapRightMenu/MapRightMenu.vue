@@ -248,8 +248,9 @@ export default {
 		},
 
 		/* Обновление объема нагрузки */
-		onUpdateValue({ index, hours }) {
-			this.formService.setProperty(`type.value[${index}].amount`, hours)
+		onUpdateValue({ index, value }) {
+			console.log('[onUpdateValue]', { index, value })
+			this.formService.setProperty(`type.value[${index}]`, value)
 		},
 
 		/* Изменение списка нагрузок объема */
