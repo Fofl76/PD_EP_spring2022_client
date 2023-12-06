@@ -282,6 +282,7 @@ export default {
 
 			if (res) {
 				ToastService.showSuccess('Карта успешно сохранена.')
+				this.closeRightMenu()
 			} else {
 				ToastService.showError('Произошла ошибка при сохранении карты.')
 			}
@@ -315,8 +316,6 @@ export default {
 			} else {
 				this.closeRightMenu()
 			}
-
-			this.closeRightMenu()
 		},
 
 		onClosePopup() {
