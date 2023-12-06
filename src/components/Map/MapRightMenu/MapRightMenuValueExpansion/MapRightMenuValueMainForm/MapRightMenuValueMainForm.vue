@@ -5,7 +5,7 @@
 			:key="i"
 			:item="type"
 			:index="i"
-			@inputHours="onInputHours"
+			@updateValue="onUpdateValue"
 			@updateUnitOfMeasurement="onUpdateUnitOfMeasurement"
 		/>
 	</div>
@@ -32,21 +32,30 @@ export default {
 	},
 
 	methods: {
-		onInputHours({ index, value }) {
+		onUpdateValue({ index, value }) {
 			this.$emit('updateValue', { index, value })
 		},
 
 		onUpdateUnitOfMeasurement({ index }) {
-			const currentValue = this.values[index]
+			const value = this.values[index]
 
-			const id_edizm = (currentValue.id_edizm % 2) + 1
+			const id_edizm = (value.id_edizm % 2) + 1
 
-			const hours =
-				currentValue.id_edizm === 1
-					? currentValue.zet / this.MapsService.WEEKQUEALSZET
-					: currentValue.zet * this.MapsService.ZETQUEALSHOURS
+			const amount =
+				value.id_edizm === 1
+					? this.MapsService.convertHoursToZet(value.amount, value.id_edizm) /
+					  this.MapsService.WEEKQUEALSZET
+					: this.MapsService.convertHoursToZet(value.amount, value.id_edizm) *
+					  this.MapsService.ZETQUEALSHOURS
 
-			this.$emit('updateUnitOfMeasurement', { index, id_edizm, hours })
+			const newValue = Object.assign(value, {
+				id_edizm,
+				amount,
+			})
+
+			console.log(id_edizm, amount)
+
+			this.$emit('updateValue', { index, value: newValue })
 		},
 	},
 }

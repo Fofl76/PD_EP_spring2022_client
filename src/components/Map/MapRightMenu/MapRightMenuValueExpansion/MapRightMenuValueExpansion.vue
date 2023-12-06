@@ -89,6 +89,7 @@ export default {
 			)
 			const independentWorkValue = this.values[independentWorkValueIndex]
 
+			/* Изменяем СРС, добавляя к нему лишний остаток от суммы */
 			this.onUpdateValue({
 				index: independentWorkValueIndex,
 				value: Object.assign(independentWorkValue, { amount: hours }),

@@ -39,7 +39,8 @@
 		</div>
 
 		<v-checkbox
-			:value="unitOfMeasurement === 2"
+			v-if="!isIndependentWork"
+			:input-value="isWeekAmount"
 			:disabled="isIndependentWork"
 			class="MapRightMenuValueMainForm__week-checkbox"
 			hide-details
@@ -108,8 +109,12 @@ export default {
 			},
 
 			get() {
-				const hours = this.item.amount
-				return this.MapsService.convertHoursToZet(hours, this.unitOfMeasurement)
+				let amount = this.item.amount
+
+				return this.MapsService.convertHoursToZet(
+					amount,
+					this.unitOfMeasurement
+				)
 			},
 		},
 
@@ -121,6 +126,10 @@ export default {
 		isIndependentWork() {
 			return this.item.control_type_id === 4
 		},
+
+		isWeekAmount() {
+			return +this.unitOfMeasurement === 2
+		},
 	},
 
 	methods: {
@@ -131,7 +140,7 @@ export default {
 					amount: +hours,
 				})
 
-				this.$emit('inputHours', { index, value })
+				this.$emit('updateValue', { index, value })
 			}
 		},
 
