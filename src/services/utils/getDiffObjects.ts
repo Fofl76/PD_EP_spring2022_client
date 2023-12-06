@@ -1,5 +1,18 @@
-const isObject = (obj: any) => {
-	return obj !== null && typeof obj === 'object'
+import isObject from '@utils/isObject'
+import _ from 'lodash'
+
+interface IDiffsObjectsUpdate {
+	oldValue: any
+	newValue: any
+}
+
+interface IDiffsObjects {
+	added: {} | IDiffsObjects
+	updated: {
+		[propName: string]: IDiffsObjectsUpdate | IDiffsObjects
+	}
+	removed: {} | IDiffsObjects
+	unchanged: {} | IDiffsObjects
 }
 
 const getDiffObjects = (oldObj: {}, newObj: {}, deep = false) => {
@@ -12,8 +25,9 @@ const getDiffObjects = (oldObj: {}, newObj: {}, deep = false) => {
 		if (Object.prototype.hasOwnProperty.call(oldObj, oldProp)) {
 			const newPropValue = newObj[oldProp]
 			const oldPropValue = oldObj[oldProp]
+
 			if (Object.prototype.hasOwnProperty.call(newObj, oldProp)) {
-				if (newPropValue === oldPropValue) {
+				if (_.isEqual(newPropValue, oldPropValue)) {
 					unchanged[oldProp] = oldPropValue
 				} else {
 					updated[oldProp] =
@@ -31,8 +45,9 @@ const getDiffObjects = (oldObj: {}, newObj: {}, deep = false) => {
 		if (Object.prototype.hasOwnProperty.call(newObj, newProp)) {
 			const oldPropValue = oldObj[newProp]
 			const newPropValue = newObj[newProp]
+
 			if (Object.prototype.hasOwnProperty.call(oldObj, newProp)) {
-				if (oldPropValue !== newPropValue) {
+				if (!_.isEqual(newPropValue, oldPropValue)) {
 					if (!deep || !isObject(oldPropValue)) {
 						updated[newProp].oldValue = oldPropValue
 					}
@@ -56,5 +71,9 @@ const hasDiffObject = (oldObj: {}, newObj: {}, deep = false) => {
 	)
 }
 
+Object.defineProperty(window, '_getDiffObjects', { value: getDiffObjects })
+Object.defineProperty(window, '_hasDiffObject', { value: hasDiffObject })
+
 export default getDiffObjects
 export { hasDiffObject, getDiffObjects }
+export { IDiffsObjectsUpdate, IDiffsObjects }
