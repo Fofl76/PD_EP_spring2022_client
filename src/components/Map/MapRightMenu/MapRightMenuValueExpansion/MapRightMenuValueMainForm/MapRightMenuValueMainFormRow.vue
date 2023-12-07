@@ -146,7 +146,7 @@ export default {
 		},
 
 		isWeekAmount() {
-			return +this.unitOfMeasurement === ValueAmountTypeEnum.WEEK
+			return this.unitOfMeasurement === ValueAmountTypeEnum.WEEK
 		},
 	},
 

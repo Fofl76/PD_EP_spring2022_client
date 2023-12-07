@@ -36,4 +36,6 @@ const tokenService = new TokenService()
 tokenService.on('tokens-fetched', tokenService.setTokens)
 tokenService.on('logout', tokenService.logout)
 
+Object.defineProperty(window, '_tokenService', { value: tokenService })
+
 export default tokenService
