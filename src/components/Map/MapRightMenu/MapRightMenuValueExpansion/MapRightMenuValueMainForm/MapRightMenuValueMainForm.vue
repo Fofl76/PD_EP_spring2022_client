@@ -12,9 +12,11 @@
 </template>
 
 <script>
-import MapsService from '@services/Maps/MapsService'
-
 import MapRightMenuValueMainFormRow from './MapRightMenuValueMainFormRow.vue'
+
+import { ValueAmountTypeEnum } from '@models/Maps/IMapItemValueRaw'
+
+import MapsService from '@services/Maps/MapsService'
 
 export default {
 	name: 'MapRightMenuValueMainForm',
@@ -39,21 +41,26 @@ export default {
 		onUpdateUnitOfMeasurement({ index }) {
 			const value = this.values[index]
 
-			const id_edizm = (value.id_edizm % 2) + 1
+			const amount_type =
+				value.amount_type === ValueAmountTypeEnum.HOUR
+					? ValueAmountTypeEnum.WEEK
+					: ValueAmountTypeEnum.HOUR
 
 			const amount =
-				value.id_edizm === 1
-					? this.MapsService.convertHoursToZet(value.amount, value.id_edizm) /
-					  this.MapsService.WEEKQUEALSZET
-					: this.MapsService.convertHoursToZet(value.amount, value.id_edizm) *
-					  this.MapsService.ZETQUEALSHOURS
+				value.amount_type === ValueAmountTypeEnum.HOUR
+					? this.MapsService.convertHoursToZet(
+							value.amount,
+							value.amount_type
+					  ) / this.MapsService.WEEKQUEALSZET
+					: this.MapsService.convertHoursToZet(
+							value.amount,
+							value.amount_type
+					  ) * this.MapsService.ZETQUEALSHOURS
 
 			const newValue = Object.assign(value, {
-				id_edizm,
+				amount_type,
 				amount,
 			})
-
-			console.log(id_edizm, amount)
 
 			this.$emit('updateValue', { index, value: newValue })
 		},

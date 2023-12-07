@@ -19,6 +19,7 @@
 
 <script>
 import MHint from '@components/common/MHint.vue'
+import { ValueAmountTypeEnum } from '@models/Maps/IMapItemValueRaw'
 import MapsService from '@services/Maps/MapsService'
 
 export default {
@@ -57,14 +58,14 @@ export default {
 
 					if (typeValue) {
 						if (stats.value[type.control_type_id]) {
-							if (type.id_edizm === 2) {
+							if (type.amount_type === ValueAmountTypeEnum.WEEK) {
 								stats.value[type.control_type_id] +=
 									type.amount * MapsService.WEEKQUEALSHOURS
 							} else {
 								stats.value[type.control_type_id] += type.amount
 							}
 						} else {
-							if (type.id_edizm === 2) {
+							if (type.amount_type === ValueAmountTypeEnum.WEEK) {
 								stats.value[type.control_type_id] =
 									type.amount * MapsService.WEEKQUEALSHOURS
 							} else {

@@ -1,8 +1,10 @@
+import { ValueAmountTypeEnum } from '@models/Maps/IMapItemValueRaw'
+
 interface IUnitsOfMeasurement {
-  coef: number
-  id_edizm: number
-  kratn: number
-  value: string
+	coef: number
+	amount_type: ValueAmountTypeEnum
+	kratn: number
+	value: string
 }
 
 export default IUnitsOfMeasurement

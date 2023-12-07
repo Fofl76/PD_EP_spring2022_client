@@ -35,6 +35,8 @@
 <script>
 import MapsService from '@services/Maps/MapsService'
 
+import { ValueAmountTypeEnum } from '@models/Maps/IMapItemValueRaw'
+
 export default {
 	name: 'MapRightMenuValueSumForm',
 
@@ -90,7 +92,7 @@ export default {
 					return accumulator
 
 				const hours =
-					currentValue.id_edizm === 1
+					currentValue.amount_type === ValueAmountTypeEnum.HOUR
 						? currentValue.amount
 						: currentValue.amount * this.MapsService.WEEKQUEALSHOURS
 

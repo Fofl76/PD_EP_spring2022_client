@@ -4,6 +4,7 @@ import {
 	IControlTypeRaw,
 	IUnitsOfMeasurement,
 } from '@models/Maps'
+import { ValueAmountTypeEnum } from '@models/Maps/IMapItemValueRaw'
 
 import Api from '@services/api/Api'
 
@@ -156,7 +157,7 @@ class MapsService extends Events {
 			let sum = 0
 			column.forEach(element => {
 				sum += element?.type?.value?.reduce((sum, zetBlock) => {
-					if (zetBlock.id_edizm === 2) {
+					if (zetBlock.amount_type === ValueAmountTypeEnum.WEEK) {
 						return sum + zetBlock.amount * this.WEEKQUEALSHOURS
 					}
 
@@ -279,12 +280,20 @@ class MapsService extends Events {
 		this.emit('onUpdatedMapList', newList)
 	}
 
-	convertHoursToZet(hours: number, unitOfMeasurement: number = 1) {
-		if (unitOfMeasurement === 2) return hours * this.WEEKQUEALSZET
+	convertHoursToZet(
+		hours: number,
+		unitOfMeasurement: ValueAmountTypeEnum = ValueAmountTypeEnum.HOUR
+	) {
+		if (unitOfMeasurement === ValueAmountTypeEnum.WEEK)
+			return hours * this.WEEKQUEALSZET
 		return hours / this.ZETQUEALSHOURS
 	}
-	convertZetToHours(zet: number, unitOfMeasurement: number = 1) {
-		if (unitOfMeasurement === 2) return zet / this.WEEKQUEALSZET
+	convertZetToHours(
+		zet: number,
+		unitOfMeasurement: ValueAmountTypeEnum = ValueAmountTypeEnum.HOUR
+	) {
+		if (unitOfMeasurement === ValueAmountTypeEnum.WEEK)
+			return zet / this.WEEKQUEALSZET
 		return zet * this.ZETQUEALSHOURS
 	}
 

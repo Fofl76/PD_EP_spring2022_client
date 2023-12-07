@@ -29,6 +29,8 @@
 <script>
 import MapsService from '@services/Maps/MapsService'
 
+import { ValueAmountTypeEnum } from '@models/Maps/IMapItemValueRaw'
+
 export default {
 	name: 'MapRightMenuValueLoadForm',
 
@@ -79,7 +81,7 @@ export default {
 				const newValue = {
 					amount: 0,
 					control_type_id: newType.id,
-					id_edizm: 1,
+					amount_type: ValueAmountTypeEnum.HOUR,
 					type: 'load',
 				}
 

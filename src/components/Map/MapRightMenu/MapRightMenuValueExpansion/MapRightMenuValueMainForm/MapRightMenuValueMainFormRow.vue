@@ -73,6 +73,7 @@
 <script>
 import MHint from '@components/common/MHint.vue'
 
+import { ValueAmountTypeEnum } from '@models/Maps/IMapItemValueRaw'
 import MapsService from '@services/Maps/MapsService'
 
 import _ from 'lodash'
@@ -136,7 +137,7 @@ export default {
 		},
 
 		unitOfMeasurement() {
-			return this.item.id_edizm
+			return this.item.amount_type
 		},
 
 		/* СРС (Самостоятельная работа) */
@@ -145,7 +146,7 @@ export default {
 		},
 
 		isWeekAmount() {
-			return +this.unitOfMeasurement === 2
+			return +this.unitOfMeasurement === ValueAmountTypeEnum.WEEK
 		},
 	},
 

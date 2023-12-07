@@ -77,6 +77,7 @@ import MapTableMainRulerColumn from '@components/Map/MapTable/MapTableMainRulerC
 import MapTableMainColumnHeader from '@components/Map/MapTable/MapTableMainColumnHeader.vue'
 import MapTableMainBlock from '@components/Map/MapTable/MapTableMainBlock.vue'
 import MapTableMainSkeletonBlock from '@components/Map/MapTable/MapTableMainSkeletonBlock.vue'
+import { ValueAmountTypeEnum } from '@models/Maps/IMapItemValueRaw'
 
 export default {
 	name: 'MapTableMain',
@@ -185,7 +186,7 @@ export default {
 
 		totalZet(data) {
 			const hours = data.type.value?.reduce((sum, zetBlock) => {
-				if (zetBlock.id_edizm === 2) {
+				if (zetBlock.amount_type === ValueAmountTypeEnum.WEEK) {
 					return sum + zetBlock.amount * this.WEEKQUEALSHOURS
 				}
 
