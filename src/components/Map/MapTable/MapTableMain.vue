@@ -226,7 +226,7 @@ export default {
 
     .MapTableMainBlock__wrapper.isEditing
         position: relative
-        z-index: 1000
+        z-index: 2
 
         .MapTableMainBlock
             cursor: default
