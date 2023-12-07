@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import MapRightMenuExpansion from './MapRightMenuExpansion.vue'
+import MapRightMenuExpansion from '@components/Map/MapRightMenu/common/MapRightMenuExpansion.vue'
 
 import MapsService from '@services/Maps/MapsService'
 

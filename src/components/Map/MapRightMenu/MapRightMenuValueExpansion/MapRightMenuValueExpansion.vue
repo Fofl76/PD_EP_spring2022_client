@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import MapRightMenuExpansion from '../MapRightMenuExpansion.vue'
+import MapRightMenuExpansion from '@components/Map/MapRightMenu/common/MapRightMenuExpansion.vue'
 import MapRightMenuValueMainForm from './MapRightMenuValueMainForm/MapRightMenuValueMainForm.vue'
 import MapRightMenuValueSumForm from './MapRightMenuValueSumForm.vue'
 import MapRightMenuValueLoadForm from './MapRightMenuValueLoadForm.vue'
