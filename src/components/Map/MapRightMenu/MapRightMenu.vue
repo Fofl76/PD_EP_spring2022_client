@@ -90,9 +90,9 @@ import _ from 'lodash'
 import { mapGetters } from 'vuex'
 
 import MHint from '@components/common/MHint.vue'
-import MapRightMenuCipherExpansion from './MapRightMenuCipherExpansion.vue'
+import MapRightMenuCipherExpansion from './MapRightMenuCipherExpansion/MapRightMenuCipherExpansion.vue'
 import MapRightMenuValueExpansion from './MapRightMenuValueExpansion/MapRightMenuValueExpansion.vue'
-import MapRightMenuControlExpansion from './MapRightMenuControlExpansion.vue'
+import MapRightMenuControlExpansion from './MapRightMenuControlExpansion/MapRightMenuControlExpansion.vue'
 import MapRightMenuConfirmPopup from './MapRightMenuConfirmPopup.vue'
 
 import withEventEmitter from '@mixins/withEventEmitter'
