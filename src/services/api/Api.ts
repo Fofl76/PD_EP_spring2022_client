@@ -180,6 +180,10 @@ abstract class Api {
 		return await this.callFetch<any>(`save_excel/${aupCode}`)
 	}
 
+	static async downloadMapXML(aupCode: Key) {
+		return await this.callFetch<any>(`upload-xml/${aupCode}`)
+	}
+
 	/**
 	 * @desc Приватный общий метод для вызова запросов axios
 	 * @param {string} endpoint - Название энпдоинта на который отправляется запрос

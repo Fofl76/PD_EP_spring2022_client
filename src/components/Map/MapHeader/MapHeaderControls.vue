@@ -37,6 +37,19 @@
 					<v-list-item-title>Скачать</v-list-item-title>
 				</v-list-item-content>
 			</v-list-item>
+
+			<v-list-item
+				class="MapHeaderDropdownListItem"
+				@click="downloadMapXML"
+				:disabled="!aupCode"
+			>
+				<v-list-item-icon>
+					<v-icon>mdi-download</v-icon>
+				</v-list-item-icon>
+				<v-list-item-content>
+					<v-list-item-title>Скачать в XML</v-list-item-title>
+				</v-list-item-content>
+			</v-list-item>
 		</MapHeaderDropdown>
 
 		<MapUploadFilePopup v-model="uploadPopupModel" />
@@ -127,6 +140,24 @@ export default {
 			} catch (err) {
 				console.log(err)
 				ToastService.showSuccess('Произошла ошибка при загрузке карты')
+			} finally {
+				this.isLoadingFile = false
+			}
+		},
+
+		async downloadMapXML() {
+			try {
+				this.isLoadingFile = true
+
+				const { data, success } = await Api.downloadMapXML(this.aupCode)
+
+				if (success) {
+					downloadAsFile(data, `${this.aupCode}.xml`)
+					ToastService.showSuccess('Карта в XML успешно загружена')
+				}
+			} catch (err) {
+				console.log(err)
+				ToastService.showSuccess('Произошла ошибка при загрузке карты в XML')
 			} finally {
 				this.isLoadingFile = false
 			}
