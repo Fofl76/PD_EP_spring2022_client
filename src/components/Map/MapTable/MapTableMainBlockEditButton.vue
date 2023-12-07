@@ -1,7 +1,7 @@
 <template>
 	<v-btn
 		class="MapTableMainBlockEditButton"
-		:class="{ darkMode, show }"
+		:class="{ darkMode }"
 		x-small
 		fab
 		icon
@@ -16,11 +16,6 @@ export default {
 	name: 'MapTableMainBlockEditButton',
 
 	props: {
-		show: {
-			type: Boolean,
-			default: false,
-		},
-
 		darkMode: {
 			type: Boolean,
 			default: false,
@@ -41,14 +36,8 @@ export default {
     right: 8px
     top: 8px
 
-    opacity: 0
-    transition: opacity .25s ease
-
     background-color: rgba(255, 255, 255, 0.1)
     color: #fff !important
-
-    &.show
-        opacity: 1
 
     &.darkMode
         background-color: rgb(51, 51, 51, 0.1)

@@ -8,11 +8,7 @@
 		}"
 		:style="styleVars"
 	>
-		<div
-			class="MapTableMainBlock"
-			@mouseover="isHovered = true"
-			@mouseleave="isHovered = false"
-		>
+		<div class="MapTableMainBlock">
 			<v-tooltip bottom :open-delay="300">
 				<template v-slot:activator="{ on, attrs }">
 					<span class="MapTableMainBlock__name" v-bind="attrs" v-on="on">
@@ -26,7 +22,6 @@
 			<MapTableMainBlockEditButton
 				v-if="!isEditing"
 				:darkMode="needIsDarkMode"
-				:show="isHovered"
 				@click="onEdit"
 			/>
 		</div>
@@ -68,13 +63,6 @@ export default {
 			type: Number,
 			default: 0,
 		},
-	},
-
-	data() {
-		return {
-			modeTable: 'default',
-			isHovered: false,
-		}
 	},
 
 	computed: {
@@ -128,6 +116,14 @@ export default {
     cursor: grab
     transition: box-shadow .25s ease
     background-color: var(--background-color)
+
+    .MapTableMainBlockEditButton
+        opacity: 0
+        transition: opacity .25s ease
+
+    &:hover
+        .MapTableMainBlockEditButton
+            opacity: 1
 
     &__wrapper
         transition: all 0.3s ease
