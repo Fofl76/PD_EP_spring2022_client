@@ -77,8 +77,10 @@
 
 			<MapRightMenuConfirmPopup
 				v-model="confirmPopupModel"
+				:isError="!isValid"
 				@close="onClosePopup"
 				@save="onSavePopup"
+				@back="onBackPopup"
 			/>
 		</div>
 	</v-navigation-drawer>
@@ -161,12 +163,17 @@ export default {
 				shifr: null,
 			},
 
-			/* Объект хранящий состояние v-form каждой раскрывашки
-               true, означает, что в данном блоке некорректный ввод данных
-            */
+			/* Объект хранящий состояние ошибок v-form каждой раскрывашки
+			 */
 			errorExpansions: {
-				cipher: false,
-				values: false,
+				cipher: {
+					value: false,
+					label: 'Шифр',
+				},
+				values: {
+					value: false,
+					label: 'Настройка объема',
+				},
 			},
 
 			disciplineRules: [
@@ -212,7 +219,7 @@ export default {
 		/* Проверяем, что каждый блок с формами валидный */
 		isValid() {
 			return Object.values(this.errorExpansions).every(
-				errorState => !errorState
+				errorState => !errorState.value
 			)
 		},
 
@@ -293,7 +300,7 @@ export default {
 		// Обработчик который вызывается когда в каком-то поле
 		// с объемами происходит ошибка ввода
 		onInputError(type, value) {
-			this.errorExpansions[type] = value
+			this.errorExpansions[type].value = value
 		},
 
 		// Закрытие
@@ -311,22 +318,29 @@ export default {
 		},
 
 		onCloseButtonClick() {
-			if (this.isEdited) {
+			if (this.isEdited || !this.isValid) {
 				this.confirmPopupModel = true
 			} else {
 				this.closeRightMenu()
 			}
 		},
 
+		// Закрытие попапа без сохранения
 		onClosePopup() {
 			this.confirmPopupModel = false
 			this.closeRightMenu()
 		},
 
+		// Сохранение через попап
 		async onSavePopup() {
 			this.confirmPopupModel = false
 			const res = await this.onSave()
 			if (res) this.closeRightMenu()
+		},
+
+		// Вернуться назад к редактированию
+		onBackPopup() {
+			this.confirmPopupModel = false
 		},
 		//
 
