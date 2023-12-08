@@ -27,6 +27,7 @@
 
 					<div class="MapRightMenuValueExpansion__sum-wrapper">
 						<MapRightMenuValueSumForm
+							v-if="hasIndependentWorkValue"
 							label="Сумма"
 							:values="values"
 							:item="item"
@@ -34,7 +35,7 @@
 						/>
 
 						<MapRightMenuValueSumForm
-							label="Сумма без СРС"
+							:label="hasIndependentWorkValue ? 'Сумма без СРС' : 'Сумма'"
 							:values="values"
 							:item="item"
 							withoutIndependentWork
@@ -86,7 +87,15 @@ export default {
 		isValid: true,
 	}),
 
-	computed: {},
+	computed: {
+		independentWorkValue() {
+			return this.values.find(value => value.control_type_id === 4)
+		},
+
+		hasIndependentWorkValue() {
+			return !!this.independentWorkValue
+		},
+	},
 
 	methods: {
 		onUpdateValue({ index, value }) {
