@@ -40,7 +40,9 @@
 
 				<!-- <v-checkbox dense label="Сохранить вход"></v-checkbox> -->
 
-				<v-btn color="success" block @click="onLogin">Войти</v-btn>
+				<v-btn color="success" :loading="isLoading" block @click="onLogin">
+					Войти
+				</v-btn>
 			</div>
 		</div>
 	</v-dialog>
@@ -48,6 +50,7 @@
 
 <script>
 import authService from '@services/auth/AuthService'
+import ToastService from '@services/ToastService'
 
 export default {
 	name: 'MapAuthPopup',
@@ -59,6 +62,8 @@ export default {
 				username: '',
 				password: '',
 			},
+
+			isLoading: false,
 		}
 	},
 
@@ -75,16 +80,22 @@ export default {
 
 	methods: {
 		async onLogin() {
+			this.isLoading = true
+
 			const res = await authService.login(this.form)
 
-			if (res === 'error') {
-				// TODO вывести ошибку
-				return
+			console.log(res)
+
+			if (!res.success) {
+				ToastService.showError('Неверный логин или пароль. Попробуйте еще раз')
+			} else {
+				ToastService.showSuccess('Вы успешно авторизовались')
+				this.$emit('login')
+				this._value = false
+				this.clearForm()
 			}
 
-			this.$emit('login')
-			this._value = false
-			this.clearForm()
+			this.isLoading = false
 		},
 
 		closePopup() {

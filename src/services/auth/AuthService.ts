@@ -14,21 +14,16 @@ class AuthService extends Events {
 		this.tokenService = tokenService
 	}
 
-	async login(payload: {
-		username: string
-		password: string
-	}): Promise<'success' | 'error'> {
-		const { success, data } = await Api.login(payload)
+	async login(payload: { username: string; password: string }) {
+		const res = await Api.login(payload)
 
-		if (!success) {
-			return 'error'
-		}
+		if (!res.success) return res
 
-		this.tokenService.emit('tokens-fetched', data)
+		this.tokenService.emit('tokens-fetched', res.data)
 
 		this.fetchLoggedUser()
 
-		return 'success'
+		return res
 	}
 
 	updateLoggedUser(user: IUser) {
