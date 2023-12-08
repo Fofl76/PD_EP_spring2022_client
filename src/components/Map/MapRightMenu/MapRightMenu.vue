@@ -53,6 +53,7 @@
 				/>
 
 				<MapRightMenuValueExpansion
+					:item="formModel"
 					:values="values"
 					@updateValue="onUpdateValue"
 					@selectControlTypes="changeValues"

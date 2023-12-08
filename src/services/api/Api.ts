@@ -199,8 +199,6 @@ abstract class Api {
 		headers?: Record<string, string>
 	): Promise<IApiResponse<T>> {
 		try {
-			console.log('endpoint', args)
-
 			if (headers?.Authorization && endpoint !== 'refresh') {
 				const token = headers.Authorization
 

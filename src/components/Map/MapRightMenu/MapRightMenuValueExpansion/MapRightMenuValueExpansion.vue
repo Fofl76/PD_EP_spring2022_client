@@ -25,7 +25,21 @@
 
 					<v-divider dark class="MapRightMenu__divider" />
 
-					<MapRightMenuValueSumForm :values="values" @input="onInputSums" />
+					<div class="MapRightMenuValueExpansion__sum-wrapper">
+						<MapRightMenuValueSumForm
+							label="Сумма"
+							:values="values"
+							:item="item"
+							@input="onInputSums"
+						/>
+
+						<MapRightMenuValueSumForm
+							label="Сумма без СРС"
+							:values="values"
+							:item="item"
+							withoutIndependentWork
+						/>
+					</div>
 
 					<MapRightMenuValueLoadForm
 						:values="values"
@@ -58,6 +72,11 @@ export default {
 		values: {
 			type: Array,
 			default: () => [],
+		},
+
+		item: {
+			type: Object,
+			default: () => ({}),
 		},
 	},
 
@@ -110,4 +129,10 @@ export default {
         align-items: center
         justify-content: space-between
         margin-right: 8px
+
+    &__sum-wrapper
+        margin: 12px 0
+        display: flex
+        flex-direction: column
+        gap: 12px
 </style>

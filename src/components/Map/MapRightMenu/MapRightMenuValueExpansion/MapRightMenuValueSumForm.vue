@@ -1,10 +1,12 @@
 <template>
 	<div class="MapRightMenuValueSumForm">
+		<div class="MapRightMenuValueSumForm__label">{{ label }}</div>
+
 		<div class="MapRightMenuValueSumForm__row">
 			<v-text-field
 				:value="sumHours"
 				:rules="rules"
-				:disabled="!hasIndependentWorkValue"
+				:disabled="disabled"
 				label="Сумма часов"
 				type="number"
 				ref="hours"
@@ -18,7 +20,7 @@
 			<v-text-field
 				:value="sumZet"
 				:rules="rules"
-				:disabled="!hasIndependentWorkValue"
+				:disabled="disabled"
 				label="Сумма ЗЕТ"
 				type="number"
 				ref="zet"
@@ -35,15 +37,28 @@
 <script>
 import MapsService from '@services/Maps/MapsService'
 
-import { ValueAmountTypeEnum } from '@models/Maps/IMapItemValueRaw'
-
 export default {
 	name: 'MapRightMenuValueSumForm',
 
 	props: {
+		label: {
+			type: String,
+			default: 'Сумма',
+		},
+
 		values: {
 			type: Array,
 			default: () => [],
+		},
+
+		item: {
+			type: Object,
+			default: () => ({}),
+		},
+
+		withoutIndependentWork: {
+			type: Boolean,
+			default: false,
 		},
 	},
 
@@ -68,11 +83,16 @@ export default {
 		},
 
 		sumHours() {
-			return this.getSumHours()
+			return this.getSumHours(this.item, this.withoutIndependentWork)
 		},
 
 		sumZet() {
 			return this.MapsService.convertHoursToZet(this.sumHours)
+		},
+
+		/* Редактирование выключено если нету СРС или подсчет суммы идет без СРС */
+		disabled() {
+			return !this.independentWorkValue || this.withoutIndependentWork
 		},
 
 		rules() {
@@ -85,19 +105,8 @@ export default {
 	},
 
 	methods: {
-		/* Подсчет суммы с/без учетом СРС. control_type_id = 4 === 'СРС' */
-		getSumHours(withoutIndependentWork = false) {
-			return this.values.reduce((accumulator, currentValue) => {
-				if (withoutIndependentWork && currentValue.control_type_id === 4)
-					return accumulator
-
-				const hours =
-					currentValue.amount_type === ValueAmountTypeEnum.HOUR
-						? currentValue.amount
-						: currentValue.amount * this.MapsService.WEEKQUEALSHOURS
-
-				return accumulator + hours
-			}, 0)
+		getSumHours(item, withoutIndependentWork) {
+			return this.MapsService.getSumLoadsByItem(item, withoutIndependentWork)
 		},
 
 		onInput(value, type) {
@@ -108,7 +117,7 @@ export default {
 			if (type === 'zet') value = this.MapsService.convertZetToHours(value)
 
 			/* Высчитываем остаток суммы часов/зет, чтобы назначить их СРС */
-			let hours = value - this.getSumHours(true)
+			let hours = value - this.getSumHours(this.item, true)
 
 			this.$emit('input', hours)
 		},
@@ -118,11 +127,13 @@ export default {
 
 <style lang="sass">
 .MapRightMenuValueSumForm
-    margin: 8px 0
-
     &__row
+        margin-top: 4px
         display: grid
         grid-template-columns: 1fr 1fr
         grid-template-rows: 1fr
         gap: 8px
+
+    &__label
+        font-size: 16px
 </style>

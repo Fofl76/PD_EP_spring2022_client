@@ -280,6 +280,20 @@ class MapsService extends Events {
 		this.emit('onUpdatedMapList', newList)
 	}
 
+	getSumLoadsByItem(item, withoutIndependentWork = false) {
+		return item.type.value.reduce((accumulator, currentValue) => {
+			if (withoutIndependentWork && currentValue.control_type_id === 4)
+				return accumulator
+
+			const hours =
+				currentValue.amount_type === ValueAmountTypeEnum.HOUR
+					? currentValue.amount
+					: currentValue.amount * this.WEEKQUEALSHOURS
+
+			return accumulator + hours
+		}, 0)
+	}
+
 	convertHoursToZet(
 		hours: number,
 		unitOfMeasurement: ValueAmountTypeEnum = ValueAmountTypeEnum.HOUR
@@ -288,6 +302,7 @@ class MapsService extends Events {
 			return hours * this.WEEKQUEALSZET
 		return hours / this.ZETQUEALSHOURS
 	}
+
 	convertZetToHours(
 		zet: number,
 		unitOfMeasurement: ValueAmountTypeEnum = ValueAmountTypeEnum.HOUR

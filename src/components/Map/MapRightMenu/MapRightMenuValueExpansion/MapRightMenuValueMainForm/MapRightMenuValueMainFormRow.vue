@@ -18,38 +18,36 @@
 			</div>
 		</div>
 
-		<div class="MapRightMenuValueMainFormRow__input-block">
-			<div class="MapRightMenuValueMainFormRow__input-row">
-				<v-text-field
-					:value="hours"
-					:rules="rules"
-					:disabled="isIndependentWork"
-					:label="isWeekAmount ? 'Недели' : 'Часы'"
-					type="number"
-					ref="hours"
-					:hide-details="'auto'"
-					dense
-					filled
-					dark
-					@input="onInputHours(index, $event)"
-				/>
+		<div class="MapRightMenuValueMainFormRow__input-row">
+			<v-text-field
+				:value="hours"
+				:rules="rules"
+				:disabled="isIndependentWork"
+				:label="isWeekAmount ? 'Недели' : 'Часы'"
+				type="number"
+				ref="hours"
+				:hide-details="'auto'"
+				dense
+				filled
+				dark
+				@input="onInputHours(index, $event)"
+			/>
 
-				<v-text-field
-					:value="zet"
-					:rules="rules"
-					:disabled="isIndependentWork"
-					label="ЗЕТ"
-					:min="1"
-					:max="10"
-					type="number"
-					ref="zet"
-					:hide-details="'auto'"
-					dense
-					filled
-					dark
-					@input="onInputZet"
-				/>
-			</div>
+			<v-text-field
+				:value="zet"
+				:rules="rules"
+				:disabled="isIndependentWork"
+				label="ЗЕТ"
+				:min="1"
+				:max="10"
+				type="number"
+				ref="zet"
+				:hide-details="'auto'"
+				dense
+				filled
+				dark
+				@input="onInputZet"
+			/>
 		</div>
 
 		<v-checkbox
@@ -186,10 +184,11 @@ export default {
         margin-left: 8px
         margin-bottom: 2px
 
-    &__input-block
-        margin: 8px 0
+    &__label
+        font-size: 16px
 
     &__input-row
+        margin-top: 4px
         display: grid
         grid-template-columns: 1fr 1fr
         grid-template-rows: 1fr
