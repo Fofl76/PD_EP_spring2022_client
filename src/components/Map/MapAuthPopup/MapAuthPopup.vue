@@ -1,5 +1,5 @@
 <template>
-	<v-dialog v-model="_value" width="unset">
+	<v-dialog v-model="_value" width="350">
 		<div class="MapAuthPopup">
 			<v-btn class="MapAuthPopup__close-btn" icon @click="closePopup">
 				<v-icon>mdi-close</v-icon>
@@ -11,7 +11,9 @@
 			</div> -->
 
 			<div class="MapAuthPopup__side MapAuthPopup__side--right">
-				<div class="MapAuthPopup__title text-h6">Авторизация</div>
+				<div class="MapAuthPopup__title text-h6 grey--text text--darken-3">
+					Авторизация
+				</div>
 
 				<div class="MapAuthPopup__input-block">
 					<v-text-field
@@ -38,7 +40,22 @@
 					/>
 				</div>
 
-				<!-- <v-checkbox dense label="Сохранить вход"></v-checkbox> -->
+				<div class="MapAuthPopup__footer">
+					<v-checkbox
+						class="MapAuthPopup__checkbox"
+						label="Сохранить вход"
+						dense
+						hide-details
+					>
+						<template #label>
+							<div class="MapAuthPopup__checkbox-label">Запомнить меня</div>
+						</template>
+					</v-checkbox>
+
+					<div class="MapAuthPopup__forgot text--darken-3">
+						<a href="#" target="_blank">Забыли пароль?</a>
+					</div>
+				</div>
 
 				<v-btn color="success" :loading="isLoading" block @click="onLogin">
 					Войти
@@ -113,7 +130,6 @@ export default {
 <style lang="sass">
 .MapAuthPopup
     background-color: #fff
-    display: flex
     position: relative
 
     &__close-btn
@@ -122,11 +138,28 @@ export default {
         top: 12px
 
     &__side
-        padding: 24px 32px
+        padding: 16px 32px 24px 32px
 
     &__title
-        margin-bottom: 16px
+        margin-bottom: 8px
+
+    &__forgot
+        font-size: 14px
+
 
     &__input-block
         margin-bottom: 12px
+
+    &__footer
+        margin-bottom: 16px
+        display: flex
+        align-items: center
+        justify-content: space-between
+
+    &__checkbox
+        margin-top: 0 !important
+        padding-top: 0 !important
+
+    &__checkbox-label
+        font-size: 14px
 </style>
