@@ -4,7 +4,6 @@
 			<MapTableMain
 				:table="table"
 				:loading="loading && !isLoadingSaveMapList"
-				:activeEditingItemId="activeEditingItemId"
 				:max-zet="maxZet"
 				:fit-mode="isFullScreen"
 				@edit="onEdit"
@@ -39,11 +38,6 @@ export default {
 		table: {
 			type: Array,
 			default: () => [],
-		},
-
-		activeEditingItemId: {
-			type: [String, Number],
-			default: null,
 		},
 
 		loading: Boolean,

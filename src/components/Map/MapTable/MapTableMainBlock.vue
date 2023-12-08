@@ -2,7 +2,8 @@
 	<div
 		class="MapTableMainBlock__wrapper"
 		:class="{
-			isEditing,
+			isSelected,
+			isDarkened,
 			fitMode: fitMode && totalZet <= 2,
 			'MapTableMainBlock__wrapper--small': fitMode,
 		}"
@@ -20,7 +21,7 @@
 			</v-tooltip>
 
 			<MapTableMainBlockEditButton
-				v-if="!isEditing"
+				v-if="!isSelected"
 				:darkMode="needIsDarkMode"
 				@click="onEdit"
 			/>
@@ -44,7 +45,12 @@ export default {
 			required: true,
 		},
 
-		isEditing: {
+		isSelected: {
+			type: Boolean,
+			default: false,
+		},
+
+		hasSelectedItems: {
 			type: Boolean,
 			default: false,
 		},
@@ -76,6 +82,10 @@ export default {
 
 		needIsDarkMode() {
 			return determinateTextColor(this.backgroundColor)
+		},
+
+		isDarkened() {
+			return !this.isSelected && this.hasSelectedItems
 		},
 
 		styleVars() {
@@ -130,13 +140,21 @@ export default {
         padding: 5px 0
         height: var(--height-block)
 
-        &:not(.isEditing)
-            &.fitMode:hover
-                height: calc(var(--height-block) * 3)
+        position: relative
+        z-index: 2
 
-        &.isEditing
+        &.fitMode:hover
+            height: calc(var(--height-block) * 3)
+
+        &.isSelected
             .MapTableMainBlock
                 box-shadow: 0px 0px 0px 4px var(--shadow-color) inset
+
+        &.isDarkened
+            opacity: 0.46
+
+            &:hover
+                opacity: 1
 
         &--small
             .MapTableMainBlock__name

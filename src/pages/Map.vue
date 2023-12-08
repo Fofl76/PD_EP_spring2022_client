@@ -7,7 +7,6 @@
 				<MapTable
 					:loading="isLoadingMaps"
 					:table="tableData"
-					:activeEditingItemId="rightMenuEditItemId"
 					@editClick="onEditClick"
 				/>
 			</v-container>
@@ -15,7 +14,7 @@
 
 		<MapRightMenu
 			:value="rightMenuEditModel"
-			:itemId="rightMenuEditItemId"
+			:itemId="lastSelectedId"
 			@input="onInputRightMenuEditModel"
 		/>
 	</v-app>
@@ -23,6 +22,7 @@
 
 <script>
 import MapsService from '@services/Maps/MapsService'
+import mapSelectionService from '@services/Maps/mapSelectionService'
 import GroupsService from '@services/Groups/GroupsService'
 
 import MapHeader from '@components/Map/MapHeader/MapHeader.vue'
@@ -30,6 +30,8 @@ import MapTable from '@components/Map/MapTable/MapTable.vue'
 import MapRightMenu from '@components/Map/MapRightMenu/MapRightMenu.vue'
 
 import { mapGetters, mapMutations } from 'vuex'
+
+import withEventEmitter from '@mixins/withEventEmitter'
 
 export default {
 	name: 'Map',
@@ -40,6 +42,10 @@ export default {
 		MapRightMenu,
 	},
 
+	mixins: [
+		withEventEmitter('mapSelectionService', 'mapSelectionServiceHandlers'),
+	],
+
 	data() {
 		return {
 			isLoading: true,
@@ -47,12 +53,19 @@ export default {
 			mapsService: MapsService,
 			groupsService: GroupsService,
 
-			snackbarOptions: null,
+			mapSelectionService,
+			lastSelectedId: null,
+
+			mapSelectionServiceHandlers: {
+				select: this.onSelect,
+				unselect: this.clearLastSelectedId,
+				clear: this.clearLastSelectedId,
+			},
 		}
 	},
 
 	computed: {
-		...mapGetters('Map', ['rightMenuEditModel', 'rightMenuEditItemId']),
+		...mapGetters('Map', ['rightMenuEditModel']),
 
 		allGroupsMapId() {
 			return this.groupsService.allGroupsMapId
@@ -64,6 +77,10 @@ export default {
 
 		tableData() {
 			return this.mapsService.mapList?.value
+		},
+
+		selectedItemsCount() {
+			return Object.keys(this.mapSelectionService.selectedItems).length
 		},
 	},
 
@@ -77,10 +94,14 @@ export default {
 			deep: true,
 			immediate: true,
 		},
+
+		selectedItemsCount(value) {
+			this.setRightMenuEditModel(value === 1)
+		},
 	},
 
 	methods: {
-		...mapMutations('Map', ['setRightMenuEditModel', 'setRightMenuEditItemId']),
+		...mapMutations('Map', ['setRightMenuEditModel']),
 
 		onSuccessUploadFile(aup) {
 			if (aup) {
@@ -88,15 +109,21 @@ export default {
 			}
 		},
 
+		onSelect(ids) {
+			this.lastSelectedId = ids[0]
+		},
+
+		clearLastSelectedId() {
+			this.lastSelectedId = null
+			this.setRightMenuEditModel(false)
+		},
+
 		onEditClick(id) {
-			this.setRightMenuEditModel(true)
-			this.setRightMenuEditItemId(id)
+			/* this.setRightMenuEditModel(true) */
 		},
 
 		onInputRightMenuEditModel(value) {
 			this.setRightMenuEditModel(value)
-
-			if (!value) this.setRightMenuEditItemId(null)
 		},
 	},
 

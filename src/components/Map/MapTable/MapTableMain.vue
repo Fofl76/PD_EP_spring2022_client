@@ -25,14 +25,14 @@
 						<div>
 							<MapTableMainBlock
 								:data="dataValue(element)"
-								:isEditing="activeEditingItemId === element.id"
-								:class="{ isEditing: activeEditingItemId === element.id }"
+								:isSelected="isSelected(element.id)"
+								:hasSelectedItems="hasSelectedItems"
 								:height="heightTableBlock(element)"
 								:fitMode="fitMode"
 								:total-zet="totalZet(element)"
-								@edit="$emit('edit', $event)"
 								@click.native="onClickBlock(element)"
 							/>
+							<!-- @edit="onClickBlock(element)" -->
 						</div>
 					</div>
 				</draggable>
@@ -56,28 +56,24 @@
 			</div>
 		</template>
 
-		<v-overlay
-			v-if="activeEditingItemId"
-			:z-index="1"
-			absolute
-			color="#272727"
-		/>
+		<v-overlay v-if="hasSelectedItems" :z-index="1" absolute color="#272727" />
 	</div>
 </template>
 
 <script>
-import _ from 'lodash'
-import draggable from 'vuedraggable'
-
-import orderWords from '@utils/orderWords'
-import GroupsService from '@services/Groups/GroupsService'
-import MapsService from '@services/Maps/MapsService'
-
 import MapTableMainRulerColumn from '@components/Map/MapTable/MapTableMainRulerColumn.vue'
 import MapTableMainColumnHeader from '@components/Map/MapTable/MapTableMainColumnHeader.vue'
 import MapTableMainBlock from '@components/Map/MapTable/MapTableMainBlock.vue'
 import MapTableMainSkeletonBlock from '@components/Map/MapTable/MapTableMainSkeletonBlock.vue'
 import { ValueAmountTypeEnum } from '@models/Maps/IMapItemValueRaw'
+
+import _ from 'lodash'
+import draggable from 'vuedraggable'
+
+import GroupsService from '@services/Groups/GroupsService'
+import MapsService from '@services/Maps/MapsService'
+import mapSelectionService from '@services/Maps/mapSelectionService'
+import orderWords from '@utils/orderWords'
 
 export default {
 	name: 'MapTableMain',
@@ -100,11 +96,6 @@ export default {
 			default: 30,
 		},
 
-		activeEditingItemId: {
-			type: [String, Number],
-			default: null,
-		},
-
 		loading: {
 			type: Boolean,
 			default: false,
@@ -114,10 +105,17 @@ export default {
 			type: Boolean,
 			default: false,
 		},
+
+		selectedItemIds: {
+			type: Array,
+			default: () => [],
+		},
 	},
 
 	data() {
 		return {
+			mapSelectionService,
+
 			orderWords,
 			fakeElementsCount: 8,
 			fakeMaxZet: 30,
@@ -173,11 +171,19 @@ export default {
 
 			return Object.keys(this.table).length
 		},
+
+		hasSelectedItems() {
+			return this.mapSelectionService.hasSelectedItems()
+		},
 	},
 
 	methods: {
 		onDragElementTable(data, columnIndex) {
 			this.$emit('drag', { data, columnIndex })
+		},
+
+		isSelected(id) {
+			return this.mapSelectionService.isSelected(id)
 		},
 
 		getGroupById(idGroup) {
@@ -202,7 +208,10 @@ export default {
 		},
 
 		onClickBlock(item) {
-			console.log(_.cloneDeep(item))
+			console.log('onClickBlock', item.id, item)
+			this.mapSelectionService.switch(item.id)
+
+			this.$emit('edit', item)
 		},
 	},
 }
@@ -223,11 +232,4 @@ export default {
     &__column
         display: flex
         flex-direction: column
-
-    .MapTableMainBlock__wrapper.isEditing
-        position: relative
-        z-index: 2
-
-        .MapTableMainBlock
-            cursor: default
 </style>
