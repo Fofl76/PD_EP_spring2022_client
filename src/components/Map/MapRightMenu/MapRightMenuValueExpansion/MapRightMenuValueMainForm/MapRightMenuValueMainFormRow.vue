@@ -24,7 +24,7 @@
 					:value="hours"
 					:rules="rules"
 					:disabled="isIndependentWork"
-					label="Часы"
+					:label="isWeekAmount ? 'Недели' : 'Часы'"
 					type="number"
 					ref="hours"
 					:hide-details="'auto'"
