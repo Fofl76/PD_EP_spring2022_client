@@ -249,13 +249,17 @@ export default {
                при рефакторинге может все сломатся
             */
 			const item = _.cloneDeep(this.item)
-			item.type.value = [...item.type.value].sort((a, b) => {
+			item.type.value = this.sortValues(item.type.value)
+
+			this.formService.init(item)
+		},
+
+		sortValues(values) {
+			return [...values].sort((a, b) => {
 				/* control_type_id === 'СРС' */
 				if (a.control_type_id === 4) return -1
 				return 1
 			})
-
-			this.formService.init(item)
 		},
 
 		/* Обновление объема нагрузки */
@@ -266,7 +270,7 @@ export default {
 
 		/* Изменение списка нагрузок объема */
 		changeValues(values) {
-			this.formService.setProperty(`type.value`, values)
+			this.formService.setProperty(`type.value`, this.sortValues(values))
 		},
 
 		/* Обновление шифра */
