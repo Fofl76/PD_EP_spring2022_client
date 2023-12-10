@@ -11,11 +11,10 @@ import jwtDecode from 'jwt-decode'
 
 import { AxiosError, AxiosResponse, HttpStatusCode } from 'axios'
 import axios from './axios'
-import objectToFormData from '@utils/objectToFormData'
 import { ITokenPayload, ITokens, IUser } from '@models/Auth'
 import tokenService from '@services/auth/TokenService'
-import authService from '@services/auth/AuthService'
 import IUploadFileError from '@models/Maps/IUploadFileError'
+import { IModule } from '@models/Modules'
 
 enum AxiosMethodsEnum {
 	GET = 'GET',
@@ -182,6 +181,25 @@ abstract class Api {
 
 	static async downloadMapXML(aupCode: Key) {
 		return await this.callFetch<any>(`upload-xml/${aupCode}`)
+	}
+
+	/**
+	 * @desc Запрос на получение модулей
+	 * @param {Key} aupCode - Код карты
+	 * @return {Promise<IModule | null>}
+	 */
+	static async fetchModuleByAup<T extends IModule[]>(
+		aupCode: Key
+	): Promise<IApiResponse<T>> {
+		if (!aupCode) {
+			return {
+				data: null,
+				status: 400,
+				success: false,
+			}
+		}
+
+		return this.callFetch<T>(`get-modules-by-aup/${aupCode}`)
 	}
 
 	/**
