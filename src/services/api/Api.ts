@@ -261,6 +261,7 @@ abstract class Api {
 					success: false,
 					status,
 					data,
+					error: err,
 				}
 			}
 
@@ -268,6 +269,7 @@ abstract class Api {
 				success: false,
 				status: null,
 				data: null,
+				error: err,
 			}
 		}
 	}

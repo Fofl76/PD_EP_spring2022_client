@@ -145,15 +145,17 @@ export default {
 			try {
 				this.isLoadingFile = true
 
-				const { data, success } = await Api.downloadMap(this.aupCode)
+				const { data, success, error } = await Api.downloadMap(this.aupCode)
 
 				if (success) {
 					downloadAsFile(data, `${this.aupCode}.xlsx`)
 					ToastService.showSuccess('Карта успешно загружена')
+				} else {
+					throw new Error('Ошибка при скачивании карты', error)
 				}
 			} catch (err) {
 				console.log(err)
-				ToastService.showSuccess('Произошла ошибка при загрузке карты')
+				ToastService.showError('Произошла ошибка при загрузке карты')
 			} finally {
 				this.isLoadingFile = false
 			}
@@ -163,15 +165,17 @@ export default {
 			try {
 				this.isLoadingFile = true
 
-				const { data, success } = await Api.downloadMapXML(this.aupCode)
+				const { data, success, error } = await Api.downloadMapXML(this.aupCode)
 
 				if (success) {
 					downloadAsFile(data, `${this.aupCode}.xml`)
 					ToastService.showSuccess('Карта в XML успешно загружена')
+				} else {
+					throw new Error('Ошибка при скачивании XML', error)
 				}
 			} catch (err) {
 				console.log(err)
-				ToastService.showSuccess('Произошла ошибка при загрузке карты в XML')
+				ToastService.showError('Произошла ошибка при загрузке карты в XML')
 			} finally {
 				this.isLoadingFile = false
 			}
