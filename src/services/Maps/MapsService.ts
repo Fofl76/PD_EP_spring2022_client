@@ -281,7 +281,7 @@ class MapsService extends Events {
 	}
 
 	getSumLoadsByItem(item, withoutIndependentWork = false) {
-		return item.type.value.reduce((accumulator, currentValue) => {
+		return item?.type?.value?.reduce((accumulator, currentValue) => {
 			if (withoutIndependentWork && currentValue.control_type_id === 4)
 				return accumulator
 
