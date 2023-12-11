@@ -9,10 +9,27 @@
 			<span> {{ stats.name }}: </span>
 			<span> {{ stats.count }}, </span>
 		</div>
-		<div v-for="stats in valueStats" :key="stats.id">
-			<span> {{ stats.name }}: </span>
-			<span> {{ stats.hours }}ч, </span>
-			<span> {{ stats.zet?.toFixed(2) }}зет </span>
+
+		<v-divider class="MapTableMainColumnHeaderDetails__divider" dark />
+
+		<div>
+			<span> {{ independentWorkStats.name }}: </span>
+			<span> {{ independentWorkStats.hours }}ч, </span>
+			<span> {{ independentWorkStats.zet?.toFixed(2) }}зет </span>
+		</div>
+
+		<div>
+			<span> {{ classroomsStats.name }}: </span>
+			<span> {{ classroomsStats.hours }}ч, </span>
+			<span> {{ classroomsStats.zet?.toFixed(2) }}зет </span>
+		</div>
+
+		<v-divider class="MapTableMainColumnHeaderDetails__divider" dark />
+
+		<div>
+			<span> {{ allSum.name }}: </span>
+			<span> {{ allSum.hours }}ч, </span>
+			<span> {{ allSum.zet?.toFixed(2) }}зет </span>
 		</div>
 	</MHint>
 </template>
@@ -42,9 +59,7 @@ export default {
 
 	computed: {
 		stats() {
-			const typeValueByStats = MapsService.controlTypes.value.filter(
-				item => item.name === 'СРС' || item.name === 'Лекции'
-			)
+			const typeValueByStats = MapsService.controlTypes.value
 			const stats = {
 				value: {},
 				session: {},
@@ -87,22 +102,6 @@ export default {
 			return stats
 		},
 
-		valueStats() {
-			const stats = []
-
-			this.controlTypes.value.forEach(item => {
-				if (this.stats.value[item.id]) {
-					stats.push({
-						...item,
-						hours: this.stats.value[item.id],
-						zet: this.stats.value[item.id] / this.zetQuealsHours,
-					})
-				}
-			})
-
-			return stats
-		},
-
 		controlStats() {
 			const stats = []
 
@@ -118,15 +117,60 @@ export default {
 			return stats
 		},
 
-		allStats() {
-			return this.controlStats.reduce(
-				(sumObj, el) => ({
-					hours: sumObj.hours + el.hours,
-					zet: sumObj.zet + el.zet,
-				}),
-				{ hours: 0, zet: 0 }
-			)
+		/* Сумма СРС */
+		independentWorkStats() {
+			/* СРС */
+			const ids = ['4']
+
+			return {
+				name: 'СРС',
+				...this.getSumByValueIds(ids),
+			}
+		},
+
+		/* Сумма аудиторных */
+		classroomsStats() {
+			/* ID control_types аудиторных часов */
+			const ids = ['2', '3', '6', '8']
+
+			return {
+				name: 'Сумма аудиторных',
+				...this.getSumByValueIds(ids),
+			}
+		},
+
+		/* Общая сумма */
+		allSum() {
+			return {
+				name: 'Общая сумма',
+				...this.getSumByValueIds(),
+			}
+		},
+	},
+
+	methods: {
+		/* Функция расчета суммы по определенным айдишникам нагрузок */
+		getSumByValueIds(ids) {
+			const sum = {
+				hours: 0,
+				zet: 0,
+			}
+
+			for (const id in this.stats.value) {
+				if (ids?.includes(id) || ids?.length === 0 || !ids) {
+					sum.hours += this.stats.value[id]
+					sum.zet += this.stats.value[id] / this.zetQuealsHours
+				}
+			}
+
+			return sum
 		},
 	},
 }
 </script>
+
+<style lang="sass">
+.MapTableMainColumnHeaderDetails
+    &__divider
+        margin: 6px 0
+</style>
