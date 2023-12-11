@@ -15,13 +15,13 @@
 		<div>
 			<span> {{ independentWorkStats.name }}: </span>
 			<span> {{ independentWorkStats.hours }}ч, </span>
-			<span> {{ independentWorkStats.zet?.toFixed(2) }}зет </span>
+			<span> {{ independentWorkStats.zet?.toFixed(2) }} ЗЕТ</span>
 		</div>
 
 		<div>
 			<span> {{ classroomsStats.name }}: </span>
 			<span> {{ classroomsStats.hours }}ч, </span>
-			<span> {{ classroomsStats.zet?.toFixed(2) }}зет </span>
+			<span> {{ classroomsStats.zet?.toFixed(2) }} ЗЕТ</span>
 		</div>
 
 		<v-divider class="MapTableMainColumnHeaderDetails__divider" dark />
@@ -29,7 +29,7 @@
 		<div>
 			<span> {{ allSum.name }}: </span>
 			<span> {{ allSum.hours }}ч, </span>
-			<span> {{ allSum.zet?.toFixed(2) }}зет </span>
+			<span> {{ allSum.zet?.toFixed(2) }} ЗЕТ</span>
 		</div>
 	</MHint>
 </template>
