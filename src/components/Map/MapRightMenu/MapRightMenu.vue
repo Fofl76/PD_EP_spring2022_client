@@ -187,6 +187,10 @@ export default {
 	},
 
 	watch: {
+		'$route.query.aup'() {
+			this.value_ = false
+		},
+
 		itemId() {
 			this.initRightMenu()
 		},
