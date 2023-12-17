@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 import Map from '../pages/Map.vue'
 
+const Check = () => import('../pages/Check.vue')
+
 Vue.use(VueRouter)
 
 const routes: Array<RouteConfig> = [
@@ -10,6 +12,13 @@ const routes: Array<RouteConfig> = [
 		name: 'Map',
 		component: Map,
 		meta: { title: 'Карты дисциплин' },
+	},
+
+	{
+		path: '/check',
+		name: 'Check',
+		component: Check,
+		meta: { title: 'Проверка' },
 	},
 ]
 

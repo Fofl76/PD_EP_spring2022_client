@@ -1,5 +1,13 @@
 <template>
 	<div class="MapHeaderControls">
+		<!-- Проверки -->
+		<MapHeaderButton
+			label="Проверка"
+			v-if="aupCode"
+			@click="$router.push(`/check?aup=${aupCode}`)"
+		/>
+		<!--  -->
+
 		<!-- Группировки -->
 		<MapHeaderButton label="Группировки" @click="openGroupSettingsPopupModel" />
 		<!--  -->

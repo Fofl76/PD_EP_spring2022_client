@@ -9,12 +9,18 @@ import { IApiResponse } from '@models/Api'
 import Key from '@models/Key'
 import jwtDecode from 'jwt-decode'
 
-import { AxiosError, AxiosResponse, HttpStatusCode } from 'axios'
+import {
+	AxiosError,
+	AxiosRequestConfig,
+	AxiosResponse,
+	HttpStatusCode,
+} from 'axios'
 import axios from './axios'
 import { ITokenPayload, ITokens, IUser } from '@models/Auth'
 import tokenService from '@services/auth/TokenService'
 import IUploadFileError from '@models/Maps/IUploadFileError'
 import { IModule } from '@models/Modules'
+import { ICheck, ICheckSettings } from '@models/Check'
 
 enum AxiosMethodsEnum {
 	GET = 'GET',
@@ -203,6 +209,37 @@ abstract class Api {
 	}
 
 	/**
+	 * @desc Запрос на получение результата теста по аупу
+	 * @param {Key} aupCode - Код карты
+	 * @return {Promise<IModule | null>}
+	 */
+	static async fetchCheckResultByAup<T extends ICheck>(
+		aupCode: Key,
+		settings: ICheckSettings,
+		abortController: AbortController
+	): Promise<IApiResponse<T>> {
+		if (!aupCode) {
+			return {
+				data: null,
+				status: 400,
+				success: false,
+			}
+		}
+
+		return this.callFetch<T>(
+			`check/${aupCode}?hide_title=${
+				!settings.showSuccess || ''
+			}&hide_detailed=${!settings.showDetail || ''}`,
+			AxiosMethodsEnum.GET,
+			null,
+			{},
+			{
+				signal: abortController.signal,
+			}
+		)
+	}
+
+	/**
 	 * @desc Приватный общий метод для вызова запросов axios
 	 * @param {string} endpoint - Название энпдоинта на который отправляется запрос
 	 * @param {AxiosMethodsEnum = AxiosMethodsEnum.GET} method - Метод для вызова в axios
@@ -214,7 +251,8 @@ abstract class Api {
 		endpoint: string,
 		method: AxiosMethodsEnum = AxiosMethodsEnum.GET,
 		args?: any,
-		headers?: Record<string, string>
+		headers?: Record<string, string>,
+		etc?: AxiosRequestConfig<any>
 	): Promise<IApiResponse<T>> {
 		try {
 			if (headers?.Authorization && endpoint !== 'refresh') {
@@ -242,6 +280,7 @@ abstract class Api {
 				headers: {
 					...headers,
 				},
+				...etc,
 			})
 
 			return {
