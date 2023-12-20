@@ -101,6 +101,7 @@ import Api from '@services/api/Api'
 import authService from '@services/auth/AuthService'
 
 import downloadAsFile from '@services/utils/downloadAsFile'
+import decodedURI from '@services/utils/decodedURI'
 
 export default {
 	name: 'MapHeaderControls',
@@ -153,10 +154,15 @@ export default {
 			try {
 				this.isLoadingFile = true
 
-				const { data, success, error } = await Api.downloadMap(this.aupCode)
+				const { res, data, success, error } = await Api.downloadMap(
+					this.aupCode
+				)
+
+				const decodedURI = decodeURI(res.headers['content-disposition'])
+				const filename = decodedURI.split('\\').at(-1)
 
 				if (success) {
-					downloadAsFile(data, `${this.aupCode}.xlsx`)
+					downloadAsFile(data, filename)
 					ToastService.showSuccess('Карта успешно загружена')
 				} else {
 					throw new Error('Ошибка при скачивании карты', error)

@@ -182,7 +182,15 @@ abstract class Api {
 	}
 
 	static async downloadMap(aupCode: Key) {
-		return await this.callFetch<any>(`save_excel/${aupCode}`)
+		return await this.callFetch<any>(
+			`save_excel/${aupCode}`,
+			AxiosMethodsEnum.GET,
+			null,
+			null,
+			{
+				responseType: 'blob',
+			}
+		)
 	}
 
 	static async downloadMapXML(aupCode: Key) {
@@ -251,7 +259,7 @@ abstract class Api {
 		endpoint: string,
 		method: AxiosMethodsEnum = AxiosMethodsEnum.GET,
 		args?: any,
-		headers?: Record<string, string>,
+		headers?: Record<string, string> | null,
 		etc?: AxiosRequestConfig<any>
 	): Promise<IApiResponse<T>> {
 		try {
@@ -274,7 +282,7 @@ abstract class Api {
 				}
 			}
 
-			const { status, data }: AxiosResponse<T> = await axios(endpoint, {
+			const res: AxiosResponse<T> = await axios(endpoint, {
 				method,
 				data: args,
 				headers: {
@@ -285,8 +293,9 @@ abstract class Api {
 
 			return {
 				success: true,
-				status,
-				data,
+				status: res.status,
+				data: res.data,
+				res,
 			}
 		} catch (err) {
 			if (err instanceof AxiosError && err.response) {

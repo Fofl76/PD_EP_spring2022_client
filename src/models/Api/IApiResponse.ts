@@ -3,4 +3,5 @@ export default interface IApiResponse<T> {
 	status: number | null
 	data: T | null
 	error?: any
+	res?: any
 }
