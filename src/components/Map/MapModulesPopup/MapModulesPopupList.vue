@@ -7,7 +7,9 @@
 				</v-list-item>
 			</template>
 			<div class="MapModulesPopupList__empty" v-else>
-				<MDataPreloader light />
+				<MDataPreloader light>
+					<template #title> Нет данных </template>
+				</MDataPreloader>
 			</div>
 		</v-list>
 	</v-card>

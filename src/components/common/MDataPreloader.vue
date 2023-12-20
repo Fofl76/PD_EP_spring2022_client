@@ -6,9 +6,11 @@
 		}"
 	>
 		<div class="DataPreloader__smile">≧◉◡◉≦</div>
-		<div class="DataPreloader__title">Нет данных</div>
-		<div class="DataPreloader__subtitle" v-if="$slots.default">
-			<slot></slot>
+		<div class="DataPreloader__title" v-if="$slots.title">
+			<slot name="title" />
+		</div>
+		<div class="DataPreloader__subtitle" v-if="$slots.subtitle">
+			<slot name="subtitle" />
 		</div>
 	</div>
 </template>
