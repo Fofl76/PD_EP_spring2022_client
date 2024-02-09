@@ -8,11 +8,7 @@
 		}"
 		:style="styleVars"
 	>
-		<div
-			class="MapTableMainBlock"
-			@mouseover="isHovered = true"
-			@mouseleave="isHovered = false"
-		>
+		<div class="MapTableMainBlock">
 			<v-tooltip bottom :open-delay="300">
 				<template v-slot:activator="{ on, attrs }">
 					<span class="MapTableMainBlock__name" v-bind="attrs" v-on="on">
@@ -24,8 +20,8 @@
 			</v-tooltip>
 
 			<MapTableMainBlockEditButton
+				v-if="!isEditing"
 				:darkMode="needIsDarkMode"
-				:show="isHovered"
 				@click="onEdit"
 			/>
 		</div>
@@ -69,13 +65,6 @@ export default {
 		},
 	},
 
-	data() {
-		return {
-			modeTable: 'default',
-			isHovered: false,
-		}
-	},
-
 	computed: {
 		backgroundColor() {
 			return this.data.group?.color || '#ffffff'
@@ -111,7 +100,7 @@ export default {
 }
 </script>
 
-<style lang="sass" scoped>
+<style lang="sass">
 .MapTableMainBlock
     position: relative
     display: flex
@@ -128,17 +117,26 @@ export default {
     transition: box-shadow .25s ease
     background-color: var(--background-color)
 
+    .MapTableMainBlockEditButton
+        opacity: 0
+        transition: opacity .25s ease
+
+    &:hover
+        .MapTableMainBlockEditButton
+            opacity: 1
+
     &__wrapper
         transition: all 0.3s ease
         padding: 5px 0
         height: var(--height-block)
 
-        &.fitMode:hover
-          height: calc(var(--height-block) * 3)
+        &:not(.isEditing)
+            &.fitMode:hover
+                height: calc(var(--height-block) * 3)
 
         &.isEditing
             .MapTableMainBlock
-                box-shadow: 0px 0px 0px 5px var(--shadow-color)
+                box-shadow: 0px 0px 0px 4px var(--shadow-color) inset
 
         &--small
             .MapTableMainBlock__name

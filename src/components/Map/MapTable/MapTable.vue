@@ -20,7 +20,10 @@
 		</div>
 
 		<div v-else class="MapTable__empty">
-			<MDataPreloader />
+			<MDataPreloader>
+				<template #title> Нет данных </template>
+				<template #subtitle> Выберите факультет и направление </template>
+			</MDataPreloader>
 		</div>
 	</div>
 </template>

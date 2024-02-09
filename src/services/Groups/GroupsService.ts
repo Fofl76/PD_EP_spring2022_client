@@ -45,11 +45,11 @@ class GroupsService extends Events {
 	}
 
 	async addGroup(group: IGroup) {
-		const res = await Api.addGroup(group)
+		const { data, success } = await Api.addGroup(group)
 
-		if (res) {
-			this.addGroupLocal(res)
-			return res
+		if (success && data) {
+			this.addGroupLocal(data)
+			return data
 		}
 	}
 
@@ -60,9 +60,9 @@ class GroupsService extends Events {
 	}
 
 	async deleteGroup(idGroup: number) {
-		const res = await Api.deleteGroup(idGroup)
+		const { success } = await Api.deleteGroup(idGroup)
 
-		if (res) {
+		if (success) {
 			this.deleteGroupLocal(idGroup)
 		}
 	}
@@ -76,9 +76,9 @@ class GroupsService extends Events {
 	}
 
 	async updateGroup(group: IGroup) {
-		const res = await Api.updateGroup(group)
+		const { success } = await Api.updateGroup(group)
 
-		if (res) {
+		if (success) {
 			this.updateGroupLocal(group)
 		}
 	}
@@ -97,10 +97,10 @@ class GroupsService extends Events {
 	 * @return {Promise<void>}
 	 */
 	async fetchAllGroups() {
-		const res = await Api.fetchAllGroups()
+		const { success, data } = await Api.fetchAllGroups()
 
-		if (res) {
-			this.setGroupsList(res)
+		if (success && data) {
+			this.setGroupsList(data)
 		}
 	}
 }

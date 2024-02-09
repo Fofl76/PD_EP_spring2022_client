@@ -1,42 +1,127 @@
 <template>
 	<div class="MapHeaderControls">
-		<MapHeaderButton label="Группировки" @click="openGroupSettingsPopupModel" />
-
+		<!-- Проверки -->
 		<MapHeaderButton
-			label="Загрузить план"
-			icon="mdi-upload"
-			@click="openUploadPopup"
+			label="Проверка"
+			v-if="aupCode"
+			@click="$router.push(`/check?aup=${aupCode}`)"
 		/>
+		<!--  -->
 
-		<MapHeaderButton label="Скачать" icon="mdi-download" @click="downloadMap" />
+		<!-- Группировки -->
+		<MapHeaderButton label="Группировки" @click="openGroupSettingsPopupModel" />
+		<!--  -->
 
-		<MapUploadFilePopup
-			v-model="uploadPopupModel"
-			@success="$emit('successUploadFile', $event)"
-			@error="$emit('errorUploadFile', $event)"
-		/>
+		<!-- Модули -->
+		<MapHeaderButton label="Модули" @click="openModulesPopup" />
+		<!--  -->
+
+		<v-divider class="MapHeader__divider" vertical></v-divider>
+
+		<!-- Работа с файлами -->
+		<MapHeaderDropdown
+			icon="mdi-file-download"
+			:disabled="!isAuth && !aupCode && isLoadingFile"
+			:loading="isLoadingFile"
+		>
+			<v-list-item
+				class="MapHeaderDropdownListItem"
+				@click="openUploadPopup"
+				:disabled="!isAuth"
+			>
+				<v-list-item-icon>
+					<v-icon>mdi-upload</v-icon>
+				</v-list-item-icon>
+				<v-list-item-content>
+					<v-list-item-title>Загрузить план</v-list-item-title>
+				</v-list-item-content>
+			</v-list-item>
+
+			<v-list-item
+				class="MapHeaderDropdownListItem"
+				@click="downloadMap"
+				:disabled="!aupCode"
+			>
+				<v-list-item-icon>
+					<v-icon>mdi-download</v-icon>
+				</v-list-item-icon>
+				<v-list-item-content>
+					<v-list-item-title>Скачать</v-list-item-title>
+				</v-list-item-content>
+			</v-list-item>
+
+			<v-list-item
+				class="MapHeaderDropdownListItem"
+				@click="downloadMapXML"
+				:disabled="!aupCode"
+			>
+				<v-list-item-icon>
+					<v-icon>mdi-download</v-icon>
+				</v-list-item-icon>
+				<v-list-item-content>
+					<v-list-item-title>Скачать в XML</v-list-item-title>
+				</v-list-item-content>
+			</v-list-item>
+		</MapHeaderDropdown>
+
+		<MapUploadFilePopup v-model="uploadPopupModel" />
 
 		<MapGroupsPopup v-model="groupSettingsPopupModel" />
+		<!--  -->
+
+		<v-divider class="MapHeader__divider" vertical></v-divider>
+
+		<!-- Авторизация -->
+		<MapHeaderButton v-if="!isAuth" label="Войти" @click="openAuthPopup" />
+		<MapHeaderAuthDropdown v-else @onLogout="logout" />
+
+		<MapAuthPopup v-model="authPopupModel" @login="onLogin" />
+		<!--  -->
+
+		<!-- Модули -->
+		<MapModulesPopup v-model="modulesPopupModel" v-if="modulesPopupModel" />
+		<!--  -->
 	</div>
 </template>
 
 <script>
-import MapsService from '@services/Maps/MapsService'
-
 import MapHeaderButton from '@components/Map/MapHeader/MapHeaderButton.vue'
+import MapHeaderDropdown from '@components/Map/MapHeader/MapHeaderDropdown.vue'
+import MapHeaderAuthDropdown from '@components/Map/MapHeader/MapHeaderAuthDropdown.vue'
 import MapGroupsPopup from '@components/Map/MapGroupsPopup/MapGroupsPopup.vue'
 import MapUploadFilePopup from '@components/Map/MapUploadFilePopup/MapUploadFilePopup.vue'
+import MapAuthPopup from '@components/Map/MapAuthPopup/MapAuthPopup.vue'
+import MapModulesPopup from '@components/Map/MapModulesPopup/MapModulesPopup.vue'
 
-import axios from '@services/api/axios'
+import { mapGetters } from 'vuex'
+
+import MapsService from '@services/Maps/MapsService'
+import ToastService from '@services/ToastService'
+import Api from '@services/api/Api'
+import authService from '@services/auth/AuthService'
+
+import downloadAsFile from '@services/utils/downloadAsFile'
+import decodedURI from '@services/utils/decodedURI'
 
 export default {
 	name: 'MapHeaderControls',
-	components: { MapHeaderButton, MapGroupsPopup, MapUploadFilePopup },
+	components: {
+		MapHeaderButton,
+		MapHeaderDropdown,
+		MapHeaderAuthDropdown,
+		MapGroupsPopup,
+		MapUploadFilePopup,
+		MapModulesPopup,
+		MapAuthPopup,
+	},
 
 	data() {
 		return {
 			uploadPopupModel: false,
 			groupSettingsPopupModel: false,
+			authPopupModel: false,
+			modulesPopupModel: false,
+			isLoadingFile: false,
 		}
 	},
 
@@ -49,27 +134,70 @@ export default {
 			this.uploadPopupModel = true
 		},
 
+		openAuthPopup() {
+			this.authPopupModel = true
+		},
+
+		openModulesPopup() {
+			this.modulesPopupModel = true
+		},
+
+		onLogin() {
+			this.authPopupModel = false
+		},
+
+		logout() {
+			authService.logout()
+		},
+
 		async downloadMap() {
 			try {
-				const resp = await axios.get(this.downloadURL, {
-					responseType: 'blob',
-				})
+				this.isLoadingFile = true
 
-				const file = new Blob([resp.data])
+				const { res, data, success, error } = await Api.downloadMap(
+					this.aupCode
+				)
 
-				const link = document.createElement('a')
-				link.download = `${this.aupCode}.xlsx`
-				link.href = URL.createObjectURL(file)
+				const decodedURI = decodeURI(res.headers['content-disposition'])
+				const filename = decodedURI.split('\\').at(-1)
 
-				link.click()
-				URL.revokeObjectURL(link.href)
+				if (success) {
+					downloadAsFile(data, filename)
+					ToastService.showSuccess('Карта успешно загружена')
+				} else {
+					throw new Error('Ошибка при скачивании карты', error)
+				}
 			} catch (err) {
 				console.log(err)
+				ToastService.showError('Произошла ошибка при загрузке карты')
+			} finally {
+				this.isLoadingFile = false
+			}
+		},
+
+		async downloadMapXML() {
+			try {
+				this.isLoadingFile = true
+
+				const { data, success, error } = await Api.downloadMapXML(this.aupCode)
+
+				if (success) {
+					downloadAsFile(data, `${this.aupCode}.xml`)
+					ToastService.showSuccess('Карта в XML успешно загружена')
+				} else {
+					throw new Error('Ошибка при скачивании XML', error)
+				}
+			} catch (err) {
+				console.log(err)
+				ToastService.showError('Произошла ошибка при загрузке карты в XML')
+			} finally {
+				this.isLoadingFile = false
 			}
 		},
 	},
 
 	computed: {
+		...mapGetters('Map', ['isAuth']),
 		isReady() {
 			return !!MapsService.mapList.value.length
 		},
@@ -88,4 +216,20 @@ export default {
 <style lang="sass">
 .MapHeaderControls
     display: flex
+    gap: 8px
+    align-items: center
+    height: 100%
+    max-height: 48px
+
+.header-buttons
+    display: flex
+    align-items: center
+    margin-right: 20px
+
+.AuthUser
+    display: flex
+    align-items: center
+
+.avatar-icon
+    margin-right: 7px
 </style>

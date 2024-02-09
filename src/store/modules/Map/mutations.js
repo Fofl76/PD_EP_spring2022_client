@@ -6,3 +6,5 @@ export const setRightMenuEditItemId = (state, id) =>
 
 export const setRightMenuEditModel = (state, flag) =>
 	(state.rightMenuEditModel = flag)
+
+export const setAuthStatus = (state, status) => (state.isAuth = status)

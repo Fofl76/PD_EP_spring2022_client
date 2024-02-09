@@ -1,10 +1,16 @@
 <template>
-	<div class="MapHeaderButton">
-		<v-btn @click="onClick" text dark>
-			<span>{{ label }}</span>
-			<v-icon v-if="icon" right dark>{{ icon }}</v-icon>
-		</v-btn>
-	</div>
+	<v-btn
+		class="MapHeaderButton"
+		:loading="loading"
+		:disabled="disabled"
+		height="100%"
+		text
+		dark
+		@click="onClick"
+	>
+		<v-icon v-if="icon" left dark>{{ icon }}</v-icon>
+		<span>{{ label }}</span>
+	</v-btn>
 </template>
 
 <script>
@@ -20,6 +26,16 @@ export default {
 			type: String,
 			default: null,
 		},
+
+		loading: {
+			type: Boolean,
+			default: false,
+		},
+
+		disabled: {
+			type: Boolean,
+			default: false,
+		},
 	},
 
 	methods: {
@@ -32,4 +48,5 @@ export default {
 
 <style lang="sass">
 .MapHeaderButton
+    display: inline-block
 </style>

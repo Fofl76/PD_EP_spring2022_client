@@ -1,12 +1,12 @@
 <template>
 	<MSelect
 		class="MapHeaderYearSelect"
-		:disabled="!items.length"
 		label="Год"
 		v-model="value_"
 		:items="items"
 		item-value=""
 		:return-object="false"
+		:disabled="items.length === 1"
 		item-title=""
 		height="52"
 	/>

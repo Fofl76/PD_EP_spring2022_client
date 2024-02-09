@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import { POSITION } from 'vue-toastification'
+import MToast from '@components/common/MToast.vue'
 
 enum DefaultMessages {
 	SUCCESS = 'Операция успешно выполнена',
@@ -14,17 +15,29 @@ enum DefaultMessages {
  */
 abstract class ToastService {
 	static defaultOptions = {
-		position: POSITION.BOTTOM_RIGHT,
+		position: POSITION.BOTTOM_LEFT,
 		draggable: false,
 		closeOnClick: false,
 	}
 
-	static showSuccess(msg: string = DefaultMessages.SUCCESS): void {
-		Vue.$toast.success(msg, this.defaultOptions)
+	static showSuccess(
+		text: string = DefaultMessages.SUCCESS,
+		title: string = ''
+	): void {
+		Vue.$toast.success(
+			{ component: MToast, props: { title, text } },
+			this.defaultOptions
+		)
 	}
 
-	static showError(msg: string = DefaultMessages.ERROR): void {
-		Vue.$toast.error(msg, this.defaultOptions)
+	static showError(
+		text: string = DefaultMessages.ERROR,
+		title: string = ''
+	): void {
+		Vue.$toast.error(
+			{ component: MToast, props: { title, text } },
+			this.defaultOptions
+		)
 	}
 }
 

@@ -379,7 +379,10 @@ export default {
 		},
 
 		async initAllDisciplines() {
-			this.items = await Api.fetchGroupsByAup(this.$route.query.aup)
+			if (!this.$route.query.aup) return
+
+			const { data } = await Api.fetchGroupsByAup(this.$route.query.aup)
+			this.items = data
 
 			this.getAllDisciplines()
 

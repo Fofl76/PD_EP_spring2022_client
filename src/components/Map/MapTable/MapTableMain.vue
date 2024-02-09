@@ -1,31 +1,32 @@
 <template>
-	<div>
-		<div class="MapTableMain" :style="styleVars">
-			<template v-if="!loading">
-				<!-- Левая колонка с линейкой ЗЕТ -->
-				<MapTableMainRulerColumn :maxZet="maxZet" :heightZet="heightZet" />
+	<div class="MapTableMain" :style="styleVars">
+		<template v-if="!loading">
+			<!-- Левая колонка с линейкой ЗЕТ -->
+			<MapTableMainRulerColumn :maxZet="maxZet" :heightZet="heightZet" />
+
+			<!-- Вынести в отдельный компонент -->
+			<div
+				class="MapTableMain__column"
+				v-for="(column, key) in table"
+				:key="key"
+			>
+				<!-- Шапка колонки с блоками -->
+				<MapTableMainColumnHeader :ordinalNumber="key" :columnData="column" />
 
 				<!-- Вынести в отдельный компонент -->
-				<div
-					class="MapTableMain__column"
-					v-for="(column, key) in table"
-					:key="key"
+				<draggable
+					class="MapTableMain__draggable"
+					v-bind="dragOptions"
+					:value="table[key]"
+					:setData="setData"
+					@change="onDragElementTable($event, key)"
 				>
-					<!-- Шапка колонки с блоками -->
-					<MapTableMainColumnHeader :ordinalNumber="key" :columnData="column" />
-
-					<!-- Вынести в отдельный компонент -->
-					<draggable
-						class="MapTableMain__draggable"
-						v-bind="dragOptions"
-						:value="table[key]"
-						:setData="setData"
-						@change="onDragElementTable($event, key)"
-					>
-						<div v-for="element in column" :key="element.id">
+					<div v-for="element in column" :key="element.id">
+						<div>
 							<MapTableMainBlock
 								:data="dataValue(element)"
 								:isEditing="activeEditingItemId === element.id"
+								:class="{ isEditing: activeEditingItemId === element.id }"
 								:height="heightTableBlock(element)"
 								:fitMode="fitMode"
 								:total-zet="totalZet(element)"
@@ -33,27 +34,34 @@
 								@click.native="onClickBlock(element)"
 							/>
 						</div>
-					</draggable>
-				</div>
-			</template>
-
-			<!-- Вынести в отдельный компонент -->
-			<template v-else>
-				<div
-					class="MapTableMain__column"
-					v-for="(column, key) in fakeElementsCount"
-					:key="key"
-				>
-					<div class="MapTableMain__column-header">
-						{{ orderWords[key] }}
 					</div>
+				</draggable>
+			</div>
+		</template>
 
-					<div v-for="item in 10" :key="item.id">
-						<MapTableMainSkeletonBlock />
-					</div>
+		<template v-else>
+			<!-- Левая колонка с линейкой ЗЕТ -->
+			<MapTableMainRulerColumn :maxZet="fakeMaxZet" :heightZet="heightZet" />
+
+			<div
+				class="MapTableMain__column"
+				v-for="(column, key) in fakeElementsCount"
+				:key="key"
+			>
+				<MapTableMainColumnHeader :ordinalNumber="key" />
+
+				<div v-for="item in 10" :key="item.id">
+					<MapTableMainSkeletonBlock />
 				</div>
-			</template>
-		</div>
+			</div>
+		</template>
+
+		<v-overlay
+			v-if="activeEditingItemId"
+			:z-index="1"
+			absolute
+			color="#272727"
+		/>
 	</div>
 </template>
 
@@ -69,6 +77,7 @@ import MapTableMainRulerColumn from '@components/Map/MapTable/MapTableMainRulerC
 import MapTableMainColumnHeader from '@components/Map/MapTable/MapTableMainColumnHeader.vue'
 import MapTableMainBlock from '@components/Map/MapTable/MapTableMainBlock.vue'
 import MapTableMainSkeletonBlock from '@components/Map/MapTable/MapTableMainSkeletonBlock.vue'
+import { ValueAmountTypeEnum } from '@models/Maps/IMapItemValueRaw'
 
 export default {
 	name: 'MapTableMain',
@@ -177,7 +186,7 @@ export default {
 
 		totalZet(data) {
 			const hours = data.type.value?.reduce((sum, zetBlock) => {
-				if (zetBlock.id_edizm === 2) {
+				if (zetBlock.amount_type === ValueAmountTypeEnum.WEEK) {
 					return sum + zetBlock.amount * this.WEEKQUEALSHOURS
 				}
 
@@ -214,4 +223,11 @@ export default {
     &__column
         display: flex
         flex-direction: column
+
+    .MapTableMainBlock__wrapper.isEditing
+        position: relative
+        z-index: 2
+
+        .MapTableMainBlock
+            cursor: default
 </style>

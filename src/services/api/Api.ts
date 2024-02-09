@@ -5,11 +5,22 @@ import {
 	IUnitsOfMeasurement,
 } from '@models/Maps'
 import { IFetchAllGroupsResponse, IGroup } from '@models/Groups'
+import { IApiResponse } from '@models/Api'
 import Key from '@models/Key'
+import jwtDecode from 'jwt-decode'
 
-import { AxiosResponse } from 'axios'
+import {
+	AxiosError,
+	AxiosRequestConfig,
+	AxiosResponse,
+	HttpStatusCode,
+} from 'axios'
 import axios from './axios'
-import objectToFormData from '@utils/objectToFormData'
+import { ITokenPayload, ITokens, IUser } from '@models/Auth'
+import tokenService from '@services/auth/TokenService'
+import IUploadFileError from '@models/Maps/IUploadFileError'
+import { IModule } from '@models/Modules'
+import { ICheck, ICheckSettings } from '@models/Check'
 
 enum AxiosMethodsEnum {
 	GET = 'GET',
@@ -25,6 +36,43 @@ interface IFormUpload {
 }
 
 abstract class Api {
+	/**
+	 * @desc Запрос для авторизации
+	 * @param {any} payload - Группа
+	 * @return {Promise<ITokens | null>}
+	 */
+	static login(payload: { username: string; password: string }) {
+		return this.callFetch<ITokens>('login', AxiosMethodsEnum.POST, payload)
+	}
+
+	/**
+	 * @desc Запрос для обновления токенов
+	 * @return {Promise<void>}
+	 */
+	static async refresh() {
+		const access = tokenService.tokens.access
+		const refresh = tokenService.tokens.refresh
+
+		if (!access || !refresh) return
+
+		const { success, data } = await this.callFetch<ITokens>(
+			'refresh',
+			AxiosMethodsEnum.POST,
+			{
+				access,
+				refresh,
+			}
+		)
+
+		if (success && data) tokenService.emit('tokens-fetched', data)
+	}
+
+	static async fetchUser(userId: Key) {
+		return this.callFetch<IUser>(`user/${userId}`, AxiosMethodsEnum.GET, null, {
+			Authorization: tokenService.tokens.access || '',
+		})
+	}
+
 	/**
 	 * @desc Запрос на получение всех дисциплин и факультетов
 	 * @return {Promise<IFetchAllMapsListResponse[] | null>}
@@ -80,7 +128,14 @@ abstract class Api {
 	 * @return {Promise<any | null>}
 	 */
 	static saveMap(aupCode: Key, table: any[]) {
-		return this.callFetch<any>(`save/${aupCode}`, AxiosMethodsEnum.POST, table)
+		return this.callFetch<any>(
+			`save/${aupCode}`,
+			AxiosMethodsEnum.POST,
+			table,
+			{
+				Authorization: tokenService.tokens.access || '',
+			}
+		)
 	}
 
 	/**
@@ -117,12 +172,78 @@ abstract class Api {
 	 * @param {IFormUpload} group - Группа
 	 * @return {Promise<Key | null>}
 	 */
-	static uploadFile(form: IFormUpload) {
-		return this.callFetch<Key>(
+	static uploadFile(form: IFormUpload[]) {
+		return this.callFetch<Key | IUploadFileError>(
 			`upload`,
 			AxiosMethodsEnum.POST,
-			objectToFormData(form),
+			form,
 			{ 'Content-Type': 'multipart/form-data' }
+		)
+	}
+
+	static async downloadMap(aupCode: Key) {
+		return await this.callFetch<any>(
+			`save_excel/${aupCode}`,
+			AxiosMethodsEnum.GET,
+			null,
+			null,
+			{
+				responseType: 'blob',
+			}
+		)
+	}
+
+	static async downloadMapXML(aupCode: Key) {
+		return await this.callFetch<any>(`upload-xml/${aupCode}`)
+	}
+
+	/**
+	 * @desc Запрос на получение модулей
+	 * @param {Key} aupCode - Код карты
+	 * @return {Promise<IModule | null>}
+	 */
+	static async fetchModuleByAup<T extends IModule[]>(
+		aupCode: Key
+	): Promise<IApiResponse<T>> {
+		if (!aupCode) {
+			return {
+				data: null,
+				status: 400,
+				success: false,
+			}
+		}
+
+		return this.callFetch<T>(`get-modules-by-aup/${aupCode}`)
+	}
+
+	/**
+	 * @desc Запрос на получение результата теста по аупу
+	 * @param {Key} aupCode - Код карты
+	 * @return {Promise<IModule | null>}
+	 */
+	static async fetchCheckResultByAup<T extends ICheck>(
+		aupCode: Key,
+		settings: ICheckSettings,
+		abortController: AbortController
+	): Promise<IApiResponse<T>> {
+		if (!aupCode) {
+			return {
+				data: null,
+				status: 400,
+				success: false,
+			}
+		}
+
+		return this.callFetch<T>(
+			`check/${aupCode}?hide_title=${
+				!settings.showSuccess || ''
+			}&hide_detailed=${!settings.showDetail || ''}`,
+			AxiosMethodsEnum.GET,
+			null,
+			{},
+			{
+				signal: abortController.signal,
+			}
 		)
 	}
 
@@ -138,21 +259,66 @@ abstract class Api {
 		endpoint: string,
 		method: AxiosMethodsEnum = AxiosMethodsEnum.GET,
 		args?: any,
-		headers?: Record<string, string>
-	): Promise<T | null> {
+		headers?: Record<string, string> | null,
+		etc?: AxiosRequestConfig<any>
+	): Promise<IApiResponse<T>> {
 		try {
+			if (headers?.Authorization && endpoint !== 'refresh') {
+				const token = headers.Authorization
+
+				if (!token) {
+					return {
+						success: false,
+						status: 403,
+						data: null,
+					}
+				}
+
+				const decoded = jwtDecode<ITokenPayload>(token)
+
+				if (decoded.exp * 1000 < Date.now()) {
+					await this.refresh()
+					headers.Authorization = tokenService.tokens.access!
+				}
+			}
+
 			const res: AxiosResponse<T> = await axios(endpoint, {
 				method,
 				data: args,
-				headers,
+				headers: {
+					...headers,
+				},
+				...etc,
 			})
 
-			const data = res.data
+			return {
+				success: true,
+				status: res.status,
+				data: res.data,
+				res,
+			}
+		} catch (err) {
+			if (err instanceof AxiosError && err.response) {
+				const { data, status }: AxiosResponse = err.response
 
-			return data
-		} catch (e) {
-			console.log(e)
-			return null
+				if (endpoint === 'refresh' && status === HttpStatusCode.Unauthorized) {
+					tokenService.emit('logout')
+				}
+
+				return {
+					success: false,
+					status,
+					data,
+					error: err,
+				}
+			}
+
+			return {
+				success: false,
+				status: null,
+				data: null,
+				error: err,
+			}
 		}
 	}
 }

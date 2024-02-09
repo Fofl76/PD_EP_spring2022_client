@@ -11,6 +11,7 @@
 		hide-details="auto"
 		dark
 		filled
+		autocomplete="false"
 		dense
 		v-bind="$attrs"
 		v-on="$listeners"
@@ -78,4 +79,6 @@ export default {
 
 <style lang="sass">
 .MAutocomplete
+    .v-select__slot > input
+        padding: 8px 0 !important
 </style>

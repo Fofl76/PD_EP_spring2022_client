@@ -1,14 +1,29 @@
 <template>
-	<div class="DataPreloader">
+	<div
+		class="DataPreloader"
+		:class="{
+			'DataPreloader--light': light,
+		}"
+	>
 		<div class="DataPreloader__smile">≧◉◡◉≦</div>
-		<div class="DataPreloader__title">Нет данных</div>
-		<div class="DataPreloader__subtitle">Выберите факультет и направление</div>
+		<div class="DataPreloader__title" v-if="$slots.title">
+			<slot name="title" />
+		</div>
+		<div class="DataPreloader__subtitle" v-if="$slots.subtitle">
+			<slot name="subtitle" />
+		</div>
 	</div>
 </template>
 
 <script>
 export default {
 	name: 'DataPreloader',
+	props: {
+		light: {
+			type: Boolean,
+			default: false,
+		},
+	},
 }
 </script>
 
@@ -41,4 +56,7 @@ export default {
         font-size: 20px
         color: #a8a8a8
         font-weight: 300
+
+    &--light > &__title, &--light > &__subtitle
+        color: #333
 </style>
