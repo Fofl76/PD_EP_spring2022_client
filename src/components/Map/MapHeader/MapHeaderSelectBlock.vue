@@ -77,6 +77,11 @@ export default {
 			)
 		},
 	},
+	watch: {
+        facultyModel() {
+			this.year = this.itemsYears[0]
+		}
+	},	
 	methods: {
 		onSelectDirection() {
 			this.setUrlAup(this.directionModel?.code)
