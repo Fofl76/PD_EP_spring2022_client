@@ -134,17 +134,24 @@ abstract class Api {
 			table,
 			{
 				Authorization: tokenService.tokens.access || '',
+				Aup: String(aupCode),
 			}
 		)
 	}
 
 	/**
 	 * @desc Добавление группы
-	 * @param {any} group - Группа
+	 * @param {IGroup} group - Группа
+	 * @param {Key} aupCode - АУП-код
 	 * @return {Promise<IGroup | null>}
 	 */
-	static addGroup(group: IGroup) {
-		return this.callFetch<IGroup>(`add-group`, AxiosMethodsEnum.POST, group)
+	static addGroup(group: IGroup, aupCode: Key) {
+		console.log(aupCode)
+
+		return this.callFetch<IGroup>(`add-group`, AxiosMethodsEnum.POST, group, {
+			Authorization: tokenService.tokens.access || '',
+			Aup: String(aupCode),
+		})
 	}
 
 	/**
@@ -152,10 +159,18 @@ abstract class Api {
 	 * @param {Key} id - ID удаляемой группы
 	 * @return {Promise<any | null>}
 	 */
-	static deleteGroup(id: number) {
-		return this.callFetch<any>(`delete-group`, AxiosMethodsEnum.POST, {
-			id,
-		})
+	static deleteGroup(id: number, aupCode: Key) {
+		return this.callFetch<any>(
+			`delete-group`,
+			AxiosMethodsEnum.POST,
+			{
+				id,
+			},
+			{
+				Authorization: tokenService.tokens.access || '',
+				Aup: String(aupCode),
+			}
+		)
 	}
 
 	/**
@@ -163,8 +178,11 @@ abstract class Api {
 	 * @param {any} group - Группа
 	 * @return {Promise<void | null>}
 	 */
-	static updateGroup(group: IGroup) {
-		return this.callFetch<void>(`update-group`, AxiosMethodsEnum.POST, group)
+	static updateGroup(group: IGroup, aupCode: Key) {
+		return this.callFetch<void>(`update-group`, AxiosMethodsEnum.POST, group, {
+			Authorization: tokenService.tokens.access || '',
+			Aup: String(aupCode),
+		})
 	}
 
 	/**

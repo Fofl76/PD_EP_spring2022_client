@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import Api from '@api/Api'
+import Key from '@models/Key'
 import { IGroup } from '@models/Groups'
 import Events from 'events'
 import Vue from 'vue'
@@ -44,8 +45,8 @@ class GroupsService extends Events {
 		this._groupsList.value.push(group)
 	}
 
-	async addGroup(group: IGroup) {
-		const { data, success } = await Api.addGroup(group)
+	async addGroup(group: IGroup, aupCode: Key) {
+		const { data, success } = await Api.addGroup(group, aupCode)
 
 		if (success && data) {
 			this.addGroupLocal(data)
@@ -59,8 +60,8 @@ class GroupsService extends Events {
 		)
 	}
 
-	async deleteGroup(idGroup: number) {
-		const { success } = await Api.deleteGroup(idGroup)
+	async deleteGroup(idGroup: number, aupCode: Key) {
+		const { success } = await Api.deleteGroup(idGroup, aupCode)
 
 		if (success) {
 			this.deleteGroupLocal(idGroup)
@@ -75,8 +76,8 @@ class GroupsService extends Events {
 		Vue.set(this._groupsList.value, indexGroup, group)
 	}
 
-	async updateGroup(group: IGroup) {
-		const { success } = await Api.updateGroup(group)
+	async updateGroup(group: IGroup, aupCode: Key) {
+		const { success } = await Api.updateGroup(group, aupCode)
 
 		if (success) {
 			this.updateGroupLocal(group)
