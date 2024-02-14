@@ -26,6 +26,7 @@
 						<MapGroupsPopupSettingsTab
 							v-model="selectedItemId"
 							:disciplines="filteredItems"
+							@deleteGroup="deleteGroupHandler"
 						/>
 
 						<v-divider class="MapGroupsPopup__hor-divider" />
@@ -413,7 +414,7 @@ export default {
 		},
 
 		async deleteGroupHandler(group) {
-			await this.groupsService.deleteGroup(group.id)
+			await this.groupsService.deleteGroup(group.id, this.$route.query.aup)
 			this.initAllDisciplines()
 			this.selectedItemId = null
 		},
@@ -427,7 +428,7 @@ export default {
 
 			this.isLoadingUpdateGroup = true
 
-			await this.groupsService.updateGroup(updatedGroup)
+			await this.groupsService.updateGroup(updatedGroup, this.$route.query.aup)
 
 			this.isLoadingUpdateGroup = false
 

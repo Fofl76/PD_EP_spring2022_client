@@ -144,7 +144,10 @@ export default {
 			}
 
 			try {
-				const res = await this.groupsService.addGroup(newGroup)
+				const res = await this.groupsService.addGroup(
+					newGroup,
+					this.$route.query.aup
+				)
 
 				if (res) {
 					this.$emit('addGroup', res)
