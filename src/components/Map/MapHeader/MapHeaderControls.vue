@@ -1,11 +1,12 @@
 <template>
 	<div class="MapHeaderControls">
 		<!-- Проверки -->
-		<MapHeaderButton
+		<!-- Пока не доделали, скрыто -->
+		<!-- <MapHeaderButton
 			label="Проверка"
 			v-if="aupCode"
 			@click="$router.push(`/check?aup=${aupCode}`)"
-		/>
+		/> -->
 		<!--  -->
 
 		<!-- Группировки -->
