@@ -7,7 +7,7 @@
 		:menu-props="{ maxWidth: 500 }"
 		class="MapHeaderDirectionAutocomplete"
 		label="Введите направление"
-		no-data-text="Сначала выберите факультет"
+		no-data-text="Сначала выберите факультет и год"
 		item-text="name"
 		filled
 	>
