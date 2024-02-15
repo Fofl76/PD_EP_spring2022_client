@@ -81,7 +81,8 @@
 
 <script>
 import MSelect from '@components/common/MSelect.vue'
-import GroupsService from '@services/Groups/GroupsService'
+import groupsService from '@services/Groups/GroupsService'
+import mapsService from '@services/Maps/MapsService'
 
 import _ from 'lodash'
 
@@ -97,8 +98,6 @@ export default {
 	data() {
 		return {
 			newGroup: null,
-
-			groupsService: GroupsService,
 
 			newItemForm: {
 				nameModel: '',
@@ -144,10 +143,7 @@ export default {
 			}
 
 			try {
-				const res = await this.groupsService.addGroup(
-					newGroup,
-					this.$route.query.aup
-				)
+				const res = await groupsService.addGroup(newGroup, mapsService.aupCode)
 
 				if (res) {
 					this.$emit('addGroup', res)

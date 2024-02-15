@@ -96,7 +96,7 @@ import MapModulesPopup from '@components/Map/MapModulesPopup/MapModulesPopup.vue
 
 import { mapGetters } from 'vuex'
 
-import MapsService from '@services/Maps/MapsService'
+import mapsService from '@services/Maps/MapsService'
 import ToastService from '@services/ToastService'
 import Api from '@services/api/Api'
 import authService from '@services/auth/AuthService'
@@ -200,11 +200,11 @@ export default {
 	computed: {
 		...mapGetters('Map', ['isAuth']),
 		isReady() {
-			return !!MapsService.mapList.value.length
+			return !!mapsService.mapList.value.length
 		},
 
 		aupCode() {
-			return this.$route.query.aup
+			return mapsService.aupCode
 		},
 
 		downloadURL() {

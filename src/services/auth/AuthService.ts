@@ -50,4 +50,8 @@ class AuthService extends Events {
 }
 
 const authService = new AuthService(tokenService)
+
+Object.defineProperty(window, '_AuthService', { value: AuthService })
+Object.defineProperty(window, '_authService', { value: authService })
+
 export default authService

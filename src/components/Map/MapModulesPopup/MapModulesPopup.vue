@@ -22,6 +22,8 @@
 import MapModulesPopupList from './MapModulesPopupList.vue'
 import Api from '@services/api/Api'
 
+import mapsService from '@services/Maps/MapsService'
+
 export default {
 	name: 'MapModulesPopup',
 
@@ -37,7 +39,7 @@ export default {
 		}
 	},
 	mounted() {
-		Api.fetchModuleByAup(this.$route.query.aup).then(res => {
+		Api.fetchModuleByAup(mapsService.aupCode).then(res => {
 			if (!res.success) return
 
 			this.modules = res.data

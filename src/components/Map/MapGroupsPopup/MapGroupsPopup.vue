@@ -196,8 +196,8 @@
 import _ from 'lodash'
 import draggable from 'vuedraggable'
 
-import GroupsService from '@services/Groups/GroupsService'
-import MapsService from '@services/Maps/MapsService'
+import groupsService from '@services/Groups/GroupsService'
+import mapsService from '@services/Maps/MapsService'
 import unbuildMapList from '@services/Maps/unbuildMapsList'
 import Api from '@services/api/Api'
 
@@ -228,8 +228,6 @@ export default {
 
 		createItem: false,
 
-		groupsService: GroupsService,
-
 		isLoadingAddGroups: false,
 
 		searchModel: '',
@@ -241,7 +239,7 @@ export default {
 
 	computed: {
 		availableAppointedGroups() {
-			const allGroups = this.groupsService.groupsList.value
+			const allGroups = groupsService.groupsList.value
 			const appointedGroups = this.items
 
 			const appointedGroupsIds = appointedGroups?.map(el => el.id)
@@ -251,19 +249,19 @@ export default {
 		},
 
 		isLoadingSaveTable() {
-			return MapsService.isLoadingSaveMapList
+			return mapsService.isLoadingSaveMapList
 		},
 
 		activeMapTable() {
-			return unbuildMapList(MapsService.mapList.value)
+			return unbuildMapList(mapsService.mapList.value)
 		},
 
 		allGroups() {
-			return this.groupsService.groupsList
+			return groupsService.groupsList
 		},
 
 		allGroupsMapId() {
-			return this.groupsService.allGroupsMapId
+			return groupsService.allGroupsMapId
 		},
 
 		value_: {
@@ -346,23 +344,9 @@ export default {
 			this.colorModel = this.selectedItem.color
 		},
 
-		'$route.query.aup': {
-			async handler(aupCode) {
-				if (!aupCode) return
-
-				this.initAllDisciplines()
-			},
-			deep: true,
-			immediate: true,
-		},
-
 		async value(value) {
-			if (!value) {
-				setTimeout(() => {
-					this.initAllDisciplines()
-				}, 300)
-			} else {
-				this.getAllDisciplines()
+			if (value) {
+				this.initAllDisciplines()
 			}
 		},
 	},
@@ -379,10 +363,11 @@ export default {
 			this.createItem = false
 		},
 
+		/* Назначить группы по ауп-коду */
 		async initAllDisciplines() {
-			if (!this.$route.query.aup) return
+			if (!mapsService.aupCode) return
 
-			const { data } = await Api.fetchGroupsByAup(this.$route.query.aup)
+			const { data } = await Api.fetchGroupsByAup(mapsService.aupCode)
 			this.items = data
 
 			this.getAllDisciplines()
@@ -390,6 +375,7 @@ export default {
 			this.selectedItemId = null
 		},
 
+		/* Получить все дисциплины с карты */
 		getAllDisciplines() {
 			this.newAllDisciplines = _.cloneDeep(
 				_.uniqBy(this.activeMapTable, el => el.discipline)
@@ -408,13 +394,13 @@ export default {
 				id_group: groupByDisciplines[el.discipline][0].id_group,
 			}))
 
-			await MapsService.saveAllMap(this.$route.query.aup, newTable)
+			await mapsService.saveAllMap(mapsService.aupCode, newTable)
 
 			this.value_ = false
 		},
 
 		async deleteGroupHandler(group) {
-			await this.groupsService.deleteGroup(group.id, this.$route.query.aup)
+			await groupsService.deleteGroup(group.id, mapsService.aupCode)
 			this.initAllDisciplines()
 			this.selectedItemId = null
 		},
@@ -428,7 +414,7 @@ export default {
 
 			this.isLoadingUpdateGroup = true
 
-			await this.groupsService.updateGroup(updatedGroup, this.$route.query.aup)
+			await groupsService.updateGroup(updatedGroup, mapsService.aupCode)
 
 			this.isLoadingUpdateGroup = false
 

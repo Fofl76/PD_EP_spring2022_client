@@ -72,7 +72,7 @@ export default {
 			async handler(aupCode) {
 				if (!aupCode) return
 
-				this.mapsService.fetchMapList(aupCode)
+				this.mapsService.fetchAup(aupCode)
 			},
 			deep: true,
 			immediate: true,

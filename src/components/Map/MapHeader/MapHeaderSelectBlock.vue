@@ -24,7 +24,7 @@
 <script>
 import withEventEmitter from '@mixins/withEventEmitter'
 
-import MapsService from '@services/Maps/MapsService'
+import mapsService from '@services/Maps/MapsService'
 
 import MapHeaderDirectionAutocomplete from '@components/Map/MapHeader/MapHeaderDirectionAutocomplete.vue'
 import MapHeaderFacultySelect from '@components/Map/MapHeader/MapHeaderFacultySelect.vue'
@@ -42,13 +42,15 @@ export default {
 
 	data() {
 		return {
-			mapsService: MapsService,
 			facultyModel: null,
 			directionModel: null,
 			year: new Date(Date.now()).getFullYear(),
+
+			mapsService,
 			mapsServiceHandlers: {
-				fetchMapList: this.updateFormFields,
+				fetchAup: this.updateFormFields,
 			},
+
 			isLoadingFacultyInput: false,
 			isLoadingDirectionInput: false,
 		}
@@ -56,7 +58,7 @@ export default {
 
 	computed: {
 		facultyItems() {
-			return this.mapsService.facultiesList.value
+			return mapsService.facultiesList.value
 		},
 
 		itemsYears() {
@@ -106,7 +108,7 @@ export default {
 		},
 
 		updateFormFields() {
-			const aupCode = this.$route.query.aup
+			const aupCode = mapsService.aupCode
 
 			if (!aupCode) return
 
