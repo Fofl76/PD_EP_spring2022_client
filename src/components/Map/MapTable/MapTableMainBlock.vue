@@ -145,7 +145,7 @@ export default {
     &__name
         color: var(--text-color)
         overflow: hidden
-        line-height: 2rem
+        line-height: 1.5rem
         max-height: 8rem
         -webkit-box-orient: vertical
         display: block
