@@ -1,17 +1,21 @@
 <template>
 	<v-tooltip class="MHint" top v-bind="$attrs">
 		<template v-slot:activator="{ on, attrs }">
-			<v-icon
-				class="MHint-icon"
-				:class="[contentClass]"
-				color="grey lighten-1"
-				:size="size"
-				dense
-				v-bind="attrs"
-				v-on="on"
-			>
-				{{ icon }}
-			</v-icon>
+			<div v-bind="attrs" v-on="on">
+				<slot name="activator">
+					<v-icon
+						class="MHint-icon"
+						:class="[contentClass]"
+						color="grey lighten-1"
+						:size="size"
+						dense
+						v-bind="attrs"
+						v-on="on"
+					>
+						{{ icon }}
+					</v-icon>
+				</slot>
+			</div>
 		</template>
 
 		<div class="MHint__content" :style="{ maxWidth }">

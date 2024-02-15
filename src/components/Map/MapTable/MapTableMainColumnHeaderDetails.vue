@@ -4,7 +4,20 @@
 		v-if="items.length"
 		:top="false"
 		bottom
+		size="14"
 	>
+		<template #activator>
+			<div class="MapTableMainColumnHeaderDetails__activator-wrapper">
+				<div class="MapTableMainColumnHeader__order">
+					{{ activatorText }}
+				</div>
+
+				<v-icon class="MHint-icon" color="grey lighten-1" :size="14" dense>
+					mdi-information
+				</v-icon>
+			</div>
+		</template>
+
 		<div v-for="stats in controlStats" :key="stats.id">
 			<span> {{ stats.name }}: </span>
 			<span> {{ stats.count }}, </span>
@@ -46,6 +59,10 @@ export default {
 		items: {
 			type: Array,
 			required: true,
+		},
+
+		activatorText: {
+			type: String,
 		},
 	},
 
@@ -173,4 +190,8 @@ export default {
 .MapTableMainColumnHeaderDetails
     &__divider
         margin: 6px 0
+
+    &__activator-wrapper
+        display: flex
+        cursor: pointer
 </style>

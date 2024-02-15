@@ -1,10 +1,9 @@
 <template>
 	<div class="MapTableMainColumnHeader">
-		<div class="MapTableMainColumnHeader__order">
-			{{ orderWords[ordinalNumber] }}
-		</div>
-
-		<MapTableMainColumnHeaderDetails :items="columnData" />
+		<MapTableMainColumnHeaderDetails
+			:activatorText="orderWords[ordinalNumber]"
+			:items="columnData"
+		/>
 	</div>
 </template>
 
@@ -39,5 +38,5 @@ export default {
     margin-bottom: 6px
 
     &__order
-        margin-right: 4px
+        margin-right: 8px
 </style>
