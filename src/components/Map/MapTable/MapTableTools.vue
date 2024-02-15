@@ -76,6 +76,7 @@ export default {
     bottom: 16px
     right: 16px
     transition: right .2s cubic-bezier(0.4, 0, 0.2, 1)
+    z-index: 100
 
     &.isOpenRightMenu
         right: calc(16px + var(--right-menu-width))
