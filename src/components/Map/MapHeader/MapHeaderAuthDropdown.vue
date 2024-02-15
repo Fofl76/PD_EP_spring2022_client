@@ -36,11 +36,9 @@
 		<template>
 			<v-list-item class="MapHeaderDropdownListItem" @click="$emit('onLogout')">
 				<v-list-item-icon>
-					<v-icon>mdi-logout</v-icon>
+					<v-icon :size="18">mdi-logout</v-icon>
 				</v-list-item-icon>
-				<v-list-item-content>
-					<v-list-item-title>Выйти</v-list-item-title>
-				</v-list-item-content>
+				<v-list-item-title>Выйти </v-list-item-title>
 			</v-list-item>
 		</template>
 	</MapHeaderDropdown>

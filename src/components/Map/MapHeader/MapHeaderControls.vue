@@ -31,11 +31,9 @@
 				:disabled="!isAuth"
 			>
 				<v-list-item-icon>
-					<v-icon>mdi-upload</v-icon>
+					<v-icon :size="18">mdi-upload</v-icon>
 				</v-list-item-icon>
-				<v-list-item-content>
-					<v-list-item-title>Загрузить план</v-list-item-title>
-				</v-list-item-content>
+				<v-list-item-title>Загрузить план</v-list-item-title>
 			</v-list-item>
 
 			<v-list-item
@@ -44,11 +42,9 @@
 				:disabled="!aupCode"
 			>
 				<v-list-item-icon>
-					<v-icon>mdi-download</v-icon>
+					<v-icon :size="18">mdi-download</v-icon>
 				</v-list-item-icon>
-				<v-list-item-content>
-					<v-list-item-title>Скачать</v-list-item-title>
-				</v-list-item-content>
+				<v-list-item-title>Скачать</v-list-item-title>
 			</v-list-item>
 
 			<v-list-item
@@ -57,11 +53,9 @@
 				:disabled="!aupCode"
 			>
 				<v-list-item-icon>
-					<v-icon>mdi-download</v-icon>
+					<v-icon :size="18">mdi-download</v-icon>
 				</v-list-item-icon>
-				<v-list-item-content>
-					<v-list-item-title>Скачать в XML</v-list-item-title>
-				</v-list-item-content>
+				<v-list-item-title>Скачать в XML</v-list-item-title>
 			</v-list-item>
 		</MapHeaderDropdown>
 

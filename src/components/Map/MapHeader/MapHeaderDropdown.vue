@@ -2,7 +2,7 @@
 	<div class="MapHeaderDropdown">
 		<v-menu
 			offset-y
-			nudge-bottom="5"
+			nudge-bottom="8"
 			:value="value"
 			@input="$emit('input', $event)"
 		>
@@ -56,15 +56,6 @@ export default {
 </script>
 
 <style lang="sass">
-.MapHeaderDropdown
-    &__list
-        display: flex
-        flex-direction: column
-        gap: 8px
-
-        & > *
-            width: 100%
-
 .MapHeaderDropdownListItem
     cursor: pointer
 </style>
