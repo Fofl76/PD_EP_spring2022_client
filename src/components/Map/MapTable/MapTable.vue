@@ -30,6 +30,7 @@
 
 <script>
 import mapsService from '@services/Maps/MapsService'
+import ToastService from '@services/ToastService'
 
 import MapTableMain from '@components/Map/MapTable/MapTableMain.vue'
 import MapTableTools from '@components/Map/MapTable/MapTableTools.vue'
@@ -81,7 +82,13 @@ export default {
 		async onSaveMap() {
 			if (!mapsService.aupCode) return
 
-			await mapsService.saveAllMap(mapsService.aupCode)
+			const res = await mapsService.saveAllMap(mapsService.aupCode)
+
+			if (res) {
+				ToastService.showSuccess('Карта успешно сохранена.')
+			} else {
+				ToastService.showError('Произошла ошибка при сохранении карты.')
+			}
 
 			this.isAvailableSave = false
 		},
