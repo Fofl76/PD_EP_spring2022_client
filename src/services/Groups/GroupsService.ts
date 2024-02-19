@@ -108,4 +108,6 @@ class GroupsService extends Events {
 
 const groupsService = new GroupsService()
 
+Object.defineProperty(window, '_groupsService', { value: groupsService })
+
 export default groupsService

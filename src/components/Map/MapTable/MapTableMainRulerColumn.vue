@@ -37,15 +37,30 @@ export default {
 .MapTableMainRulerColumn
     &__header
         margin-bottom: 6px
+        text-align: center
 
     &__block
+        opacity: .7
+        font-size: 14px
         padding: 0
         text-align: center
         transition: all 0.3s ease
         display: flex
         justify-content: center
         align-items: center
+        position: relative
 
-        &:not(:last-of-type)
-            border-bottom: 1px solid #fff
+        &:after
+            position: absolute
+            content: ''
+            background-color: #fff
+            opacity: .7
+            top: 100%
+            width: 80%
+            height: 1px
+            left: 50%
+            transform: translateX(-50%)
+
+/*         &:not(:last-of-type)
+            border-bottom: 1px solid #fff */
 </style>

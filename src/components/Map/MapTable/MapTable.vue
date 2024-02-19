@@ -29,7 +29,8 @@
 </template>
 
 <script>
-import MapsService from '@services/Maps/MapsService'
+import mapsService from '@services/Maps/MapsService'
+import ToastService from '@services/ToastService'
 
 import MapTableMain from '@components/Map/MapTable/MapTableMain.vue'
 import MapTableTools from '@components/Map/MapTable/MapTableTools.vue'
@@ -61,11 +62,11 @@ export default {
 
 	computed: {
 		maxZet() {
-			return MapsService.maxZet
+			return mapsService.maxZet
 		},
 
 		isLoadingSaveMapList() {
-			return MapsService.isLoadingSaveMapList
+			return mapsService.isLoadingSaveMapList
 		},
 
 		isEmpty() {
@@ -79,11 +80,15 @@ export default {
 		},
 
 		async onSaveMap() {
-			const aup = this.$route.query.aup
+			if (!mapsService.aupCode) return
 
-			if (!aup) return
+			const res = await mapsService.saveAllMap(mapsService.aupCode)
 
-			await MapsService.saveAllMap(aup)
+			if (res) {
+				ToastService.showSuccess('Карта успешно сохранена.')
+			} else {
+				ToastService.showError('Произошла ошибка при сохранении карты.')
+			}
 
 			this.isAvailableSave = false
 		},
@@ -94,7 +99,7 @@ export default {
 			const moved = data?.moved
 
 			if (removed) {
-				MapsService.deleteMapItemLocal(removed.element)
+				mapsService.deleteMapItemLocal(removed.element)
 			}
 
 			if (added) {
@@ -104,11 +109,11 @@ export default {
 					num_row: added.newIndex,
 				}
 
-				MapsService.addMapItemLocal(element)
+				mapsService.addMapItemLocal(element)
 			}
 
 			if (moved) {
-				MapsService.moveMapItemInColLocal(
+				mapsService.moveMapItemInColLocal(
 					moved.element,
 					moved.oldIndex,
 					moved.newIndex

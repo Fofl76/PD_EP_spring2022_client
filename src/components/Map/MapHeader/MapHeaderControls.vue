@@ -31,11 +31,9 @@
 				:disabled="!isAuth"
 			>
 				<v-list-item-icon>
-					<v-icon>mdi-upload</v-icon>
+					<v-icon :size="18">mdi-upload</v-icon>
 				</v-list-item-icon>
-				<v-list-item-content>
-					<v-list-item-title>Загрузить план</v-list-item-title>
-				</v-list-item-content>
+				<v-list-item-title>Загрузить план</v-list-item-title>
 			</v-list-item>
 
 			<v-list-item
@@ -44,11 +42,9 @@
 				:disabled="!aupCode"
 			>
 				<v-list-item-icon>
-					<v-icon>mdi-download</v-icon>
+					<v-icon :size="18">mdi-download</v-icon>
 				</v-list-item-icon>
-				<v-list-item-content>
-					<v-list-item-title>Скачать</v-list-item-title>
-				</v-list-item-content>
+				<v-list-item-title>Скачать</v-list-item-title>
 			</v-list-item>
 
 			<v-list-item
@@ -57,11 +53,9 @@
 				:disabled="!aupCode"
 			>
 				<v-list-item-icon>
-					<v-icon>mdi-download</v-icon>
+					<v-icon :size="18">mdi-download</v-icon>
 				</v-list-item-icon>
-				<v-list-item-content>
-					<v-list-item-title>Скачать в XML</v-list-item-title>
-				</v-list-item-content>
+				<v-list-item-title>Скачать в XML</v-list-item-title>
 			</v-list-item>
 		</MapHeaderDropdown>
 
@@ -96,7 +90,7 @@ import MapModulesPopup from '@components/Map/MapModulesPopup/MapModulesPopup.vue
 
 import { mapGetters } from 'vuex'
 
-import MapsService from '@services/Maps/MapsService'
+import mapsService from '@services/Maps/MapsService'
 import ToastService from '@services/ToastService'
 import Api from '@services/api/Api'
 import authService from '@services/auth/AuthService'
@@ -160,7 +154,7 @@ export default {
 				)
 
 				const decodedURI = decodeURI(res.headers['content-disposition'])
-				const filename = decodedURI.split('\\').at(-1)
+				const filename = decodedURI.match(/(?<=filename\*=UTF-8'').+/)[0]
 
 				if (success) {
 					downloadAsFile(data, filename)
@@ -200,11 +194,11 @@ export default {
 	computed: {
 		...mapGetters('Map', ['isAuth']),
 		isReady() {
-			return !!MapsService.mapList.value.length
+			return !!mapsService.mapList.value.length
 		},
 
 		aupCode() {
-			return this.$route.query.aup
+			return mapsService.aupCode
 		},
 
 		downloadURL() {

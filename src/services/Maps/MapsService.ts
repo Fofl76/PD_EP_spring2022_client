@@ -57,8 +57,10 @@ class MapsService extends Events {
 
 	private _isLoadingFacultiesList = false
 
+	aupCode: string = null!
+
 	/**
-	 * @desc Геттер для получения всеех дисциплин и факультетов
+	 * @desc Геттер для получения всех дисциплин и факультетов
 	 * @return {IFaculty[]}
 	 */
 	get facultiesList() {
@@ -100,7 +102,7 @@ class MapsService extends Events {
 
 		if (success && data) {
 			this.setFacultiesList(data)
-			this.emit('fetchMapList', data)
+			this.emit('fetchAup', data)
 		}
 	}
 
@@ -175,10 +177,10 @@ class MapsService extends Events {
 
 	/**
 	 * @desc Метод для сохранения всей таблицы
-	 * @param {Key} aupCode - Ауп код направления
+	 * @param {string} aupCode - Ауп код направления
 	 * @return {Promise<void>}
 	 */
-	async saveAllMap(aupCode: Key, mapList: IMapItemRaw[] | null = null) {
+	async saveAllMap(aupCode: string, mapList: IMapItemRaw[] | null = null) {
 		this._isLoadingSaveMapList = true
 
 		const { success, data } = await Api.saveMap(
@@ -187,7 +189,7 @@ class MapsService extends Events {
 		)
 
 		if (success) {
-			await this.fetchMapList(aupCode)
+			await this.fetchAup(aupCode)
 		}
 
 		this._isLoadingSaveMapList = false
@@ -313,10 +315,19 @@ class MapsService extends Events {
 	}
 
 	/**
+	 * @desc Метод для изменения ауп-кода
+	 * @return {Promise<void>}
+	 */
+	setAupCode(aupCode: string) {
+		this.aupCode = aupCode
+		this.emit('updateAupCode', aupCode)
+	}
+
+	/**
 	 * @desc Метод для получения данных таблицы
 	 * @return {Promise<void>}
 	 */
-	async fetchMapList(aupCode: Key) {
+	async fetchAup(aupCode: string) {
 		this._isLoadingMapList = true
 		const { success, data: mapList } = await Api.fetchMap(aupCode)
 
@@ -325,7 +336,8 @@ class MapsService extends Events {
 
 		if (success && mapList) {
 			this.setMapList(mapList.data)
-			this.emit('fetchMapList', mapList.data)
+			this.setAupCode(aupCode)
+			this.emit('fetchAup', mapList.data)
 		}
 
 		this._isLoadingMapList = false
@@ -359,5 +371,7 @@ class MapsService extends Events {
 }
 
 const mapsService = new MapsService()
+
+Object.defineProperty(window, '_mapsService', { value: mapsService })
 
 export default mapsService

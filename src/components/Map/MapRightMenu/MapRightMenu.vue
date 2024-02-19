@@ -99,7 +99,7 @@ import MapRightMenuControlExpansion from './MapRightMenuControlExpansion/MapRigh
 import MapRightMenuConfirmPopup from './MapRightMenuConfirmPopup.vue'
 
 import withEventEmitter from '@mixins/withEventEmitter'
-import MapsService from '@services/Maps/MapsService'
+import mapsService from '@services/Maps/MapsService'
 import ToastService from '@services/ToastService'
 import FormService from '@services/Form/FormService'
 
@@ -146,12 +146,12 @@ export default {
 		},
 	},
 
-	mixins: [withEventEmitter('MapsService', 'mapsServiceHandlers')],
+	mixins: [withEventEmitter('mapsService', 'mapsServiceHandlers')],
 
 	data() {
 		return {
 			formService: null,
-			MapsService,
+			mapsService,
 
 			expansionsModel: [],
 			confirmPopupModel: false,
@@ -162,6 +162,10 @@ export default {
 				module: null,
 				discipline: null,
 				shifr: null,
+			},
+
+			mapsServiceHandlers: {
+				fetchAup: this.closeRightMenu,
 			},
 
 			/* Объект хранящий состояние ошибок v-form каждой раскрывашки
@@ -187,10 +191,6 @@ export default {
 	},
 
 	watch: {
-		'$route.query.aup'() {
-			this.value_ = false
-		},
-
 		itemId() {
 			this.initRightMenu()
 		},
@@ -201,12 +201,12 @@ export default {
 
 		/* Процесс сохранения карты */
 		isLoading() {
-			return this.MapsService.isLoadingSaveMapList
+			return mapsService.isLoadingSaveMapList
 		},
 
 		/* Текущий редактируемый элемент */
 		item() {
-			return _.cloneDeep(this.MapsService.getMapItemById(this.itemId))
+			return _.cloneDeep(mapsService.getMapItemById(this.itemId))
 		},
 
 		formModel() {
@@ -290,8 +290,8 @@ export default {
 			this.formService.setProperty(`id_block`, this.formModel.shifr_new.block)
 			this.formService.setProperty(`id_parts`, this.formModel.shifr_new.part)
 
-			const res = await this.MapsService.editMapItem(
-				this.$route.query.aup,
+			const res = await mapsService.editMapItem(
+				mapsService.aupCode,
 				this.item,
 				this.formModel
 			)

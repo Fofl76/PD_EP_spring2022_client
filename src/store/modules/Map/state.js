@@ -4,6 +4,11 @@ const state = {
 	rightMenuEditItemId: null,
 
 	isAuth: false,
+
+	canEditGroups: false,
+	canViewGroups: true,
+	canEditMap: false,
+	canUploadPlan: false,
 }
 
 export default state
