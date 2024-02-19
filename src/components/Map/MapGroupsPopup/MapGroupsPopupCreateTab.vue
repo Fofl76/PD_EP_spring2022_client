@@ -38,8 +38,7 @@
 						hide-mode-switch
 						swatches-max-height="200" -->
 				</v-menu>
-			</div>
-			<div class="MapGroupsPopupCreateTab__footer">
+				<div class="MapGroupsPopupCreateTab__footer">
 				<v-btn
 					color="success"
 					min-height="40px"
@@ -52,12 +51,14 @@
 				</v-btn>
 			</div>
 		</div>
+			
+		</div>
 		<div class="MapGroupsPopupCreateTab__form mt-3">
 			<div class="MapGroupsPopupCreateTab__header text-h5">
 				Добавление группы
 			</div>
 			<div class="MapGroupsPopupCreateTab__row">
-				<v-select
+				<v-autocomplete
 					v-model="newGroup"
 					:items="sortedGroupsStreetDisciplinesBangFacultyBlats"
 					itemText="name"
@@ -166,12 +167,12 @@ export default {
     display: flex
     align-items: center
     flex-direction: column
-    justify-content: center
-    font-size: 1.5em
+    justify-content: space-evenly
+    
 
     &__form
         margin: -6px !important
-        width: 400px
+        width: 555px
         display: flex
         flex-direction: column
 
@@ -179,9 +180,13 @@ export default {
             margin: 6px !important
     &__row
         display: flex
+        gap: 10px
         > *:first-chield
+			
             margin-right: 6px !important
 
     &__header
         font-weight: bold !important
+
+
 </style>

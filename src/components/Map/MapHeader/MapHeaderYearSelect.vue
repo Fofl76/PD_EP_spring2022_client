@@ -6,6 +6,7 @@
 		:items="items"
 		item-value=""
 		:return-object="false"
+		no-data-text="Отсутствуют направления"
 		item-title=""
 		height="52"
 	/>
