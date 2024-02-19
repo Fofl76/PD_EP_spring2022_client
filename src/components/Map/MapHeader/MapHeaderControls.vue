@@ -153,8 +153,10 @@ export default {
 					this.aupCode
 				)
 
-				const decodedURI = decodeURI(res.headers['content-disposition'])
-				const filename = decodedURI.match(/(?<=filename\*=UTF-8'').+/)[0]
+				const splitted = decodeURIComponent(
+					res.headers['content-disposition']
+				).split('/')
+				const filename = splitted[splitted.length - 1]
 
 				if (success) {
 					downloadAsFile(data, filename)
