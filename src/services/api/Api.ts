@@ -195,7 +195,10 @@ abstract class Api {
 			`upload`,
 			AxiosMethodsEnum.POST,
 			form,
-			{ 'Content-Type': 'multipart/form-data' }
+			{
+				'Content-Type': 'multipart/form-data',
+				Authorization: tokenService.tokens.access || '',
+			}
 		)
 	}
 
