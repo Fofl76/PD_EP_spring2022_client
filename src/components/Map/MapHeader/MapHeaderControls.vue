@@ -154,7 +154,7 @@ export default {
 				)
 
 				const decodedURI = decodeURI(res.headers['content-disposition'])
-				const filename = decodedURI.split('\\').at(-1)
+				const filename = decodedURI.match(/(?<=filename\*=UTF-8'').+/)[0]
 
 				if (success) {
 					downloadAsFile(data, filename)
