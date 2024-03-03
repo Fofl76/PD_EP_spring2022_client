@@ -91,17 +91,25 @@
 							<div class="MapGroupsPopup__disciplines-block">
 								<div class="MapGroupsPopup__disciplines-title">
 									Доступные дисциплины
+									<v-text-field
+							v-model="searchDisciplinesModel"
+							class="MapGroupsPopup__search"
+							label="Поиск дисциплины"
+							outlined
+							dense
+							hide-details="auto"
+						/>
 								</div>
 
 								<!-- Все дисциплины -->
 								<draggable
 									v-bind="dragOptions"
-									:value="availableDisciplines"
+									:value="searchADisciplines"
 									:setData="setData"
 									style="height: 340px; overflow-y: scroll"
 								>
 									<v-list-item
-										v-for="element in availableDisciplines"
+										v-for="element in searchADisciplines"
 										:key="element.id"
 										class="MapGroupsPopup__discipline-item"
 									>
@@ -124,18 +132,26 @@
 							<div>
 								<div class="MapGroupsPopup__disciplines-title">
 									Назначенные дисциплины
+									<v-text-field
+							v-model="searchappointDisciplinesModel"
+							class="MapGroupsPopup__search"
+							label="Поиск дисциплины"
+							outlined
+							dense
+							hide-details="auto"
+						/>
 								</div>
 
 								<!-- Назначенные дисциплины -->
 								<draggable
 									v-bind="dragOptions"
-									:value="appointedDisciplines"
+									:value="searchappointDisciplines"
 									:setData="setData"
 									@change="onChangeAppointedGroup"
 									style="height: 340px; overflow-y: scroll"
 								>
 									<v-list-item
-										v-for="element in appointedDisciplines"
+										v-for="element in searchappointDisciplines"
 										:key="element.id"
 										class="MapGroupsPopup__discipline-item"
 									>
@@ -232,6 +248,8 @@ export default {
 		isLoadingAddGroups: false,
 
 		searchModel: '',
+		searchDisciplinesModel: '',
+		searchappointDisciplinesModel: '',
 
 		nameModel: '',
 		colorModel: '',
@@ -290,6 +308,29 @@ export default {
 				'discipline'
 			)
 		},
+        
+		searchADisciplines() {
+      			return this.availableDisciplines.filter(el => {
+        
+        const name = el.discipline
+        const lowered = name.toLowerCase()
+        const search = this.searchDisciplinesModel.toLowerCase()
+        const res = lowered.includes(search)
+		
+        return res
+      })
+    },
+	searchappointDisciplines() {
+      			return this.availableDisciplines.filter(el => {
+        
+        const name = el.discipline
+        const lowered = name.toLowerCase()
+        const search = this.searchappointDisciplinesModel.toLowerCase()
+        const res = lowered.includes(search)
+		
+        return res
+      })
+    },
 
 		appointedDisciplines() {
 			return _.orderBy(
@@ -481,7 +522,8 @@ export default {
 
     &__disciplines-title
         text-align: center
-        margin-bottom: 4px
+        margin-bottom: 10px
+        margin-top: 5px
 
     &__discipline-item
         position: relative
