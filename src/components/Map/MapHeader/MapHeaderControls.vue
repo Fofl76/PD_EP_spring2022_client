@@ -126,7 +126,6 @@ import Api from '@services/api/Api'
 import authService from '@services/auth/AuthService'
 
 import downloadAsFile from '@services/utils/downloadAsFile'
-import { currentMode } from '@store/modules/Map/getters'
 
 export default {
 	name: 'MapHeaderControls',
