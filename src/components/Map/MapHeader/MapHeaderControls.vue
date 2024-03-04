@@ -9,12 +9,42 @@
 		/> -->
 		<!--  -->
 
+		<MapHeaderDropdown>
+			<template #activator="{ on, attrs }">
+				<v-btn block text dark height="100%" v-on="on" v-bind="attrs">
+					{{ modes[currentMode].title }}
+				</v-btn>
+			</template>
+
+			<v-list-item
+				class="MapHeaderDropdownListItem"
+				:class="{
+					'MapHeaderDropdownListItem--active': k === currentMode,
+				}"
+				v-for="(v, k) in modes"
+				:key="k"
+				@click="setMode(k)"
+			>
+				<v-list-item-title>{{ v.title }}</v-list-item-title>
+			</v-list-item>
+		</MapHeaderDropdown>
+
+		<v-divider class="MapHeader__divider" vertical></v-divider>
+
 		<!-- Группировки -->
-		<MapHeaderButton label="Группировки" @click="openGroupSettingsPopupModel" />
+		<MapHeaderButton
+			label="Группировки"
+			@click="openGroupSettingsPopupModel"
+			v-if="currentMode === 'map-mode'"
+		/>
 		<!--  -->
 
 		<!-- Модули -->
-		<MapHeaderButton label="Модули" @click="openModulesPopup" />
+		<MapHeaderButton
+			label="Модули"
+			@click="openModulesPopup"
+			v-if="currentMode === 'aup-mode'"
+		/>
 		<!--  -->
 
 		<v-divider class="MapHeader__divider" vertical></v-divider>
@@ -88,7 +118,7 @@ import MapUploadFilePopup from '@components/Map/MapUploadFilePopup/MapUploadFile
 import MapAuthPopup from '@components/Map/MapAuthPopup/MapAuthPopup.vue'
 import MapModulesPopup from '@components/Map/MapModulesPopup/MapModulesPopup.vue'
 
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 
 import mapsService from '@services/Maps/MapsService'
 import ToastService from '@services/ToastService'
@@ -96,7 +126,7 @@ import Api from '@services/api/Api'
 import authService from '@services/auth/AuthService'
 
 import downloadAsFile from '@services/utils/downloadAsFile'
-import decodedURI from '@services/utils/decodedURI'
+import { currentMode } from '@store/modules/Map/getters'
 
 export default {
 	name: 'MapHeaderControls',
@@ -121,6 +151,8 @@ export default {
 	},
 
 	methods: {
+		...mapMutations('Map', ['setMode']),
+
 		openGroupSettingsPopupModel() {
 			this.groupSettingsPopupModel = true
 		},
@@ -194,7 +226,7 @@ export default {
 	},
 
 	computed: {
-		...mapGetters('Map', ['isAuth']),
+		...mapGetters('Map', ['isAuth', 'currentMode', 'modes']),
 		isReady() {
 			return !!mapsService.mapList.value.length
 		},
