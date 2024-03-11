@@ -80,7 +80,7 @@ export default {
 					?.filter(el => el.year === this.year)
 					.map(el => ({
 						...el,
-						canEdit: permissionService.availableAupSet.has(el.code),
+						canEdit: permissionService.canEditAup(el.code),
 					})) || []
 			)
 		},
