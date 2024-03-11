@@ -9,7 +9,7 @@
 		/> -->
 		<!--  -->
 
-		<MapHeaderDropdown>
+		<MapHeaderDropdown v-if="isAuth">
 			<template #activator="{ on, attrs }">
 				<v-btn block text dark height="100%" v-on="on" v-bind="attrs">
 					{{ modes[currentMode].title }}
@@ -23,15 +23,16 @@
 				}"
 				v-for="(v, k) in modes"
 				:key="k"
+				:disabled="!canSelectMode(v)"
 				@click="setMode(k)"
 			>
 				<v-list-item-title>{{ v.title }}</v-list-item-title>
 			</v-list-item>
+
+			<v-divider class="MapHeader__divider" vertical></v-divider>
 		</MapHeaderDropdown>
 
-		<v-divider class="MapHeader__divider" vertical></v-divider>
-
-		<template v-if="currentMode === ModesEnum.Map">
+		<template v-if="currentMode === ModesEnum.Map && isAuth">
 			<!-- Группировки -->
 			<MapHeaderButton
 				label="Группировки"
@@ -41,7 +42,7 @@
 			<v-divider class="MapHeader__divider" vertical></v-divider>
 		</template>
 
-		<template v-if="currentMode === ModesEnum.Aup">
+		<template v-if="currentMode === ModesEnum.Aup && isAuth">
 			<!-- Модули -->
 			<MapHeaderButton label="Модули" @click="openModulesPopup" />
 			<!--  -->
@@ -119,13 +120,16 @@ import MapModulesPopup from '@components/Map/MapModulesPopup/MapModulesPopup.vue
 import { ModesEnum } from '@models/Maps'
 
 import { mapGetters, mapMutations } from 'vuex'
+import withEventEmitter from '@mixins/withEventEmitter'
 
 import mapsService from '@services/Maps/MapsService'
 import ToastService from '@services/ToastService'
 import Api from '@services/api/Api'
 import authService from '@services/auth/AuthService'
+import permissionService from '@services/auth/PermissionService'
 
 import downloadAsFile from '@services/utils/downloadAsFile'
+import { setMode } from '@store/modules/Map/mutations'
 
 export default {
 	name: 'MapHeaderControls',
@@ -139,6 +143,8 @@ export default {
 		MapAuthPopup,
 	},
 
+	mixins: [withEventEmitter('mapsService', 'mapsServiceHandlers')],
+
 	data() {
 		return {
 			uploadPopupModel: false,
@@ -147,6 +153,11 @@ export default {
 			modulesPopupModel: false,
 			isLoadingFile: false,
 			ModesEnum,
+
+			mapsService,
+			mapsServiceHandlers: {
+				fetchAup: this.setModeByChangeAup,
+			},
 		}
 	},
 
@@ -222,6 +233,23 @@ export default {
 			} finally {
 				this.isLoadingFile = false
 			}
+		},
+
+		/* Дергаем после того как выбрали другую карту
+           Если есть права на редактирование, то по умолчанию режим КД, а
+           иначе режим просмотра
+        */
+		setModeByChangeAup() {
+			if (permissionService.canEditAup(this.aupCode))
+				return this.setMode(ModesEnum.Map)
+
+			this.setMode(ModesEnum.View)
+		},
+
+		canSelectMode(mode) {
+			if (!mode.needPermission) return true
+
+			return permissionService.canEditAup(this.aupCode)
 		},
 	},
 

@@ -26,10 +26,23 @@
 
 		<template #item="{ item }">
 			<v-list-item-title>{{ item.name }}</v-list-item-title>
-			<div>
-				<v-chip class="MapHeaderDirectionAutocomplete__year-chip" pill label>{{
-					formEduc[item.form_educ]
-				}}</v-chip>
+
+			<div class="MapHeaderDirectionAutocomplete__chip-wrapper">
+				<v-chip
+					v-if="item.canEdit"
+					class="MapHeaderDirectionAutocomplete__chip MapHeaderDirectionAutocomplete__edit-chip"
+					pill
+					label
+				>
+					<v-icon small color="grey darken-3">mdi-pen</v-icon>
+				</v-chip>
+				<v-chip
+					class="MapHeaderDirectionAutocomplete__chip MapHeaderDirectionAutocomplete__year-chip"
+					pill
+					label
+				>
+					{{ formEduc[item.form_educ] }}
+				</v-chip>
 			</div>
 		</template>
 	</MAutocomplete>
@@ -62,10 +75,7 @@ export default {
 	computed: {
 		sortedItems() {
 			return this.items.toSorted((a, b) => {
-				if (a.name < b.name) {
-					return -1
-				}
-
+				if (a.name < b.name) return -1
 				return 1
 			})
 		},
@@ -86,10 +96,20 @@ export default {
 .MapHeaderDirectionAutocomplete
     width: 500px
 
-    &__year-chip
+    &__chip-wrapper
+        display: flex
+        align-items: center
+        margin-left: 4px
+
+        *:not(:last-child)
+            margin-right: 4px
+
+    &__edit-chip
+        color: rgba(0, 0, 0, 0.87)
+        padding: 0 8px
+
+    &__chip
         justify-content: center
-        margin-right: 4px
-        margin-bottom: 4px
 
         &--selected
             margin-right: 4px

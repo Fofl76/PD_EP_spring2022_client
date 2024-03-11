@@ -3,12 +3,15 @@ import { ModesEnum } from '@models/Maps'
 const modes = {
 	[ModesEnum.View]: {
 		title: 'Режим просмотра',
+		needPermission: false,
 	},
 	[ModesEnum.Map]: {
 		title: 'Формирование кд',
+		needPermission: true,
 	},
 	[ModesEnum.Aup]: {
 		title: 'Редактирование АУП',
+		needPermission: true,
 	},
 }
 
@@ -19,7 +22,7 @@ const state = {
 
 	isAuth: false,
 	modes,
-	currentMode: ModesEnum.Map,
+	currentMode: ModesEnum.View,
 
 	canEditGroups: false,
 	canViewGroups: true,

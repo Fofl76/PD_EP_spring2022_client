@@ -25,6 +25,7 @@
 import withEventEmitter from '@mixins/withEventEmitter'
 
 import mapsService from '@services/Maps/MapsService'
+import permissionService from '@services/auth/PermissionService'
 
 import MapHeaderDirectionAutocomplete from '@components/Map/MapHeader/MapHeaderDirectionAutocomplete.vue'
 import MapHeaderFacultySelect from '@components/Map/MapHeader/MapHeaderFacultySelect.vue'
@@ -75,7 +76,12 @@ export default {
 
 		directionItems() {
 			return (
-				this.facultyModel?.directions?.filter(el => el.year === this.year) || []
+				this.facultyModel?.directions
+					?.filter(el => el.year === this.year)
+					.map(el => ({
+						...el,
+						canEdit: permissionService.availableAupSet.has(el.code),
+					})) || []
 			)
 		},
 	},
@@ -102,12 +108,10 @@ export default {
 		},
 
 		findDirectionInFacultyByAup(aup) {
-			return this.facultyModel?.directions?.find(
-				direction => direction.code === aup
-			)
+			return this.directionItems.find(direction => direction.code === aup)
 		},
 
-		updateFormFields() {
+		async updateFormFields() {
 			const aupCode = mapsService.aupCode
 
 			if (!aupCode) return
@@ -115,6 +119,7 @@ export default {
 			this.facultyModel = this.findFacultyModelByAup(aupCode) || null
 
 			if (this.facultyModel) {
+				await this.$nextTick()
 				this.directionModel = this.findDirectionInFacultyByAup(aupCode) || null
 			}
 

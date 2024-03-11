@@ -5,7 +5,7 @@ import authService from './AuthService'
 import Events from 'events'
 
 class PermissionService extends Events {
-	availableAupList: Key[] = []
+	availableAupSet: Set<Key> = new Set()
 	faculties: Key[] = []
 
 	constructor() {
@@ -13,7 +13,7 @@ class PermissionService extends Events {
 	}
 
 	setPermissions(availableAupList: Key[], faculties: Key[] = []) {
-		this.availableAupList = availableAupList
+		this.availableAupSet = new Set(availableAupList)
 		this.faculties = faculties
 	}
 
@@ -22,7 +22,7 @@ class PermissionService extends Events {
 
 		return (
 			authService.loggedUser.role_id === RoleIdEnum.Admin ||
-			this.availableAupList.includes(aup)
+			this.availableAupSet.has(aup)
 		)
 	}
 }
