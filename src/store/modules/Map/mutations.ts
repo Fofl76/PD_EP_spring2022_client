@@ -9,4 +9,7 @@ export const setRightMenuEditModel = (state, flag) =>
 
 export const setAuthStatus = (state, status) => (state.isAuth = status)
 
-export const setMode = (state, payload) => (state.currentMode = payload)
+export const setMode = (state, payload) => {
+	state.rightMenuEditModel = false
+	state.currentMode = payload
+}

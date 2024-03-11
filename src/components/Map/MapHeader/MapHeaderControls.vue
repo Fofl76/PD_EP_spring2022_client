@@ -31,23 +31,22 @@
 
 		<v-divider class="MapHeader__divider" vertical></v-divider>
 
-		<!-- Группировки -->
-		<MapHeaderButton
-			label="Группировки"
-			@click="openGroupSettingsPopupModel"
-			v-if="currentMode === 'map-mode'"
-		/>
-		<!--  -->
+		<template v-if="currentMode === ModesEnum.Map">
+			<!-- Группировки -->
+			<MapHeaderButton
+				label="Группировки"
+				@click="openGroupSettingsPopupModel"
+			/>
+			<!--  -->
+			<v-divider class="MapHeader__divider" vertical></v-divider>
+		</template>
 
-		<!-- Модули -->
-		<MapHeaderButton
-			label="Модули"
-			@click="openModulesPopup"
-			v-if="currentMode === 'aup-mode'"
-		/>
-		<!--  -->
-
-		<v-divider class="MapHeader__divider" vertical></v-divider>
+		<template v-if="currentMode === ModesEnum.Aup">
+			<!-- Модули -->
+			<MapHeaderButton label="Модули" @click="openModulesPopup" />
+			<!--  -->
+			<v-divider class="MapHeader__divider" vertical></v-divider>
+		</template>
 
 		<!-- Работа с файлами -->
 		<MapHeaderDropdown
@@ -117,6 +116,7 @@ import MapGroupsPopup from '@components/Map/MapGroupsPopup/MapGroupsPopup.vue'
 import MapUploadFilePopup from '@components/Map/MapUploadFilePopup/MapUploadFilePopup.vue'
 import MapAuthPopup from '@components/Map/MapAuthPopup/MapAuthPopup.vue'
 import MapModulesPopup from '@components/Map/MapModulesPopup/MapModulesPopup.vue'
+import { ModesEnum } from '@models/Maps'
 
 import { mapGetters, mapMutations } from 'vuex'
 
@@ -146,6 +146,7 @@ export default {
 			authPopupModel: false,
 			modulesPopupModel: false,
 			isLoadingFile: false,
+			ModesEnum,
 		}
 	},
 

@@ -20,7 +20,7 @@
 			</v-tooltip>
 
 			<MapTableMainBlockEditButton
-				v-if="!isEditing"
+				v-if="showEditButton"
 				:darkMode="needIsDarkMode"
 				@click="onEdit"
 			/>
@@ -29,10 +29,12 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import determinateTextColor from '@utils/determinateTextColor'
 import shadeColor from '@utils/shadeColor'
 
 import MapTableMainBlockEditButton from '@components/Map/MapTable/MapTableMainBlockEditButton.vue'
+import { ModesEnum } from '@models/Maps'
 
 export default {
 	name: 'MapTableMainBlock',
@@ -66,6 +68,12 @@ export default {
 	},
 
 	computed: {
+		...mapGetters('Map', ['currentMode']),
+
+		showEditButton() {
+			return !this.isEditing && this.currentMode === ModesEnum.Aup
+		},
+
 		backgroundColor() {
 			return this.data.group?.color || '#ffffff'
 		},
@@ -137,6 +145,9 @@ export default {
         &.isEditing
             .MapTableMainBlock
                 box-shadow: 0px 0px 0px 4px var(--shadow-color) inset
+        &.isViewOnly
+            .MapTableMainBlock
+                cursor: default
 
         &--small
             .MapTableMainBlock__name

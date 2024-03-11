@@ -1,8 +1,13 @@
+import { ModesEnum } from '@models/Maps'
+
 const modes = {
-	'map-mode': {
+	[ModesEnum.View]: {
+		title: 'Режим просмотра',
+	},
+	[ModesEnum.Map]: {
 		title: 'Формирование кд',
 	},
-	'aup-mode': {
+	[ModesEnum.Aup]: {
 		title: 'Редактирование АУП',
 	},
 }
@@ -14,7 +19,7 @@ const state = {
 
 	isAuth: false,
 	modes,
-	currentMode: 'map-mode',
+	currentMode: ModesEnum.Map,
 
 	canEditGroups: false,
 	canViewGroups: true,
