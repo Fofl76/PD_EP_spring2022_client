@@ -16,7 +16,7 @@ import {
 	HttpStatusCode,
 } from 'axios'
 import axios from './axios'
-import { ITokenPayload, ITokens, IUser } from '@models/Auth'
+import { ITokens, IUser } from '@models/Auth'
 import tokenService from '@services/auth/TokenService'
 import IUploadFileError from '@models/Maps/IUploadFileError'
 import { IModule } from '@models/Modules'
@@ -295,7 +295,7 @@ abstract class Api {
 					}
 				}
 
-				const decoded = jwtDecode<ITokenPayload>(token)
+				const decoded = jwtDecode<IUser>(token)
 
 				if (decoded.exp * 1000 < Date.now()) {
 					await this.refresh()

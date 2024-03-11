@@ -1,6 +1,6 @@
 import Events from 'events'
 import { ITokens } from '@models/Auth'
-import { ITokenPayload } from '@models/Auth'
+import { IUser } from '@models/Auth'
 import jwtDecode from 'jwt-decode'
 
 export class TokenService extends Events {
@@ -23,9 +23,9 @@ export class TokenService extends Events {
 
 	decode(token?: string) {
 		if (token) {
-			return jwtDecode<ITokenPayload>(token)
+			return jwtDecode<IUser>(token)
 		} else if (this.tokens.access) {
-			return jwtDecode<ITokenPayload>(this.tokens.access)
+			return jwtDecode<IUser>(this.tokens.access)
 		}
 
 		return null
