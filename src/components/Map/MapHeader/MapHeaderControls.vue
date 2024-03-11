@@ -9,15 +9,44 @@
 		/> -->
 		<!--  -->
 
-		<!-- Группировки -->
-		<MapHeaderButton label="Группировки" @click="openGroupSettingsPopupModel" />
-		<!--  -->
+		<MapHeaderDropdown>
+			<template #activator="{ on, attrs }">
+				<v-btn block text dark height="100%" v-on="on" v-bind="attrs">
+					{{ modes[currentMode].title }}
+				</v-btn>
+			</template>
 
-		<!-- Модули -->
-		<MapHeaderButton label="Модули" @click="openModulesPopup" />
-		<!--  -->
+			<v-list-item
+				class="MapHeaderDropdownListItem"
+				:class="{
+					'MapHeaderDropdownListItem--active': k === currentMode,
+				}"
+				v-for="(v, k) in modes"
+				:key="k"
+				@click="setMode(k)"
+			>
+				<v-list-item-title>{{ v.title }}</v-list-item-title>
+			</v-list-item>
+		</MapHeaderDropdown>
 
 		<v-divider class="MapHeader__divider" vertical></v-divider>
+
+		<template v-if="currentMode === ModesEnum.Map">
+			<!-- Группировки -->
+			<MapHeaderButton
+				label="Группировки"
+				@click="openGroupSettingsPopupModel"
+			/>
+			<!--  -->
+			<v-divider class="MapHeader__divider" vertical></v-divider>
+		</template>
+
+		<template v-if="currentMode === ModesEnum.Aup">
+			<!-- Модули -->
+			<MapHeaderButton label="Модули" @click="openModulesPopup" />
+			<!--  -->
+			<v-divider class="MapHeader__divider" vertical></v-divider>
+		</template>
 
 		<!-- Работа с файлами -->
 		<MapHeaderDropdown
@@ -87,8 +116,9 @@ import MapGroupsPopup from '@components/Map/MapGroupsPopup/MapGroupsPopup.vue'
 import MapUploadFilePopup from '@components/Map/MapUploadFilePopup/MapUploadFilePopup.vue'
 import MapAuthPopup from '@components/Map/MapAuthPopup/MapAuthPopup.vue'
 import MapModulesPopup from '@components/Map/MapModulesPopup/MapModulesPopup.vue'
+import { ModesEnum } from '@models/Maps'
 
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 
 import mapsService from '@services/Maps/MapsService'
 import ToastService from '@services/ToastService'
@@ -96,7 +126,6 @@ import Api from '@services/api/Api'
 import authService from '@services/auth/AuthService'
 
 import downloadAsFile from '@services/utils/downloadAsFile'
-import decodedURI from '@services/utils/decodedURI'
 
 export default {
 	name: 'MapHeaderControls',
@@ -117,10 +146,13 @@ export default {
 			authPopupModel: false,
 			modulesPopupModel: false,
 			isLoadingFile: false,
+			ModesEnum,
 		}
 	},
 
 	methods: {
+		...mapMutations('Map', ['setMode']),
+
 		openGroupSettingsPopupModel() {
 			this.groupSettingsPopupModel = true
 		},
@@ -194,7 +226,7 @@ export default {
 	},
 
 	computed: {
-		...mapGetters('Map', ['isAuth']),
+		...mapGetters('Map', ['isAuth', 'currentMode', 'modes']),
 		isReady() {
 			return !!mapsService.mapList.value.length
 		},

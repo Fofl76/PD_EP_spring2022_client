@@ -1,19 +1,9 @@
-import IFetchAllMapsListResponse from './IFetchAllMapsListResponse'
-import IFetchMapResponse from './IFetchMapResponse'
-import IFetchAllControlTypesResponse from './IFetchAllControlTypesResponse'
-import IFacultyRaw from './IFacultyRaw'
-import IDirectionRaw from './IDirectionRaw'
-import IMapItemRaw from './IMapItemRaw'
-import IControlTypeRaw from './IControlTypeRaw'
-import IUnitsOfMeasurement from './IUnitsOfMeasurement'
-
-export {
-	IFetchAllMapsListResponse,
-	IFetchMapResponse,
-	IFetchAllControlTypesResponse,
-	IFacultyRaw,
-	IDirectionRaw,
-	IMapItemRaw,
-	IControlTypeRaw,
-	IUnitsOfMeasurement
-}
+export { default as IFetchAllMapsListResponse } from './IFetchAllMapsListResponse'
+export { default as IFetchMapResponse } from './IFetchMapResponse'
+export { default as IFetchAllControlTypesResponse } from './IFetchAllControlTypesResponse'
+export { default as IFacultyRaw } from './IFacultyRaw'
+export { default as IDirectionRaw } from './IDirectionRaw'
+export { default as IMapItemRaw } from './IMapItemRaw'
+export { default as IControlTypeRaw } from './IControlTypeRaw'
+export { default as IUnitsOfMeasurement } from './IUnitsOfMeasurement'
+export { ModesEnum } from './ModesEnum'

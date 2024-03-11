@@ -29,6 +29,9 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import { ModesEnum } from '@models/Maps'
+
 import mapsService from '@services/Maps/MapsService'
 import ToastService from '@services/ToastService'
 
@@ -56,11 +59,17 @@ export default {
 	data() {
 		return {
 			isFullScreen: true,
-			isAvailableSave: false,
+			isDataChanged: false,
 		}
 	},
 
 	computed: {
+		...mapGetters('Map', ['currentMode']),
+
+		isAvailableSave() {
+			return this.isDataChanged && this.currentMode !== ModesEnum.View
+		},
+
 		maxZet() {
 			return mapsService.maxZet
 		},
@@ -90,13 +99,21 @@ export default {
 				ToastService.showError('Произошла ошибка при сохранении карты.')
 			}
 
-			this.isAvailableSave = false
+			this.isDataChanged = false
 		},
 
 		onDrag({ data, columnIndex }) {
-			const added = data?.added
-			const removed = data?.removed
-			const moved = data?.moved
+			if (this.currentMode === ModesEnum.Map && !data.moved) {
+				if (data.added) {
+					ToastService.showError('В этом режиме Вы не можете это сделать.')
+				}
+
+				return
+			}
+
+			const added = data.added
+			const removed = data.removed
+			const moved = data.moved
 
 			if (removed) {
 				mapsService.deleteMapItemLocal(removed.element)
@@ -120,7 +137,7 @@ export default {
 				)
 			}
 
-			this.isAvailableSave = true
+			this.isDataChanged = true
 		},
 
 		onClickSave() {
