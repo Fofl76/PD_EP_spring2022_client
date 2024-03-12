@@ -1,14 +1,15 @@
 <template>
 	<div class="MapHeaderSelectBlock">
 		<MapHeaderFacultySelect
-			v-model="facultyModel"
+			:value="facultyModel"
 			:loading="isLoadingFacultyInput"
 			:items="facultyItems"
+			@input="setFaculty"
 		/>
 
 		<MapHeaderDirectionAutocomplete
 			v-model="directionModel"
-			:items="directionItems"
+			:items="directionItemsByYear"
 			:loading="isLoadingDirectionInput"
 			@input="onSelectDirection"
 		/>
@@ -16,7 +17,7 @@
 		<MapHeaderYearSelect
 			style="max-width: 100px"
 			v-model="year"
-			:items="itemsYears"
+			:items="yearItems"
 		/>
 	</div>
 </template>
@@ -25,10 +26,13 @@
 import withEventEmitter from '@mixins/withEventEmitter'
 
 import mapsService from '@services/Maps/MapsService'
+import permissionService from '@services/auth/PermissionService'
+import authService from '@services/auth/AuthService'
 
 import MapHeaderDirectionAutocomplete from '@components/Map/MapHeader/MapHeaderDirectionAutocomplete.vue'
 import MapHeaderFacultySelect from '@components/Map/MapHeader/MapHeaderFacultySelect.vue'
 import MapHeaderYearSelect from '@components/Map/MapHeader/MapHeaderYearSelect.vue'
+import getCurrentYear from '@services/utils/getCurrentYear'
 
 export default {
 	name: 'MapHeaderSelectBlock',
@@ -48,8 +52,11 @@ export default {
 
 			mapsService,
 			mapsServiceHandlers: {
-				fetchAup: this.updateFormFields,
+				fetchFaculties: this.updateFormFields,
 			},
+
+			yearItems: [],
+			directionItems: [],
 
 			isLoadingFacultyInput: false,
 			isLoadingDirectionInput: false,
@@ -61,61 +68,82 @@ export default {
 			return mapsService.facultiesList.value
 		},
 
-		itemsYears() {
-			const years = {}
-
-			this.facultyModel?.directions.forEach(item => {
-				years[item.year] = true
-			})
-
-			const yearKey = Object.keys(years).map(key => +key)
-
-			return yearKey.sort((a, b) => b - a)
-		},
-
-		directionItems() {
-			return (
-				this.facultyModel?.directions?.filter(el => el.year === this.year) || []
+		directionItemsByYear() {
+			return this.directionItems.filter(
+				direction => direction.year === this.year
 			)
 		},
 	},
 
-	watch: {
+	/* 	watch: {
 		facultyModel() {
-			this.year = this.itemsYears[0]
+			if (!mapsService.aupCode) this.year = this.itemsYears[0]
 		},
-	},
+	}, */
 
 	methods: {
-		onSelectDirection() {
-			this.setUrlAup(this.directionModel?.code)
-		},
-
-		setUrlAup(aupCode) {
-			this.$router.push({ query: { aup: aupCode } }).catch(() => {})
-		},
-
 		findFacultyModelByAup(aup) {
-			return this.facultyItems.find(mapList => {
-				return mapList.directions.some(direction => direction.code === aup)
+			return this.facultyItems.find(faculty => {
+				return faculty.directions.some(direction => direction.code === aup)
+			})
+		},
+
+		findFacultyByUserFacultyId() {
+			return this.facultyItems.find(faculty => {
+				return faculty.faculty_id === authService.loggedUser.faculties?.[0]
 			})
 		},
 
 		findDirectionInFacultyByAup(aup) {
-			return this.facultyModel?.directions?.find(
-				direction => direction.code === aup
-			)
+			return this.directionItems.find(direction => direction.code === aup)
 		},
 
-		updateFormFields() {
+		setFaculty(faculty) {
+			this.facultyModel = faculty
+
+			/* Собираем все года всех карт на факультете */
+			this.yearItems = [
+				...new Set(
+					faculty.directions
+						.map(direction => direction.year)
+						.sort((a, b) => b - a)
+				),
+			]
+
+			/* Если там есть текущий год, то ставим его, иначе берем первый */
+			if (this.yearItems.includes(getCurrentYear())) {
+				this.year = getCurrentYear()
+			} else {
+				this.year = this.yearItems[0]
+			}
+
+			this.directionItems = faculty.directions.map(el => ({
+				...el,
+				canEdit: permissionService.canEditAup(el.code),
+			}))
+		},
+
+		/* Перебрасываем на страницу при выборе нового направления */
+		onSelectDirection() {
+			this.$router
+				.push({ query: { aup: this.directionModel?.code } })
+				.catch(() => {})
+		},
+
+		/* Вызывается когда обновляется список факультетов*/
+		async updateFormFields() {
 			const aupCode = mapsService.aupCode
 
-			if (!aupCode) return
+			if (!aupCode) return this.setFaculty(this.findFacultyByUserFacultyId() || null)
 
-			this.facultyModel = this.findFacultyModelByAup(aupCode) || null
+			this.setFaculty(this.findFacultyModelByAup(aupCode) || null)
 
 			if (this.facultyModel) {
-				this.directionModel = this.findDirectionInFacultyByAup(aupCode) || null
+				await this.$nextTick()
+				const direction = this.findDirectionInFacultyByAup(aupCode) || null
+
+				this.year = direction?.year
+				this.directionModel = direction
 			}
 
 			this.isLoadingFacultyInput = false

@@ -74,6 +74,7 @@ import Api from '@services/api/Api'
 import MUploadFileDragArea from '@components/common/MUploadFileDragArea.vue'
 import MapUploadFileError from '@components/Map/MapUploadFilePopup/MapUploadFileError.vue'
 import ToastService from '@services/ToastService'
+import mapsService from '@services/Maps/MapsService'
 
 export default {
 	name: 'MapUploadFilePopup',
@@ -164,7 +165,12 @@ export default {
 			const { success, data } = await Api.uploadFile(formData)
 
 			if (success) {
-				console.log({ success, data })
+				const { success: resFetchFactulties } =
+					await mapsService.fetchFacultiesList()
+
+				if (!resFetchFactulties) {
+					ToastService.showError('Не удалось обновить список направлений')
+				}
 
 				const hasErrors = data.some(info => {
 					return info.errors.length > 0

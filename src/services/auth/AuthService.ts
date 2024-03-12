@@ -1,6 +1,7 @@
 import Events from 'events'
 import Api from '@services/api/Api'
 import tokenService, { TokenService } from './TokenService'
+import permissionService from './PermissionService'
 import { IUser } from '@models/Auth'
 import store from '@store/index'
 
@@ -29,6 +30,8 @@ class AuthService extends Events {
 	updateLoggedUser(user: IUser) {
 		this.loggedUser = user
 
+		permissionService.setPermissions(user.can_edit, user.faculties)
+
 		store.commit('Map/setAuthStatus', true)
 		this.emit('updateUser', user)
 	}
@@ -37,10 +40,9 @@ class AuthService extends Events {
 		const tokenDecoded = this.tokenService.decode()
 		if (!tokenDecoded) return null
 
-		const { success, data } = await Api.fetchUser(tokenDecoded.user_id)
-		if (success && data) this.updateLoggedUser(data)
+		this.updateLoggedUser(tokenDecoded)
 
-		return data
+		return tokenDecoded
 	}
 
 	logout() {

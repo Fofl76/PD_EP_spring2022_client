@@ -2,7 +2,7 @@
 	<v-app-bar app class="MapHeader" height="80" dark clipped-right>
 		<MapHeaderSelectBlock />
 
-		<v-spacer></v-spacer>
+		<v-spacer />
 
 		<MapHeaderControls />
 	</v-app-bar>

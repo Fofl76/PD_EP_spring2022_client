@@ -17,6 +17,7 @@
 				<draggable
 					class="MapTableMain__draggable"
 					v-bind="dragOptions"
+					:disabled="currentMode === modesEnum.View"
 					:value="table[key]"
 					:setData="setData"
 					@change="onDragElementTable($event, key)"
@@ -26,7 +27,10 @@
 							<MapTableMainBlock
 								:data="dataValue(element)"
 								:isEditing="activeEditingItemId === element.id"
-								:class="{ isEditing: activeEditingItemId === element.id }"
+								:class="{
+									isEditing: activeEditingItemId === element.id,
+									isViewOnly: currentMode === modesEnum.View,
+								}"
 								:height="heightTableBlock(element)"
 								:fitMode="fitMode"
 								:total-zet="totalZet(element)"
@@ -66,6 +70,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import _ from 'lodash'
 import draggable from 'vuedraggable'
 
@@ -78,6 +83,8 @@ import MapTableMainColumnHeader from '@components/Map/MapTable/MapTableMainColum
 import MapTableMainBlock from '@components/Map/MapTable/MapTableMainBlock.vue'
 import MapTableMainSkeletonBlock from '@components/Map/MapTable/MapTableMainSkeletonBlock.vue'
 import { ValueAmountTypeEnum } from '@models/Maps/IMapItemValueRaw'
+
+import { ModesEnum } from '@models/Maps'
 
 export default {
 	name: 'MapTableMain',
@@ -123,10 +130,12 @@ export default {
 			fakeMaxZet: 30,
 			zetQuealsHours: MapsService.ZETQUEALSHOURS,
 			WEEKQUEALSHOURS: MapsService.WEEKQUEALSHOURS,
+			modesEnum: ModesEnum,
 		}
 	},
 
 	computed: {
+		...mapGetters('Map', ['currentMode']),
 		heightZet() {
 			return (countZet = 1) => {
 				if (this.fitMode) {

@@ -72,7 +72,7 @@ export default {
 		},
 
 		shortLogin() {
-			return this.loginLoggedUser.slice(0, 3)
+			return this.loginLoggedUser?.slice(0, 3) || ''
 		},
 
 		colorAvatar() {

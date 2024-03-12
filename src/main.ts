@@ -8,7 +8,6 @@ import '@styles/main.sass'
 
 import Toast from 'vue-toastification'
 import 'vue-toastification/dist/index.css'
-import Api from '@services/api/Api'
 import authService from '@services/auth/AuthService'
 
 Vue.config.productionTip = false
@@ -20,7 +19,6 @@ Vue.use(Toast, {
 })
 
 const setup = async () => {
-	await Api.refresh()
 	await authService.fetchLoggedUser()
 
 	new Vue({

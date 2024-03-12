@@ -2,8 +2,7 @@
 	<MSelect
 		v-model="_value"
 		:items="sortedItems"
-		v-bind="$attrs"
-		v-on="$listeners"
+		:loading="loading"
 		class="MapHeaderFacultySelect"
 		item-text="faculty_name"
 		no-data-text="Факультеты не найдены"
@@ -26,6 +25,11 @@ export default {
 		items: {
 			type: Array,
 			default: () => [],
+		},
+
+		loading: {
+			type: Boolean,
+			default: false,
 		},
 	},
 

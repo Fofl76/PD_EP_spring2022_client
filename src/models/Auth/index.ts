@@ -5,16 +5,18 @@ export interface ITokens {
 	refresh: string
 }
 
-export interface ITokenPayload {
-	exp: number
-	faculties: number[]
-	role_id: number
-	user_id: number
+export enum RoleIdEnum {
+	Admin = 1,
+	Faculty = 2,
+	Department = 3,
 }
 
 export interface IUser {
-	id: Key
-	login: string
-	role: Key
-	department: Key
+	user_id: Key
+	login: String
+	role_id: Key
+	department_id: Key
+	faculties: Key[]
+	exp: number
+	can_edit: Key[]
 }

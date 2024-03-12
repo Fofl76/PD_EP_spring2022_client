@@ -7,7 +7,7 @@
 			@input="$emit('input', $event)"
 		>
 			<template v-slot:activator="{ on, attrs }">
-				<slot name="activator">
+				<slot name="activator" :on="on" :attrs="attrs">
 					<v-btn
 						v-bind="attrs"
 						v-on="on"
@@ -55,7 +55,16 @@ export default {
 }
 </script>
 
-<style lang="sass">
-.MapHeaderDropdownListItem
-    cursor: pointer
+<style lang="scss">
+.MapHeaderDropdown {
+	height: 100%;
+}
+
+.MapHeaderDropdownListItem {
+	cursor: pointer;
+
+	&--active {
+		background: #171717;
+	}
+}
 </style>
