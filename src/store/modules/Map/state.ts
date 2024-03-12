@@ -6,7 +6,7 @@ const modes = {
 		needPermission: false,
 	},
 	[ModesEnum.Map]: {
-		title: 'Формирование кд',
+		title: 'Формирование КД',
 		needPermission: true,
 	},
 	[ModesEnum.Aup]: {
