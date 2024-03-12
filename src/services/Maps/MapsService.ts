@@ -102,8 +102,10 @@ class MapsService extends Events {
 
 		if (success && data) {
 			this.setFacultiesList(data)
-			this.emit('fetchAup', data)
+			this.emit('fetchFaculties', data)
 		}
+
+		return { success, data }
 	}
 
 	private _mapList = {
