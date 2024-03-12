@@ -7,7 +7,7 @@ import Events from 'events'
 class PermissionService extends Events {
 	availableAupSet: Set<Key> = new Set()
 	faculties: Key[] = []
-	role_id: RoleIdEnum | null = null
+	role: RoleIdEnum | null = null
 
 	constructor() {
 		super()
