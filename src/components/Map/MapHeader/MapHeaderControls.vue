@@ -28,8 +28,6 @@
 			>
 				<v-list-item-title>{{ v.title }}</v-list-item-title>
 			</v-list-item>
-
-			<v-divider class="MapHeader__divider" vertical></v-divider>
 		</MapHeaderDropdown>
 
 		<template v-if="currentMode === ModesEnum.Map && isAuth">
