@@ -7,21 +7,27 @@ import Events from 'events'
 class PermissionService extends Events {
 	availableAupSet: Set<Key> = new Set()
 	faculties: Key[] = []
+	role_id: RoleIdEnum | null = null
 
 	constructor() {
 		super()
 	}
 
-	setPermissions(availableAupList: Key[], faculties: Key[] = []) {
+	setPermissions(availableAupList: Key[], faculties: Key[] = [], role_id: RoleIdEnum) {
 		this.availableAupSet = new Set(availableAupList)
 		this.faculties = faculties
+		this.role = role_id
+	}
+
+	isRootAdmin() {
+		return this.role === RoleIdEnum.Admin
 	}
 
 	canEditAup(aup) {
 		if (!authService.loggedUser) return
 
 		return (
-			authService.loggedUser.role_id === RoleIdEnum.Admin ||
+			this.isRootAdmin() ||
 			this.availableAupSet.has(aup)
 		)
 	}
