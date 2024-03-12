@@ -27,6 +27,7 @@ import withEventEmitter from '@mixins/withEventEmitter'
 
 import mapsService from '@services/Maps/MapsService'
 import permissionService from '@services/auth/PermissionService'
+import authService from '@services/auth/AuthService'
 
 import MapHeaderDirectionAutocomplete from '@components/Map/MapHeader/MapHeaderDirectionAutocomplete.vue'
 import MapHeaderFacultySelect from '@components/Map/MapHeader/MapHeaderFacultySelect.vue'
@@ -82,8 +83,14 @@ export default {
 
 	methods: {
 		findFacultyModelByAup(aup) {
-			return this.facultyItems.find(mapList => {
-				return mapList.directions.some(direction => direction.code === aup)
+			return this.facultyItems.find(faculty => {
+				return faculty.directions.some(direction => direction.code === aup)
+			})
+		},
+
+		findFacultyByUserFacultyId() {
+			return this.facultyItems.find(faculty => {
+				return faculty.faculty_id === authService.loggedUser.faculties?.[0]
 			})
 		},
 
@@ -127,7 +134,7 @@ export default {
 		async updateFormFields() {
 			const aupCode = mapsService.aupCode
 
-			if (!aupCode) return
+			if (!aupCode) return this.setFaculty(this.findFacultyByUserFacultyId() || null)
 
 			this.setFaculty(this.findFacultyModelByAup(aupCode) || null)
 
