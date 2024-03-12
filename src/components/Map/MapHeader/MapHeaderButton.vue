@@ -3,6 +3,7 @@
 		class="MapHeaderButton"
 		:loading="loading"
 		:disabled="disabled"
+		:outlined="outlined"
 		height="100%"
 		text
 		dark
@@ -33,6 +34,11 @@ export default {
 		},
 
 		disabled: {
+			type: Boolean,
+			default: false,
+		},
+
+		outlined: {
 			type: Boolean,
 			default: false,
 		},

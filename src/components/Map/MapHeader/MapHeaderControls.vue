@@ -9,9 +9,39 @@
 		/> -->
 		<!--  -->
 
+		<!-- Группировки -->
+		<template v-if="currentMode === ModesEnum.Map && isAuth">
+			<MapHeaderButton
+				label="Группировки"
+				outlined
+				@click="openGroupSettingsPopupModel"
+			/>
+
+			<v-divider class="MapHeader__divider" vertical></v-divider>
+		</template>
+		<!--  -->
+
+		<!-- Модули -->
+		<template v-if="currentMode === ModesEnum.Aup && isAuth">
+			<MapHeaderButton label="Модули" outlined @click="openModulesPopup" />
+
+			<v-divider class="MapHeader__divider" vertical></v-divider>
+		</template>
+		<!--  -->
+
+		<!-- Режим редактирования -->
 		<MapHeaderDropdown v-if="isAuth">
 			<template #activator="{ on, attrs }">
-				<v-btn block text dark height="100%" v-on="on" v-bind="attrs">
+				<v-btn
+					outlined
+					block
+					text
+					dark
+					height="100%"
+					style="width: 220px"
+					v-on="on"
+					v-bind="attrs"
+				>
 					{{ modes[currentMode].title }}
 				</v-btn>
 			</template>
@@ -30,22 +60,7 @@
 			</v-list-item>
 		</MapHeaderDropdown>
 
-		<template v-if="currentMode === ModesEnum.Map && isAuth">
-			<!-- Группировки -->
-			<MapHeaderButton
-				label="Группировки"
-				@click="openGroupSettingsPopupModel"
-			/>
-			<!--  -->
-			<v-divider class="MapHeader__divider" vertical></v-divider>
-		</template>
-
-		<template v-if="currentMode === ModesEnum.Aup && isAuth">
-			<!-- Модули -->
-			<MapHeaderButton label="Модули" @click="openModulesPopup" />
-			<!--  -->
-			<v-divider class="MapHeader__divider" vertical></v-divider>
-		</template>
+		<v-divider class="MapHeader__divider" vertical></v-divider>
 
 		<!-- Работа с файлами -->
 		<MapHeaderDropdown
