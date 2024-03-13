@@ -6,10 +6,10 @@
 		}"
 	>
 		<div class="DataPreloader__smile">≧◉◡◉≦</div>
-		<div class="DataPreloader__title" v-if="$slots.title">
+		<div v-if="$slots.title" class="DataPreloader__title">
 			<slot name="title" />
 		</div>
-		<div class="DataPreloader__subtitle" v-if="$slots.subtitle">
+		<div v-if="$slots.subtitle" class="DataPreloader__subtitle">
 			<slot name="subtitle" />
 		</div>
 	</div>

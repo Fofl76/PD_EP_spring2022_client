@@ -1,7 +1,7 @@
 <template>
 	<v-snackbar
-		class="MSnackbar"
 		v-model="_value"
+		class="MSnackbar"
 		:color="snackbar.color"
 		:multi-line="snackbar.mode === 'multi-line'"
 		:timeout="timeout"

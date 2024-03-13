@@ -1,10 +1,10 @@
 <template>
 	<div class="MapTable">
-		<div class="MapTable__inner" v-if="!isEmpty">
+		<div v-if="!isEmpty" class="MapTable__inner">
 			<MapTableMain
 				:table="table"
 				:loading="loading && !isLoadingSaveMapList"
-				:activeEditingItemId="activeEditingItemId"
+				:active-editing-item-id="activeEditingItemId"
 				:max-zet="maxZet"
 				:fit-mode="isFullScreen"
 				@edit="onEdit"
@@ -12,8 +12,8 @@
 			/>
 
 			<MapTableTools
-				:availableSave="isAvailableSave"
-				:loadingSave="isLoadingSaveMapList"
+				:available-save="isAvailableSave"
+				:loading-save="isLoadingSaveMapList"
 				@clickSave="onClickSave"
 				@clickChangeMode="onClickChangeMode"
 			/>
@@ -133,7 +133,7 @@ export default {
 				mapsService.moveMapItemInColLocal(
 					moved.element,
 					moved.oldIndex,
-					moved.newIndex
+					moved.newIndex,
 				)
 			}
 

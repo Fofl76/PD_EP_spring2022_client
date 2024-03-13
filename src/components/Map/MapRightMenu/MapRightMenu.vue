@@ -1,7 +1,7 @@
 <template>
 	<v-navigation-drawer
-		class="MapRightMenu"
 		v-model="value_"
+		class="MapRightMenu"
 		:width="rightMenuEditWidth"
 		right
 		dark
@@ -28,11 +28,11 @@
 
 			<div class="MapRightMenu__name">
 				<v-text-field
+					ref="discipline"
 					v-model="formService.model.discipline"
 					label="Название дисциплины"
 					hide-details="auto"
 					:rules="disciplineRules"
-					ref="discipline"
 					dense
 					filled
 					dark
@@ -60,7 +60,7 @@
 					@inputError="onInputError('values', $event)"
 				/>
 
-				<MapRightMenuControlExpansion :currentControlTypeId="null" />
+				<MapRightMenuControlExpansion :current-control-type-id="null" />
 			</v-expansion-panels>
 
 			<div class="MapRightMenu__actions">
@@ -78,7 +78,7 @@
 
 			<MapRightMenuConfirmPopup
 				v-model="confirmPopupModel"
-				:isError="!isValid"
+				:is-error="!isValid"
 				@close="onClosePopup"
 				@save="onSavePopup"
 				@back="onBackPopup"
@@ -224,7 +224,7 @@ export default {
 		/* Проверяем, что каждый блок с формами валидный */
 		isValid() {
 			return Object.values(this.errorExpansions).every(
-				errorState => !errorState.value
+				errorState => !errorState.value,
 			)
 		},
 
@@ -244,6 +244,10 @@ export default {
 		},
 	},
 
+	created() {
+		this.formService = new FormService(valueInitialModel)
+	},
+
 	methods: {
 		initRightMenu() {
 			if (!this.item) return
@@ -259,7 +263,7 @@ export default {
 		},
 
 		sortValues(values) {
-			return [...values].sort((a, b) => {
+			return [...values].sort(a => {
 				/* control_type_id === 'СРС' */
 				if (a.control_type_id === 4) return -1
 				return 1
@@ -293,7 +297,7 @@ export default {
 			const res = await mapsService.editMapItem(
 				mapsService.aupCode,
 				this.item,
-				this.formModel
+				this.formModel,
 			)
 
 			if (res) {
@@ -357,10 +361,6 @@ export default {
 		clear() {
 			this.formService.init()
 		},
-	},
-
-	created() {
-		this.formService = new FormService(valueInitialModel)
 	},
 }
 </script>

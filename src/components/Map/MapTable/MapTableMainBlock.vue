@@ -10,7 +10,7 @@
 	>
 		<div class="MapTableMainBlock">
 			<v-tooltip bottom :open-delay="300">
-				<template v-slot:activator="{ on, attrs }">
+				<template #activator="{ on, attrs }">
 					<span class="MapTableMainBlock__name" v-bind="attrs" v-on="on">
 						{{ disciplineName }}
 					</span>
@@ -21,7 +21,7 @@
 
 			<MapTableMainBlockEditButton
 				v-if="showEditButton"
-				:darkMode="needIsDarkMode"
+				:dark-mode="needIsDarkMode"
 				@click="onEdit"
 			/>
 		</div>

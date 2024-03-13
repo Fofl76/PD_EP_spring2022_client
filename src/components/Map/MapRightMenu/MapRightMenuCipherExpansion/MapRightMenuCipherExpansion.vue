@@ -6,111 +6,109 @@
 
 				<v-chip
 					v-if="cipherLabel && isValid"
+					:key="1"
 					style="cursor: pointer"
 					pill
 					label
 					:ripple="false"
-					:key="1"
 				>
 					{{ cipherLabel }}
 				</v-chip>
 
 				<v-chip
 					v-if="!isValid"
+					:key="2"
 					color="red"
 					style="cursor: pointer"
 					text-color="white"
 					pill
 					label
-					:key="2"
 				>
 					Некорректно
 				</v-chip>
 			</div>
 		</template>
 
-		<template>
-			<div class="MapRightMenuCipherExpansion__content">
-				<v-form
-					class="MapRightMenuCipherExpansion__form"
-					v-model="isValid"
-					ref="form"
-					@input="onInputError"
+		<div class="MapRightMenuCipherExpansion__content">
+			<v-form
+				ref="form"
+				v-model="isValid"
+				class="MapRightMenuCipherExpansion__form"
+				@input="onInputError"
+			>
+				<v-text-field
+					ref="block"
+					v-model="cipherObj.block"
+					class="MapRightMenuCipherExpansion__input"
+					label="Блок"
+					type="number"
+					:rules="[rules.required, rules.onlyPositiveInteger]"
+					hide-details="auto"
+					dense
+					filled
+					dark
+					@input="onInput"
 				>
-					<v-text-field
-						v-model="cipherObj.block"
-						ref="block"
-						class="MapRightMenuCipherExpansion__input"
-						label="Блок"
-						type="number"
-						:rules="[rules.required, rules.onlyPositiveInteger]"
-						hide-details="auto"
-						dense
-						filled
-						dark
-						@input="onInput"
-					>
-						<!-- <template v-slot:append>
+					<!-- <template v-slot:append>
 							<MHint :top="false" size="20" bottom>Блок</MHint>
 						</template> -->
-					</v-text-field>
+				</v-text-field>
 
-					<v-text-field
-						v-model="cipherObj.part"
-						ref="part"
-						class="MapRightMenuCipherExpansion__input"
-						label="Часть"
-						type="number"
-						:rules="[rules.onlyPositiveInteger]"
-						hide-details="auto"
-						dense
-						filled
-						dark
-						@input="onInput"
-					>
-						<!-- <template v-slot:append>
+				<v-text-field
+					ref="part"
+					v-model="cipherObj.part"
+					class="MapRightMenuCipherExpansion__input"
+					label="Часть"
+					type="number"
+					:rules="[rules.onlyPositiveInteger]"
+					hide-details="auto"
+					dense
+					filled
+					dark
+					@input="onInput"
+				>
+					<!-- <template v-slot:append>
 							<MHint :top="false" size="20" bottom>Часть</MHint>
 						</template> -->
-					</v-text-field>
+				</v-text-field>
 
-					<v-text-field
-						v-model="cipherObj.module"
-						ref="module"
-						class="MapRightMenuCipherExpansion__input"
-						label="Модуль"
-						type="number"
-						:rules="[rules.onlyPositiveInteger]"
-						hide-details="auto"
-						dense
-						filled
-						dark
-						@input="onInput"
-					>
-						<!-- <template v-slot:append>
+				<v-text-field
+					ref="module"
+					v-model="cipherObj.module"
+					class="MapRightMenuCipherExpansion__input"
+					label="Модуль"
+					type="number"
+					:rules="[rules.onlyPositiveInteger]"
+					hide-details="auto"
+					dense
+					filled
+					dark
+					@input="onInput"
+				>
+					<!-- <template v-slot:append>
 							<MHint :top="false" size="20" bottom>Модуль</MHint>
 						</template> -->
-					</v-text-field>
+				</v-text-field>
 
-					<v-text-field
-						v-model="cipherObj.discipline"
-						ref="discipline"
-						class="MapRightMenuCipherExpansion__input"
-						label="Дисциплина"
-						type="number"
-						:rules="[rules.onlyPositiveInteger]"
-						hide-details="auto"
-						dense
-						filled
-						dark
-						@input="onInput"
-					>
-						<!-- <template v-slot:append>
+				<v-text-field
+					ref="discipline"
+					v-model="cipherObj.discipline"
+					class="MapRightMenuCipherExpansion__input"
+					label="Дисциплина"
+					type="number"
+					:rules="[rules.onlyPositiveInteger]"
+					hide-details="auto"
+					dense
+					filled
+					dark
+					@input="onInput"
+				>
+					<!-- <template v-slot:append>
 							<MHint :top="false" size="20" bottom>Дисциплина</MHint>
 						</template> -->
-					</v-text-field>
-				</v-form>
-			</div>
-		</template>
+				</v-text-field>
+			</v-form>
+		</div>
 	</MapRightMenuExpansion>
 </template>
 
@@ -121,6 +119,13 @@ import MHint from '@components/common/MHint.vue'
 export default {
 	name: 'MapRightMenuCipherExpansion',
 	components: { MapRightMenuExpansion, MHint },
+
+	props: {
+		cipher: {
+			type: String,
+			default: '',
+		},
+	},
 
 	data: () => ({
 		cipherObj: {
@@ -147,43 +152,12 @@ export default {
 		},
 	}),
 
-	props: {
-		cipher: {
-			type: String,
-			default: '',
-		},
-	},
-
 	computed: {
 		cipherLabel() {
 			const values = Object.values(this.cipherObj)
 			const filteredValues = values.filter(item => item !== '')
 
 			return filteredValues.length ? 'Б' + filteredValues.join('.') : null
-		},
-	},
-
-	methods: {
-		onInput() {
-			/* На бек отправляется строчное значение, поэтому пока так */
-			if (this.$refs['form'].validate())
-				this.$emit('inputCipher', {
-					cipherStr: this.cipherLabel,
-					cipher: this.cipherObj,
-				})
-		},
-
-		clear() {
-			this.cipherObj = {
-				block: '',
-				part: '',
-				module: '',
-				discipline: '',
-			}
-		},
-
-		onInputError(value) {
-			this.$emit('inputError', !value)
 		},
 	},
 
@@ -235,6 +209,30 @@ export default {
 				this.isValid = false
 				console.log(e)
 			}
+		},
+	},
+
+	methods: {
+		onInput() {
+			/* На бек отправляется строчное значение, поэтому пока так */
+			if (this.$refs['form'].validate())
+				this.$emit('inputCipher', {
+					cipherStr: this.cipherLabel,
+					cipher: this.cipherObj,
+				})
+		},
+
+		clear() {
+			this.cipherObj = {
+				block: '',
+				part: '',
+				module: '',
+				discipline: '',
+			}
+		},
+
+		onInputError(value) {
+			this.$emit('inputError', !value)
 		},
 	},
 }

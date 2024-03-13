@@ -1,9 +1,9 @@
 <template>
 	<v-dialog
 		:value="value"
-		@input="onInputPopup"
 		max-width="1000"
 		class="MapGroupsPopup"
+		@input="onInputPopup"
 	>
 		<v-card class="MapGroupsPopup__card">
 			<v-card-title class="text-h5">Работа с группировками</v-card-title>
@@ -60,7 +60,7 @@
 							></v-text-field>
 
 							<v-menu offset-y :close-on-content-click="false">
-								<template v-slot:activator="{ on, attrs }">
+								<template #activator="{ on, attrs }">
 									<v-btn
 										:color="colorModel"
 										class="MapGroupsPopup__color-picker"
@@ -98,7 +98,7 @@
 								<draggable
 									v-bind="dragOptions"
 									:value="availableDisciplines"
-									:setData="setData"
+									:set-data="setData"
 									style="height: 340px; overflow-y: scroll"
 								>
 									<v-list-item
@@ -131,9 +131,9 @@
 								<draggable
 									v-bind="dragOptions"
 									:value="appointedDisciplines"
-									:setData="setData"
-									@change="onChangeAppointedGroup"
+									:set-data="setData"
 									style="height: 340px; overflow-y: scroll"
+									@change="onChangeAppointedGroup"
 								>
 									<v-list-item
 										v-for="element in appointedDisciplines"
@@ -284,18 +284,18 @@ export default {
 		availableDisciplines() {
 			return _.orderBy(
 				this.newAllDisciplines?.filter(
-					el => el.id_group !== this.selectedItem?.id
+					el => el.id_group !== this.selectedItem?.id,
 				),
-				'discipline'
+				'discipline',
 			)
 		},
 
 		appointedDisciplines() {
 			return _.orderBy(
 				this.newAllDisciplines?.filter(
-					el => el.id_group === this.selectedItem?.id
+					el => el.id_group === this.selectedItem?.id,
 				),
-				'discipline'
+				'discipline',
 			)
 		},
 
@@ -306,7 +306,7 @@ export default {
 						.toLowerCase()
 						.includes(this.searchModel.toLowerCase())
 				}),
-				'name'
+				'name',
 			)
 		},
 
@@ -351,6 +351,10 @@ export default {
 		},
 	},
 
+	async created() {
+		await this.initAllDisciplines()
+	},
+
 	methods: {
 		onInputPopup(event) {
 			this.$emit('input', event)
@@ -378,7 +382,7 @@ export default {
 		/* Получить все дисциплины с карты */
 		getAllDisciplines() {
 			this.newAllDisciplines = _.cloneDeep(
-				_.uniqBy(this.activeMapTable, el => el.discipline)
+				_.uniqBy(this.activeMapTable, el => el.discipline),
 			)
 		},
 
@@ -434,10 +438,6 @@ export default {
 		setData(dataTransfer) {
 			dataTransfer.setDragImage(document.createElement('div'), 0, 0)
 		},
-	},
-
-	async created() {
-		await this.initAllDisciplines()
 	},
 }
 </script>

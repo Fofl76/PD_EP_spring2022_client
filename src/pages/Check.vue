@@ -3,13 +3,13 @@
 		<v-main dark app class="Check__main">
 			<template v-if="check">
 				<CheckInfo
+					:check="check"
+					:settings="settings"
 					@settings-change="
 						v => {
 							settings = v
 						}
 					"
-					:check="check"
-					:settings="settings"
 				/>
 
 				<CheckTest v-for="t in check.tests" :key="t.id" :test="t" />
@@ -71,6 +71,12 @@ export default {
 		},
 	},
 
+	mounted() {
+		this.getCheck().finally(() => {
+			this.isLoading = false
+		})
+	},
+
 	methods: {
 		async getCheck() {
 			if (this.abortController) {
@@ -82,19 +88,13 @@ export default {
 			const data = await checkService.getCheckResultForAup(
 				this.aupCode,
 				this.settings,
-				this.abortController
+				this.abortController,
 			)
 
 			if (!data) return
 
 			this.check = data
 		},
-	},
-
-	mounted() {
-		this.getCheck().finally(() => {
-			this.isLoading = false
-		})
 	},
 }
 </script>

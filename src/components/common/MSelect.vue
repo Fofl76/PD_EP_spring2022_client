@@ -1,9 +1,9 @@
 <template>
 	<v-select
+		v-model="_value"
 		class="MSelect"
 		:menu-props="{ offsetY: false }"
 		:items="items"
-		v-model="_value"
 		:item-text="itemText"
 		:no-data-text="noDataText"
 		:return-object="returnObject"

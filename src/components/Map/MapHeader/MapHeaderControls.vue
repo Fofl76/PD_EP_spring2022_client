@@ -39,20 +39,20 @@
 					dark
 					height="100%"
 					style="width: 220px"
-					v-on="on"
 					v-bind="attrs"
+					v-on="on"
 				>
 					{{ modes[currentMode].title }}
 				</v-btn>
 			</template>
 
 			<v-list-item
+				v-for="(v, k) in modes"
+				:key="k"
 				class="MapHeaderDropdownListItem"
 				:class="{
 					'MapHeaderDropdownListItem--active': k === currentMode,
 				}"
-				v-for="(v, k) in modes"
-				:key="k"
 				:disabled="!canSelectMode(v)"
 				@click="setMode(k)"
 			>
@@ -70,8 +70,8 @@
 		>
 			<v-list-item
 				class="MapHeaderDropdownListItem"
-				@click="openUploadPopup"
 				:disabled="!isAuth"
+				@click="openUploadPopup"
 			>
 				<v-list-item-icon>
 					<v-icon :size="18">mdi-upload</v-icon>
@@ -81,8 +81,8 @@
 
 			<v-list-item
 				class="MapHeaderDropdownListItem"
-				@click="downloadMap"
 				:disabled="!aupCode"
+				@click="downloadMap"
 			>
 				<v-list-item-icon>
 					<v-icon :size="18">mdi-download</v-icon>
@@ -92,8 +92,8 @@
 
 			<v-list-item
 				class="MapHeaderDropdownListItem"
-				@click="downloadMapXML"
 				:disabled="!aupCode"
+				@click="downloadMapXML"
 			>
 				<v-list-item-icon>
 					<v-icon :size="18">mdi-download</v-icon>
@@ -117,7 +117,7 @@
 		<!--  -->
 
 		<!-- Модули -->
-		<MapModulesPopup v-model="modulesPopupModel" v-if="modulesPopupModel" />
+		<MapModulesPopup v-if="modulesPopupModel" v-model="modulesPopupModel" />
 		<!--  -->
 	</div>
 </template>
@@ -142,7 +142,6 @@ import authService from '@services/auth/AuthService'
 import permissionService from '@services/auth/PermissionService'
 
 import downloadAsFile from '@services/utils/downloadAsFile'
-import { setMode } from '@store/modules/Map/mutations'
 
 export default {
 	name: 'MapHeaderControls',
@@ -172,6 +171,21 @@ export default {
 				fetchAup: this.setModeByChangeAup,
 			},
 		}
+	},
+
+	computed: {
+		...mapGetters('Map', ['isAuth', 'currentMode', 'modes']),
+		isReady() {
+			return !!mapsService.mapList.value.length
+		},
+
+		aupCode() {
+			return mapsService.aupCode
+		},
+
+		downloadURL() {
+			return `${import.meta.env.VITE_API}/save_excel/${this.aupCode}`
+		},
 	},
 
 	methods: {
@@ -206,11 +220,11 @@ export default {
 				this.isLoadingFile = true
 
 				const { res, data, success, error } = await Api.downloadMap(
-					this.aupCode
+					this.aupCode,
 				)
 
 				const splitted = decodeURIComponent(
-					res.headers['content-disposition']
+					res.headers['content-disposition'],
 				).split('/')
 				const filename = splitted[splitted.length - 1]
 
@@ -263,21 +277,6 @@ export default {
 			if (!mode.needPermission) return true
 
 			return permissionService.canEditAup(this.aupCode)
-		},
-	},
-
-	computed: {
-		...mapGetters('Map', ['isAuth', 'currentMode', 'modes']),
-		isReady() {
-			return !!mapsService.mapList.value.length
-		},
-
-		aupCode() {
-			return mapsService.aupCode
-		},
-
-		downloadURL() {
-			return `${import.meta.env.VITE_API}/save_excel/${this.aupCode}`
 		},
 	},
 }

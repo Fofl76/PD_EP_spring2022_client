@@ -1,8 +1,8 @@
 <template>
 	<v-autocomplete
+		v-model="_value"
 		class="MAutocomplete"
 		:label="label"
-		v-model="_value"
 		:items="items"
 		:no-data-text="noDataText"
 		:item-text="itemText"

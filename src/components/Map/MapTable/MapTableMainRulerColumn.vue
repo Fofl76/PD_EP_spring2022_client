@@ -3,9 +3,9 @@
 		<div class="MapTableMainRulerColumn__header">ЗЕТ</div>
 
 		<div
-			class="MapTableMainRulerColumn__block"
 			v-for="i in maxZet"
 			:key="i"
+			class="MapTableMainRulerColumn__block"
 			:style="{ height: heightZet() }"
 		>
 			<span>{{ i }}</span>

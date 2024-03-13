@@ -1,9 +1,9 @@
 <template>
 	<v-dialog
-		contentClass="MapRightMenuConfirmPopup"
+		content-class="MapRightMenuConfirmPopup"
 		:value="value"
-		@input="$emit('input', $event)"
 		width="550"
+		@input="$emit('input', $event)"
 	>
 		<v-card>
 			<v-card-title class="text-h5">{{ title }}</v-card-title>

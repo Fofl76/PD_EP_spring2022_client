@@ -1,10 +1,6 @@
 import _ from 'lodash'
 
-import {
-	getDiffObjects,
-	hasDiffObject,
-	type IDiffsObjects,
-} from '@utils/getDiffObjects'
+import { getDiffObjects, hasDiffObject } from '@utils/getDiffObjects'
 
 /**
  * Класс позволяющий работать с формами, сравнивать изначальное

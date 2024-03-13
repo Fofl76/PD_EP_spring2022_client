@@ -6,16 +6,16 @@
 			:value="value"
 			@input="$emit('input', $event)"
 		>
-			<template v-slot:activator="{ on, attrs }">
+			<template #activator="{ on, attrs }">
 				<slot name="activator" :on="on" :attrs="attrs">
 					<v-btn
 						v-bind="attrs"
-						v-on="on"
 						:disabled="disabled"
 						:loading="loading"
 						text
 						dark
 						icon
+						v-on="on"
 					>
 						<v-icon v-if="icon" dark>{{ icon }}</v-icon>
 					</v-btn>

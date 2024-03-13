@@ -22,21 +22,21 @@ abstract class ToastService {
 
 	static showSuccess(
 		text: string = DefaultMessages.SUCCESS,
-		title: string = ''
+		title: string = '',
 	): void {
 		Vue.$toast.success(
 			{ component: MToast, props: { title, text } },
-			this.defaultOptions
+			this.defaultOptions,
 		)
 	}
 
 	static showError(
 		text: string = DefaultMessages.ERROR,
-		title: string = ''
+		title: string = '',
 	): void {
 		Vue.$toast.error(
 			{ component: MToast, props: { title, text } },
-			this.defaultOptions
+			this.defaultOptions,
 		)
 	}
 }

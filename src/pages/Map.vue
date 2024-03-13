@@ -7,7 +7,7 @@
 				<MapTable
 					:loading="isLoadingMaps"
 					:table="tableData"
-					:activeEditingItemId="rightMenuEditItemId"
+					:active-editing-item-id="rightMenuEditItemId"
 					@editClick="onEditClick"
 				/>
 			</v-container>
@@ -15,7 +15,7 @@
 
 		<MapRightMenu
 			:value="rightMenuEditModel"
-			:itemId="rightMenuEditItemId"
+			:item-id="rightMenuEditItemId"
 			@input="onInputRightMenuEditModel"
 		/>
 	</v-app>

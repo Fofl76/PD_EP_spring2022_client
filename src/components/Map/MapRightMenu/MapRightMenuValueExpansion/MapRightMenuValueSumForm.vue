@@ -4,12 +4,12 @@
 
 		<div class="MapRightMenuValueSumForm__row">
 			<v-text-field
+				ref="hours"
 				:value="sumHours"
 				:rules="rules"
 				:disabled="disabled"
 				label="Часы"
 				type="number"
-				ref="hours"
 				hide-details="auto"
 				dense
 				filled
@@ -18,12 +18,12 @@
 			/>
 
 			<v-text-field
+				ref="zet"
 				:value="sumZet"
 				:rules="rules"
 				:disabled="disabled"
 				label="ЗЕТ"
 				type="number"
-				ref="zet"
 				hide-details="auto"
 				dense
 				filled

@@ -2,16 +2,16 @@
 	<div class="MapTableMain" :style="styleVars">
 		<template v-if="!loading">
 			<!-- Левая колонка с линейкой ЗЕТ -->
-			<MapTableMainRulerColumn :maxZet="maxZet" :heightZet="heightZet" />
+			<MapTableMainRulerColumn :max-zet="maxZet" :height-zet="heightZet" />
 
 			<!-- Вынести в отдельный компонент -->
 			<div
-				class="MapTableMain__column"
 				v-for="(column, key) in table"
 				:key="key"
+				class="MapTableMain__column"
 			>
 				<!-- Шапка колонки с блоками -->
-				<MapTableMainColumnHeader :ordinalNumber="key" :columnData="column" />
+				<MapTableMainColumnHeader :ordinal-number="key" :column-data="column" />
 
 				<!-- Вынести в отдельный компонент -->
 				<draggable
@@ -19,20 +19,20 @@
 					v-bind="dragOptions"
 					:disabled="currentMode === modesEnum.View"
 					:value="table[key]"
-					:setData="setData"
+					:set-data="setData"
 					@change="onDragElementTable($event, key)"
 				>
 					<div v-for="element in column" :key="element.id">
 						<div>
 							<MapTableMainBlock
 								:data="dataValue(element)"
-								:isEditing="activeEditingItemId === element.id"
+								:is-editing="activeEditingItemId === element.id"
 								:class="{
 									isEditing: activeEditingItemId === element.id,
 									isViewOnly: currentMode === modesEnum.View,
 								}"
 								:height="heightTableBlock(element)"
-								:fitMode="fitMode"
+								:fit-mode="fitMode"
 								:total-zet="totalZet(element)"
 								@edit="$emit('edit', $event)"
 								@click.native="onClickBlock(element)"
@@ -45,14 +45,14 @@
 
 		<template v-else>
 			<!-- Левая колонка с линейкой ЗЕТ -->
-			<MapTableMainRulerColumn :maxZet="fakeMaxZet" :heightZet="heightZet" />
+			<MapTableMainRulerColumn :max-zet="fakeMaxZet" :height-zet="heightZet" />
 
 			<div
-				class="MapTableMain__column"
 				v-for="(column, key) in fakeElementsCount"
 				:key="key"
+				class="MapTableMain__column"
 			>
-				<MapTableMainColumnHeader :ordinalNumber="key" />
+				<MapTableMainColumnHeader :ordinal-number="key" />
 
 				<div v-for="item in 10" :key="item.id">
 					<MapTableMainSkeletonBlock />

@@ -1,5 +1,5 @@
 <template>
-	<MapHeaderDropdown class="MapHeaderAuthDropdown" v-model="isOpen">
+	<MapHeaderDropdown v-model="isOpen" class="MapHeaderAuthDropdown">
 		<template #activator>
 			<v-btn
 				class="MapHeaderAuthDropdownActivator"
@@ -28,19 +28,17 @@
 						</span>
 					</div>
 
-					<MChevron :isOpen="isOpen" />
+					<MChevron :is-open="isOpen" />
 				</div>
 			</v-btn>
 		</template>
 
-		<template>
-			<v-list-item class="MapHeaderDropdownListItem" @click="$emit('onLogout')">
-				<v-list-item-icon>
-					<v-icon :size="18">mdi-logout</v-icon>
-				</v-list-item-icon>
-				<v-list-item-title>Выйти </v-list-item-title>
-			</v-list-item>
-		</template>
+		<v-list-item class="MapHeaderDropdownListItem" @click="$emit('onLogout')">
+			<v-list-item-icon>
+				<v-icon :size="18">mdi-logout</v-icon>
+			</v-list-item-icon>
+			<v-list-item-title>Выйти </v-list-item-title>
+		</v-list-item>
 	</MapHeaderDropdown>
 </template>
 

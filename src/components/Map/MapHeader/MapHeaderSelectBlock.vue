@@ -15,8 +15,8 @@
 		/>
 
 		<MapHeaderYearSelect
-			style="max-width: 100px"
 			v-model="year"
+			style="max-width: 100px"
 			:items="yearItems"
 		/>
 	</div>
@@ -75,6 +75,14 @@ export default {
 		},
 	},
 
+	created() {
+		/* переделать на норм */
+		if (this.$route.query.aup) {
+			this.isLoadingFacultyInput = true
+			this.isLoadingDirectionInput = true
+		}
+	},
+
 	/* 	watch: {
 		facultyModel() {
 			if (!mapsService.aupCode) this.year = this.itemsYears[0]
@@ -90,7 +98,7 @@ export default {
 
 		findFacultyByUserFacultyId() {
 			return this.facultyItems.find(faculty => {
-				return faculty.faculty_id === authService.loggedUser.faculties?.[0];
+				return faculty.faculty_id === authService.loggedUser.faculties?.[0]
 			})
 		},
 
@@ -150,14 +158,6 @@ export default {
 			this.isLoadingFacultyInput = false
 			this.isLoadingDirectionInput = false
 		},
-	},
-
-	created() {
-		/* переделать на норм */
-		if (this.$route.query.aup) {
-			this.isLoadingFacultyInput = true
-			this.isLoadingDirectionInput = true
-		}
 	},
 }
 </script>

@@ -14,13 +14,13 @@
 					<v-simple-checkbox
 						color="#fff"
 						dense
+						:value="settings.showDetail"
 						@input="
 							$emit('settings-change', {
 								...settings,
 								showDetail: !settings.showDetail,
 							})
 						"
-						:value="settings.showDetail"
 					/>
 					Отображать дополнительную информацию
 				</div>
@@ -29,13 +29,13 @@
 					<v-simple-checkbox
 						dense
 						color="#fff"
+						:value="settings.showSuccess"
 						@input="
 							$emit('settings-change', {
 								...settings,
 								showSuccess: !settings.showSuccess,
 							})
 						"
-						:value="settings.showSuccess"
 					/>
 					Отображать успешные тесты
 				</div>
