@@ -6,15 +6,15 @@
 		"es2022": true
 	},
 
-	"parser": "vue-eslint-parser",
-
 	"parserOptions": {
 		"sourceType": "module"
 	},
 
 	"extends": [
 		"eslint-config-prettier",
+		"eslint:recommended",
 		"plugin:prettier/recommended",
+		"plugin:vue/recommended",
 		"@vue/eslint-config-prettier",
 		"@vue/eslint-config-typescript"
 	],
@@ -28,6 +28,7 @@
 		"vue/no-unused-components": "off",
 		"vue/multi-word-component-names": "off",
 		"no-mixed-spaces-and-tabs": "off",
+		"vue/no-reserved-component-names": "off",
 		"prettier/prettier": [
 			"error",
 			{
