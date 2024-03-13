@@ -1,6 +1,6 @@
 import Events from 'events'
-import { ITokens } from '@models/Auth'
-import { IUser } from '@models/Auth'
+import type { ITokens } from '@models/Auth'
+import type { IUser } from '@models/Auth'
 import jwtDecode from 'jwt-decode'
 
 export class TokenService extends Events {

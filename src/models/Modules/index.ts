@@ -1,1 +1,1 @@
-export { IModule } from './modulesModels'
+export type { IModule } from './modulesModels'

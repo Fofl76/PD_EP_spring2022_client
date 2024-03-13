@@ -2,7 +2,7 @@ import Events from 'events'
 import Api from '@services/api/Api'
 import tokenService, { TokenService } from './TokenService'
 import permissionService from './PermissionService'
-import { IUser } from '@models/Auth'
+import type { IUser } from '@models/Auth'
 import { RoleIdEnum } from '@models/Auth'
 import store from '@store/index'
 
@@ -34,7 +34,7 @@ class AuthService extends Events {
 		permissionService.setPermissions(
 			user.can_edit,
 			user.faculties,
-			user.role_id as RoleIdEnum
+			user.role_id as RoleIdEnum,
 		)
 
 		store.commit('Map/setAuthStatus', true)

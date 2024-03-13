@@ -1,8 +1,6 @@
-import IDirectionRaw from './IDirectionRaw'
+import type IDirectionRaw from './IDirectionRaw'
 
-interface IFacultyRaw {
+export default interface IFacultyRaw {
 	directions: IDirectionRaw[]
 	faculty_name: string
 }
-
-export default IFacultyRaw

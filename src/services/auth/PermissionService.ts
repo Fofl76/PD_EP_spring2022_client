@@ -1,4 +1,4 @@
-import Key from '@models/Key'
+import type { Key } from '@models/Key'
 import { RoleIdEnum } from '@models/Auth'
 import authService from './AuthService'
 
@@ -13,7 +13,11 @@ class PermissionService extends Events {
 		super()
 	}
 
-	setPermissions(availableAupList: Key[], faculties: Key[] = [], role_id: RoleIdEnum) {
+	setPermissions(
+		availableAupList: Key[],
+		faculties: Key[] = [],
+		role_id: RoleIdEnum,
+	) {
 		this.availableAupSet = new Set(availableAupList)
 		this.faculties = faculties
 		this.role = role_id
@@ -26,10 +30,7 @@ class PermissionService extends Events {
 	canEditAup(aup) {
 		if (!authService.loggedUser) return
 
-		return (
-			this.isRootAdmin() ||
-			this.availableAupSet.has(aup)
-		)
+		return this.isRootAdmin() || this.availableAupSet.has(aup)
 	}
 }
 

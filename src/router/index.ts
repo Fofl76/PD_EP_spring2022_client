@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import VueRouter, { RouteConfig } from 'vue-router'
+import VueRouter, { type RouteConfig } from 'vue-router'
 import Map from '../pages/Map.vue'
 
 const Check = () => import('../pages/Check.vue')

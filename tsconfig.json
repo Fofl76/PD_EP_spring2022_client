@@ -24,7 +24,8 @@
 			"@models/*": ["src/models/*"],
 			"@mixins/*": ["src/mixins/*"],
 			"@assets/*": ["src/assets/*"],
-			"@styles/*": ["src/styles/*"]
+			"@styles/*": ["src/styles/*"],
+			"@store/*": ["src/store/*"]
 		},
 		"lib": ["esnext", "dom", "dom.iterable", "scripthost"],
 		"incremental": false,

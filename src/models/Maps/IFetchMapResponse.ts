@@ -1,9 +1,7 @@
 import type IMapItemRaw from './IMapItemRaw'
 
-interface IFetchMapResponse {
+export default interface IFetchMapResponse {
 	data: IMapItemRaw[]
 	header: string[]
 	year: number
 }
-
-export default IFetchMapResponse

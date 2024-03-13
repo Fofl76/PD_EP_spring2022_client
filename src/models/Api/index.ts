@@ -1,3 +1,3 @@
-import IApiResponse from './IApiResponse'
+import type IApiResponse from './IApiResponse'
 
-export { IApiResponse }
+export type { IApiResponse }

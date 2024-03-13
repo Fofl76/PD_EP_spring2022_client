@@ -3,7 +3,7 @@ import _ from 'lodash'
 import {
 	getDiffObjects,
 	hasDiffObject,
-	IDiffsObjects,
+	type IDiffsObjects,
 } from '@utils/getDiffObjects'
 
 /**

@@ -1,4 +1,4 @@
-import {
+import type {
 	IFacultyRaw,
 	IMapItemRaw,
 	IControlTypeRaw,
@@ -15,7 +15,6 @@ import Vue from 'vue'
 import getRecalculatedColumn from './getRecalculatedColumn'
 import buildMapList from './buildMapsList'
 import unbuildMapList from './unbuildMapsList'
-import Key from '@models/Key'
 
 interface IControlTypesList {
 	value: IControlTypeRaw[]
