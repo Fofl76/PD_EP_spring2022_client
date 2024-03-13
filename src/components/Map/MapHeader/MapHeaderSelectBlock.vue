@@ -70,7 +70,7 @@ export default {
 
 		directionItemsByYear() {
 			return this.directionItems.filter(
-				direction => direction.year === this.year
+				direction => direction.year === this.year,
 			)
 		},
 	},
@@ -90,7 +90,7 @@ export default {
 
 		findFacultyByUserFacultyId() {
 			return this.facultyItems.find(faculty => {
-				return faculty.faculty_id === authService.loggedUser.faculties?.[0]
+				return faculty.faculty_id === authService.loggedUser.faculties?.[0];
 			})
 		},
 
@@ -106,7 +106,7 @@ export default {
 				...new Set(
 					faculty.directions
 						.map(direction => direction.year)
-						.sort((a, b) => b - a)
+						.sort((a, b) => b - a),
 				),
 			]
 
@@ -134,7 +134,8 @@ export default {
 		async updateFormFields() {
 			const aupCode = mapsService.aupCode
 
-			if (!aupCode) return this.setFaculty(this.findFacultyByUserFacultyId() || null)
+			if (!aupCode)
+				return this.setFaculty(this.findFacultyByUserFacultyId() || null)
 
 			this.setFaculty(this.findFacultyModelByAup(aupCode) || null)
 

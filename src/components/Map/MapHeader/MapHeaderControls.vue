@@ -277,7 +277,7 @@ export default {
 		},
 
 		downloadURL() {
-			return `${process.env.VUE_APP_API}/save_excel/${this.aupCode}`
+			return `${import.meta.env.VITE_API}/save_excel/${this.aupCode}`
 		},
 	},
 }

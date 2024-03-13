@@ -4,4 +4,5 @@ interface IDirectionRaw {
 	year: number
 }
 
+export { IDirectionRaw }
 export default IDirectionRaw

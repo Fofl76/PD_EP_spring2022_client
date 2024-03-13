@@ -1,5 +1,3 @@
-import IGroup from "./IGroup";
+import type IGroup from './IGroup'
 
-interface IFetchAllGroupsResponse extends IGroup {}
-
-export default IFetchAllGroupsResponse
+export default interface IFetchAllGroupsResponse extends IGroup {}

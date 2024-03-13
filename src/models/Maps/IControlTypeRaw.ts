@@ -1,9 +1,9 @@
 import Key from '@models/Key'
 
-interface IControlTypeRaw {
+const test = 'test'
+
+export default interface IControlTypeRaw {
 	name: string
 	id: Key
 	type: 'load' | 'control'
 }
-
-export default IControlTypeRaw

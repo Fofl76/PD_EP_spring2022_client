@@ -1,4 +1,4 @@
-import IMapItemRaw from './IMapItemRaw'
+import type IMapItemRaw from './IMapItemRaw'
 
 interface IFetchMapResponse {
 	data: IMapItemRaw[]

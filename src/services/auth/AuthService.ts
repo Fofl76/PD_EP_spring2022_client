@@ -31,7 +31,11 @@ class AuthService extends Events {
 	updateLoggedUser(user: IUser) {
 		this.loggedUser = user
 
-		permissionService.setPermissions(user.can_edit, user.faculties, user.role_id as RoleIdEnum )
+		permissionService.setPermissions(
+			user.can_edit,
+			user.faculties,
+			user.role_id as RoleIdEnum
+		)
 
 		store.commit('Map/setAuthStatus', true)
 		this.emit('updateUser', user)

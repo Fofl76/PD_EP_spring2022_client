@@ -1,0 +1,42 @@
+{
+	"root": true,
+
+	"env": {
+		"node": true,
+		"es2022": true
+	},
+
+	"parser": "vue-eslint-parser",
+
+	"parserOptions": {
+		"sourceType": "module"
+	},
+
+	"extends": [
+		"eslint-config-prettier",
+		"plugin:prettier/recommended",
+		"@vue/eslint-config-prettier",
+		"@vue/eslint-config-typescript"
+	],
+
+	"rules": {
+		"no-console": "off",
+		"no-debugger": "off",
+		"strict": "off",
+		"no-case-declarations": "off",
+		"no-unused-vars": "off",
+		"vue/no-unused-components": "off",
+		"vue/multi-word-component-names": "off",
+		"no-mixed-spaces-and-tabs": "off",
+		"prettier/prettier": [
+			"error",
+			{
+				"singleQuote": true,
+				"semi": false,
+				"useTabs": true,
+				"arrowParens": "avoid",
+				"endOfLine": "auto"
+			}
+		]
+	}
+}
