@@ -2,7 +2,7 @@
 	<v-select
 		v-model="_value"
 		class="MSelect"
-		:menu-props="{ offsetY: false }"
+		:menu-props="menuProps"
 		:items="items"
 		:item-text="itemText"
 		:no-data-text="noDataText"
@@ -61,6 +61,11 @@ export default {
 		},
 
 		disabled: {
+			type: Boolean,
+			default: false,
+		},
+
+		menuProps: {
 			type: Boolean,
 			default: false,
 		},

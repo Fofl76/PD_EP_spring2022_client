@@ -3,12 +3,12 @@
 		:value="selectedMode"
 		class="MapHeaderModeSelect"
 		label="Режим"
+		height="52"
 		:items="mappedItems"
 		item-value="key"
 		item-text="value.title"
 		:item-disabled="isDisabled"
 		:return-object="true"
-		height="52"
 		@change="onChangeMode"
 	/>
 </template>
