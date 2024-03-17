@@ -133,7 +133,7 @@
 								<div class="MapGroupsPopup__disciplines-title">
 									Назначенные дисциплины
 									<v-text-field
-							v-model="searchappointDisciplinesModel"
+							v-model="searchappointDisciplines_Model"
 							class="MapGroupsPopup__search"
 							label="Поиск дисциплины"
 							outlined
@@ -249,7 +249,7 @@ export default {
 
 		searchModel: '',
 		searchDisciplinesModel: '',
-		searchappointDisciplinesModel: '',
+		searchappointDisciplines_Model: '',
 
 		nameModel: '',
 		colorModel: '',
@@ -321,11 +321,11 @@ export default {
       })
     },
 	searchappointDisciplines() {
-      			return this.availableDisciplines.filter(el => {
+      			return this.appointedDisciplines.filter(el => {
         
         const name = el.discipline
         const lowered = name.toLowerCase()
-        const search = this.searchappointDisciplinesModel.toLowerCase()
+        const search = this.searchappointDisciplines_Model.toLowerCase()
         const res = lowered.includes(search)
 		
         return res
