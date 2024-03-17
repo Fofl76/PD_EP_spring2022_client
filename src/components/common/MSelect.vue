@@ -66,8 +66,8 @@ export default {
 		},
 
 		menuProps: {
-			type: Boolean,
-			default: false,
+			type: [String, Object],
+			default: '',
 		},
 	},
 
