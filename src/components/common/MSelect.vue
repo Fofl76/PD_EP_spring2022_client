@@ -17,6 +17,9 @@
 		v-bind="$attrs"
 		v-on="$listeners"
 	>
+		<template v-if="$scopedSlots.item" #item="item">
+			<slot name="item" v-bind="item" />
+		</template>
 	</v-select>
 </template>
 

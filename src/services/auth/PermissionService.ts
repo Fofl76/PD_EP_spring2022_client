@@ -29,6 +29,17 @@ class PermissionService extends Events {
 		return this.role === RoleIdEnum.Admin
 	}
 
+	canViewFaculty(faculty) {
+		// Если не только для админа, то просмотр возможен
+		if (faculty.admin_only === false) return true
+
+		// Если только для админа и пользователь с Ролью админ, то тоже можно
+		if (faculty.admin_only && this.isRootAdmin()) return true
+
+		// В остальных случаях пока нельзя
+		return false
+	}
+
 	canEditAup(aupCode: Key) {
 		if (!authService.loggedUser) return
 
