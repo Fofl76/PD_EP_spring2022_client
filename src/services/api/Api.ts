@@ -2,7 +2,7 @@ import type {
 	IFetchAllMapsListResponse,
 	IFetchMapResponse,
 	IFetchAllControlTypesResponse,
-	IUnitsOfMeasurement,
+	IFetchMetaInfo,
 } from '@models/Maps'
 import type { IFetchAllGroupsResponse, IGroup } from '@models/Groups'
 import type { IApiResponse } from '@models/Api'
@@ -98,8 +98,8 @@ abstract class Api {
 		return this.callFetch<IFetchAllGroupsResponse[]>(`getGroups`)
 	}
 
-	static fetchUnitsOfMeasurement() {
-		return this.callFetch<IUnitsOfMeasurement[]>('get_id_edizm')
+	static fetchMetaInfo() {
+		return this.callFetch<IFetchMetaInfo>('meta-info')
 	}
 
 	/**

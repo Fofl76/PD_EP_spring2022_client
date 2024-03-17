@@ -362,11 +362,11 @@ class MapsService extends Events {
 		this._unitsOfMeasurement.value = items
 	}
 
-	async fetchUnitsOfMeasurement() {
-		const { success, data } = await Api.fetchUnitsOfMeasurement()
+	async fetchMetaInfo() {
+		const { success, data } = await Api.fetchMetaInfo()
 
 		if (success && data) {
-			this.setUnitsOfMeasurement(data)
+			this.setUnitsOfMeasurement(data.measure_coefs)
 		}
 	}
 }

@@ -103,7 +103,7 @@ export default {
 	async created() {
 		await this.groupsService.fetchAllGroups()
 		await this.mapsService.fetchFacultiesList()
-		await this.mapsService.fetchUnitsOfMeasurement()
+		await this.mapsService.fetchMetaInfo()
 	},
 }
 </script>
