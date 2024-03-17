@@ -2,7 +2,7 @@ import { ModesEnum, type IModes } from '@models/Maps'
 
 const modes: IModes = {
 	[ModesEnum.View]: {
-		title: 'Режим просмотра',
+		title: 'Просмотр',
 		needPermission: false,
 	},
 	[ModesEnum.Map]: {
