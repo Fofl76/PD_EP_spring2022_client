@@ -9,6 +9,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     CheckInfo: typeof import('./src/components/Check/CheckInfo/CheckInfo.vue')['default']
     CheckTest: typeof import('./src/components/Check/CheckTest/CheckTest.vue')['default']
+    copy: typeof import('./src/components/Map/MapHeader/MapHeaderYearSelect copy.vue')['default']
     MapAuthPopup: typeof import('./src/components/Map/MapAuthPopup/MapAuthPopup.vue')['default']
     MapGroupsPopup: typeof import('./src/components/Map/MapGroupsPopup/MapGroupsPopup.vue')['default']
     MapGroupsPopupCreateTab: typeof import('./src/components/Map/MapGroupsPopup/MapGroupsPopupCreateTab.vue')['default']
@@ -20,6 +21,7 @@ declare module 'vue' {
     MapHeaderDirectionAutocomplete: typeof import('./src/components/Map/MapHeader/MapHeaderDirectionAutocomplete.vue')['default']
     MapHeaderDropdown: typeof import('./src/components/Map/MapHeader/MapHeaderDropdown.vue')['default']
     MapHeaderFacultySelect: typeof import('./src/components/Map/MapHeader/MapHeaderFacultySelect.vue')['default']
+    MapHeaderModeSelect: typeof import('./src/components/Map/MapHeader/MapHeaderModeSelect.vue')['default']
     MapHeaderSelectBlock: typeof import('./src/components/Map/MapHeader/MapHeaderSelectBlock.vue')['default']
     MapHeaderYearSelect: typeof import('./src/components/Map/MapHeader/MapHeaderYearSelect.vue')['default']
     MapModulesPopup: typeof import('./src/components/Map/MapModulesPopup/MapModulesPopup.vue')['default']

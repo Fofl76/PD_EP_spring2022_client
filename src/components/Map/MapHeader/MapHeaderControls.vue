@@ -29,39 +29,6 @@
 		</template>
 		<!--  -->
 
-		<!-- Режим редактирования -->
-		<MapHeaderDropdown v-if="isAuth">
-			<template #activator="{ on, attrs }">
-				<v-btn
-					outlined
-					block
-					text
-					dark
-					height="100%"
-					style="width: 220px"
-					v-bind="attrs"
-					v-on="on"
-				>
-					{{ modes[currentMode].title }}
-				</v-btn>
-			</template>
-
-			<v-list-item
-				v-for="(v, k) in modes"
-				:key="k"
-				class="MapHeaderDropdownListItem"
-				:class="{
-					'MapHeaderDropdownListItem--active': k === currentMode,
-				}"
-				:disabled="!canSelectMode(v)"
-				@click="setMode(k)"
-			>
-				<v-list-item-title>{{ v.title }}</v-list-item-title>
-			</v-list-item>
-		</MapHeaderDropdown>
-
-		<v-divider class="MapHeader__divider" vertical></v-divider>
-
 		<!-- Работа с файлами -->
 		<MapHeaderDropdown
 			icon="mdi-file-download"
@@ -132,14 +99,12 @@ import MapAuthPopup from '@components/Map/MapAuthPopup/MapAuthPopup.vue'
 import MapModulesPopup from '@components/Map/MapModulesPopup/MapModulesPopup.vue'
 import { ModesEnum } from '@models/Maps'
 
-import { mapGetters, mapMutations } from 'vuex'
-import withEventEmitter from '@mixins/withEventEmitter'
+import { mapGetters } from 'vuex'
 
 import mapsService from '@services/Maps/MapsService'
 import ToastService from '@services/ToastService'
 import Api from '@services/api/Api'
 import authService from '@services/auth/AuthService'
-import permissionService from '@services/auth/PermissionService'
 
 import downloadAsFile from '@services/utils/downloadAsFile'
 
@@ -155,8 +120,6 @@ export default {
 		MapAuthPopup,
 	},
 
-	mixins: [withEventEmitter('mapsService', 'mapsServiceHandlers')],
-
 	data() {
 		return {
 			uploadPopupModel: false,
@@ -165,16 +128,11 @@ export default {
 			modulesPopupModel: false,
 			isLoadingFile: false,
 			ModesEnum,
-
-			mapsService,
-			mapsServiceHandlers: {
-				fetchAup: this.setModeByChangeAup,
-			},
 		}
 	},
 
 	computed: {
-		...mapGetters('Map', ['isAuth', 'currentMode', 'modes']),
+		...mapGetters('Map', ['isAuth', 'currentMode']),
 		isReady() {
 			return !!mapsService.mapList.value.length
 		},
@@ -189,8 +147,6 @@ export default {
 	},
 
 	methods: {
-		...mapMutations('Map', ['setMode']),
-
 		openGroupSettingsPopupModel() {
 			this.groupSettingsPopupModel = true
 		},
@@ -260,23 +216,6 @@ export default {
 			} finally {
 				this.isLoadingFile = false
 			}
-		},
-
-		/* Дергаем после того как выбрали другую карту
-           Если есть права на редактирование, то по умолчанию режим КД, а
-           иначе режим просмотра
-        */
-		setModeByChangeAup() {
-			if (permissionService.canEditAup(this.aupCode))
-				return this.setMode(ModesEnum.Map)
-
-			this.setMode(ModesEnum.View)
-		},
-
-		canSelectMode(mode) {
-			if (!mode.needPermission) return true
-
-			return permissionService.canEditAup(this.aupCode)
 		},
 	},
 }

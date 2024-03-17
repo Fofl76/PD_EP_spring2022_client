@@ -1,5 +1,7 @@
 import type { Key } from '@models/Key'
 import { RoleIdEnum } from '@models/Auth'
+import { type IMode } from '@models/Maps'
+
 import authService from './AuthService'
 
 import Events from 'events'
@@ -27,10 +29,16 @@ class PermissionService extends Events {
 		return this.role === RoleIdEnum.Admin
 	}
 
-	canEditAup(aup) {
+	canEditAup(aupCode: Key) {
 		if (!authService.loggedUser) return
 
-		return this.isRootAdmin() || this.availableAupSet.has(aup)
+		return this.isRootAdmin() || this.availableAupSet.has(aupCode)
+	}
+
+	canSelectMode(mode: IMode, aupCode: Key) {
+		if (!mode.needPermission) return true
+
+		return this.canEditAup(aupCode)
 	}
 }
 

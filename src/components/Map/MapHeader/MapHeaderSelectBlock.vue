@@ -19,6 +19,8 @@
 			style="max-width: 100px"
 			:items="yearItems"
 		/>
+
+		<MapHeaderModeSelect v-if="isAuth" style="max-width: 250px" />
 	</div>
 </template>
 
@@ -32,7 +34,10 @@ import authService from '@services/auth/AuthService'
 import MapHeaderDirectionAutocomplete from '@components/Map/MapHeader/MapHeaderDirectionAutocomplete.vue'
 import MapHeaderFacultySelect from '@components/Map/MapHeader/MapHeaderFacultySelect.vue'
 import MapHeaderYearSelect from '@components/Map/MapHeader/MapHeaderYearSelect.vue'
+import MapHeaderModeSelect from '@components/Map/MapHeader/MapHeaderModeSelect.vue'
 import getCurrentYear from '@services/utils/getCurrentYear'
+
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
 	name: 'MapHeaderSelectBlock',
@@ -40,6 +45,7 @@ export default {
 		MapHeaderFacultySelect,
 		MapHeaderDirectionAutocomplete,
 		MapHeaderYearSelect,
+		MapHeaderModeSelect,
 	},
 
 	mixins: [withEventEmitter('mapsService', 'mapsServiceHandlers')],
@@ -64,6 +70,8 @@ export default {
 	},
 
 	computed: {
+		...mapGetters('Map', ['isAuth', 'currentMode', 'modes']),
+
 		facultyItems() {
 			return mapsService.facultiesList.value
 		},
@@ -75,14 +83,6 @@ export default {
 		},
 	},
 
-	created() {
-		/* переделать на норм */
-		if (this.$route.query.aup) {
-			this.isLoadingFacultyInput = true
-			this.isLoadingDirectionInput = true
-		}
-	},
-
 	/* 	watch: {
 		facultyModel() {
 			if (!mapsService.aupCode) this.year = this.itemsYears[0]
@@ -90,6 +90,8 @@ export default {
 	}, */
 
 	methods: {
+		...mapMutations('Map', ['setMode']),
+
 		findFacultyModelByAup(aup) {
 			return this.facultyItems.find(faculty => {
 				return faculty.directions.some(direction => direction.code === aup)
@@ -158,6 +160,14 @@ export default {
 			this.isLoadingFacultyInput = false
 			this.isLoadingDirectionInput = false
 		},
+	},
+
+	created() {
+		/* переделать на норм */
+		if (this.$route.query.aup) {
+			this.isLoadingFacultyInput = true
+			this.isLoadingDirectionInput = true
+		}
 	},
 }
 </script>

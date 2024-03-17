@@ -1,6 +1,6 @@
-import { ModesEnum } from '@models/Maps'
+import { ModesEnum, type IModes } from '@models/Maps'
 
-const modes = {
+const modes: IModes = {
 	[ModesEnum.View]: {
 		title: 'Режим просмотра',
 		needPermission: false,
