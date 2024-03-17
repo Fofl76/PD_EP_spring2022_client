@@ -2,7 +2,7 @@
 	<v-select
 		v-model="_value"
 		class="MSelect"
-		:menu-props="{ offsetY: false }"
+		:menu-props="menuProps"
 		:items="items"
 		:item-text="itemText"
 		:no-data-text="noDataText"
@@ -17,6 +17,15 @@
 		v-bind="$attrs"
 		v-on="$listeners"
 	>
+		<template #item="item">
+			<slot name="item" v-bind="item" />
+		</template>
+		<template v-for="(_, name) in $scopedSlots" #[name]="scope">
+			<slot :name="name" v-bind="scope" />
+		</template>
+		<template v-for="(_, name) in $slots" #[name]>
+			<slot :name="name" />
+		</template>
 	</v-select>
 </template>
 
@@ -63,6 +72,10 @@ export default {
 		disabled: {
 			type: Boolean,
 			default: false,
+		},
+		menuProps: {
+			type: [String, Object],
+			default: '',
 		},
 	},
 

@@ -3,7 +3,7 @@
 		<MapHeaderFacultySelect
 			:value="facultyModel"
 			:loading="isLoadingFacultyInput"
-			:items="facultyItems"
+			:items="filteredFacultyItems"
 			@input="setFaculty"
 		/>
 
@@ -42,7 +42,10 @@ export default {
 		MapHeaderYearSelect,
 	},
 
-	mixins: [withEventEmitter('mapsService', 'mapsServiceHandlers')],
+	mixins: [
+		withEventEmitter('mapsService', 'mapsServiceHandlers'),
+		withEventEmitter('authService', 'authServiceHandlers'),
+	],
 
 	data() {
 		return {
@@ -52,20 +55,46 @@ export default {
 
 			mapsService,
 			mapsServiceHandlers: {
-				fetchFaculties: this.updateFormFields,
+				setFacultiesList: this.updateFormFields,
 			},
 
-			yearItems: [],
+			authService,
+			authServiceHandlers: {
+				updateUser: this.callRefreshKey,
+			},
+
 			directionItems: [],
+			yearItems: [],
 
 			isLoadingFacultyInput: false,
 			isLoadingDirectionInput: false,
+
+			refreshKey: 0,
 		}
 	},
 
 	computed: {
 		facultyItems() {
 			return mapsService.facultiesList.value
+		},
+
+		// Доступные факультеты, т.к. некоторые могут быть скрыты из общего доступа
+		filteredFacultyItems() {
+			/* 
+				Не удалять. refreshKey нужно, чтобы дергать
+			    этот компьютед для перерасчета после авторизации пользователя.
+				Используется в ситуации когда пользователь не авторизован и у него не видны
+				скрытые факультеты, но после авторизации под учеткой Админа, нужно дернуть этот метод
+				для перерасчета видимых факультетов.
+
+				vite-ignore нужен для того, чтобы сборщик не удалил эту строку в итоговом билде
+			*/
+			/* @vite-ignore */
+			this.refreshKey
+
+			return this.facultyItems.filter(faculty =>
+				permissionService.canViewFaculty(faculty),
+			)
 		},
 
 		directionItemsByYear() {
@@ -157,6 +186,10 @@ export default {
 
 			this.isLoadingFacultyInput = false
 			this.isLoadingDirectionInput = false
+		},
+
+		callRefreshKey() {
+			this.refreshKey += 1
 		},
 	},
 }
