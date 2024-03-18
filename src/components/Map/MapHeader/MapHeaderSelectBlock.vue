@@ -138,6 +138,8 @@ export default {
 		},
 
 		setFaculty(faculty) {
+			if (!faculty) return
+
 			this.facultyModel = faculty
 
 			/* Собираем все года всех карт на факультете */
