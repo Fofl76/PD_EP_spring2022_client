@@ -38,6 +38,7 @@ declare module 'vue' {
     MapTable: typeof import('./src/components/Map/MapTable/MapTable.vue')['default']
     MapTableMain: typeof import('./src/components/Map/MapTable/MapTableMain.vue')['default']
     MapTableMainBlock: typeof import('./src/components/Map/MapTable/MapTableMainBlock.vue')['default']
+    MapTableMainBlockButton: typeof import('./src/components/Map/MapTable/MapTableMainBlockButton.vue')['default']
     MapTableMainBlockEditButton: typeof import('./src/components/Map/MapTable/MapTableMainBlockEditButton.vue')['default']
     MapTableMainColumnHeader: typeof import('./src/components/Map/MapTable/MapTableMainColumnHeader.vue')['default']
     MapTableMainColumnHeaderDetails: typeof import('./src/components/Map/MapTable/MapTableMainColumnHeaderDetails.vue')['default']

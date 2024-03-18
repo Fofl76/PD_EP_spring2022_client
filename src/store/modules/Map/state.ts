@@ -13,6 +13,12 @@ const modes: IModes = {
 		title: 'Редактирование АУП',
 		needPermission: true,
 	},
+
+	[ModesEnum.Progress]: {
+		title: 'Успеваемость',
+		needPermission: true,
+		onlyAdmin: true,
+	},
 }
 
 const state = {

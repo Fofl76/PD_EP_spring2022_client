@@ -17,7 +17,9 @@
 				<draggable
 					class="MapTableMain__draggable"
 					v-bind="dragOptions"
-					:disabled="currentMode === modesEnum.View"
+					:disabled="
+						currentMode === modesEnum.View || currentMode === modesEnum.Progress
+					"
 					:value="table[key]"
 					:set-data="setData"
 					@change="onDragElementTable($event, key)"
@@ -29,12 +31,15 @@
 								:is-editing="activeEditingItemId === element.id"
 								:class="{
 									isEditing: activeEditingItemId === element.id,
-									isViewOnly: currentMode === modesEnum.View,
+									isViewOnly:
+										currentMode === modesEnum.View ||
+										currentMode === modesEnum.Progress,
 								}"
 								:height="heightTableBlock(element)"
 								:fit-mode="fitMode"
 								:total-zet="totalZet(element)"
 								@edit="$emit('edit', $event)"
+								@linkProgress="onLinkProgress"
 								@click.native="onClickBlock(element)"
 							/>
 						</div>
@@ -208,6 +213,14 @@ export default {
 
 		setData(dataTransfer) {
 			dataTransfer.setDragImage(document.createElement('div'), 0, 0)
+		},
+
+		onLinkProgress(item) {
+			const cabinetUrl = import.meta.env.VITE_CABINET_LESSONS_URL
+			const aup = MapsService.aupCode
+			const id = item.id_unique_discipline || 0
+
+			window.open(`${cabinetUrl}?aup=${aup}&id=${id}`, '_blank').focus()
 		},
 
 		onClickBlock(item) {

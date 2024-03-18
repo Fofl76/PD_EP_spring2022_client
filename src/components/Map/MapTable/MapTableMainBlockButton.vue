@@ -1,13 +1,13 @@
 <template>
 	<v-btn
-		class="MapTableMainBlockEditButton"
+		class="MapTableMainBlockButton"
 		:class="{ darkMode }"
 		x-small
 		fab
 		icon
 		@click="onClick"
 	>
-		<v-icon dark>mdi-pen</v-icon>
+		<v-icon dark>{{ icon }}</v-icon>
 	</v-btn>
 </template>
 
@@ -16,6 +16,11 @@ export default {
 	name: 'MapTableMainBlockEditButton',
 
 	props: {
+		icon: {
+			type: String,
+			default: 'mdi-pen',
+		},
+
 		darkMode: {
 			type: Boolean,
 			default: false,
@@ -31,7 +36,7 @@ export default {
 </script>
 
 <style lang="sass">
-.MapTableMainBlockEditButton
+.MapTableMainBlockButton
     position: absolute
     right: 8px
     top: 8px

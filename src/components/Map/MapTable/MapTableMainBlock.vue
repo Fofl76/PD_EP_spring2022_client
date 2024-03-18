@@ -19,10 +19,18 @@
 				<span>{{ disciplineName }}</span>
 			</v-tooltip>
 
-			<MapTableMainBlockEditButton
+			<MapTableMainBlockButton
 				v-if="showEditButton"
 				:dark-mode="needIsDarkMode"
+				icon="mdi-pen"
 				@click="onEdit"
+			/>
+
+			<MapTableMainBlockButton
+				v-if="showLinkProgressButton"
+				:dark-mode="needIsDarkMode"
+				icon="mdi-link"
+				@click="onLinkProgress"
 			/>
 		</div>
 	</div>
@@ -33,12 +41,12 @@ import { mapGetters } from 'vuex'
 import determinateTextColor from '@utils/determinateTextColor'
 import shadeColor from '@utils/shadeColor'
 
-import MapTableMainBlockEditButton from '@components/Map/MapTable/MapTableMainBlockEditButton.vue'
+import MapTableMainBlockButton from '@components/Map/MapTable/MapTableMainBlockButton.vue'
 import { ModesEnum } from '@models/Maps'
 
 export default {
 	name: 'MapTableMainBlock',
-	components: { MapTableMainBlockEditButton },
+	components: { MapTableMainBlockButton },
 
 	props: {
 		data: {
@@ -74,6 +82,10 @@ export default {
 			return !this.isEditing && this.currentMode === ModesEnum.Aup
 		},
 
+		showLinkProgressButton() {
+			return this.currentMode === ModesEnum.Progress
+		},
+
 		backgroundColor() {
 			return this.data.group?.color || '#ffffff'
 		},
@@ -104,6 +116,10 @@ export default {
 		onEdit() {
 			this.$emit('edit', this.data.element)
 		},
+
+		onLinkProgress() {
+			this.$emit('linkProgress', this.data.element)
+		},
 	},
 }
 </script>
@@ -125,12 +141,12 @@ export default {
     transition: box-shadow .25s ease
     background-color: var(--background-color)
 
-    .MapTableMainBlockEditButton
+    .MapTableMainBlockButton
         opacity: 0
         transition: opacity .25s ease
 
     &:hover
-        .MapTableMainBlockEditButton
+        .MapTableMainBlockButton
             opacity: 1
 
     &__wrapper

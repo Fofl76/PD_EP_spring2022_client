@@ -48,6 +48,7 @@ class PermissionService extends Events {
 
 	canSelectMode(mode: IMode, aupCode: Key) {
 		if (!mode.needPermission) return true
+		if (!mode.onlyAdmin && this.isRootAdmin()) return true
 
 		return this.canEditAup(aupCode)
 	}
