@@ -101,9 +101,9 @@ export default {
 	},
 
 	async created() {
-		await this.groupsService.fetchAllGroups()
-		await this.mapsService.fetchFacultiesList()
-		await this.mapsService.fetchMetaInfo()
+		this.groupsService.fetchAllGroups()
+		this.mapsService.fetchFacultiesList()
+		this.mapsService.fetchMetaInfo()
 	},
 }
 </script>
