@@ -6,7 +6,7 @@
 					{{ m.title }}
 				</v-list-item>
 			</template>
-			<div class="MapModulesPopupList__empty" v-else>
+			<div v-else class="MapModulesPopupList__empty">
 				<MDataPreloader light>
 					<template #title> Нет данных </template>
 				</MDataPreloader>

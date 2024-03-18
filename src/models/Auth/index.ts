@@ -1,4 +1,4 @@
-import Key from '@models/Key'
+import type Key from '@models/Key'
 
 export interface ITokens {
 	access: string

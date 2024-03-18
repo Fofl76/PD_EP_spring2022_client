@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"target": "es5",
+		"target": "esnext",
 		"module": "esnext",
 		"strict": true,
 		"jsx": "preserve",
@@ -13,8 +13,9 @@
 		"forceConsistentCasingInFileNames": true,
 		"useDefineForClassFields": true,
 		"sourceMap": true,
+		"verbatimModuleSyntax": true,
 		"baseUrl": ".",
-		"types": ["node", "webpack-env"],
+		"types": ["node", "vite/client"],
 		"paths": {
 			"@components/*": ["src/components/*"],
 			"@services/*": ["src/services/*"],
@@ -22,14 +23,14 @@
 			"@api/*": ["src/services/api/*"],
 			"@models/*": ["src/models/*"],
 			"@mixins/*": ["src/mixins/*"],
-			"@store/*": ["src/store/*"],
 			"@assets/*": ["src/assets/*"],
-			"@styles/*": ["src/styles/*"]
+			"@styles/*": ["src/styles/*"],
+			"@store/*": ["src/store/*"]
 		},
 		"lib": ["esnext", "dom", "dom.iterable", "scripthost"],
 		"incremental": false,
 		"noImplicitAny": false
 	},
-	"include": ["./src/**/*"],
+	"include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
 	"exclude": ["node_modules"]
 }

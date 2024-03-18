@@ -36,9 +36,9 @@
 				</div>
 
 				<input
+					ref="fileInput"
 					class="MUploadFileDragArea__file-input"
 					type="file"
-					ref="fileInput"
 					:accept="accessTypes.join(', ')"
 					@input="onInputFileInput"
 				/>
@@ -47,9 +47,9 @@
 
 		<div v-if="uploadedFiles.length > 0">
 			<div
-				class="MUploadFileDragArea__files-list"
 				v-for="item in uploadedFiles"
 				:key="item.name"
+				class="MUploadFileDragArea__files-list"
 			>
 				<v-list-item
 					dense
@@ -60,7 +60,7 @@
 					}"
 				>
 					<v-tooltip top>
-						<template v-slot:activator="{ on }">
+						<template #activator="{ on }">
 							<v-list-item-content v-on="on">
 								<v-list-item-title>
 									{{ item.name }}
@@ -71,7 +71,7 @@
 					</v-tooltip>
 
 					<v-list-item-action>
-						<v-btn @click="removeFile(item.name)" icon :loading="loading">
+						<v-btn icon :loading="loading" @click="removeFile(item.name)">
 							<v-icon> mdi-close-circle </v-icon>
 						</v-btn>
 					</v-list-item-action>
@@ -179,7 +179,7 @@ export default {
 				const files = Array.from(e.dataTransfer.files)
 
 				const filteredFiles = files.filter(file =>
-					this.accessTypes.includes(file.type)
+					this.accessTypes.includes(file.type),
 				)
 				if (filteredFiles.length === 0) return
 				this.uploadedFiles = files

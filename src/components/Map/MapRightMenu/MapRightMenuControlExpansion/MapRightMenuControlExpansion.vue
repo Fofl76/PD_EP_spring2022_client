@@ -6,29 +6,27 @@
 			</div>
 		</template>
 
-		<template>
-			<div class="MapRightMenuControlExpansion__content">
-				<v-radio-group
-					class="MapRightMenuControlExpansion__radio-group"
-					:value="currentControlTypeId"
-					@change="onChange"
-					hide-details="auto"
+		<div class="MapRightMenuControlExpansion__content">
+			<v-radio-group
+				class="MapRightMenuControlExpansion__radio-group"
+				:value="currentControlTypeId"
+				hide-details="auto"
+				@change="onChange"
+			>
+				<v-radio
+					v-for="control in allControlTypes"
+					:key="control.id"
+					class="MapRightMenuControlExpansion__radio"
+					:value="control.id"
 				>
-					<v-radio
-						class="MapRightMenuControlExpansion__radio"
-						v-for="control in allControlTypes"
-						:key="control.id"
-						:value="control.id"
-					>
-						<template #label>
-							<div class="MapRightMenuControlExpansion__label">
-								{{ control.name }}
-							</div>
-						</template>
-					</v-radio>
-				</v-radio-group>
-			</div>
-		</template>
+					<template #label>
+						<div class="MapRightMenuControlExpansion__label">
+							{{ control.name }}
+						</div>
+					</template>
+				</v-radio>
+			</v-radio-group>
+		</div>
 	</MapRightMenuExpansion>
 </template>
 

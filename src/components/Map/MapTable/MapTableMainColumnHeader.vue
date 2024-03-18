@@ -1,7 +1,7 @@
 <template>
 	<div class="MapTableMainColumnHeader">
 		<MapTableMainColumnHeaderDetails
-			:activatorText="orderWords[ordinalNumber]"
+			:activator-text="orderWords[ordinalNumber]"
 			:items="columnData"
 		/>
 	</div>

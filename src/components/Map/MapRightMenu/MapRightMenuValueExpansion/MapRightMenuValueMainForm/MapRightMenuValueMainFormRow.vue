@@ -9,7 +9,7 @@
 				v-if="isIndependentWork"
 				class="MapRightMenuValueMainFormRow__hint-independent"
 			>
-				<MHint :top="false" maxWidth="200px" bottom>
+				<MHint :top="false" max-width="200px" bottom>
 					<div>
 						Настройка значений у этого поля ограничена. Остаток суммы будет
 						автоматически назначаться в СРС
@@ -20,12 +20,12 @@
 
 		<div class="MapRightMenuValueMainFormRow__input-row">
 			<v-text-field
+				ref="hours"
 				:value="hours"
 				:rules="rules"
 				:disabled="isIndependentWork"
 				:label="isWeekAmount ? 'Недели' : 'Часы'"
 				type="number"
-				ref="hours"
 				:hide-details="'auto'"
 				dense
 				filled
@@ -34,6 +34,7 @@
 			/>
 
 			<v-text-field
+				ref="zet"
 				:value="zet"
 				:rules="rules"
 				:disabled="isIndependentWork"
@@ -41,7 +42,6 @@
 				:min="1"
 				:max="10"
 				type="number"
-				ref="zet"
 				:hide-details="'auto'"
 				dense
 				filled
@@ -74,8 +74,6 @@ import MHint from '@components/common/MHint.vue'
 import { ValueAmountTypeEnum } from '@models/Maps/IMapItemValueRaw'
 import MapsService from '@services/Maps/MapsService'
 
-import _ from 'lodash'
-
 export default {
 	name: 'MapRightMenuValueMainFormRow',
 	components: { MHint },
@@ -106,7 +104,7 @@ export default {
 		getControlTypesLabel() {
 			return control_id => {
 				return this.MapsService.controlTypes.value.find(
-					item => item.id === control_id
+					item => item.id === control_id,
 				)?.name
 			}
 		},
@@ -119,7 +117,7 @@ export default {
 			set(newZet) {
 				const hours = this.MapsService.convertZetToHours(
 					newZet,
-					this.unitOfMeasurement
+					this.unitOfMeasurement,
 				)
 				this.onInputHours(this.index, hours)
 			},
@@ -129,7 +127,7 @@ export default {
 
 				return this.MapsService.convertHoursToZet(
 					amount,
-					this.unitOfMeasurement
+					this.unitOfMeasurement,
 				)
 			},
 		},

@@ -1,9 +1,7 @@
-import Key from '@models/Key'
+import type { Key } from '@models/Key'
 
-interface IControlTypeRaw {
+export default interface IControlTypeRaw {
 	name: string
 	id: Key
 	type: 'load' | 'control'
 }
-
-export default IControlTypeRaw

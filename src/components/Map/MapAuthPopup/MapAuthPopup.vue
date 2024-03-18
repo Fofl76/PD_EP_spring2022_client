@@ -17,8 +17,8 @@
 
 				<div class="MapAuthPopup__input-block">
 					<v-text-field
-						class="MapAuthPopup__input"
 						v-model="form.username"
+						class="MapAuthPopup__input"
 						hide-details="auto"
 						label="Логин"
 						filled
@@ -29,8 +29,8 @@
 
 				<div class="MapAuthPopup__input-block">
 					<v-text-field
-						class="MapAuthPopup__input"
 						v-model="form.password"
+						class="MapAuthPopup__input"
 						hide-details="auto"
 						label="Пароль"
 						type="password"

@@ -4,6 +4,7 @@
 			<div class="MapGroupsPopupCreateTab__header text-h5">Cоздание группы</div>
 			<div class="MapGroupsPopupCreateTab__row">
 				<v-text-field
+					ref="createNameGroupInput"
 					v-model="newItemForm.nameModel"
 					class="MapGroupsPopup__name-group"
 					label="Наименование группировки"
@@ -11,17 +12,16 @@
 					dense
 					hide-details="auto"
 					:rules="nameRules"
-					ref="createNameGroupInput"
 				></v-text-field>
 
 				<v-menu offset-y :close-on-content-click="false">
-					<template v-slot:activator="{ on, attrs }">
+					<template #activator="{ on, attrs }">
 						<v-btn
 							:color="newItemForm.color"
 							v-bind="attrs"
-							v-on="on"
 							class="ml-2"
 							min-height="40px"
+							v-on="on"
 						>
 							Цвет
 						</v-btn>
@@ -44,9 +44,9 @@
 					color="success"
 					min-height="40px"
 					block
-					@click="addModel"
 					:disabled="isDisableAddGroups"
 					:loading="isLoadingAddGroups"
+					@click="addModel"
 				>
 					Создать
 				</v-btn>
@@ -60,17 +60,17 @@
 				<v-select
 					v-model="newGroup"
 					:items="sortedGroupsStreetDisciplinesBangFacultyBlats"
-					itemText="name"
+					item-text="name"
 					outlined
 					return-object
 					dense
 				/>
 				<v-btn
-					@click="$emit('addGroup', newGroup)"
 					:disabled="!newGroup"
 					color="success"
 					height="40"
 					class="ml-2"
+					@click="$emit('addGroup', newGroup)"
 				>
 					Добавить
 				</v-btn>

@@ -1,4 +1,4 @@
-import {
+import type {
 	IFacultyRaw,
 	IMapItemRaw,
 	IControlTypeRaw,
@@ -15,7 +15,6 @@ import Vue from 'vue'
 import getRecalculatedColumn from './getRecalculatedColumn'
 import buildMapList from './buildMapsList'
 import unbuildMapList from './unbuildMapsList'
-import Key from '@models/Key'
 
 interface IControlTypesList {
 	value: IControlTypeRaw[]
@@ -187,7 +186,7 @@ class MapsService extends Events {
 
 		const { success, data } = await Api.saveMap(
 			aupCode,
-			mapList || unbuildMapList(this._mapList.value)
+			mapList || unbuildMapList(this._mapList.value),
 		)
 
 		if (success) {
@@ -300,7 +299,7 @@ class MapsService extends Events {
 
 	convertHoursToZet(
 		hours: number,
-		unitOfMeasurement: ValueAmountTypeEnum = ValueAmountTypeEnum.HOUR
+		unitOfMeasurement: ValueAmountTypeEnum = ValueAmountTypeEnum.HOUR,
 	) {
 		if (unitOfMeasurement === ValueAmountTypeEnum.WEEK)
 			return hours * this.WEEKQUEALSZET
@@ -309,7 +308,7 @@ class MapsService extends Events {
 
 	convertZetToHours(
 		zet: number,
-		unitOfMeasurement: ValueAmountTypeEnum = ValueAmountTypeEnum.HOUR
+		unitOfMeasurement: ValueAmountTypeEnum = ValueAmountTypeEnum.HOUR,
 	) {
 		if (unitOfMeasurement === ValueAmountTypeEnum.WEEK)
 			return zet / this.WEEKQUEALSZET
@@ -363,11 +362,11 @@ class MapsService extends Events {
 		this._unitsOfMeasurement.value = items
 	}
 
-	async fetchUnitsOfMeasurement() {
-		const { success, data } = await Api.fetchUnitsOfMeasurement()
+	async fetchMetaInfo() {
+		const { success, data } = await Api.fetchMetaInfo()
 
 		if (success && data) {
-			this.setUnitsOfMeasurement(data)
+			this.setUnitsOfMeasurement(data.measure_coefs)
 		}
 	}
 }

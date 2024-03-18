@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import Api from '@api/Api'
-import Key from '@models/Key'
-import { IGroup } from '@models/Groups'
+import type { Key } from '@models/Key'
+import type { IGroup } from '@models/Groups'
 import Events from 'events'
 import Vue from 'vue'
 
@@ -37,7 +37,7 @@ class GroupsService extends Events {
 				set() {
 					throw new Error('is readonly')
 				},
-			}
+			},
 		)
 	}
 
@@ -56,7 +56,7 @@ class GroupsService extends Events {
 
 	async deleteGroupLocal(idGroup: number) {
 		this._groupsList.value = this._groupsList.value.filter(
-			el => el.id !== idGroup
+			el => el.id !== idGroup,
 		)
 	}
 

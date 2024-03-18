@@ -1,7 +1,4 @@
-import IFetchAllGroupsResponse from './IFetchAllGroupsResponse'
-import IGroup from './IGroup'
+import type IFetchAllGroupsResponse from './IFetchAllGroupsResponse'
+import type IGroup from './IGroup'
 
-export {
-  IFetchAllGroupsResponse,
-  IGroup,
-}
+export type { IFetchAllGroupsResponse, IGroup }

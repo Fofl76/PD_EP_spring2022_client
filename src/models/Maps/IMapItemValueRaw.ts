@@ -1,4 +1,4 @@
-interface IMapItemValueRaw {
+export default interface IMapItemValueRaw {
 	amount: number
 	amount_type: ValueAmountTypeEnum
 	control_type_id: number
@@ -11,5 +11,4 @@ enum ValueAmountTypeEnum {
 	WEEK = 'week',
 }
 
-export { IMapItemValueRaw, ValueAmountTypeEnum }
-export default IMapItemValueRaw
+export { type IMapItemValueRaw, ValueAmountTypeEnum }

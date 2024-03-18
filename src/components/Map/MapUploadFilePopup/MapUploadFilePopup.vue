@@ -1,7 +1,7 @@
 <template>
 	<v-dialog
-		class="MapUploadFilePopup"
 		v-model="_value"
+		class="MapUploadFilePopup"
 		max-width="500"
 		persistent
 	>
@@ -15,11 +15,11 @@
 			<v-card-text class="MapUploadFilePopup__text">
 				<MUploadFileDragArea
 					:value="sortedSelectedItems"
-					:accessTypes="accessTypes"
+					:access-types="accessTypes"
 					:info="infoUploadedFiles"
 					:loading="isLoadingUploadFile"
 					icon="mdi-file-excel"
-					badgeLabel=".xlsx, .xls"
+					badge-label=".xlsx, .xls"
 					multiple
 					@input="onInput"
 					@drop="clearInfoUploadedFiles"
@@ -140,7 +140,7 @@ export default {
 		onRemoveFile(fileName) {
 			console.log('remove', fileName)
 			const index = this.form.selectedFiles.findIndex(
-				file => file.name === fileName
+				file => file.name === fileName,
 			)
 
 			if (index > -1) this.form.selectedFiles.splice(index, 1)
@@ -158,7 +158,7 @@ export default {
 				JSON.stringify({
 					checkboxIntegralityModel: this.form.checkboxIntegralityModel,
 					checkboxSumModel: this.form.checkboxSumModel,
-				})
+				}),
 			),
 				(this.isLoadingUploadFile = true)
 
@@ -180,7 +180,7 @@ export default {
 					if (info.errors.length === 0 && hasErrors)
 						ToastService.showSuccess(
 							'Файл был успешно загружен',
-							`АУП: ${info.aup}`
+							`АУП: ${info.aup}`,
 						)
 
 					if (info.errors.length > 0)

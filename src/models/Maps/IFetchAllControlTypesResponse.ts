@@ -1,5 +1,4 @@
-import IControlTypeRaw from './IControlTypeRaw'
+import type IControlTypeRaw from './IControlTypeRaw'
 
-interface IFetchAllControlTypesResponse extends IControlTypeRaw {}
-
-export default IFetchAllControlTypesResponse
+export default interface IFetchAllControlTypesResponse
+	extends IControlTypeRaw {}

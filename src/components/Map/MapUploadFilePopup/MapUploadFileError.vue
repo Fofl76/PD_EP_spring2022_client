@@ -1,11 +1,11 @@
 <template>
-	<div class="MapUploadFileError" v-if="data.errors">
+	<div v-if="data.errors" class="MapUploadFileError">
 		<div
-			class="MapUploadFileErrorBlock__wrapper"
 			v-for="(error, i) in data.errors"
 			:key="i"
+			class="MapUploadFileErrorBlock__wrapper"
 		>
-			<div class="MapUploadFileErrorBlock__error-header" v-if="i === 0">
+			<div v-if="i === 0" class="MapUploadFileErrorBlock__error-header">
 				<v-chip
 					class="MapUploadFileErrorBlock__chip"
 					color="red"
@@ -23,8 +23,8 @@
 
 					<div v-if="error.cells" class="MapUploadFileErrorBlock__error-cells">
 						<v-chip
-							v-for="(cell, i) in error.cells"
-							:key="i"
+							v-for="(cell, j) in error.cells"
+							:key="j"
 							class="MapUploadFileErrorBlock__chip"
 							small
 						>

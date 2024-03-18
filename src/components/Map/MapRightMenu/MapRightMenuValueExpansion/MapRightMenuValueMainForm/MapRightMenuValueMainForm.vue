@@ -22,16 +22,16 @@ export default {
 	name: 'MapRightMenuValueMainForm',
 	components: { MapRightMenuValueMainFormRow },
 
-	data: () => ({
-		MapsService,
-	}),
-
 	props: {
 		values: {
 			type: Array,
 			default: () => [],
 		},
 	},
+
+	data: () => ({
+		MapsService,
+	}),
 
 	methods: {
 		onUpdateValue({ index, value }) {
@@ -50,12 +50,12 @@ export default {
 				value.amount_type === ValueAmountTypeEnum.HOUR
 					? this.MapsService.convertHoursToZet(
 							value.amount,
-							value.amount_type
-					  ) / this.MapsService.WEEKQUEALSZET
+							value.amount_type,
+						) / this.MapsService.WEEKQUEALSZET
 					: this.MapsService.convertHoursToZet(
 							value.amount,
-							value.amount_type
-					  ) * this.MapsService.ZETQUEALSHOURS
+							value.amount_type,
+						) * this.MapsService.ZETQUEALSHOURS
 
 			const newValue = Object.assign(value, {
 				amount_type,

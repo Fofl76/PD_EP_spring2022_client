@@ -31,11 +31,11 @@
 
 		<v-data-table
 			v-if="table"
+			v-show="isOpen"
 			:hide-default-footer="true"
 			:dark="true"
 			class="CheckTest__table"
 			:items-per-page="-1"
-			v-show="isOpen"
 			:headers="headers"
 			:items="table"
 		/>

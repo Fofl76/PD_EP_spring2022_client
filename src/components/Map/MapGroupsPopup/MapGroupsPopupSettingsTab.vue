@@ -2,14 +2,14 @@
 	<v-list class="MapGroupsPopupSettingsTab" dense>
 		<v-list-item-group v-model="_value" color="primary">
 			<v-tooltip
+				v-for="item in disciplines"
+				:key="item.id"
 				content-class="MapGroupsPopupSettingsTab__tooltip"
 				max-width="200"
 				open-delay="700"
 				left
-				v-for="item in disciplines"
-				:key="item.id"
 			>
-				<template v-if="item.id !== 1" v-slot:activator="{ on, attrs }">
+				<template v-if="item.id !== 1" #activator="{ on, attrs }">
 					<v-hover v-slot="{ hover }">
 						<v-list-item v-bind="attrs" :value="item.id" v-on="on">
 							<v-list-item-icon>

@@ -3,13 +3,13 @@
 		v-model="_value"
 		:items="sortedItems"
 		v-bind="$attrs"
-		v-on="$listeners"
 		:menu-props="{ maxWidth: 500 }"
 		class="MapHeaderDirectionAutocomplete"
 		label="Введите направление"
 		no-data-text="Сначала выберите факультет и год"
 		item-text="name"
 		filled
+		v-on="$listeners"
 	>
 		<template #append>
 			<div class="MapHeaderDirectionAutocomplete__year-chip--selected">
@@ -55,12 +55,6 @@ export default {
 	name: 'MapHeaderDirectionAutocomplete',
 	components: { MAutocomplete },
 
-	data() {
-		return {
-			formEduc,
-		}
-	},
-
 	props: {
 		value: {
 			type: [Object, String],
@@ -70,6 +64,12 @@ export default {
 			type: Array,
 			default: () => [],
 		},
+	},
+
+	data() {
+		return {
+			formEduc,
+		}
 	},
 
 	computed: {

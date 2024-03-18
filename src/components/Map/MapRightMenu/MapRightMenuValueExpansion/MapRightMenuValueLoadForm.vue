@@ -14,8 +14,8 @@
 			no-data-text="Доступные нагрузки отсутствуют"
 			@change="onSelectControlTypes"
 		>
-			<template v-slot:selection="{ item, index }">
-				<v-chip small v-if="index === 0">
+			<template #selection="{ item, index }">
+				<v-chip v-if="index === 0" small>
 					<span>{{ item.control }}</span>
 				</v-chip>
 				<span v-if="index === 1" class="grey--text text-caption">
@@ -59,7 +59,7 @@ export default {
 
 		selectedControlTypes() {
 			return this.allValueTypes.filter(el =>
-				this.values.find(_el => _el.control_type_id === el.id)
+				this.values.find(_el => _el.control_type_id === el.id),
 			)
 		},
 	},
@@ -71,7 +71,7 @@ export default {
 			if (e.length < this.selectedControlTypes.length) {
 				/* Находим и удаляем нагрузку */
 				const newValues = this.values.filter(el =>
-					e.find(_el => _el.id === el.control_type_id)
+					e.find(_el => _el.id === el.control_type_id),
 				)
 
 				this.$emit('selectControlTypes', newValues)

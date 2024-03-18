@@ -1,26 +1,26 @@
-import {
+import type {
 	IFetchAllMapsListResponse,
 	IFetchMapResponse,
 	IFetchAllControlTypesResponse,
-	IUnitsOfMeasurement,
+	IFetchMetaInfo,
 } from '@models/Maps'
-import { IFetchAllGroupsResponse, IGroup } from '@models/Groups'
-import { IApiResponse } from '@models/Api'
-import Key from '@models/Key'
+import type { IFetchAllGroupsResponse, IGroup } from '@models/Groups'
+import type { IApiResponse } from '@models/Api'
+import type { Key } from '@models/Key'
 import jwtDecode from 'jwt-decode'
 
 import {
 	AxiosError,
-	AxiosRequestConfig,
-	AxiosResponse,
 	HttpStatusCode,
+	type AxiosRequestConfig,
+	type AxiosResponse,
 } from 'axios'
 import axios from './axios'
-import { ITokens, IUser } from '@models/Auth'
+import type { ITokens, IUser } from '@models/Auth'
 import tokenService from '@services/auth/TokenService'
-import IUploadFileError from '@models/Maps/IUploadFileError'
-import { IModule } from '@models/Modules'
-import { ICheck, ICheckSettings } from '@models/Check'
+import type IUploadFileError from '@models/Maps/IUploadFileError'
+import type { IModule } from '@models/Modules'
+import type { ICheck, ICheckSettings } from '@models/Check'
 
 enum AxiosMethodsEnum {
 	GET = 'GET',
@@ -61,7 +61,7 @@ abstract class Api {
 			{
 				access,
 				refresh,
-			}
+			},
 		)
 
 		if (success && data) tokenService.emit('tokens-fetched', data)
@@ -98,8 +98,8 @@ abstract class Api {
 		return this.callFetch<IFetchAllGroupsResponse[]>(`getGroups`)
 	}
 
-	static fetchUnitsOfMeasurement() {
-		return this.callFetch<IUnitsOfMeasurement[]>('get_id_edizm')
+	static fetchMetaInfo() {
+		return this.callFetch<IFetchMetaInfo>('meta-info')
 	}
 
 	/**
@@ -109,7 +109,7 @@ abstract class Api {
 	 */
 	static fetchGroupsByAup(aupCode: Key) {
 		return this.callFetch<IFetchAllGroupsResponse[]>(
-			`get-group-by-aup/${aupCode}`
+			`get-group-by-aup/${aupCode}`,
 		)
 	}
 
@@ -135,7 +135,7 @@ abstract class Api {
 			{
 				Authorization: tokenService.tokens.access || '',
 				Aup: String(aupCode),
-			}
+			},
 		)
 	}
 
@@ -169,7 +169,7 @@ abstract class Api {
 			{
 				Authorization: tokenService.tokens.access || '',
 				Aup: String(aupCode),
-			}
+			},
 		)
 	}
 
@@ -198,7 +198,7 @@ abstract class Api {
 			{
 				'Content-Type': 'multipart/form-data',
 				Authorization: tokenService.tokens.access || '',
-			}
+			},
 		)
 	}
 
@@ -210,7 +210,7 @@ abstract class Api {
 			null,
 			{
 				responseType: 'blob',
-			}
+			},
 		)
 	}
 
@@ -224,7 +224,7 @@ abstract class Api {
 	 * @return {Promise<IModule | null>}
 	 */
 	static async fetchModuleByAup<T extends IModule[]>(
-		aupCode: Key
+		aupCode: Key,
 	): Promise<IApiResponse<T>> {
 		if (!aupCode) {
 			return {
@@ -245,7 +245,7 @@ abstract class Api {
 	static async fetchCheckResultByAup<T extends ICheck>(
 		aupCode: Key,
 		settings: ICheckSettings,
-		abortController: AbortController
+		abortController: AbortController,
 	): Promise<IApiResponse<T>> {
 		if (!aupCode) {
 			return {
@@ -264,7 +264,7 @@ abstract class Api {
 			{},
 			{
 				signal: abortController.signal,
-			}
+			},
 		)
 	}
 
@@ -281,7 +281,7 @@ abstract class Api {
 		method: AxiosMethodsEnum = AxiosMethodsEnum.GET,
 		args?: any,
 		headers?: Record<string, string> | null,
-		etc?: AxiosRequestConfig<any>
+		etc?: AxiosRequestConfig<any>,
 	): Promise<IApiResponse<T>> {
 		try {
 			if (headers?.Authorization && endpoint !== 'refresh') {

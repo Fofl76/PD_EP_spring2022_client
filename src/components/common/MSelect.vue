@@ -1,9 +1,9 @@
 <template>
 	<v-select
-		class="MSelect"
-		:menu-props="{ offsetY: false }"
-		:items="items"
 		v-model="_value"
+		class="MSelect"
+		:menu-props="menuProps"
+		:items="items"
 		:item-text="itemText"
 		:no-data-text="noDataText"
 		:return-object="returnObject"
@@ -17,6 +17,9 @@
 		v-bind="$attrs"
 		v-on="$listeners"
 	>
+		<template v-if="$scopedSlots.item" #item="item">
+			<slot name="item" v-bind="item" />
+		</template>
 	</v-select>
 </template>
 
@@ -64,6 +67,11 @@ export default {
 			type: Boolean,
 			default: false,
 		},
+
+		menuProps: {
+			type: [String, Object],
+			default: '',
+		},
 	},
 
 	computed: {
@@ -78,7 +86,3 @@ export default {
 	},
 }
 </script>
-
-<style lang="sass">
-.MSelect
-</style>

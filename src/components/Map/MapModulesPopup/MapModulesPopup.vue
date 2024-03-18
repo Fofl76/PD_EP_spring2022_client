@@ -26,6 +26,9 @@ import mapsService from '@services/Maps/MapsService'
 
 export default {
 	name: 'MapModulesPopup',
+	components: {
+		MapModulesPopupList,
+	},
 
 	props: {
 		value: {
@@ -38,17 +41,10 @@ export default {
 			searchModel: '',
 		}
 	},
-	mounted() {
-		Api.fetchModuleByAup(mapsService.aupCode).then(res => {
-			if (!res.success) return
-
-			this.modules = res.data
-		})
-	},
 	computed: {
 		filteredModules() {
 			return this.modules.filter(module =>
-				module.title.toLowerCase().includes(this.searchModel.toLowerCase())
+				module.title.toLowerCase().includes(this.searchModel.toLowerCase()),
 			)
 		},
 		_value: {
@@ -60,8 +56,12 @@ export default {
 			},
 		},
 	},
-	components: {
-		MapModulesPopupList,
+	mounted() {
+		Api.fetchModuleByAup(mapsService.aupCode).then(res => {
+			if (!res.success) return
+
+			this.modules = res.data
+		})
 	},
 }
 </script>

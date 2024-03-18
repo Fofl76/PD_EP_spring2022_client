@@ -3,3 +3,10 @@ export enum ModesEnum {
 	Map = 'MapMode',
 	Aup = 'AupMode',
 }
+
+export interface IMode {
+	title: string
+	needPermission: boolean
+}
+
+export type IModes = Record<ModesEnum, IMode>

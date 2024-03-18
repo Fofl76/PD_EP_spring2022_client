@@ -1,3 +1,1 @@
-type Key = string | number
-
-export default Key
+export type Key = string | number

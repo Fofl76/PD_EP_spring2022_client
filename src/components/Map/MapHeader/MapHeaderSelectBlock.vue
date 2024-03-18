@@ -3,7 +3,7 @@
 		<MapHeaderFacultySelect
 			:value="facultyModel"
 			:loading="isLoadingFacultyInput"
-			:items="facultyItems"
+			:items="filteredFacultyItems"
 			@input="setFaculty"
 		/>
 
@@ -15,10 +15,12 @@
 		/>
 
 		<MapHeaderYearSelect
-			style="max-width: 100px"
 			v-model="year"
+			style="max-width: 100px"
 			:items="yearItems"
 		/>
+
+		<MapHeaderModeSelect v-if="isAuth" style="max-width: 250px" />
 	</div>
 </template>
 
@@ -32,7 +34,10 @@ import authService from '@services/auth/AuthService'
 import MapHeaderDirectionAutocomplete from '@components/Map/MapHeader/MapHeaderDirectionAutocomplete.vue'
 import MapHeaderFacultySelect from '@components/Map/MapHeader/MapHeaderFacultySelect.vue'
 import MapHeaderYearSelect from '@components/Map/MapHeader/MapHeaderYearSelect.vue'
+import MapHeaderModeSelect from '@components/Map/MapHeader/MapHeaderModeSelect.vue'
 import getCurrentYear from '@services/utils/getCurrentYear'
+
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
 	name: 'MapHeaderSelectBlock',
@@ -40,9 +45,13 @@ export default {
 		MapHeaderFacultySelect,
 		MapHeaderDirectionAutocomplete,
 		MapHeaderYearSelect,
+		MapHeaderModeSelect,
 	},
 
-	mixins: [withEventEmitter('mapsService', 'mapsServiceHandlers')],
+	mixins: [
+		withEventEmitter('mapsService', 'mapsServiceHandlers'),
+		withEventEmitter('authService', 'authServiceHandlers'),
+	],
 
 	data() {
 		return {
@@ -52,25 +61,53 @@ export default {
 
 			mapsService,
 			mapsServiceHandlers: {
-				fetchFaculties: this.updateFormFields,
+				setFacultiesList: this.updateFormFields,
 			},
 
-			yearItems: [],
+			authService,
+			authServiceHandlers: {
+				updateUser: this.callRefreshKey,
+			},
+
 			directionItems: [],
+			yearItems: [],
 
 			isLoadingFacultyInput: false,
 			isLoadingDirectionInput: false,
+
+			refreshKey: 0,
 		}
 	},
 
 	computed: {
+		...mapGetters('Map', ['isAuth', 'currentMode', 'modes']),
+
 		facultyItems() {
 			return mapsService.facultiesList.value
 		},
 
+		// Доступные факультеты, т.к. некоторые могут быть скрыты из общего доступа
+		filteredFacultyItems() {
+			/* 
+				Не удалять. refreshKey нужно, чтобы дергать
+			    этот компьютед для перерасчета после авторизации пользователя.
+				Используется в ситуации когда пользователь не авторизован и у него не видны
+				скрытые факультеты, но после авторизации под учеткой Админа, нужно дернуть этот метод
+				для перерасчета видимых факультетов.
+
+				vite-ignore нужен для того, чтобы сборщик не удалил эту строку в итоговом билде
+			*/
+			/* @vite-ignore */
+			this.refreshKey
+
+			return this.facultyItems.filter(faculty =>
+				permissionService.canViewFaculty(faculty),
+			)
+		},
+
 		directionItemsByYear() {
 			return this.directionItems.filter(
-				direction => direction.year === this.year
+				direction => direction.year === this.year,
 			)
 		},
 	},
@@ -82,6 +119,8 @@ export default {
 	}, */
 
 	methods: {
+		...mapMutations('Map', ['setMode']),
+
 		findFacultyModelByAup(aup) {
 			return this.facultyItems.find(faculty => {
 				return faculty.directions.some(direction => direction.code === aup)
@@ -99,6 +138,8 @@ export default {
 		},
 
 		setFaculty(faculty) {
+			if (!faculty) return
+
 			this.facultyModel = faculty
 
 			/* Собираем все года всех карт на факультете */
@@ -106,7 +147,7 @@ export default {
 				...new Set(
 					faculty.directions
 						.map(direction => direction.year)
-						.sort((a, b) => b - a)
+						.sort((a, b) => b - a),
 				),
 			]
 
@@ -134,7 +175,8 @@ export default {
 		async updateFormFields() {
 			const aupCode = mapsService.aupCode
 
-			if (!aupCode) return this.setFaculty(this.findFacultyByUserFacultyId() || null)
+			if (!aupCode)
+				return this.setFaculty(this.findFacultyByUserFacultyId() || null)
 
 			this.setFaculty(this.findFacultyModelByAup(aupCode) || null)
 
@@ -148,6 +190,10 @@ export default {
 
 			this.isLoadingFacultyInput = false
 			this.isLoadingDirectionInput = false
+		},
+
+		callRefreshKey() {
+			this.refreshKey += 1
 		},
 	},
 

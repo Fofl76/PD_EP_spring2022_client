@@ -1,7 +1,7 @@
 import Events from 'events'
 import Api from '@services/api/Api'
-import { ICheckSettings } from '@models/Check'
-import Key from '@models/Key'
+import type { ICheckSettings } from '@models/Check'
+import type { Key } from '@models/Key'
 
 class CheckService extends Events {
 	constructor(private api: typeof Api) {
@@ -11,12 +11,12 @@ class CheckService extends Events {
 	async getCheckResultForAup(
 		aup: Key,
 		settings: ICheckSettings,
-		abortController: AbortController
+		abortController: AbortController,
 	) {
 		const resp = await this.api.fetchCheckResultByAup(
 			aup,
 			settings,
-			abortController
+			abortController,
 		)
 		if (!resp.success) return null
 

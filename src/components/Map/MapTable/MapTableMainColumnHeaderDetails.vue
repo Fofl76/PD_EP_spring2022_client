@@ -1,7 +1,7 @@
 <template>
 	<MHint
-		class="MapTableMainColumnHeaderDetails"
 		v-if="items.length"
+		class="MapTableMainColumnHeaderDetails"
 		:top="false"
 		bottom
 		size="14"
@@ -18,9 +18,9 @@
 			</div>
 		</template>
 
-		<div v-for="stats in controlStats" :key="stats.id">
-			<span> {{ stats.name }}: </span>
-			<span> {{ stats.count }}, </span>
+		<div v-for="currentStats in controlStats" :key="currentStats.id">
+			<span> {{ currentStats.name }}: </span>
+			<span> {{ currentStats.count }}, </span>
 		</div>
 
 		<v-divider class="MapTableMainColumnHeaderDetails__divider" dark />
@@ -63,6 +63,7 @@ export default {
 
 		activatorText: {
 			type: String,
+			default: '',
 		},
 	},
 
@@ -85,7 +86,7 @@ export default {
 			this.items.forEach(item => {
 				item.type.value?.forEach(type => {
 					const typeValue = typeValueByStats.find(
-						_item => type.control_type_id === _item.id
+						_item => type.control_type_id === _item.id,
 					)
 
 					if (typeValue) {

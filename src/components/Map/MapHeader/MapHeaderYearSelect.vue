@@ -1,8 +1,8 @@
 <template>
 	<MSelect
+		v-model="value_"
 		class="MapHeaderYearSelect"
 		label="Год"
-		v-model="value_"
 		:items="items"
 		item-value=""
 		:return-object="false"

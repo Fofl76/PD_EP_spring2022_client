@@ -10,45 +10,43 @@
 			</div>
 		</template>
 
-		<template>
-			<v-form
-				class="MapRightMenuValueExpansion__content"
-				v-model="isValid"
-				@input="onInputError"
-			>
-				<div class="MapRightMenuValueExpansion__values-wrapper">
-					<MapRightMenuValueMainForm
+		<v-form
+			v-model="isValid"
+			class="MapRightMenuValueExpansion__content"
+			@input="onInputError"
+		>
+			<div class="MapRightMenuValueExpansion__values-wrapper">
+				<MapRightMenuValueMainForm
+					:values="values"
+					@updateValue="onUpdateValue"
+					@updateUnitOfMeasurement="onUpdateUnitOfMeasurement"
+				/>
+
+				<v-divider dark class="MapRightMenu__divider" />
+
+				<div class="MapRightMenuValueExpansion__sum-wrapper">
+					<MapRightMenuValueSumForm
+						v-if="hasIndependentWorkValue"
+						label="Сумма"
 						:values="values"
-						@updateValue="onUpdateValue"
-						@updateUnitOfMeasurement="onUpdateUnitOfMeasurement"
+						:item="item"
+						@input="onInputSums"
 					/>
 
-					<v-divider dark class="MapRightMenu__divider" />
-
-					<div class="MapRightMenuValueExpansion__sum-wrapper">
-						<MapRightMenuValueSumForm
-							v-if="hasIndependentWorkValue"
-							label="Сумма"
-							:values="values"
-							:item="item"
-							@input="onInputSums"
-						/>
-
-						<MapRightMenuValueSumForm
-							:label="hasIndependentWorkValue ? 'Сумма без СРС' : 'Сумма'"
-							:values="values"
-							:item="item"
-							withoutIndependentWork
-						/>
-					</div>
-
-					<MapRightMenuValueLoadForm
+					<MapRightMenuValueSumForm
+						:label="hasIndependentWorkValue ? 'Сумма без СРС' : 'Сумма'"
 						:values="values"
-						@selectControlTypes="onSelectControlTypes"
+						:item="item"
+						without-independent-work
 					/>
 				</div>
-			</v-form>
-		</template>
+
+				<MapRightMenuValueLoadForm
+					:values="values"
+					@selectControlTypes="onSelectControlTypes"
+				/>
+			</div>
+		</v-form>
 	</MapRightMenuExpansion>
 </template>
 
@@ -113,7 +111,7 @@ export default {
 		onInputSums(hours) {
 			/* control_type_id 4 === 'СРС' */
 			const independentWorkValueIndex = this.values.findIndex(
-				value => value.control_type_id === 4
+				value => value.control_type_id === 4,
 			)
 			const independentWorkValue = this.values[independentWorkValueIndex]
 

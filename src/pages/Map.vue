@@ -7,7 +7,7 @@
 				<MapTable
 					:loading="isLoadingMaps"
 					:table="tableData"
-					:activeEditingItemId="rightMenuEditItemId"
+					:active-editing-item-id="rightMenuEditItemId"
 					@editClick="onEditClick"
 				/>
 			</v-container>
@@ -15,7 +15,7 @@
 
 		<MapRightMenu
 			:value="rightMenuEditModel"
-			:itemId="rightMenuEditItemId"
+			:item-id="rightMenuEditItemId"
 			@input="onInputRightMenuEditModel"
 		/>
 	</v-app>
@@ -101,9 +101,9 @@ export default {
 	},
 
 	async created() {
-		await this.groupsService.fetchAllGroups()
-		await this.mapsService.fetchFacultiesList()
-		await this.mapsService.fetchUnitsOfMeasurement()
+		this.groupsService.fetchAllGroups()
+		this.mapsService.fetchFacultiesList()
+		this.mapsService.fetchMetaInfo()
 	},
 }
 </script>
