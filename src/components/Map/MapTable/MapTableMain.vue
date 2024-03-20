@@ -218,7 +218,7 @@ export default {
 		onLinkProgress(item) {
 			const cabinetUrl = import.meta.env.VITE_CABINET_LESSONS_URL
 			const aup = MapsService.aupCode
-			const id = item.id_unique_discipline || 0
+			const id = item.id_discipline || 0
 
 			window.open(`${cabinetUrl}?aup=${aup}&id=${id}`, '_blank').focus()
 		},
