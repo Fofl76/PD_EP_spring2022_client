@@ -47,7 +47,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      VUE_APP_API: https://kd.mospolytech.ru/api
+      VITE_API: https://kd.mospolytech.ru/api
 
     steps:
       - uses: actions/checkout@v2
