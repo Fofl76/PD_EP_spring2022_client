@@ -1,36 +1,66 @@
-name: Deploy
+# name: Deploy
 
+# on:
+#   push:
+#     branches:
+#       - master
+#       - dev
+
+# jobs:
+#   deploy-prod:
+  
+#     env:
+#       VITE_API: https://kd.mospolytech.ru/api
+  
+#     if: github.ref_name == 'master'
+#     runs-on: self-hosted
+#     steps:
+#       - uses: actions/checkout@v2
+#       - name: Copy repo to production directory 
+#         run: cp -r ./* /opt/apps_docker/apps/prod/front_prod
+#       - name: Rebuild docker-compose
+#         run: docker-compose -f /opt/apps_docker/docker-compose.yml up -d --build front-prod 
+
+#   deploy-dev:
+
+#     env:
+#       VITE_API: https://kd.mospolytech.ru/dev/api
+  
+#     if: github.ref_name == 'dev'
+#     runs-on: self-hosted
+#     steps:
+#       - uses: actions/checkout@v2
+#       - name: Copy repo to development directory 
+#         run: cp -r ./* /opt/apps_docker/apps/dev/front_dev
+#       - name: Rebuild docker-compose
+#         run: docker-compose -f /opt/apps_docker/docker-compose.yml up -d --build front-dev
+
+name: Deploy
 on:
   push:
     branches:
       - master
-      - dev
+  workflow_dispatch:
 
 jobs:
-  deploy-prod:
-  
-    env:
-      VITE_API: https://kd.mospolytech.ru/api
-  
-    if: github.ref_name == 'master'
-    runs-on: self-hosted
-    steps:
-      - uses: actions/checkout@v2
-      - name: Copy repo to production directory 
-        run: cp -r ./* /opt/apps_docker/apps/prod/front_prod
-      - name: Rebuild docker-compose
-        run: docker-compose -f /opt/apps_docker/docker-compose.yml up -d --build front-prod 
-
-  deploy-dev:
+  deploy:
+    runs-on: ubuntu-latest
 
     env:
-      VITE_API: https://kd.mospolytech.ru/dev/api
-  
-    if: github.ref_name == 'dev'
-    runs-on: self-hosted
+      VUE_APP_API: https://kd.mospolytech.ru/api
+
     steps:
       - uses: actions/checkout@v2
-      - name: Copy repo to development directory 
-        run: cp -r ./* /opt/apps_docker/apps/dev/front_dev
-      - name: Rebuild docker-compose
-        run: docker-compose -f /opt/apps_docker/docker-compose.yml up -d --build front-dev
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 16
+
+      # Setup key
+      - run: set -eu
+      - run: mkdir "$HOME/.ssh"
+      - run: echo "${{ secrets.DEPLOY_FOR_KD_MOSPOLYTECH_ROOT }}" > "$HOME/.ssh/key"
+      - run: chmod 600 "$HOME/.ssh/key"
+      - run: npm i && npm run build
+
+      # send only dist directory to the server
+      - run: rsync -e "ssh -i $HOME/.ssh/key -o StrictHostKeyChecking=no" --exclude=node_modules --archive --compress . root@158.160.22.208:/var/www/frontend/
