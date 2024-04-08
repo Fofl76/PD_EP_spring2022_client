@@ -120,7 +120,7 @@ export default {
     text-align: center
     border-radius: 8px
     font-size: 100%
-    font-family: sans-serif
+    font-family: "Montserrat"
     cursor: grab
     transition: box-shadow .25s ease
     background-color: var(--background-color)
