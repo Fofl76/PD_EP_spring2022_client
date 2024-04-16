@@ -1,67 +1,64 @@
 <template>
 	<v-dialog v-model="_value" width="350">
-		<div class="MapAuthPopup">
-			<v-btn class="MapAuthPopup__close-btn" icon @click="closePopup">
-				<v-icon>mdi-close</v-icon>
-			</v-btn>
-
-			<!-- <div class="MapAuthPopup__side MapAuthPopup__side--left">
-				<div class="text-h6">Недавно входили с этих аккаунтов</div>
-				<div class="subtitle-1">Нажмите на фотографию или имя, чтобы войти</div>
-			</div> -->
-
-			<div class="MapAuthPopup__side MapAuthPopup__side--right">
-				<div class="MapAuthPopup__title text-h6 grey--text text--darken-3">
-					Авторизация
-				</div>
-
-				<div class="MapAuthPopup__input-block">
-					<v-text-field
-						v-model="form.username"
-						class="MapAuthPopup__input"
-						hide-details="auto"
-						label="Логин"
-						filled
-						dense
-						required
-					/>
-				</div>
-
-				<div class="MapAuthPopup__input-block">
-					<v-text-field
-						v-model="form.password"
-						class="MapAuthPopup__input"
-						hide-details="auto"
-						label="Пароль"
-						type="password"
-						filled
-						dense
-						required
-					/>
-				</div>
-
-				<div class="MapAuthPopup__footer">
-					<v-checkbox
-						class="MapAuthPopup__checkbox"
-						label="Сохранить вход"
-						dense
-						hide-details
-					>
-						<template #label>
-							<div class="MapAuthPopup__checkbox-label">Запомнить меня</div>
-						</template>
-					</v-checkbox>
-
-					<div class="MapAuthPopup__forgot text--darken-3">
-						<a href="#" target="_blank">Забыли пароль?</a>
-					</div>
-				</div>
-
-				<v-btn color="success" :loading="isLoading" block @click="onLogin">
-					Войти
+		<form @submit.prevent="handleSubmit">
+			<div class="MapAuthPopup">
+				<v-btn class="MapAuthPopup__close-btn" icon @click="closePopup">
+					<v-icon>mdi-close</v-icon>
 				</v-btn>
+
+				<div class="MapAuthPopup__side MapAuthPopup__side--right">
+					<div class="MapAuthPopup__title text-h6 grey--text text--darken-3">
+						Авторизация
+					</div>
+
+					<div class="MapAuthPopup__input-block">
+						<v-text-field
+							v-model="form.username"
+							class="MapAuthPopup__input"
+							hide-details="auto"
+							label="Логин"
+							filled
+							dense
+							required
+						/>
+					</div>
+
+					<div class="MapAuthPopup__input-block">
+						<v-text-field
+							v-model="form.password"
+							class="MapAuthPopup__input"
+							hide-details="auto"
+							label="Пароль"
+							type="password"
+							filled
+							dense
+							required
+						/>
+					</div>
+
+					<div class="MapAuthPopup__footer">
+						<v-checkbox
+							class="MapAuthPopup__checkbox"
+							label="Сохранить вход"
+							dense
+							hide-details
+						>
+							<template #label>
+								<div class="MapAuthPopup__checkbox-label">Запомнить меня</div>
+							</template>
+						</v-checkbox>
+
+						<div class="MapAuthPopup__forgot text--darken-3">
+							<a href="#" target="_blank">Забыли пароль?</a>
+						</div>
+					</div>
+
+					<v-btn type="submit" color="success" :loading="isLoading" block>
+						Войти
+					</v-btn>
+				</div>
 			</div>
-		</div>
+		</form>
 	</v-dialog>
 </template>
 
@@ -96,6 +93,10 @@ export default {
 	},
 
 	methods: {
+		async handleSubmit() {
+			await this.onLogin()
+		},
+
 		async onLogin() {
 			this.isLoading = true
 
