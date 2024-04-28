@@ -202,7 +202,11 @@ abstract class Api {
 		)
 	}
 
-	static async downloadMap(aupCode: Key) {
+	static async downloadMap(
+		aupCode: Key,
+		orientation: string,
+		paperSize: string,
+	) {
 		return await this.callFetch<any>(
 			`save_excel/${aupCode}`,
 			AxiosMethodsEnum.GET,
@@ -210,6 +214,7 @@ abstract class Api {
 			null,
 			{
 				responseType: 'blob',
+				params: { orientation, paper_size: paperSize },
 			},
 		)
 	}

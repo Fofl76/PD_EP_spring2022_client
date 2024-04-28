@@ -58,6 +58,7 @@ class MapsService extends Events {
 
 	aupCode: string = null!
 
+	isMagistracy = true
 	/**
 	 * @desc Геттер для получения всех дисциплин и факультетов
 	 * @return {IFaculty[]}
@@ -351,6 +352,7 @@ class MapsService extends Events {
 
 	async fetchAllControlTypes() {
 		const { success, data } = await Api.fetchAllControlTypes()
+
 
 		if (success && data) {
 			this.setAllControlTypes(data)

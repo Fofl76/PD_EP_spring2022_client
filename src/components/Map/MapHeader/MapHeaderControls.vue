@@ -49,7 +49,7 @@
 			<v-list-item
 				class="MapHeaderDropdownListItem"
 				:disabled="!aupCode"
-				@click="downloadMap"
+				@click="openDownloadPopup"
 			>
 				<v-list-item-icon>
 					<v-icon :size="18">mdi-download</v-icon>
@@ -86,6 +86,27 @@
 		<!-- Модули -->
 		<MapModulesPopup v-if="modulesPopupModel" v-model="modulesPopupModel" />
 		<!--  -->
+
+		<v-dialog v-model="downloadPopupModel" max-width="500">
+			<v-card>
+				<v-card-title>Выберите опции:</v-card-title>
+				<div class="radio-group">
+					<v-radio-group v-model="selectedFormat">
+						<v-radio value="4" label="Формат А4"></v-radio>
+						<v-radio value="3" label="Формат А3"></v-radio>
+					</v-radio-group>
+
+					<v-radio-group v-if="isMagistracy" v-model="selectedOrientation">
+						<v-radio value="land" label="Ориентация книжная"></v-radio>
+						<v-radio value="port" label="Ориентация альбомная"></v-radio>
+					</v-radio-group>
+				</div>
+				<v-card-actions>
+					<v-btn @click="downloadMap">Скачать</v-btn>
+					<v-btn @click="closeDownloadPopup">Отмена</v-btn>
+				</v-card-actions>
+			</v-card>
+		</v-dialog>
 	</div>
 </template>
 
@@ -128,6 +149,9 @@ export default {
 			modulesPopupModel: false,
 			isLoadingFile: false,
 			ModesEnum,
+			downloadPopupModel: false,
+			selectedFormat: '4',
+			selectedOrientation: 'land',
 		}
 	},
 
@@ -139,6 +163,9 @@ export default {
 
 		aupCode() {
 			return mapsService.aupCode
+		},
+		isMagistracy() {
+			return mapsService.isMagistracy
 		},
 
 		downloadURL() {
@@ -153,6 +180,14 @@ export default {
 
 		openUploadPopup() {
 			this.uploadPopupModel = true
+		},
+
+		openDownloadPopup() {
+			this.downloadPopupModel = true
+		},
+
+		closeDownloadPopup() {
+			this.downloadPopupModel = false
 		},
 
 		openAuthPopup() {
@@ -177,15 +212,22 @@ export default {
 
 				const { res, data, success, error } = await Api.downloadMap(
 					this.aupCode,
+					this.selectedOrientation,
+					this.selectedFormat,
 				)
 
-				const splitted = decodeURIComponent(
-					res.headers['content-disposition'],
-				).split('/')
-				const filename = splitted[splitted.length - 1]
+				const contentDisposition = res.headers['content-disposition']
+				let fileName = 'unknown'
+				if (contentDisposition) {
+					const fileNameMatch = contentDisposition.match(
+						/filename\*=UTF-8''(.+)/,
+					)
+					console.log(fileNameMatch, contentDisposition)
+					if (fileNameMatch.length === 2) fileName = decodeURI(fileNameMatch[1])
+				}
 
 				if (success) {
-					downloadAsFile(data, filename)
+					downloadAsFile(data, fileName)
 					ToastService.showSuccess('Карта успешно загружена')
 				} else {
 					throw new Error('Ошибка при скачивании карты', error)
@@ -240,4 +282,6 @@ export default {
 
 .avatar-icon
     margin-right: 7px
+.radio-group
+    padding: 20px
 </style>
