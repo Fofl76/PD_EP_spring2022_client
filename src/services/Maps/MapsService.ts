@@ -353,7 +353,6 @@ class MapsService extends Events {
 	async fetchAllControlTypes() {
 		const { success, data } = await Api.fetchAllControlTypes()
 
-
 		if (success && data) {
 			this.setAllControlTypes(data)
 			this.emit('fetchAllControlTypes', data)

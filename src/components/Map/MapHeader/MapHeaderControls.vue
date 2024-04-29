@@ -87,23 +87,25 @@
 		<MapModulesPopup v-if="modulesPopupModel" v-model="modulesPopupModel" />
 		<!--  -->
 
-		<v-dialog v-model="downloadPopupModel" max-width="500">
+		<v-dialog v-model="downloadPopupModel" max-width="300">
 			<v-card>
 				<v-card-title>Выберите опции:</v-card-title>
 				<div class="radio-group">
 					<v-radio-group v-model="selectedFormat">
-						<v-radio value="4" label="Формат А4"></v-radio>
-						<v-radio value="3" label="Формат А3"></v-radio>
+						<div>Формат:</div>
+						<v-radio value="3" label="А3"></v-radio>
+						<v-radio value="4" label="А4"></v-radio>
 					</v-radio-group>
 
 					<v-radio-group v-if="isMagistracy" v-model="selectedOrientation">
-						<v-radio value="land" label="Ориентация книжная"></v-radio>
-						<v-radio value="port" label="Ориентация альбомная"></v-radio>
+						<div>Ориентация:</div>
+						<v-radio value="land" label="Альбомная"></v-radio>
+						<v-radio value="port" label="Книжная"></v-radio>
 					</v-radio-group>
 				</div>
 				<v-card-actions>
-					<v-btn @click="downloadMap">Скачать</v-btn>
-					<v-btn @click="closeDownloadPopup">Отмена</v-btn>
+					<v-btn @click="downloadMap" color="success">Скачать</v-btn>
+					<v-btn @click="closeDownloadPopup" color="error">Отмена</v-btn>
 				</v-card-actions>
 			</v-card>
 		</v-dialog>
@@ -150,7 +152,7 @@ export default {
 			isLoadingFile: false,
 			ModesEnum,
 			downloadPopupModel: false,
-			selectedFormat: '4',
+			selectedFormat: '3',
 			selectedOrientation: 'land',
 		}
 	},
@@ -283,5 +285,7 @@ export default {
 .avatar-icon
     margin-right: 7px
 .radio-group
-    padding: 20px
+    padding: 0 25px 0 25px
+    display: flex
+    justify-content: space-between
 </style>
