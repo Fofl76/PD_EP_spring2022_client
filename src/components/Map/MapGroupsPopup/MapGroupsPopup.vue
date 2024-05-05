@@ -93,20 +93,20 @@
 								<div class="MapGroupsPopup__disciplines-title">
 									Доступные дисциплины
 									<v-text-field
-							v-model="searchDisciplinesModel"
-							class="MapGroupsPopup__search"
-							label="Поиск дисциплины"
-							outlined
-							dense
-							hide-details="auto"
-						/>
+										v-model="searchDisciplinesModel"
+										class="MapGroupsPopup__search"
+										label="Поиск дисциплины"
+										outlined
+										dense
+										hide-details="auto"
+									/>
 								</div>
 
 								<!-- Все дисциплины -->
 								<draggable
 									v-bind="dragOptions"
 									:value="searchADisciplines"
-									:setData="setData"
+									:set-data="setData"
 									style="height: 340px; overflow-y: scroll"
 								>
 									<v-list-item
@@ -134,22 +134,22 @@
 								<div class="MapGroupsPopup__disciplines-title">
 									Назначенные дисциплины
 									<v-text-field
-							v-model="searchappointDisciplines_Model"
-							class="MapGroupsPopup__search"
-							label="Поиск дисциплины"
-							outlined
-							dense
-							hide-details="auto"
-						/>
+										v-model="searchappointDisciplines_Model"
+										class="MapGroupsPopup__search"
+										label="Поиск дисциплины"
+										outlined
+										dense
+										hide-details="auto"
+									/>
 								</div>
 
 								<!-- Назначенные дисциплины -->
 								<draggable
 									v-bind="dragOptions"
 									:value="searchappointDisciplines"
-									:setData="setData"
-									@change="onChangeAppointedGroup"
+									:set-data="setData"
 									style="height: 340px; overflow-y: scroll"
+									@change="onChangeAppointedGroup"
 								>
 									<v-list-item
 										v-for="element in searchappointDisciplines"
@@ -307,29 +307,27 @@ export default {
 				'discipline',
 			)
 		},
-        
+
 		searchADisciplines() {
-      			return this.availableDisciplines.filter(el => {
-        
-        const name = el.discipline
-        const lowered = name.toLowerCase()
-        const search = this.searchDisciplinesModel.toLowerCase()
-        const res = lowered.includes(search)
-		
-        return res
-      })
-    },
-	searchappointDisciplines() {
-      			return this.appointedDisciplines.filter(el => {
-        
-        const name = el.discipline
-        const lowered = name.toLowerCase()
-        const search = this.searchappointDisciplines_Model.toLowerCase()
-        const res = lowered.includes(search)
-		
-        return res
-      })
-    },
+			return this.availableDisciplines.filter(el => {
+				const name = el.discipline
+				const lowered = name.toLowerCase()
+				const search = this.searchDisciplinesModel.toLowerCase()
+				const res = lowered.includes(search)
+
+				return res
+			})
+		},
+		searchappointDisciplines() {
+			return this.appointedDisciplines.filter(el => {
+				const name = el.discipline
+				const lowered = name.toLowerCase()
+				const search = this.searchappointDisciplines_Model.toLowerCase()
+				const res = lowered.includes(search)
+
+				return res
+			})
+		},
 
 		appointedDisciplines() {
 			return _.orderBy(
