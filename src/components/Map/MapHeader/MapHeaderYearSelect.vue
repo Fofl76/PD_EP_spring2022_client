@@ -6,7 +6,7 @@
 		:items="items"
 		item-value=""
 		:return-object="false"
-		:disabled="items.length === 1"
+		no-data-text="Отсутствуют направления"
 		item-title=""
 		height="52"
 	/>
