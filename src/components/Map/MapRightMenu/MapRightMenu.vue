@@ -47,7 +47,7 @@
 				hover
 			>
 				<MapRightMenuCipherExpansion
-					:cipher="formService.model.shifr"
+					:cipher="cipher"
 					@inputCipher="onInputCipher"
 					@inputError="onInputError('cipher', $event)"
 				/>
@@ -103,22 +103,6 @@ import mapsService from '@services/Maps/MapsService'
 import ToastService from '@services/ToastService'
 import FormService from '@services/Form/FormService'
 
-const valueInitialModel = {
-	discipline: '',
-	shifr: '',
-	shifr_new: {
-		block: '',
-		discipline: '',
-		module: '',
-		part: '',
-		shifr: '',
-	},
-	type: {
-		session: [],
-		value: [],
-	},
-}
-
 export default {
 	name: 'MapRightMenu',
 
@@ -155,14 +139,6 @@ export default {
 
 			expansionsModel: [],
 			confirmPopupModel: false,
-
-			cipher: {
-				block: null,
-				part: null,
-				module: null,
-				discipline: null,
-				shifr: null,
-			},
 
 			mapsServiceHandlers: {
 				fetchAup: this.closeRightMenu,
@@ -232,6 +208,23 @@ export default {
 			return this.isValid && this.isEdited
 		},
 
+		cipher() {
+			if (!this.formService?.model?.shifr_new)
+				return {
+					block: '',
+					part: '',
+					module: '',
+					discipline: '',
+				}
+
+			return {
+				block: this.formService.model.shifr_new.block,
+				part: this.formService.model.shifr_new.part,
+				module: this.formService.model.shifr_new.module,
+				discipline: this.formService.model.shifr_new.discipline,
+			}
+		},
+
 		/* Проброс v-model для открытия/закрытия панели */
 		value_: {
 			get() {
@@ -245,7 +238,7 @@ export default {
 	},
 
 	created() {
-		this.formService = new FormService(valueInitialModel)
+		this.formService = new FormService()
 	},
 
 	methods: {
@@ -283,6 +276,8 @@ export default {
 
 		/* Обновление шифра */
 		onInputCipher({ cipherStr, cipher }) {
+			console.log(cipherStr, cipher, this.formService.model)
+
 			this.formService.setProperty('shifr', cipherStr)
 			this.formService.setProperty('shifr_new', {
 				...cipher,
@@ -325,7 +320,6 @@ export default {
 		// после закрытия панели
 		onTransitionendMenu() {
 			if (!this.value) {
-				this.clear()
 				this.expansionsModel = []
 			}
 		},
@@ -356,11 +350,6 @@ export default {
 			this.confirmPopupModel = false
 		},
 		//
-
-		// Очистка
-		clear() {
-			this.formService.init()
-		},
 	},
 }
 </script>

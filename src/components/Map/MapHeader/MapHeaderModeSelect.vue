@@ -72,8 +72,11 @@ export default {
            иначе режим просмотра
         */
 		setModeByChangeAup() {
-			if (permissionService.canEditAup(this.mapsService.aupCode))
+			if (permissionService.canEditAup(this.mapsService.aupCode)) {
+				if (this.currentMode !== ModesEnum.View) return
+
 				return this.setMode(ModesEnum.Map)
+			}
 
 			this.setMode(ModesEnum.View)
 		},

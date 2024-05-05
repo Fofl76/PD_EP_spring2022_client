@@ -60,7 +60,7 @@
 					class="MapRightMenuCipherExpansion__input"
 					label="Часть"
 					type="number"
-					:rules="[rules.onlyPositiveInteger]"
+					:rules="[rules.required, rules.onlyPositiveInteger]"
 					hide-details="auto"
 					dense
 					filled
@@ -96,7 +96,7 @@
 					class="MapRightMenuCipherExpansion__input"
 					label="Дисциплина"
 					type="number"
-					:rules="[rules.onlyPositiveInteger]"
+					:rules="[rules.required, rules.onlyPositiveInteger]"
 					hide-details="auto"
 					dense
 					filled
@@ -122,93 +122,44 @@ export default {
 
 	props: {
 		cipher: {
-			type: String,
-			default: '',
+			type: Object,
+			required: true,
 		},
 	},
 
-	data: () => ({
-		cipherObj: {
-			block: '',
-			part: '',
-			module: '',
-			discipline: '',
-		},
+	data() {
+		return {
+			cipherObj: { ...this.cipher },
 
-		isValid: true,
+			isValid: true,
 
-		rules: {
-			required: value => !!value || 'Пожалуйста, заполните это поле.',
-			onlyPositiveInteger: value => {
-				const isPositiveInteger =
-					0 === value % (!isNaN(parseFloat(value)) && 0 <= ~~value)
+			rules: {
+				required: value => !!value || 'Пожалуйста, заполните это поле.',
+				onlyPositiveInteger: value => {
+					if (value === null) return true
 
-				return (
-					isPositiveInteger ||
-					value === '' ||
-					'Значение должно быть целым и положительным, либо равно нулю'
-				)
+					if (isNaN(+value) || +value <= 0) {
+						return 'Значение должно быть целым и положительным'
+					}
+
+					return true
+				},
 			},
+		}
+	},
+
+	watch: {
+		cipher(value) {
+			this.cipherObj = { ...value }
 		},
-	}),
+	},
 
 	computed: {
 		cipherLabel() {
 			const values = Object.values(this.cipherObj)
-			const filteredValues = values.filter(item => item !== '')
+			const filteredValues = values.filter(item => !!item)
 
 			return filteredValues.length ? 'Б' + filteredValues.join('.') : null
-		},
-	},
-
-	watch: {
-		/**
-		 * Строим объект на основе строки cipher
-		 * Проверяем также наличия модуля путем вычисления длины строки, если его нету, то его нету
-		 */
-		cipher(value) {
-			try {
-				this.clear()
-
-				if (!value) return
-
-				console.log('cipher: ', value)
-
-				const cipherArr = value
-					.split('.')
-					.map(el => el.match(/[0-9]+/gi).join())
-
-				let cipherObj = {
-					block: '',
-					part: '',
-					module: '',
-					discipline: '',
-				}
-
-				if (cipherArr.length >= 1) {
-					cipherObj.block = cipherArr[0]
-
-					if (cipherArr.length >= 2) {
-						cipherObj.part = cipherArr[1]
-
-						if (cipherArr.length >= 4) {
-							cipherObj.module = cipherArr[2]
-							cipherObj.discipline = cipherArr[3]
-						}
-
-						if (cipherArr.length === 3) {
-							cipherObj.module = ''
-							cipherObj.discipline = cipherArr[2]
-						}
-					}
-				}
-
-				this.cipherObj = cipherObj
-				this.isValid = true
-			} catch (e) {
-				this.isValid = false
-				console.log(e)
-			}
 		},
 	},
 
@@ -218,7 +169,10 @@ export default {
 			if (this.$refs['form'].validate())
 				this.$emit('inputCipher', {
 					cipherStr: this.cipherLabel,
-					cipher: this.cipherObj,
+					cipher: {
+						...this.cipherObj,
+						shifr: this.cipherLabel,
+					},
 				})
 		},
 
