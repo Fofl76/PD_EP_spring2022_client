@@ -3,7 +3,6 @@ import VueRouter, { type RouteConfig } from 'vue-router'
 import Map from '../pages/Map.vue'
 
 const Check = () => import('../pages/Check.vue')
-const Admin = () => import('../pages/Admin.vue')
 
 Vue.use(VueRouter)
 
@@ -20,12 +19,6 @@ const routes: Array<RouteConfig> = [
 		name: 'Check',
 		component: Check,
 		meta: { title: 'Проверка' },
-	},
-	{
-		path: '/admin',
-		name: 'Admin',
-		component: Admin,
-		meta: { title: 'Панель адимистратора' },
 	},
 ]
 
