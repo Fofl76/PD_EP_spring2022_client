@@ -39,19 +39,18 @@
 						swatches-max-height="200" -->
 				</v-menu>
 				<div class="MapGroupsPopupCreateTab__footer">
-				<v-btn
-					color="success"
-					min-height="40px"
-					block
-					:disabled="isDisableAddGroups"
-					:loading="isLoadingAddGroups"
-					@click="addModel"
-				>
-					Создать
-				</v-btn>
+					<v-btn
+						color="success"
+						min-height="40px"
+						block
+						:disabled="isDisableAddGroups"
+						:loading="isLoadingAddGroups"
+						@click="addModel"
+					>
+						Создать
+					</v-btn>
+				</div>
 			</div>
-		</div>
-			
 		</div>
 		<div class="MapGroupsPopupCreateTab__form mt-3">
 			<div class="MapGroupsPopupCreateTab__header text-h5">
@@ -167,7 +166,7 @@ export default {
     align-items: center
     flex-direction: column
     justify-content: space-evenly
-    
+
 
     &__form
         margin: -6px !important
@@ -181,11 +180,9 @@ export default {
         display: flex
         gap: 10px
         > *:first-chield
-			
+
             margin-right: 6px !important
 
     &__header
         font-weight: bold !important
-
-
 </style>
