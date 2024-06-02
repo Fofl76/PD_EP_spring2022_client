@@ -25,6 +25,8 @@ import type { ICheck, ICheckSettings } from '@models/Check'
 enum AxiosMethodsEnum {
 	GET = 'GET',
 	POST = 'POST',
+	DELETE = 'DELETE',
+	PUT = 'PUT',
 }
 
 interface IFormUpload {
@@ -146,8 +148,6 @@ abstract class Api {
 	 * @return {Promise<IGroup | null>}
 	 */
 	static addGroup(group: IGroup, aupCode: Key) {
-		console.log(aupCode)
-
 		return this.callFetch<IGroup>(`add-group`, AxiosMethodsEnum.POST, group, {
 			Authorization: tokenService.tokens.access || '',
 			Aup: String(aupCode),
@@ -219,13 +219,11 @@ abstract class Api {
 	}
 
 	/**
-	 * @desc Запрос на получение модулей
+	 * @desc Запрос на получение модулей по АУП
 	 * @param {Key} aupCode - Код карты
-	 * @return {Promise<IModule | null>}
+	 * @return {Promise<IModule[] | null>}
 	 */
-	static async fetchModuleByAup<T extends IModule[]>(
-		aupCode: Key,
-	): Promise<IApiResponse<T>> {
+	static async fetchModuleByAup<T extends IModule[]>(aupCode: Key) {
 		if (!aupCode) {
 			return {
 				data: null,
@@ -235,6 +233,64 @@ abstract class Api {
 		}
 
 		return this.callFetch<T>(`get-modules-by-aup/${aupCode}`)
+	}
+
+	/**
+	 * @desc Запрос на получение модулей
+	 * @return {Promise<IModule[] | null>}
+	 */
+	static async fetchAllModules<T extends IModule[]>(): Promise<
+		IApiResponse<T>
+	> {
+		return this.callFetch<T>(`get-modules`)
+	}
+
+	/**
+	 * @desc Создание модуля
+	 * @param {IModule} module - модуль
+	 * @return {Promise<IModule | null>}
+	 */
+	static async addModule(module: IModule) {
+		return this.callFetch<IModule>(
+			`add-module`,
+			AxiosMethodsEnum.POST,
+			module,
+			{
+				Authorization: tokenService.tokens.access || '',
+			},
+		)
+	}
+
+	/**
+	 * @desc Удаление модуля
+	 * @param {number} idModule - id модуля
+	 * @return {Promise<void>}
+	 */
+	static async deleteModule(idModule: number) {
+		return this.callFetch<void>(
+			`modules/${idModule}`,
+			AxiosMethodsEnum.DELETE,
+			null,
+			{
+				Authorization: tokenService.tokens.access || '',
+			},
+		)
+	}
+
+	/**
+	 * @desc Изменение модуля
+	 * @param {IModule} module - модуль
+	 * @return {Promise<IModule | null>}
+	 */
+	static async updateModule(module: IModule) {
+		return this.callFetch<IModule>(
+			`modules/${module.id}`,
+			AxiosMethodsEnum.PUT,
+			module,
+			{
+				Authorization: tokenService.tokens.access || '',
+			},
+		)
 	}
 
 	/**

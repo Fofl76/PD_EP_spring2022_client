@@ -129,7 +129,7 @@ export default {
 
 		findFacultyByUserFacultyId() {
 			return this.facultyItems.find(faculty => {
-				return faculty.faculty_id === authService.loggedUser.faculties?.[0]
+				return faculty.faculty_id === authService.loggedUser?.faculties?.[0]
 			})
 		},
 
@@ -173,7 +173,7 @@ export default {
 
 		/* Вызывается когда обновляется список факультетов*/
 		async updateFormFields() {
-			const aupCode = mapsService.aupCode
+			const aupCode = mapsService.aupCode || this.$route.query.aup
 
 			if (!aupCode)
 				return this.setFaculty(this.findFacultyByUserFacultyId() || null)

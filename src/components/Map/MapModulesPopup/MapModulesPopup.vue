@@ -1,33 +1,69 @@
 <template>
-	<v-dialog v-model="_value" max-width="1000" class="PopupModules">
-		<v-card class="PopupModules__card">
-			<v-card-title class="text-h5">Модули</v-card-title>
+	<MapBelongsToPopup v-model="_value">
+		<template #title>Работа с модулями</template>
+		<template #subtitle>*Нажмите на дисциплину и перетащите её </template>
 
-			<v-card-text class="PopupModules__content">
-				<v-text-field
-					v-model="searchModel"
-					label="Поиск Модулей"
-					outlined
-					dense
-					hide-details="auto"
-				></v-text-field>
+		<template #left>
+			<MapBelongsToPopupSearchTab
+				:all-items="aupModules"
+				@select="
+					module => {
+						selectedModuleId = module
+					}
+				"
+				@delete="deleteModule"
+				@create-new-press="v => (isCreateNewPressed = v)"
+			/>
+		</template>
 
-				<MapModulesPopupList :modules="filteredModules" />
-			</v-card-text>
-		</v-card>
-	</v-dialog>
+		<template #right>
+			<MapBelongsToPopupCreateTab
+				v-if="isCreateNewPressed"
+				:available="sortedModules"
+				@add-new="addNewHandle"
+			/>
+
+			<MapBelongsToPopupSelectedTab
+				v-else-if="selectedModuleId"
+				mode="module"
+				:current="selectedModuleId"
+				:map="allModulesMap"
+				:available-disciplines="availableDisciplines"
+				:appointed-disciplines="appointedDisciplines"
+				@update="updateModuleHandler"
+				@move="moveDisciplineHandler"
+			/>
+		</template>
+
+		<template #actions>
+			<v-btn color="success" :loading="isLoadingSaveTable" @click="saveMap">
+				Сохранить
+			</v-btn>
+
+			<v-btn color="error" @click="_value = false">Отмена</v-btn>
+		</template>
+	</MapBelongsToPopup>
 </template>
 
 <script>
-import MapModulesPopupList from './MapModulesPopupList.vue'
-import Api from '@services/api/Api'
+import _ from 'lodash'
 
+import unbuildMapList from '@services/Maps/unbuildMapsList'
+
+import MapBelongsToPopup from '@components/Map/MapBelongsToPopup/MapBelongsToPopup.vue'
+import MapBelongsToPopupSearchTab from '@components/Map/MapBelongsToPopup/MapBelongsToPopupSearchTab.vue'
+import MapBelongsToPopupCreateTab from '@components/Map/MapBelongsToPopup/MapBelongsToPopupCreateTab.vue'
+import MapBelongsToPopupSelectedTab from '@components/Map/MapBelongsToPopup/MapBelongsToPopupSelectedTab.vue'
+import modulesService from '@services/Modules/ModulesService'
 import mapsService from '@services/Maps/MapsService'
 
 export default {
 	name: 'MapModulesPopup',
 	components: {
-		MapModulesPopupList,
+		MapBelongsToPopup,
+		MapBelongsToPopupSearchTab,
+		MapBelongsToPopupCreateTab,
+		MapBelongsToPopupSelectedTab,
 	},
 
 	props: {
@@ -35,18 +71,21 @@ export default {
 			type: Boolean,
 		},
 	},
+
 	data() {
 		return {
-			modules: [],
-			searchModel: '',
+			newAllDisciplines: [],
+			newAllDisciplinesMap: {},
+
+			aupModules: [],
+			selectedModuleId: null,
+			isCreateNewPressed: false,
+
+			isLoadingUpdateModule: false,
 		}
 	},
+
 	computed: {
-		filteredModules() {
-			return this.modules.filter(module =>
-				module.title.toLowerCase().includes(this.searchModel.toLowerCase()),
-			)
-		},
 		_value: {
 			get() {
 				return this.value
@@ -55,23 +94,141 @@ export default {
 				this.$emit('input', v)
 			},
 		},
-	},
-	mounted() {
-		Api.fetchModuleByAup(mapsService.aupCode).then(res => {
-			if (!res.success) return
 
-			this.modules = res.data
-		})
+		isLoadingSaveTable() {
+			return mapsService.isLoadingSaveMapList
+		},
+
+		activeMapTable() {
+			return unbuildMapList(mapsService.mapList.value)
+		},
+
+		allModules() {
+			return modulesService.modulesList.value
+		},
+
+		allModulesMap() {
+			return modulesService.allModulesMapId
+		},
+
+		sortedModules() {
+			return _.orderBy(
+				_.differenceWith(this.allModules, this.aupModules, _.isEqual),
+				'name',
+			).sort((a, b) => {
+				if (a.name < b.name) {
+					return -1
+				}
+
+				return 1
+			})
+		},
+
+		availableDisciplines() {
+			return _.orderBy(
+				this.newAllDisciplines?.filter(
+					el => el.id_module !== this.selectedModuleId,
+				),
+				'discipline',
+			)
+		},
+
+		appointedDisciplines() {
+			return _.orderBy(
+				this.newAllDisciplines?.filter(
+					el => el.id_module === this.selectedModuleId,
+				),
+				'discipline',
+			)
+		},
+	},
+
+	methods: {
+		async initAllDisciplines() {
+			if (!mapsService.aupCode) return
+
+			await this.fetchModulesAup()
+			this.getAllDisciplines()
+
+			this.selectedModuleId = null
+		},
+
+		getAllDisciplines() {
+			this.newAllDisciplines = _.cloneDeep(
+				_.uniqBy(this.activeMapTable, el => el.discipline),
+			)
+			this.newAllDisciplinesMap = _.keyBy(this.newAllDisciplines, el => el.id)
+		},
+
+		async fetchModulesAup() {
+			const modules = await modulesService.fetchModulesByAup(
+				mapsService.aupCode,
+			)
+
+			if (modules) {
+				this.aupModules = modules
+			}
+		},
+
+		async deleteModule(module) {
+			if (this.selectedModuleId === module.id) {
+				this.selectedModuleId = null
+			}
+
+			await modulesService.deleteModule(module.id)
+			this.initAllDisciplines()
+		},
+
+		async saveMap() {
+			const groupByDisciplines = _.groupBy(this.newAllDisciplines, 'discipline')
+
+			const newTable = this.activeMapTable.map(el => ({
+				...el,
+				id_module: groupByDisciplines[el.discipline][0].id_module,
+			}))
+
+			await mapsService.saveAllMap(mapsService.aupCode, newTable)
+
+			this._value = false
+		},
+
+		async updateModuleHandler(item) {
+			this.isLoadingUpdateModule = true
+
+			await modulesService.updateModule(item)
+
+			this.isLoadingUpdateModule = false
+
+			this.initAllDisciplines()
+		},
+
+		moveDisciplineHandler(id, moduleId) {
+			this.newAllDisciplinesMap[id].id_module = moduleId
+		},
+
+		async addNewHandle(e) {
+			let newModule = e.item
+
+			if (e.create) {
+				const resp = await modulesService.addModule(newModule)
+
+				if (!resp) {
+					return
+				}
+
+				newModule = resp
+			}
+
+			this.aupModules.push({
+				...newModule,
+			})
+
+			this.selectedModuleId = newModule.id
+		},
+	},
+
+	created() {
+		this.initAllDisciplines()
 	},
 }
 </script>
-
-<style lang="scss">
-.PopupModules {
-	&__content {
-		display: flex;
-		flex-direction: column;
-		gap: 10px;
-	}
-}
-</style>

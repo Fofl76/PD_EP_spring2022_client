@@ -9,7 +9,7 @@ import Events from 'events'
 class PermissionService extends Events {
 	availableAupSet: Set<Key> = new Set()
 	faculties: Key[] = []
-	role: RoleIdEnum | null = null
+	roles: RoleIdEnum[] | null = null
 
 	constructor() {
 		super()
@@ -18,15 +18,15 @@ class PermissionService extends Events {
 	setPermissions(
 		availableAupList: Key[],
 		faculties: Key[] = [],
-		role_id: RoleIdEnum,
+		roles: RoleIdEnum[],
 	) {
 		this.availableAupSet = new Set(availableAupList)
 		this.faculties = faculties
-		this.role = role_id
+		this.roles = roles
 	}
 
 	isRootAdmin() {
-		return this.role === RoleIdEnum.Admin
+		return this.roles?.includes(RoleIdEnum.Admin)
 	}
 
 	canViewFaculty(faculty) {

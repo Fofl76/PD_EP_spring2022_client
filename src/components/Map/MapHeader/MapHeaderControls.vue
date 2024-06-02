@@ -58,6 +58,7 @@
 			</v-list-item>
 
 			<v-list-item
+				v-if="currentMode === ModesEnum.Aup"
 				class="MapHeaderDropdownListItem"
 				:disabled="!aupCode"
 				@click="downloadMapXML"

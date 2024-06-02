@@ -1,4 +1,5 @@
 export interface IModule {
 	id: number
-	title: string
+	name: string
+	color: string
 }

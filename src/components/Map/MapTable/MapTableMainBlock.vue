@@ -75,7 +75,21 @@ export default {
 		},
 
 		backgroundColor() {
-			return this.data.group?.color || '#ffffff'
+			let color
+
+			switch (this.currentMode) {
+				case ModesEnum.Map: {
+					color = this.data.group?.color
+					break
+				}
+
+				case ModesEnum.Aup: {
+					color = this.data.module?.color
+					break
+				}
+			}
+
+			return color || '#ffffff'
 		},
 
 		shadowColor() {

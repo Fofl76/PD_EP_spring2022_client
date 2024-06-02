@@ -14,7 +14,7 @@ export enum RoleIdEnum {
 export interface IUser {
 	user_id: Key
 	login: String
-	role_id: Key
+	roles: RoleIdEnum[]
 	department_id: Key
 	faculties: Key[]
 	exp: number

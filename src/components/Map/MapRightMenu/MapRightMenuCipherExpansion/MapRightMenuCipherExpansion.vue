@@ -39,6 +39,7 @@
 				<v-text-field
 					ref="block"
 					v-model="cipherObj.block"
+					:disabled="true"
 					class="MapRightMenuCipherExpansion__input"
 					label="Блок"
 					type="number"
@@ -57,6 +58,7 @@
 				<v-text-field
 					ref="part"
 					v-model="cipherObj.part"
+					:disabled="true"
 					class="MapRightMenuCipherExpansion__input"
 					label="Часть"
 					type="number"
@@ -75,6 +77,7 @@
 				<v-text-field
 					ref="module"
 					v-model="cipherObj.module"
+					:disabled="true"
 					class="MapRightMenuCipherExpansion__input"
 					label="Модуль"
 					type="number"
@@ -93,6 +96,7 @@
 				<v-text-field
 					ref="discipline"
 					v-model="cipherObj.discipline"
+					:disabled="true"
 					class="MapRightMenuCipherExpansion__input"
 					label="Дисциплина"
 					type="number"

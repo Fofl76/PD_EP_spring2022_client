@@ -24,6 +24,7 @@
 <script>
 import MapsService from '@services/Maps/MapsService'
 import GroupsService from '@services/Groups/GroupsService'
+import ModulesService from '@services/Modules/ModulesService'
 
 import MapHeader from '@components/Map/MapHeader/MapHeader.vue'
 import MapTable from '@components/Map/MapTable/MapTable.vue'
@@ -44,6 +45,7 @@ export default {
 		return {
 			mapsService: MapsService,
 			groupsService: GroupsService,
+			modulesService: ModulesService,
 
 			snackbarOptions: null,
 		}
@@ -100,6 +102,7 @@ export default {
 
 	async created() {
 		this.groupsService.fetchAllGroups()
+		this.modulesService.fetchAllModules()
 		this.mapsService.fetchFacultiesList()
 		this.mapsService.fetchMetaInfo()
 	},

@@ -85,6 +85,7 @@ import MapTableMainSkeletonBlock from '@components/Map/MapTable/MapTableMainSkel
 import { ValueAmountTypeEnum } from '@models/Maps/IMapItemValueRaw'
 
 import { ModesEnum } from '@models/Maps'
+import modulesService from '@services/Modules/ModulesService'
 
 export default {
 	name: 'MapTableMain',
@@ -152,6 +153,7 @@ export default {
 			return element => ({
 				element,
 				group: this.getGroupById(element.id_group),
+				module: this.getModuleById(element.id_module),
 			})
 		},
 
@@ -164,6 +166,10 @@ export default {
 
 		allGroupsMapId() {
 			return GroupsService.allGroupsMapId
+		},
+
+		allModulesMapId() {
+			return modulesService.allModulesMapId
 		},
 
 		heightTableBlock() {
@@ -191,6 +197,10 @@ export default {
 
 		getGroupById(idGroup) {
 			return this.allGroupsMapId[idGroup]
+		},
+
+		getModuleById(idModule) {
+			return this.allModulesMapId[idModule]
 		},
 
 		totalZet(data) {

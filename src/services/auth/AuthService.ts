@@ -3,7 +3,6 @@ import Api from '@services/api/Api'
 import tokenService, { TokenService } from './TokenService'
 import permissionService from './PermissionService'
 import type { IUser } from '@models/Auth'
-import { RoleIdEnum } from '@models/Auth'
 import store from '@store/index'
 
 class AuthService extends Events {
@@ -31,11 +30,7 @@ class AuthService extends Events {
 	updateLoggedUser(user: IUser) {
 		this.loggedUser = user
 
-		permissionService.setPermissions(
-			user.can_edit,
-			user.faculties,
-			user.role_id as RoleIdEnum,
-		)
+		permissionService.setPermissions(user.can_edit, user.faculties, user.roles)
 
 		store.commit('Map/setAuthStatus', true)
 		this.emit('updateUser', user)
